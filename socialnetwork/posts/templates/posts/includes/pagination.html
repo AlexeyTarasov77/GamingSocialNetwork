@@ -1,0 +1,46 @@
+    {% comment %} <span class="step-links">
+      {% if page.has_previous %}
+        <a href="?page={{ page.previous_page_number }}">Previous</a>
+      {% endif %}
+      <span class="current">
+        Page {{ page.number }} of {{ page.paginator.num_pages }}.
+      </span>
+      {% if page.has_next %}
+        <a href="?page={{ page.next_page_number }}">Next</a>
+      {% endif %}
+      </span> {% endcomment %}
+
+      {% if page.has_other_pages %}
+      <nav aria-label="...">
+        <ul class="pagination">
+        {% if page.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{page.previous_page_number}}">Previous</a>
+            </li>
+        {% else %}
+            <li class="page-item disabled">
+                <span class="page-link">Previous</span>
+            </li>
+        {% endif %}
+
+        {% for p in paginator.page_range %}
+		{% if page.number == p %}
+          <li class="page-item active" aria-current="page">
+            <a class="page-link" href="?page={{p}}">{{p}}</a>
+          </li>
+		{% elif p >= page.number|add:-2 and p <= page.number|add:2 %}
+        <li class="page-item"><a class="page-link" href="?page={{p}}">{{p}}</a></li>
+		{% endif %}
+        {% endfor %}
+        {% if page.has_next %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{page.next_page_number}}">Next</a>
+          </li>
+          {% else %}
+          <li class="page-item disabled">
+            <span class="page-link">Next</span>
+          </li>
+        {% endif %}
+        </ul>
+      </nav>
+      {% endif %}

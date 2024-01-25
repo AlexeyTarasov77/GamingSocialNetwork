@@ -1,0 +1,37 @@
+<div class="like-container">
+    {% if request.user in post.liked.all%}
+    <div class="heart is-active" data-post-id="{{ post.id }}"></div>
+    {% else %}
+    <div class="heart" data-post-id="{{ post.id }}"></div>
+    {% endif %}
+</div>
+{% block js %}
+<script>
+    $(document).ready(function() {
+        $(".heart").click(function() {
+            var postId = $(this).data("post-id");
+            var heartEl = $(this)
+
+            // Отправляем асинхронный запрос на сервер
+            $.ajax({
+                type: "POST",
+                url: "{% url 'posts:like-post' %}",
+                data: { post_id: postId, csrfmiddlewaretoken: "{{ csrf_token }}" },
+                success: function(data) {
+                    var numLikesElement = heartEl.closest('.card-body').find('#num-likes #num-likes-count');
+                    numLikesElement.text(data.likes_count);
+                    if (data.is_liked) {
+                        heartEl.addClass("is-active")
+                    }
+                    else {
+                        heartEl.removeClass("is-active")
+                    }
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
+        });
+    });
+</script>
+{% endblock js %}

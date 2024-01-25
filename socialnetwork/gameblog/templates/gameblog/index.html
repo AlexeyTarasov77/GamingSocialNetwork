@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+{% load humanize %}
+{% load static %}
+{% block links %}
+<link rel="stylesheet" href="{% static "gameblog/css/index.css" %}">
+{% endblock links %}
+{% block title %}Главная страница{% endblock title %}
+
+{% block content %}
+<div class="container">
+    <div class="about">
+        <div class="about__column">
+            <div class="column__title">
+                <h1>Добро пожаловать на сайт!</h1>
+            </div>
+            <div class="column__subtitle">
+                <h3>Gaming blog</h3>
+            </div>
+            <div class="center" id="about">
+                <h2>About me, The Gaming geek</h2>
+                {% if video_url %}
+                     <br>
+                     <iframe width="75%" height="500px"       src="{{video_url}}"> 
+                     </iframe>
+                {% endif %}
+
+              </div>
+              <div class="ads">
+                <div class="ads__row">
+                    <div class="row__title">
+                        <h2>Важные обьявления</h2>
+                    </div>
+                    <div class="row__list">
+                        {% for ad in ads %}
+                            <div class="list__ad">
+                                <p class="ad__name">{{ad.title}}</p>
+                                <p class="ad__text">{{add.description}}</p>
+                                {% if ad.attached_file %}
+                                <a href="{{ad.attached_file.url}}">Прикрепленный файл - {{ad.attached_file.filename}}</a>
+                                {% endif %}
+                            </div>
+                        {% empty %}
+                        <p class="list__empty">
+                            Обьявлений пока нет ☹️
+                        </p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+              <div id="news" class="columns">
+                <h2>NEWS</h2>
+                <div class="column side">
+                  <h2>Ad content</h2>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit..</p>
+                </div>
+                <div class="column middle">
+                  <h2>News About Gaming</h2>
+                  <p>
+              PUBG Mobile developer Krafton has invested $22.4 million (around Rs 164 crore) in Indian esports and gaming firm Nodwin Gaming. The South Korean game developer and publisher is said to invest in Nodwin Gaming to “maintain some presence in what was once its key overseas market”, according to a TechCrunch report.
+              Krafton is the publisher and owner of popular games like PUBG and PUBG Mobile.</p>
+                </div>
+                <div class="column side">
+                  <h2>Promotion content</h2>
+                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit..</p>
+                </div>
+              </div>
+              <hr>
+              
+              <div class="images">
+                <h1>Любимые игры сообщества</h1>
+                <div class="image">
+                  <a href="{% url "gameblog:news" game_id=578080 %}"><img src="https://akm-img-a-in.tosshub.com/sites/btmt/images/stories/pubg_game_660_141020121948.jpg"></a>
+                  <p class="games">PUBG</p>
+                </div>
+                <div class="image">
+                  <a href="{% url "gameblog:news" game_id=570 %}"><img src="https://vinyl-market.ru/images/shop_items/432-2.jpg.webp"></a>
+                  <p class="games">Dota 2</p>
+                  </div>
+                <div class="image">
+                  <a href="{% url "gameblog:news" game_id=730 %}"><img src="https://assets.hardwarezone.com/img/2023/03/cs2.jpg"></a>
+                  <p class="games">CS GO</p>
+                </div>
+                <div class="image">
+                  <a href="{% url "gameblog:news" game_id=271590 %}"><img src="https://www.konzoly-store.sk/resize/e/1200/630/files/plakat-gta-5.jpg"></a>
+                  <p class="games">Grand Theft Auto 5</p>
+                </div>
+              </div>
+        </div>
+    </div>
+    <div class="recommended"> 
+        <div class="recommended__title">
+            <h2>Рекомендуемые публикации</h2>
+        </div>
+
+        <div class="recommended__column">
+            <div class="column__posts">
+                {% for rec_post in recommended_posts %}
+                <div class="posts__post">
+                    <div class="post__title">
+                        <a href="{{rec_post.get_absolute_url}}">{{rec_post.name}}</a>
+                    </div>
+                    <div class="post__content">
+                        {{rec_post.content|linebreaks|truncatewords:30}}
+                    </div>
+                    <div class="post__info">
+                        <span class="info__date">Опубликованно: {{rec_post.time_create|naturaltime}}</span>
+                        <span class="info__author">Автор: {{rec_post.author}}</span>
+                    </div>
+                </div>
+                {% empty %}
+                <p class="no-data">Нет рекомендованных публикаций</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+{% block js %}
+<script src="{% static "gameblog/js/index.js" %}"></script>
+{% endblock js %}

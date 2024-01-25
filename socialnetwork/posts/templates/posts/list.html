@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% load static %}
+{% load humanize %}
+
+{% block links %}   
+<link rel="stylesheet" href="{% static "posts/css/list.css" %}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+{% endblock links %}
+
+{% block content %}
+    <div class="height-100">
+        <div class="container">
+            <div class="posts">
+                <div class="posts__column">
+                    <div class="column__list-posts">
+                        {% for post in posts_list %}
+                        <div class="card mb-3">
+                            {% if post.photo %}
+                                <img src="{{post.photo.url}}" class="card-img-top" alt="{{post.photo}}">
+                            {% endif %}
+                            <div class="card-body">
+                              <h5 class="card-title">{{post.name}}</h5>
+                              <p class="card-text">{{post.content|truncatewords:30}}</p>
+                              <p class="card-text"><small class="text-body-secondary"><p>Автор: <strong>{{post.author}}</strong></p></small></p>
+                              <p class="card-text">
+                                {% include "posts/includes/like.html" %}
+                              </p>
+                              <ul class="list-group list-group-flush">
+                                <li class="list-group-item" id="num-likes"><span id="num-likes-count">{{post.num_likes}}</span> {{post.num_likes|pluralize:"like, likes"}}</li>
+                                <li class="list-group-item">{{post.num_comments}} {{post.num_comments|pluralize:"comment, comments"}}</li>
+                              </ul>
+                              <p class="card-text"><a href="{{post.get_absolute_url}}" class="btn btn-primary">Читать более...</a></p>
+                              <div class="card-footer">
+                                <small class="text-body-secondary">Опубликовано: {{post.time_publish|naturaltime}} {% if post.time_update %} | Изменено: {{post.time_update|naturaltime}}{% endif %}</small>
+                              </div>
+                            </div>
+                        </div>
+                        {% empty %}
+                        <div class="empty-posts">
+                            <h2>Постов пока нет 🙁</h2>
+                            <img src="{% static "posts/img/posts-empty.png" %}" alt="">
+                        </div>
+                        {% endfor %}
+                    </div>
+        
+                </div>
+                <div class="posts__pagination">
+                    {% include "posts/includes/pagination.html" with page=page_obj %}
+                </div>
+            </div>
+        </div>
+    </div>  
+{% endblock content %}
+

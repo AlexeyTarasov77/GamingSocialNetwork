@@ -1,0 +1,42 @@
+@import url(https://fonts.googleapis.com/css2?family=Syne+Mono&display=swap);
+@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap");:root{--header-height: 3rem;--nav-width: 68px;--first-color: #3399ff;--first-color-light: #ffffff;--white-color: #F7F6FB;--body-font: 'Nunito', sans-serif;--normal-font-size: 1rem;--z-fixed: 100}*,::before,::after{box-sizing: border-box}body{position: relative;margin: var(--header-height) 0 0 0;padding: 0 1rem;font-family: var(--body-font);font-size: var(--normal-font-size);transition: .5s}a{text-decoration: none}.l-navbar{position: fixed;top: 0;left: -30%;width: var(--nav-width);height: 100vh;background-color: var(--first-color);padding: .5rem 1rem 0 0;transition: .5s;z-index: var(--z-fixed)}.nav{height: 100%;display: flex;flex-direction: column;justify-content: space-between;overflow: hidden}.nav_logo, .nav_link{display: grid;grid-template-columns: max-content max-content;align-items: center;column-gap: 1rem;padding: .5rem 0 .5rem 1.5rem}.nav_logo{margin-bottom: 2rem}.nav_logo-icon{font-size: 1.25rem;color: var(--white-color)}.nav_logo-name{color: var(--white-color);font-weight: 700}.nav_link{position: relative;color: var(--first-color-light);margin-bottom: 1.5rem;transition: .3s}.nav_link:hover{color: var(--white-color)}.nav_icon{font-size: 1.25rem}.show{left: 0}.active{color: var(--white-color)}.active::before{content: '';position: absolute;left: 0;width: 2px;height: 32px;background-color: var(--white-color)}.height-100{height:100vh}@media screen and (min-width: 768px){body{margin: calc(var(--header-height) + 1rem) 0 0 0;padding-left: calc(var(--nav-width) + 2rem)}.l-navbar{left: 0;padding: 1rem 1rem 0 0}}
+
+.navbar-brand, .nav-item {
+    font-family: "Syne Mono", monospace;
+}
+
+header {
+    z-index: 999999;
+    width: 100vw;
+    position: fixed;
+    top: 0;
+    right: 0;
+}
+
+.nav_icon {
+    color: #ffffff; 
+    transition: 0.3s ease;
+}
+.nav_icon:hover{
+    color: #000000;
+}
+
+.navbar-light .navbar-nav .nav-link {
+    color: #000d64;
+    transition: 0.35s ease;
+}
+.navbar-light .navbar-nav .nav-link:hover{
+    color: #000000;
+}
+
+.navbar-brand{
+    color: #2e0090;
+    font-size: 1.35em;
+}
+
+.navbar-light .navbar-nav .nav-active{
+    color: #006eff !important;
+    font-size: 1.1em;
+}
+
+

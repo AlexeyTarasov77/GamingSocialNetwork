@@ -1,0 +1,101 @@
+@charset "UTF-8";
+.container {
+  padding: 20px;
+}
+
+.posts__pagination {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  width: 100%;
+}
+
+.column__list-posts {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  gap: 50px;
+}
+
+.empty-posts {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: space-evenly;
+      -ms-flex-pack: space-evenly;
+          justify-content: space-evenly;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  height: 100vh;
+}
+
+.like-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  position: absolute;
+  top: 60%;
+  width: 2%;
+}
+
+.list-group {
+  margin-top: 5%;
+}
+
+.card-img-top {
+  max-height: 300px;
+}
+
+main {
+  font-family: "Roboto", sans-serif;
+}
+
+.heart {
+  width: 100px;
+  height: 100px;
+  background: url("https://cssanimation.rocks/images/posts/steps/heart.png") no-repeat;
+  background-position: 0 0;
+  cursor: pointer;
+  -webkit-transition: background-position 1s steps(28);
+  transition: background-position 1s steps(28);
+  -webkit-transition-duration: 0s;
+          transition-duration: 0s;
+}
+.heart.is-active {
+  -webkit-transition-duration: 1s;
+          transition-duration: 1s;
+  background-position: -2800px 0;
+}
+.heart.is-active::after {
+  content: "Нравиться";
+  color: red;
+  letter-spacing: 3px;
+  position: relative;
+  left: 70%;
+  top: 40%;
+  white-space: nowrap;
+}
+.heart::after {
+  content: "Не нравиться";
+  position: relative;
+  color: gray;
+  opacity: 80;
+  left: 70%;
+  top: 40%;
+  white-space: nowrap;
+}

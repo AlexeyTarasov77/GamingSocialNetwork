@@ -1,0 +1,173 @@
+.post-detail {
+    padding: 20px;
+}
+
+.post-detail__column {}
+
+.column__info {}
+
+.post-photo img{
+    width: 100%;
+    max-height: 600px;
+}
+
+.post-photo {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+
+}
+
+body {
+    background:#eee;
+}
+.posts-content{
+    margin-top:20px;    
+}
+.ui-w-40 {
+    width: 40px !important;
+    height: auto;
+}
+.default-style .ui-bordered {
+    border: 1px solid rgba(24,28,33,0.06);
+}
+.ui-bg-cover {
+    background-color: transparent;
+    background-position: center center;
+    background-size: cover;
+}
+.ui-rect {
+    padding-top: 50% !important;
+}
+.ui-rect, .ui-rect-30, .ui-rect-60, .ui-rect-67, .ui-rect-75 {
+    position: relative !important;
+    display: block !important;
+    padding-top: 100% !important;
+    width: 100% !important;
+}
+.d-flex, .d-inline-flex, .media, .media>:not(.media-body), .jumbotron, .card {
+    -ms-flex-negative: 1;
+    flex-shrink: 1;
+}
+.bg-dark {
+    background-color: rgba(24,28,33,0.9) !important;
+}
+.card-footer, .card hr {
+    border-color: rgba(24,28,33,0.06);
+}
+.ui-rect-content {
+    position: absolute !important;
+    top: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    left: 0 !important;
+}
+.default-style .ui-bordered {
+    border: 1px solid rgba(24,28,33,0.06);
+}
+
+.col-lg-6 {
+    width: 100%;
+}
+
+.card-footer {
+    display: flex;
+    justify-content: space-between;
+}
+
+.posts-content{
+    padding: 0px;
+}
+
+.like-container {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    width: 2%;
+    margin-top: -3%;
+    margin-bottom: -3%;
+  }
+
+.heart {
+    width: 100px;
+    height: 100px;
+    background: url("https://cssanimation.rocks/images/posts/steps/heart.png") no-repeat;
+    background-position: 0 0;
+    cursor: pointer;
+    -webkit-transition: background-position 1s steps(28);
+    transition: background-position 1s steps(28);
+    -webkit-transition-duration: 0s;
+            transition-duration: 0s;
+  }
+  .heart.is-active {
+    -webkit-transition-duration: 1s;
+            transition-duration: 1s;
+    background-position: -2800px 0;
+  }
+  .heart.is-active::after {
+    content: "Нравиться";
+    color: red;
+    letter-spacing: 3px;
+    position: relative;
+    left: 70%;
+    top: 40%;
+    white-space: nowrap;
+  }
+  .heart::after {
+    content: "Не нравиться";
+    position: relative;
+    color: gray;
+    opacity: 80;
+    left: 70%;
+    top: 40%;
+    white-space: nowrap;
+  }
+
+a{
+    text-decoration: none;
+}
+
+.bi-share-fill, .bi-send-arrow-down-fill{
+    color: #000;
+}
+
+/* .img-fluid 
+
+.info__text 
+
+.info__likes 
+
+.likes__count 
+
+.likes__add 
+
+.info__meta 
+
+.meta__date 
+
+.meta__author 
+
+.column__comments 
+
+.comments__title 
+
+.comments__add-own 
+
+.add-own__title 
+
+.add-own__form 
+
+.comments__list 
+
+.list__el 
+
+.el__author 
+
+.el__text 
+
+.el__meta 
+
+.list__empty {} */

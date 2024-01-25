@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load gameblog_tags %}
+{% load static %}
+
+{% block links %}
+<link rel="stylesheet" href="{% static "gameblog/css/news.css" %}">
+{% endblock links %}
+
+{% block content %}
+<div class="news">
+    <div class="news__title">
+        <h1>Последние новости игры</h1>
+    </div>
+    <div class="news__list">
+        {% for news in response.appnews.newsitems %}
+        <div class="list__el">
+            <div class="el__title">
+                <h2>{{news.title|safe}}</h2>
+            </div>
+            <div class="el__content">
+                <p>{{news.contents|linebreaksbr|safe|convert_steam_tags}}</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock content %}

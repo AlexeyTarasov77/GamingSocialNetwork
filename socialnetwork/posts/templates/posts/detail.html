@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+{% load static %}
+{% load humanize %}
+
+{% block links %}
+<link rel="stylesheet" href="{% static "posts/css/detail.css" %}">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+{% endblock links %}
+
+{% block content %}
+<div class="post-detail">
+    <a href="{% url "posts:list-posts" %}" class="btn btn-primary" id="go-back">Вернуться к постам</a>
+    <div class="container posts-content">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="card mb-4">
+                  <div class="card-body">
+                    <div class="media mb-3">
+                      <img src="https://bootdey.com/img/Content/avatar/avatar1.png" class="d-block ui-w-40 rounded-circle" alt="">
+                      <div class="media-body ml-3">
+                        {{post.author}}
+                        <div class="text-muted small">Опубликовано: {{post.time_publish|naturaltime}}</div>
+                      </div>
+                    </div>
+                    
+                    <p class="card-text">
+                      {{post.content|linebreaks}}
+                    </p>
+
+                    <p class="card-text">
+                        {% include "posts/includes/like.html" %}
+                    </p>
+                    {% if post.photo %}
+                        <div class="post-photo">
+                            <img src="{{post.photo.url}}" alt="">
+                        </div>
+                    {% endif %}
+                  </div>
+                  <div class="card-footer">
+                    <div class="lcr">
+                        <span class="d-inline-block text-muted">
+                          <small class="align-middle" id="num-likes">
+                            <strong id="num-likes-count">{{post.num_likes}}</strong> {{post.num_likes|pluralize:"like,likes"}}</small>  <i class="bi bi-heart-fill"></i>
+                        </span>
+                        
+                        <a href="javascript:void(0)" class="d-inline-block text-muted ml-3">
+                          <small class="align-middle">  &nbsp;
+                            <strong>{{post.num_comments}}</strong>  {{post.num_comments|pluralize:"comment,comments"}}</small>  <i class="bi bi-chat-right-text-fill"></i>
+                        </a>
+                        <a href="javascript:void(0)" class="d-inline-block text-muted ml-3">
+                          <i class="ion ion-md-share align-middle"></i>&nbsp;
+                          <small class="align-middle">Repost</small>  <i class="bi bi-reply"></i>
+                        </a>
+                        <a href="{% url "posts:share-post" post.id %}" class="d-inline-block text-muted ml-3">
+                            <i class="ion ion-md-share align-middle"></i>&nbsp;
+                            <small class="align-middle">Share</small>  <i class="bi bi-share-fill"></i>
+                        </a>
+                    </div>
+                    <div class="meta">
+                        <small>
+                            {% if post.time_update %} Изменено: {{post.time_update|naturaltime}}{% endif %}
+                        </small>
+                    </div>
+                  </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% comment %} <div class="post-detail__column">
+        <div class="column__info">
+            <div class="info__title">
+                <h2>{{post.name}}</h2>
+            </div>
+            {% if post.photo %}
+                <div class="info__photo">
+                    <img src="{{post.photo.url}}" class="img-fluid" alt="Фото поста">
+                </div>
+            {% endif %}
+
+            <div class="info__text">
+                <p>{{post.content|linebreaks}}</p>
+            </div>
+
+            <div class="info__likes">
+                <div class="likes__count">
+                    <p>{{post.num_likes}} {{post.num_likes|pluralize:"like"}}</p>
+                </div>
+                <div class="likes__add">
+                    <form action="{% url "posts:like-post" %}" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name='post_id' value={{post.id}}>
+                        {% if user not in post.liked.all %}
+                        <button id='like-btn'>♡</button>
+                        {% else %}
+                        <button id='unlike-btn'>&#x2764;</button>
+                        {% endif %}
+                      </form>
+                </div>
+            </div>
+
+            <div class="info__meta">
+                <div class="meta__date">
+                    <p>Опубликовано: {{post.time_publish|naturaltime}} {% if post.time_update %} | Изменено: {{post.time_update|naturaltime}}{% endif %}</p>
+                </div>
+                <div class="meta__author">
+                    <p>Автор: <strong>{{post.author}}</strong></p>
+                </div>
+            </div>
+
+        </div>
+        <div class="column__comments">
+            <div class="comments__title">
+                <h2>Комментарии</h2>
+            </div>
+            <div class="comments__add-own">
+                <div class="add-own__title">
+                    Добавьте свой комментарий: 
+                </div>
+                <div class="add-own__form">
+                    
+                </div>
+            </div>
+
+            <div class="comments__list">
+                {% for comment in post.comment %}
+                    <div class="list__el">
+                        <div class="el__author">
+                            {{comment.author}}
+                        </div>
+                        <div class="el__text">
+                            {{comment.text}}
+                        </div>
+                        <div class="el__meta">
+                            <p>Создано: {{comment.time_create}} {% if comment.time_update %} | Изменено: {{comment.time_update|naturaltime}}{% endif %}</p>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="list__empty">
+                        <p>Комментариев пока нет, напишите свой комментарий первым! ✍️</p>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div> {% endcomment %}
+</div>
+
+{% endblock content %}

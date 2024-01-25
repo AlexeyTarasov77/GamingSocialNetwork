@@ -1,0 +1,94 @@
+.container {
+    padding: 20px;
+}
+.posts {
+
+		&__column {
+		}
+
+		&__pagination {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+		}
+}
+.column {
+
+		&__list-posts {
+			display: flex;
+			flex-direction: column;
+			gap: 50px;
+		}
+}
+
+.empty-posts{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    height: 100vh;
+}
+
+// #like-btn, #unlike-btn {
+//     background: none;
+//     border: none;
+//     #like-span, #unlike-span{
+//         font-size: 22px;
+//     }
+// }
+
+.like-container {
+    display: flex;
+    justify-content: center;
+    position: absolute;
+    top: 60%;
+    width: 2%;
+}
+
+.list-group{
+    margin-top: 5%;
+}
+
+.card-img-top {
+	max-height: 300px;
+}
+
+
+main {
+    font-family: 'Roboto', sans-serif;
+}
+.heart {
+    width: 100px;
+    height: 100px;
+    background: url("https://cssanimation.rocks/images/posts/steps/heart.png") no-repeat;
+    background-position: 0 0;
+    cursor: pointer;
+    transition: background-position 1s steps(28);
+    transition-duration: 0s;
+    
+    &.is-active {
+      transition-duration: 1s;
+      background-position: -2800px 0;
+      &::after{
+        content: "Нравиться";
+        color: red;
+        letter-spacing: 3px;
+        position: relative;
+        left: 70%;
+        top: 40%;
+        white-space: nowrap;
+    }
+    }
+    &::after{
+        content: "Не нравиться";
+        position: relative;
+        color: gray;
+        opacity: 80;
+        left: 70%;
+        top: 40%;
+        white-space: nowrap;
+    }
+  }
+
+  
+ 
