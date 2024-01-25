@@ -39,14 +39,16 @@
   <nav class="nav">
       <div> <a href="#" class="nav_logo"> <i class='bx bx-layer nav_logo-icon'></i> <span class="nav_logo-name">BBBootstrap</span> </a>
           <div class="nav_list"> 
-            <a href="#" class="nav_link active"> <i class='bx bx-grid-alt nav_icon'></i></a> 
-            <a href="#" class="nav_link" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Tooltip on right"> <i class='bx bx-user nav_icon'></i></a> 
-            <a href="#" class="nav_link" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Tooltip on top"> <i class='bx bx-message-square-detail nav_icon'></i></a> 
-            <a href="#" class="nav_link"> <i class='bx bx-bookmark nav_icon'></i></a> 
-            <a href="#" class="nav_link"> <i class='bx bx-folder nav_icon'></i></a> 
-            <a href="#" class="nav_link"> <i class='bx bx-bar-chart-alt-2 nav_icon'></i></a>
+            {% for sld in sidebar_links_default %}
+              <a href="{% if sld.url_name != '#' %}{% url sld.url_name %}{% else %}#{% endif %}" class="nav_link" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="{{sld.tooltip}}"> <i class="{{sld.icon}} nav_icon"></i></a> 
+            {% endfor %}
+            {% if sidebar_links_optional %}
+            {% for slo in sidebar_links_optional %}
+              <a href="{% if slo.url_name != '#' %}{% url slo.url_name %}{% else %}#{% endif %}" class="nav_link" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="{{slo.tooltip}}"> <i class="{{slo.icon}} nav_icon"></i></a> 
+            {% endfor %}
+            {% endif %}
           </div>
-      </div> <a href="#" class="nav_link"> <i class='bx bx-log-out nav_icon'></i></a>
+      </div> <a href="#" id="logout" class="nav_link" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Выйти"> <i class='bx bx-log-out nav_icon'></i></a>
   </nav>
 </div>
 <main>

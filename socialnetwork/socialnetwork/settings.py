@@ -55,7 +55,7 @@ INSTALLED_APPS = [
     #side packages
     'taggit',
     'rest_framework',
-    
+    'mptt'
 ]
 
 MIDDLEWARE = [
@@ -81,7 +81,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'gameblog.context_processors.get_gameblog_context'
+                'gameblog.context_processors.menu_links',
+                'gameblog.context_processors.sidebar_links'
             ],
         },
     },

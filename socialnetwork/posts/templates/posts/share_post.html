@@ -3,24 +3,47 @@
 {% block title %}Share a post{% endblock %}
 {% block content %}
 {% if sent %}
-<h1>E-mail successfully sent</h1> <p>
-"{{ post.name }}" was successfully sent
-to {{ form.cleaned_data.to }}.
+<h1>Электронное письмо было успешно отправлено</h1> <p>
+"{{ post.name }}" был успешно отправлен по адрессу - 
+  {{ form.cleaned_data.to }}.
 </p>
 {% else %}
-<h1>Share "{{ post.name }}" by e-mail</h1> 
-<form method="post" class="row g-3 needs-validation" novalidate>
-    {% csrf_token %}
-{% for f in form %}
-    <div class="mb-3">
-        {{f.label_tag}}
-        {{f}}
-        <div class="invalid-feedback">
-            {{f.errors}}
+<style>
+    .share-form{
+        height: 50vh;
+    }
+    .btn-primary {
+        width: 50%;
+        margin: 0 auto
+    }
+
+    .mb-3{
+        gap: 1.2rem;
+    }
+</style>
+<h1>Поделиться постом "{{ post.name }}" по электронной почте</h1> 
+<div class="share-form d-flex flex-column justify-content-center align-items-center">
+    <form method="post" class="d-flex flex-column g-3 needs-validation">
+        {% csrf_token %}
+        <div class="mb-3 d-flex flex-column">
+            {% for f in form %}
+                    {{f.label_tag}}
+                    {{f}}
+                    <div class="invalid-feedback">
+                        {{f.errors}}
+                    </div>
+            {% endfor %}
         </div>
-    </div>
-{% endfor %}
-    <button class="btn btn-primary">Отправить</button>
-</form>
+        <button class="btn btn-primary">Отправить</button>
+    </form>
+</div>
 {% endif %} 
 {% endblock %}
+
+{% block js %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script>
+    $('label[for="id_username"]').addClass('none');
+    $('label[for="id_email"]').addClass('none');
+</script>
+{% endblock js %}

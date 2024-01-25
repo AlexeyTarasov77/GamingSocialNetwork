@@ -27,10 +27,12 @@ class DetailPost(generic.DetailView):
     def get_object(self, queryset: QuerySet[Any] | None = ...) -> Model:
         return get_object_or_404(Post, pk=self.kwargs.get('post_id'))
     def get_context_data(self, **kwargs) -> dict[str, Any]:
+        post = self.get_object()
         context = super().get_context_data(**kwargs)
         context["is_owner"] = False
-        if self.request.user == self.get_object().author:
+        if self.request.user == post.author:
             context["is_owner"] = True
+        context["parent_comments"] = post.comment.filter(reply=None)
         return context
     
     

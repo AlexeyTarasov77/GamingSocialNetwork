@@ -1,4 +1,10 @@
-from .utils import menu
+from .utils import menu, sidebar
 
-def get_gameblog_context(request):
+def menu_links(request):
     return {'headermenu':menu}
+
+def sidebar_links(request):
+    return {
+        'sidebar_links_default': sidebar,
+        'sidebar_links_optional': getattr(request, 'sidebar_links', None)
+    }

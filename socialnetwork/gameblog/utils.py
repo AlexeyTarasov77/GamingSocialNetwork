@@ -3,11 +3,13 @@ menu = [{'title': "Посты", 'url_name': 'posts:list-posts', 'id': 'menu-item
         {'title': "Игровые события", 'url_name': '#', 'id': 'menu-item-3'},
         {'title': "Поиск команды", 'url_name': '#', 'id': 'menu-item-4'},
         {'title': "Магазин 🛒", 'url_name': '#', 'id': 'menu-item-5'},
-        {'title': "Чат", 'url_name': '#', 'id': 'menu-item-6'},
-        {'title': "Настройки ⚙", 'url_name': '#', 'id': 'menu-item-7'},
+        {'title': "Настройки ⚙", 'url_name': '#', 'id': 'menu-item-6'},
         ]
 
 sidebar = [
-        #     <a href="#" class="nav_link"> <i class='bx bx-user nav_icon'></i> <span class="nav_name">Users</span> </a> 
-        {'url': '#', 'icon': 'bx bx-user nav_icon'}
+        {'url_name': 'gameblog:main', 'icon': 'bx bx-grid-alt', 'tooltip': 'Главная'},
+        {'url_name': '#', 'icon': 'bx bx-user', 'tooltip': 'Профиль'},
+        {'url_name': '#', 'icon': 'bx bx-bell', 'tooltip': 'Уведомления'},
+        {'url_name': '#', 'icon': 'bx bx-message-square-detail', 'tooltip': 'Cooбщения'},
+        {'url_name': '#', 'icon': 'bx bx-info-circle', 'tooltip': 'Поддержка'},
 ]
