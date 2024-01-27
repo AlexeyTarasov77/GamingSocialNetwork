@@ -31,7 +31,7 @@ class MainView(generic.ListView):
         context = super().get_context_data(**kwargs)
         context['recommended_posts'] = Post.published.annotate(
             total_likes = Count('liked'),
-            total_comments=Count('comment')
+            total_comments=Count('comment_post')
         ).filter(Q(total_likes__gte=total_likes_required) | Q(total_comments__gte=total_comments_required))[:10]
         try:
             context['video_url'] = BackgroundVideo.objects.latest('pk')

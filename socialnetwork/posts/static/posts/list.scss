@@ -40,13 +40,16 @@
 .like-container {
     display: flex;
     justify-content: center;
-    position: absolute;
-    top: 60%;
-    width: 2%;
+    position: relative;
+    bottom: 40px;
+    left: -35px;
+    display: inline;
+    width: 10px;
+    height: 10px;
 }
 
 .list-group{
-    margin-top: 5%;
+    margin-top: -7%;
 }
 
 .card-img-top {

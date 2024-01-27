@@ -178,29 +178,7 @@ ul {
 /**
 * Lineas / Detalles
 -----------------------*/
-.comments-list:before {
-   content: '';
-   width: 2px;
-   height: 100%;
-   background: #c7cacb;
-   position: absolute;
-   left: 32px;
-   top: 0;
-}
 
-.comments-list:after {
-   content: '';
-   position: absolute;
-   background: #c7cacb;
-   bottom: 0;
-   left: 27px;
-   width: 7px;
-   height: 7px;
-   border: 3px solid #dee1e3;
-   -webkit-border-radius: 50%;
-   -moz-border-radius: 50%;
-   border-radius: 50%;
-}
 
 .reply-list:before, .reply-list:after {display: none;}
 .reply-list li:before {
@@ -229,7 +207,7 @@ ul {
 }
 
 .reply-list {
-   padding-left: 88px;
+   padding-left: 10px;
    clear: both;
    margin-top: 15px;
 }
@@ -241,7 +219,7 @@ ul {
    height: 65px;
    position: relative;
    z-index: 99;
-   float: left;
+   /* float: left; */
    border: 3px solid #FFF;
    -webkit-border-radius: 4px;
    -moz-border-radius: 4px;
@@ -360,7 +338,7 @@ ul {
 
 .comment-box .comment-name.by-author, .comment-box .comment-name.by-author a {color: #03658c;}
 .comment-box .comment-name.by-author:after {
-   content: 'autor';
+   content: 'Автор';
    background: #03658c;
    color: #FFF;
    font-size: 12px;
@@ -387,4 +365,14 @@ ul {
    .reply-list .comment-box {
        width: 320px;
    }
+}
+
+.comments-list li {
+   margin-bottom: 15px;
+   display: flex; /* Используем флексбокс */
+   align-items: flex-start; /* Выравниваем по верхнему краю */
+}
+
+.comment-avatar{
+   right: 7%;
 }

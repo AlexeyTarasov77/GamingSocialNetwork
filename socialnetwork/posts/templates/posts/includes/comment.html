@@ -1,83 +1,113 @@
+{% load mptt_tags %}
 <div class="comments-container">
-    {% if post.comment.all %}
+    {% if post.comment_post %}
     <h1>Комментарии</h1>
-
-    <ul id="comments-list" class="comments-list">
-        <li>
-            <div class="comment-main-level">
-                <!-- Avatar -->
-                <div class="comment-avatar"><img src="http://i9.photobucket.com/albums/a88/creaticode/avatar_1_zps8e1c80cd.jpg" alt=""></div>
-                <!-- Contenedor del Comentario -->
-                <div class="comment-box">
-                    <div class="comment-head">
-                        <h6 class="comment-name by-author"><a href="http://creaticode.com/blog">Agustin Ortiz</a></h6>
-                        <span>hace 20 minutos</span>
-                        <i class="fa fa-reply"></i>
-                        <i class="fa fa-heart"></i>
-                    </div>
-                    <div class="comment-content">
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Velit omnis animi et iure laudantium vitae, praesentium optio, sapiente distinctio illo?
-                    </div>
-                </div>
+<style>
+    .bi-reply{
+        font-size: 1.3em
+    }
+</style>
+    {% if not user.is_authenticated %}
+    <h3>Хотите добавить комментарий?</h3>
+    <div class="d-flex">
+        <button class="btn btn-dark">Войти</button>
+        <button class="btn-success">Зарегестрироваться</button>
+    </div>
+    {% else %}
+    <div class="comment-form d-flex flex-column justify-content-center align-items-center">
+        <h4>Добавить комментарий</h4>
+        <form method="post" action="{% url "posts:comment-post" post.pk %}" class="d-flex flex-column g-3" id="commentForm" name="commentForm" data-post-id="{{ post.pk }}">
+            {% csrf_token %}
+            <div class="mb-3 d-flex flex-column">
+                {% for f in form %}
+                        {{f}}
+                        <div class="invalid-feedback">
+                            {{f.errors}}
+                        </div>
+                {% endfor %}
             </div>
-            <!-- Respuestas de los comentarios -->
-            <ul class="comments-list reply-list">
-                <li>
-                    <!-- Avatar -->
-                    <div class="comment-avatar"><img src="http://i9.photobucket.com/albums/a88/creaticode/avatar_2_zps7de12f8b.jpg" alt=""></div>
-                    <!-- Contenedor del Comentario -->
-                    <div class="comment-box">
-                        <div class="comment-head">
-                            <h6 class="comment-name">Lorena Rojero</h6>
-                            <span>hace 10 minutos</span>
-                            <i class="fa fa-reply"></i>
-                            <i class="fa fa-heart"></i>
-                        </div>
-                        <div class="comment-content">
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Velit omnis animi et iure laudantium vitae, praesentium optio, sapiente distinctio illo?
-                        </div>
-                    </div>
-                </li>
-
-                <li>
+            <button class="btn btn-dark" type="submit" id="commentSubmit">Добавить комментарий</button>
+        </form>
+    </div>
+    {% endif %}
+    <div class="nested-comments">
+        {% recursetree filtered_comments %}
+        <ul id="comment-thread-{{ node.pk }}" class="comments-list">
+            <li>
+                <div class="comment-main-level">
                     <!-- Avatar -->
                     <div class="comment-avatar"><img src="http://i9.photobucket.com/albums/a88/creaticode/avatar_1_zps8e1c80cd.jpg" alt=""></div>
                     <!-- Contenedor del Comentario -->
                     <div class="comment-box">
                         <div class="comment-head">
-                            <h6 class="comment-name by-author">Agustin Ortiz</h6>
-                            <span>hace 10 minutos</span>
-                            <i class="fa fa-reply"></i>
-                            <i class="fa fa-heart"></i>
+                            <h6 class="comment-name {% if node.is_root_node or node.get_root.author.username == node.author.username%}by-author{% endif %}">{{node.author.username}}</h6>
+                            <span>{{node.time_create}}</span>
+                            <a href="#commentForm" data-comment-id="{{ node.pk }}" data-comment-username="{{ node.author }}" class="btn-reply"><i class="bi bi-reply"></i></a>
+                            <i class="bi bi-heart"></i>
                         </div>
                         <div class="comment-content">
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Velit omnis animi et iure laudantium vitae, praesentium optio, sapiente distinctio illo?
+                            {{node.content}}
                         </div>
                     </div>
-                </li>
-            </ul>
-        </li>
-
-        <li>
-            <div class="comment-main-level">
-                <!-- Avatar -->
-                <div class="comment-avatar"><img src="http://i9.photobucket.com/albums/a88/creaticode/avatar_2_zps7de12f8b.jpg" alt=""></div>
-                <!-- Contenedor del Comentario -->
-                <div class="comment-box">
-                    <div class="comment-head">
-                        <h6 class="comment-name">Lorena Rojero</h6>
-                        <span>hace 10 minutos</span>
-                        <i class="fa fa-reply"></i>
-                        <i class="fa fa-heart"></i>
-                    </div>
-                    <div class="comment-content">
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Velit omnis animi et iure laudantium vitae, praesentium optio, sapiente distinctio illo?
-                    </div>
                 </div>
-            </div>
-        </li>
-    </ul>
+                <!-- Respuestas de los comentarios -->
+                {% comment %} {% if not node.is_leaf_node %}
+                <div class="comments-list reply-list reply-comment-{{node.pk}}">
+                        {{children}}
+                </div>
+                {% endif %} {% endcomment %}
+            </li>
+            {% if not node.is_leaf_node %}
+                <div class="comments-list reply-list reply-comment-{{node.pk}}">
+                {{children}}
+                </div> 
+            {% endif %}
+        </ul>
+        {% endrecursetree %}
+    </div>
     {% else %}
     <h1>Комментариев пока нет  <i class="bx bx-chat"></i></h1>
     {% endif %}
+</div> 
+{% comment %} 
+
+<div class="nested-comments">
+	{% recursetree filtered_comments %}
+	<ul id="comment-thread-{{ node.pk }}">
+		<li class="card border-0">
+			<div class="row">
+				<div class="col-md-10">
+					<div class="card-body">
+						<h6 class="card-title">
+                            <a href="#">
+                                {{ node.author }}
+                            </a>
+						<p class="card-text">
+							{{ node.content }}
+						</p>
+                        <a class="btn btn-sm btn-dark btn-reply" href="#commentForm" data-comment-id="{{ node.pk }}" data-comment-username="{{ node.author }}">Ответить</a>
+						<hr />
+						<time>{{ node.time_create }}</time>
+					</div>
+				</div>
+			</div>
+		</li>
+		{% if not node.is_leaf_node %} {{ children }} {% endif %}
+	</ul>
+	{% endrecursetree %}
 </div>
+<div class="card border-0">
+	<div class="card-body">
+		<h6 class="card-title">
+			Форма добавления комментария
+		</h6>
+		<form method="post" action="{% url 'posts:comment-post' post.pk %}" id="commentForm" name="commentForm" data-post-id="{{ post.pk }}">
+			{% csrf_token %} 
+            {{ form.content }} 
+            {{ form.parent }} 
+			<div class="d-grid gap-2 d-md-block mt-2">
+				<button type="submit" class="btn btn-dark" id="commentSubmit">Добавить комментарий</button>
+			</div>
+		</form>
+	</div>
+</div> {% endcomment %}

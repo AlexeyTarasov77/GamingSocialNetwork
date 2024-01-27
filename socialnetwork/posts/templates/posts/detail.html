@@ -21,6 +21,11 @@
                       <div class="media-body ml-3">
                         {{post.author}}
                         <div class="text-muted small">Опубликовано: {{post.time_publish|naturaltime}}</div>
+                        {% if post.tags.all %}
+                        <p class="card-title">Теги: 
+                          <div class="tags-list d-flex gap-3">{% for tag in post.tags.all %}<span class="post-tag text-primary rounded border border-primary p-2 border-opacity-50"><a href="{% url "posts:list-posts-by-tag" tag.slug %}" class="tag-link">{{tag.name|upper}}</a></span> {% endfor %}</div>
+                        </p>
+                        {% endif %}
                       </div>
                     </div>
                     
@@ -67,85 +72,14 @@
             </div>
         </div>
     </div>
-    {% comment %} <div class="post-detail__column">
-        <div class="column__info">
-            <div class="info__title">
-                <h2>{{post.name}}</h2>
-            </div>
-            {% if post.photo %}
-                <div class="info__photo">
-                    <img src="{{post.photo.url}}" class="img-fluid" alt="Фото поста">
-                </div>
-            {% endif %}
-
-            <div class="info__text">
-                <p>{{post.content|linebreaks}}</p>
-            </div>
-
-            <div class="info__likes">
-                <div class="likes__count">
-                    <p>{{post.num_likes}} {{post.num_likes|pluralize:"like"}}</p>
-                </div>
-                <div class="likes__add">
-                    <form action="{% url "posts:like-post" %}" method="post">
-                        {% csrf_token %}
-                        <input type="hidden" name='post_id' value={{post.id}}>
-                        {% if user not in post.liked.all %}
-                        <button id='like-btn'>♡</button>
-                        {% else %}
-                        <button id='unlike-btn'>&#x2764;</button>
-                        {% endif %}
-                      </form>
-                </div>
-            </div>
-
-            <div class="info__meta">
-                <div class="meta__date">
-                    <p>Опубликовано: {{post.time_publish|naturaltime}} {% if post.time_update %} | Изменено: {{post.time_update|naturaltime}}{% endif %}</p>
-                </div>
-                <div class="meta__author">
-                    <p>Автор: <strong>{{post.author}}</strong></p>
-                </div>
-            </div>
-
-        </div>
-        <div class="column__comments">
-            <div class="comments__title">
-                <h2>Комментарии</h2>
-            </div>
-            <div class="comments__add-own">
-                <div class="add-own__title">
-                    Добавьте свой комментарий: 
-                </div>
-                <div class="add-own__form">
-                    
-                </div>
-            </div>
-
-            <div class="comments__list">
-                {% for comment in post.comment %}
-                    <div class="list__el">
-                        <div class="el__author">
-                            {{comment.author}}
-                        </div>
-                        <div class="el__text">
-                            {{comment.text}}
-                        </div>
-                        <div class="el__meta">
-                            <p>Создано: {{comment.time_create}} {% if comment.time_update %} | Изменено: {{comment.time_update|naturaltime}}{% endif %}</p>
-                        </div>
-                    </div>
-                    {% empty %}
-                    <div class="list__empty">
-                        <p>Комментариев пока нет, напишите свой комментарий первым! ✍️</p>
-                    </div>
-                {% endfor %}
-            </div>
-        </div>
-    </div> {% endcomment %}
     <div class="post-detail__comments">
         {% include "posts/includes/comment.html" %}
     </div>
 </div>
 
 {% endblock content %}
+
+{% block js %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="{% static "posts/js/comment.js" %}"></script>
+{% endblock js %}

@@ -1,16 +1,4 @@
-    {% comment %} <span class="step-links">
-      {% if page.has_previous %}
-        <a href="?page={{ page.previous_page_number }}">Previous</a>
-      {% endif %}
-      <span class="current">
-        Page {{ page.number }} of {{ page.paginator.num_pages }}.
-      </span>
-      {% if page.has_next %}
-        <a href="?page={{ page.next_page_number }}">Next</a>
-      {% endif %}
-      </span> {% endcomment %}
-
-      {% if page.has_other_pages %}
+{% if page.has_other_pages %}
       <nav aria-label="...">
         <ul class="pagination">
         {% if page.has_previous %}
@@ -43,4 +31,4 @@
         {% endif %}
         </ul>
       </nav>
-      {% endif %}
+{% endif %}

@@ -5,7 +5,8 @@ from django.http import HttpRequest, HttpResponse, HttpResponseRedirect, JsonRes
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse, reverse_lazy
 from django.views import generic
-from .models import Post
+from django.template.exceptions import TemplateDoesNotExist
+from .models import Post, Comment
 from django.db.models import Count
 from . import forms
 from django.core.mail import send_mail
@@ -13,13 +14,21 @@ from decouple import config
 from rest_framework import views, permissions
 from .serializers import LikeSerializer
 from rest_framework.response import Response
+from taggit.models import Tag
 
 # Create your views here.
 class ListPosts(generic.ListView):
     template_name = 'posts/list.html'
-    queryset = Post.published.annotate(count_likes=Count('liked')).order_by('-count_likes')
     context_object_name = 'posts_list'
     paginate_by = 2
+    def get_queryset(self):
+        queryset = Post.published.annotate(count_likes=Count('liked'), count_comments=Count('comment_post')).order_by('-count_likes', '-count_comments')
+        tag_slug = self.kwargs.get('tag_slug')
+        if tag_slug is not None:
+            tag = get_object_or_404(Tag, slug=tag_slug) 
+            queryset = queryset.filter(tags__in=[tag])
+        return queryset
+    
     
 class DetailPost(generic.DetailView):
     template_name = 'posts/detail.html'
@@ -32,7 +41,8 @@ class DetailPost(generic.DetailView):
         context["is_owner"] = False
         if self.request.user == post.author:
             context["is_owner"] = True
-        context["parent_comments"] = post.comment.filter(reply=None)
+        context["form"] = forms.CommentForm
+        context["filtered_comments"] = post.comment_post.filter(is_active=True)
         return context
     
     
@@ -46,20 +56,39 @@ class UpdatePost(generic.UpdateView):
     model = Post
     fields = ['name', 'content', 'status', 'photo']
     
-# class LikePost(generic.CreateView):
-#     def post(self, request, *args, **kwargs):
-#         if request.user.is_authenticated:
-#             p_id = request.POST.get('post_id')
-#             post = get_object_or_404(Post, id=p_id)
+class CreateCommentView(generic.CreateView):
+    model = Comment
+    form_class = forms.CommentForm
+    def is_ajax(self):
+        return self.request.headers.get('X-Requested-With') == 'XMLHttpRequest'
+    def form_valid(self, form):
+        comment = form.save(commit=False)
+        comment.post_id = self.kwargs.get('post_id')
+        comment.author = self.request.user
+        comment.parent_id = form.cleaned_data.get('parent')
+        comment.save()
+        
+        try:
+            if self.is_ajax():
+                if self.request.user.is_authenticated:
+                    data = {
+                        'is_child': comment.is_child_node(),
+                        'id': comment.id,
+                        'author': comment.author.username,
+                        'parent_id': comment.parent_id,
+                        'time_create': comment.time_create.strftime('%Y-%b-%d %H:%M:%S'),
+                        'content': comment.content,
+                    }
+                    return JsonResponse(data, status = 200)
+                else:
+                    return JsonResponse(status = 403)
+            else:
+                return redirect(comment.post.get_absolute_url())
+        except TemplateDoesNotExist:
+            print(TemplateDoesNotExist)
             
-#             if request.user in post.liked.all():
-#                 post.liked.remove(request.user)
-#                 return JsonResponse({'likes_count': post.liked.count(), 'is_liked': False})
-#             else:
-#                 post.liked.add(request.user)
-#                 return JsonResponse({'likes_count': post.liked.count(), 'is_liked': True})
-            
-#         else: return HttpResponse("<h1>Авторизуйтесь для того что бы лайкнуть пост</h1>")
+    
+    
 
 # Share post by email address
 def share_post(request, post_id):

@@ -3,6 +3,7 @@ from django.db import models
 from django.urls import reverse
 from django.contrib.auth import get_user_model
 from taggit.managers import TaggableManager
+from mptt.models import MPTTModel, TreeForeignKey
 
 class PublishedManager(models.Manager):
     def get_queryset(self):
@@ -22,7 +23,6 @@ class Post(models.Model):
     photo = models.ImageField(blank=True, upload_to = 'photos/posts/', null=True)
     count_views = models.IntegerField(default=0)
     liked = models.ManyToManyField(get_user_model(), verbose_name = 'Лайки', related_name='post_like', blank = True, related_query_name='post_likes')
-    comment = models.ManyToManyField("Comment", blank = True, related_name = 'post_comment', related_query_name='comment')
     author = models.ForeignKey(get_user_model(), verbose_name="Автор", on_delete=models.CASCADE, related_name = 'post_author')
     tags = TaggableManager(blank=True)
     published = PublishedManager()
@@ -43,7 +43,7 @@ class Post(models.Model):
     
     @property
     def num_comments(self):
-        return self.comment.count()
+        return self.comment_post.count()
     
     @property
     def up_post_views(self):
@@ -70,18 +70,28 @@ class Post(models.Model):
     # def __str__(self) -> str:
     #     return str(self.post)
     
-class Comment(models.Model):
+class Comment(MPTTModel):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, verbose_name = "Пост",related_name = 'comment_post')
     author = models.ForeignKey(get_user_model(), verbose_name='Автор', on_delete=models.CASCADE)
-    text = models.TextField()
+    content = models.TextField()
     time_create = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
     time_update = models.DateTimeField(auto_now=True, verbose_name='Дата изменения')
     is_active = models.BooleanField(default = True)
     likes = models.ManyToManyField(get_user_model(), verbose_name = 'Лайки', related_name='comment_like', blank = True, related_query_name='comment_likes')
-    reply = models.ForeignKey('self', on_delete=models.CASCADE, blank = True, null=True, related_name = "replies")
+    parent = TreeForeignKey('self', on_delete=models.CASCADE, blank = True, null=True, related_name = "comment_parent", verbose_name = "Родительский комментарий")
     
+    class MPTTMeta:
+        order_insertion_by = ['-time_create']
+        
+    class Meta:
+        ordering = ['-time_create']
+        indexes = [models.Index(fields=['-time_create', 'parent'])]
+        verbose_name = "Комментарий"
+        verbose_name_plural = "Комментарии"
+        
     
     def __str__(self) -> str:
-        return f'{self.author}: {self.text}'
+        return f'{self.author}: {self.content}'
     
 
     

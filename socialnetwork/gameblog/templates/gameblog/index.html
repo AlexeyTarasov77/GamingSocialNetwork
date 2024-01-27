@@ -95,17 +95,24 @@
         <div class="recommended__column">
             <div class="column__posts">
                 {% for rec_post in recommended_posts %}
-                <div class="posts__post">
-                    <div class="post__title">
-                        <a href="{{rec_post.get_absolute_url}}">{{rec_post.name}}</a>
+                <div class="card mb-3 d-flex flex-column justify-content-between" style="max-width: 540px;">
+                  <div class="row g-0">
+                    {% if rec_post.photo %}
+                    <div class="col-md-4">
+                      <img src="{{rec_post.photo.url}}" class="img-fluid" alt="...">
                     </div>
-                    <div class="post__content">
-                        {{rec_post.content|linebreaks|truncatewords:30}}
+                    {% endif %}
+                    <div class="col-md-8">
+                      <div class="card-header">{{rec_post.author}}</div>
+                      <div class="card-body">
+                        <h5 class="card-title"><a href="{{rec_post.get_absolute_url}}">{{rec_post.name}}</a></h5>
+                        <p class="card-text">{{rec_post.content|linebreaks|truncatewords:30}}</p>
+                      </div>
                     </div>
-                    <div class="post__info">
-                        <span class="info__date">Опубликованно: {{rec_post.time_create|naturaltime}}</span>
-                        <span class="info__author">Автор: {{rec_post.author}}</span>
-                    </div>
+                  </div>
+                  <div class="card-footer" id="time_create">
+                    <small class="text-body-secondary">Создано - {{rec_post.time_create}}</small>
+                  </div>
                 </div>
                 {% empty %}
                 <p class="no-data">Нет рекомендованных публикаций</p>

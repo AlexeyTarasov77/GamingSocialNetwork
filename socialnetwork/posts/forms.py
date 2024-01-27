@@ -1,4 +1,5 @@
 from django import forms
+from .models import Comment
 
 class ShareForm(forms.Form):
     username = forms.CharField(required=False, widget=forms.TextInput(attrs={'style': 'display:none'}))
@@ -13,4 +14,9 @@ class ShareForm(forms.Form):
     )
     
 
-    
+class CommentForm(forms.ModelForm):
+    parent = forms.IntegerField(widget=forms.HiddenInput(), required=False)
+    content = forms.CharField(label = '', widget=forms.Textarea(attrs={'class': 'form-control', 'rows':5, 'cols':25, 'placeholder':'Введите комментарий'}))
+    class Meta:
+        model = Comment
+        fields = ['content']
