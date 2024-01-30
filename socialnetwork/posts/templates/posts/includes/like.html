@@ -1,36 +1,37 @@
 <div class="like-container">
-    {% if request.user in post.liked.all%}
+    {% if request.user in post.liked.all %}
     <div class="heart is-active" data-post-id="{{ post.id }}"></div>
     {% else %}
     <div class="heart" data-post-id="{{ post.id }}"></div>
     {% endif %}
 </div>
+{% csrf_token %}
 {% block js %}
 <script>
     $(document).ready(function() {
+        const csrftoken = $('input[name="csrfmiddlewaretoken"]').val()
         $(".heart").click(function() {
-            var postId = $(this).data("post-id");
-            var heartEl = $(this)
-
+            let postId = $(this).data("post-id");
+            let heartEl = $(this)
             // Отправляем асинхронный запрос на сервер
             $.ajax({
                 type: "POST",
                 url: "{% url 'posts:like-post' %}",
-                data: { post_id: postId, csrfmiddlewaretoken: "{{ csrf_token }}" },
-                success: function(data) {
-                    var numLikesElement = heartEl.closest('.card-body').find('#num-likes #num-likes-count');
-                    numLikesElement.text(data.likes_count);
+                data: { object_id: postId, csrfmiddlewaretoken: csrftoken},
+                })
+            .done(function(data) {
+                let numLikesEl = heartEl.closest('.card-body').find('#num-likes-count')
+                numLikesEl.length > 0 ? numLikesEl.text(data.likes_count) : $('#num-likes-count').text(data.likes_count);
                     if (data.is_liked) {
                         heartEl.addClass("is-active")
                     }
                     else {
                         heartEl.removeClass("is-active")
                     }
-                },
-                error: function(error) {
-                    console.log(error);
-                }
-            });
+            })
+            .fail(function(err) {
+                heartEl.closest('.card-body').append('<div class="error text-danger">Извините, произошли ошибка при попытке поставить лайк! Попробуйте позже.</div>')
+            })
         });
     });
 </script>

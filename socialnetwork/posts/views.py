@@ -43,6 +43,14 @@ class DetailPost(generic.DetailView):
             context["is_owner"] = True
         context["form"] = forms.CommentForm
         context["filtered_comments"] = post.comment_post.filter(is_active=True)
+        post_tags_ids = post.tags.values_list('id', flat=True)  # получение айди тегов у текущего поста в виде списка
+        # фильтрация постов у которых теги содержат полученные теги текущего (1+ совпадений)
+        similar_posts = Post.published.filter(tags__in=post_tags_ids)\
+        .exclude(id=post.id) # исключить текущий пост из выборки
+        # вычисляеться число общих тегов 
+        similar_posts = similar_posts.annotate(same_tags=Count('tags'))\
+        .order_by('-same_tags','-time_publish')[:4] # упорядочить рек. посты по убыванию кол-ва общих тегов и времени публикации 
+        context['recommended_posts'] = similar_posts
         return context
     
     
@@ -59,7 +67,7 @@ class UpdatePost(generic.UpdateView):
 class CreateCommentView(generic.CreateView):
     model = Comment
     form_class = forms.CommentForm
-    def is_ajax(self):
+    def is_ajax(self): # метод для проверки являеться ли полученный запрос ajax или нет
         return self.request.headers.get('X-Requested-With') == 'XMLHttpRequest'
     def form_valid(self, form):
         comment = form.save(commit=False)
@@ -115,21 +123,49 @@ def share_post(request, post_id):
     
 # API'S 
     
-class LikePostAPIView(views.APIView):
-    permission_classes = [permissions.IsAuthenticated] # Return data only for authenticated users
-    def post(self, request, *args, **kwargs):
-            p_id = request.POST.get('post_id') # get id of current post from req
-            post = get_object_or_404(Post, id=p_id)
+# class LikePostAPIView(views.APIView):
+#     permission_classes = [permissions.IsAuthenticated] # Вернуть данные только если пользователь аутентифицирован
+#     def post(self, request, *args, **kwargs):
+#             p_id = request.POST.get('post_id') # получить id текущего поста из запроса
+#             post = get_object_or_404(Post, id=p_id)
             
-            if request.user in post.liked.all(): # if current user already liked current post
-                post.liked.remove(request.user) # remove him out of the list (unlike)
-                data = {'likes_count': post.liked.count(), 'is_liked': False} # data to return 
-            else: # if user hadn't liked this post yet add him to the list
-                post.liked.add(request.user) 
-                data = {'likes_count': post.liked.count(), 'is_liked': True} # data to return 
-            serializer = LikeSerializer(data)
-            return Response(serializer.data) # return serialized cleaned data
+#             if request.user in post.liked.all(): # если текущий пользователь уже лайкал пост
+#                 post.liked.remove(request.user) # удалить его из отношения
+#                 data = {'likes_count': post.liked.count(), 'is_liked': False} # сформированная дата для отправки на клиент
+#             else: # если пользователя нет в таблице отношений добавить его и сформировать другую дату
+#                 post.liked.add(request.user) 
+#                 data = {'likes_count': post.liked.count(), 'is_liked': True} 
+#             serializer = LikeSerializer(data) # сериализовать данные в json формат
+#             return Response(serializer.data) # вернуть на клиент сериализованные данные
     
+    
+class LikeAPIView(views.APIView):
+    permission_classes = [permissions.IsAuthenticated] # Вернуть данные только если пользователь аутентифицирован
+    def post(self, request, *args, **kwargs):
+            obj_id = request.POST.get('object_id') # получить id текущего поста из запроса
+            print(request.POST.get('object_id'))
+            obj = self.get_object(obj_id)
+            
+            if request.user in obj.liked.all(): # если текущий пользователь уже лайкал пост
+                obj.liked.remove(request.user) # удалить его из отношения
+                data = {'likes_count': obj.liked.count(), 'is_liked': False} # сформированная дата для отправки на клиент
+            else: # если пользователя нет в таблице отношений добавить его и сформировать другую дату
+                obj.liked.add(request.user) 
+                data = {'likes_count': obj.liked.count(), 'is_liked': True} 
+            serializer = LikeSerializer(data) # сериализовать данные в json формат
+            return Response(serializer.data) # вернуть на клиент сериализованные данные
+
+    def get_object(obj_id):
+        pass
+
+        
+class LikePostAPIView(LikeAPIView):
+    def get_object(self, obj_id):
+        return get_object_or_404(Post, id=obj_id)
+    
+class LikeCommentAPIView(LikeAPIView):
+    def get_object(self, obj_id):
+        return get_object_or_404(Comment, id=obj_id)
         
         
 

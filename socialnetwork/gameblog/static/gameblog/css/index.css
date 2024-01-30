@@ -136,17 +136,16 @@ main {
   background-color: grey;
 }
 
-/* Создаем grid контейнер */
+
 .column__posts {
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* Три колонки в каждом ряду */
-  gap: 20px; /* Расстояние между элементами */
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
 }
 
-/* Стили для каждого поста */
 .posts__post {
-  border: 1px solid #ddd; /* Пример рамки для поста */
-  padding: 10px; /* Пример внутреннего отступа для поста */
+  border: 1px solid #ddd; 
+  padding: 10px; 
 }
 
 .post__title a {

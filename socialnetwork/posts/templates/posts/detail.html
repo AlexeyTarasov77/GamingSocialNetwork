@@ -32,7 +32,7 @@
                     <p class="card-text">
                       {{post.content|linebreaks}}
                     </p>
-
+                    
                     <p class="card-text">
                         {% include "posts/includes/like.html" %}
                     </p>
@@ -75,6 +75,32 @@
     <div class="post-detail__comments">
         {% include "posts/includes/comment.html" %}
     </div>
+    {% if recommended_posts %}
+    <div class="recommended_posts row gap-5 mt-5">
+      <h3 class="card-title text-center">Вам так же может понравиться: </h3>
+      {% for rec_post in recommended_posts %}
+      <div class="card mb-3 d-flex justify-content-between col-6 col-md-4" style="max-width: 540px;">
+        <div class="row g-0">
+          {% if rec_post.photo %}
+          <div class="col-md-4 mt-5">
+            <img src="{{rec_post.photo.url}}" class="img-fluid rounded" alt="...">
+          </div>
+          {% endif %}
+          <div class="col-md-8">
+            <div class="card-header">{{rec_post.author}}</div>
+            <div class="card-body">
+              <h5 class="card-title"><a href="{{rec_post.get_absolute_url}}">{{rec_post.name}}</a></h5>
+              <p class="card-text">{{rec_post.content|linebreaks|truncatewords:30}}</p>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer" id="time_create">
+          <small class="text-body-secondary">Создано - {{rec_post.time_create}}</small>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
 </div>
 
 {% endblock content %}

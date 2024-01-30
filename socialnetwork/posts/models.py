@@ -77,7 +77,7 @@ class Comment(MPTTModel):
     time_create = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
     time_update = models.DateTimeField(auto_now=True, verbose_name='Дата изменения')
     is_active = models.BooleanField(default = True)
-    likes = models.ManyToManyField(get_user_model(), verbose_name = 'Лайки', related_name='comment_like', blank = True, related_query_name='comment_likes')
+    liked = models.ManyToManyField(get_user_model(), verbose_name = 'Лайки', related_name='comment_like', blank = True, related_query_name='comment_likes')
     parent = TreeForeignKey('self', on_delete=models.CASCADE, blank = True, null=True, related_name = "comment_parent", verbose_name = "Родительский комментарий")
     
     class MPTTMeta:

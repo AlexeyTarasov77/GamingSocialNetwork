@@ -36,8 +36,7 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
-INSTALLED_APPS = [
-    'users.apps.UsersConfig',
+DJANGO_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -45,18 +44,34 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
-    #own
+]
+
+THIRD_PARTY_APPS = [
+    'taggit',
+    'rest_framework',
+    'mptt',
+    "allauth_ui",
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.openid',
+    'allauth.socialaccount.providers.discord',
+    'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.steam',
+    'widget_tweaks',
+]
+
+LOCAL_APPS = [
+    'users.apps.UsersConfig',
     'articles.apps.ArticlesConfig',
     'chat.apps.ChatConfig',
     'events.apps.EventsConfig',
     'gameblog.apps.GameblogConfig',
     'posts.apps.PostsConfig',
     'searchteam.apps.SearchteamConfig',
-    #side packages
-    'taggit',
-    'rest_framework',
-    'mptt'
 ]
+
+INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -66,6 +81,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
 ]
 
 ROOT_URLCONF = 'socialnetwork.urls'
@@ -82,7 +98,8 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'gameblog.context_processors.menu_links',
-                'gameblog.context_processors.sidebar_links'
+                'gameblog.context_processors.sidebar_links',
+                'django.template.context_processors.request',
             ],
         },
     },
@@ -128,7 +145,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ru-RU'
 
 TIME_ZONE = 'UTC'
 
@@ -173,3 +190,37 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
     ]
 }
+
+# ALL_AUTH
+
+AUTHENTICATION_BACKENDS = [
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+
+    # `allauth` specific authentication methods, such as login by email
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
+# SOCIALACCOUNT_PROVIDERS = {
+#     'google': {
+#         # For each OAuth based provider, either add a ``SocialApp``
+#         # (``socialaccount`` app) containing the required client
+#         # credentials, or list them here:
+#         'APP': {
+#             'client_id': '123',
+#             'secret': '456',
+#             'key': ''
+#         }
+#     }
+# }
+
+ACCOUNT_CHANGE_EMAIL = True # разрешить пользователю изменять email
+ACCOUNT_EMAIL_REQUIRED = True # обязательное указание емаила при реге
+ACCOUNT_LOGIN_ATTEMPTS_TIMEOUT = 30 # заблокировать доступ на 30с после 5 попыток неудачного доступа
+ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True # залогинить юзера при потдтверждении емеила
+LOGIN_URL = 'account_login' # имя маршрута для редиректа неавторизованных юзеров
+LOGIN_REDIRECT_URL = 'gameblog:main'
+LOGOUT_REDIRECT_URL = 'account_login'
+ACCOUNT_PRESERVE_USERNAME_CASING = False # хранить юзернеймы в нижнем регистре
+ACCOUNT_USERNAME_MIN_LENGTH = 3
+# ACCOUNT_TEMPLATE_DIR = 'users/templates/account'

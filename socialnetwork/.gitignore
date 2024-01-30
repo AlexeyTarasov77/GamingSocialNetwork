@@ -5,3 +5,5 @@ db.sqlite3
 *.env
 .vscode
 .DS_Store
+**/migrations/*.py
+
