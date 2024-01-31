@@ -8,24 +8,29 @@ document.addEventListener("DOMContentLoaded", function() {
 
     commentForm.addEventListener('submit', createComment);
 
+    function commentsReplyList() {
+    $('.reply-list .comments-list').hide()
     $('.reply-list .comments-list').hide()
     $('.reply-list .comments-list li:first').show()
+        $('.reply-list .comments-list').hide()
+    $('.reply-list .comments-list li:first').show()
 
-    $(".show-more-replies").click(function() {
-        let commentId = $(this).data("comment-id");
-        $(".reply-comment-" + commentId + " .comments-list").show();
-        $(this).hide();
-        $(".hide-replies[data-comment-id='" + commentId + "']").show();
-    });
+        $(".show-more-replies").click(function() {
+            let commentId = $(this).data("comment-id");
+            $(".reply-comment-" + commentId + " .comments-list").show();
+            $(this).hide();
+            $(".hide-replies[data-comment-id='" + commentId + "']").show();
+        });
 
-    // Обработчик для кнопок "Скрыть ответы"
-    $(".hide-replies").click(function() {
-        let commentId = $(this).data("comment-id");
-        $(".reply-comment-" + commentId + " .comments-list").hide();
-        $(this).hide();
-        $(".show-more-replies[data-comment-id='" + commentId + "']").show();
-    });
+        $(".hide-replies").click(function() {
+            let commentId = $(this).data("comment-id");
+            $(".reply-comment-" + commentId + " .comments-list").hide();
+            $(this).hide();
+            $(".show-more-replies[data-comment-id='" + commentId + "']").show();
+        });
+    }
 
+    // commentsReplyList()
     replyUser()
 
     function replyUser() {

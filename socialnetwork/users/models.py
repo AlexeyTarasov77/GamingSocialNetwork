@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.dispatch import receiver
+from allauth.account.signals import user_signed_up
 import os
 
 
@@ -17,3 +19,8 @@ class Profile(models.Model):
     bio = models.TextField(blank=True, null=True)
     date_of_birth = models.DateTimeField(null=True, blank=True)
     time_update = models.DateTimeField(auto_now=True)
+    
+@receiver(user_signed_up, sender=get_user_model())
+def create_user_profile(sender, request, user, created, **kwargs):
+    if created:
+        Profile.objects.create(user=user)

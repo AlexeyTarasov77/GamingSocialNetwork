@@ -86,6 +86,7 @@ class CreateCommentView(generic.CreateView):
                         'parent_id': comment.parent_id,
                         'time_create': comment.time_create.strftime('%Y-%b-%d %H:%M:%S'),
                         'content': comment.content,
+                        # 'author_avatar': comment.get_avatar
                     }
                     return JsonResponse(data, status = 200)
                 else:
@@ -122,22 +123,6 @@ def share_post(request, post_id):
     
     
 # API'S 
-    
-# class LikePostAPIView(views.APIView):
-#     permission_classes = [permissions.IsAuthenticated] # Вернуть данные только если пользователь аутентифицирован
-#     def post(self, request, *args, **kwargs):
-#             p_id = request.POST.get('post_id') # получить id текущего поста из запроса
-#             post = get_object_or_404(Post, id=p_id)
-            
-#             if request.user in post.liked.all(): # если текущий пользователь уже лайкал пост
-#                 post.liked.remove(request.user) # удалить его из отношения
-#                 data = {'likes_count': post.liked.count(), 'is_liked': False} # сформированная дата для отправки на клиент
-#             else: # если пользователя нет в таблице отношений добавить его и сформировать другую дату
-#                 post.liked.add(request.user) 
-#                 data = {'likes_count': post.liked.count(), 'is_liked': True} 
-#             serializer = LikeSerializer(data) # сериализовать данные в json формат
-#             return Response(serializer.data) # вернуть на клиент сериализованные данные
-    
     
 class LikeAPIView(views.APIView):
     permission_classes = [permissions.IsAuthenticated] # Вернуть данные только если пользователь аутентифицирован

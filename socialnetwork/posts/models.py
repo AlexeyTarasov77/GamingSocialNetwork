@@ -93,6 +93,12 @@ class Comment(MPTTModel):
     def __str__(self) -> str:
         return f'{self.author}: {self.content}'
     
+    @property
+    def get_avatar(self):
+        if self.author:
+            return self.author.profile.image
+        return f'https://w7.pngwing.com/pngs/686/219/png-transparent-youtube-user-computer-icons-information-youtube-hand-silhouette-avatar.png'
+    
 
     
     

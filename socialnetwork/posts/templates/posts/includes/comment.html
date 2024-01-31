@@ -10,9 +10,9 @@
 </style>
     {% if not user.is_authenticated %}
     <h3>Хотите добавить комментарий?</h3>
-    <div class="d-flex">
-        <button class="btn btn-dark">Войти</button>
-        <button class="btn-success">Зарегестрироваться</button>
+    <div class="d-flex gap-3">
+        <a class="btn btn-dark" href="{% url "account_login" %}">Войти</a>
+        <a class="btn btn-success" href="{% url "account_signup" %}">Зарегестрироваться</a>
     </div>
     {% else %}
     <div class="comment-form d-flex flex-column justify-content-center align-items-center">
@@ -50,7 +50,7 @@
                         <div class="comment-content">
                             {{node.content}}
                         </div>
-                        {% if node.get_descendant_count > 1 %}
+                        {% if node.get_descendant_count > 1 and node.is_root_node %}
                         <button class="btn btn-success btn-sm show-more-replies mt-5" data-comment-id="{{ node.pk }}">Показать больше</button>
                         <button class="btn btn-danger btn-sm hide-replies mt-5" data-comment-id="{{ node.pk }}" style="display:none;">Скрыть</button>
                         {% endif %}
