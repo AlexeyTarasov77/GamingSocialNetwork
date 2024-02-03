@@ -42,13 +42,9 @@
             {% for sld in sidebar_links_default %}
               <a href="{% if sld.url_name != '#' %}{% url sld.url_name %}{% else %}#{% endif %}" class="nav_link" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="{{sld.tooltip}}"> <i class="{{sld.icon}} nav_icon"></i></a> 
             {% endfor %}
-            {% if sidebar_links_optional %}
-            {% for slo in sidebar_links_optional %}
-              <a href="{% if slo.url_name != '#' %}{% url slo.url_name %}{% else %}#{% endif %}" class="nav_link" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="{{slo.tooltip}}"> <i class="{{slo.icon}} nav_icon"></i></a> 
-            {% endfor %}
-            {% endif %}
+            {% block sidebar_links_extra %}{% endblock sidebar_links_extra %}
           </div>
-      </div> <a href="#" id="logout" class="nav_link" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Выйти"> <i class='bx bx-log-out nav_icon'></i></a>
+      </div> <a href="{% url "account_logout" %}" id="logout" class="nav_link" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Выйти"> <i class='bx bx-log-out nav_icon'></i></a>
   </nav>
 </div>
 <main>

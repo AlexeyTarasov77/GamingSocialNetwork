@@ -1,5 +1,10 @@
+from collections.abc import Mapping
+from typing import Any
 from django import forms
-from .models import Comment
+from django.core.files.base import File
+from django.db.models.base import Model
+from django.forms.utils import ErrorList
+from .models import Comment, Post
 
 class ShareForm(forms.Form):
     username = forms.CharField(required=False, widget=forms.TextInput(attrs={'style': 'display:none'}))
@@ -20,3 +25,24 @@ class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
         fields = ['content']
+        
+class CreateForm(forms.ModelForm):
+    class Meta:
+        model = Post
+        fields = ['name', 'content', 'status', 'photo', 'tags']
+        help_texts = {
+            'name': 'Введите имя поста',
+            'content': 'Введите текст поста',
+            'status': 'Установите статус поста',
+            'tags': 'Выберите подходящие теги для вашего поста'
+        }
+        labels = {
+            'name': 'Заголовок поста',
+            'content': 'Текст поста',
+            'status': 'Статус поста',
+            'photo': 'Фото поста *опционально',
+            'tags': 'Теги'
+        }
+        widgets = {
+            'content': forms.Textarea(attrs={'rows': 5, 'columns': '10'})
+        }

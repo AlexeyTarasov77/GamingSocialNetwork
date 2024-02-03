@@ -15,6 +15,7 @@ from rest_framework import views, permissions
 from .serializers import LikeSerializer
 from rest_framework.response import Response
 from taggit.models import Tag
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 # Create your views here.
 class ListPosts(generic.ListView):
@@ -55,14 +56,25 @@ class DetailPost(generic.DetailView):
     
     
 class DeletePost(generic.DeleteView):
-    template_name = 'delete.html'
+    template_name = 'posts/delete.html'
     model = Post
-    success_url = reverse_lazy('posts:list')
+    success_url = reverse_lazy('posts:list-posts')
     
 class UpdatePost(generic.UpdateView):
-    template_name = 'update.html'
+    template_name = 'posts/update.html'
     model = Post
     fields = ['name', 'content', 'status', 'photo']
+    
+class AddPost(LoginRequiredMixin, generic.CreateView):
+    template_name = 'posts/create.html'
+    form_class = forms.CreateForm
+    model = Post
+    def form_valid(self, form):
+        post = form.save(commit=False)
+        post.author_id = self.request.user.id
+        post.save()
+        return redirect(post.get_absolute_url())
+    
     
 class CreateCommentView(generic.CreateView):
     model = Comment
@@ -93,8 +105,8 @@ class CreateCommentView(generic.CreateView):
                     return JsonResponse(status = 403)
             else:
                 return redirect(comment.post.get_absolute_url())
-        except TemplateDoesNotExist:
-            print(TemplateDoesNotExist)
+        except Exception as e:
+            print(e)
             
     
     

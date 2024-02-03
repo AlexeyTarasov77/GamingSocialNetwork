@@ -54,21 +54,6 @@ class Post(models.Model):
     def get_absolute_url(self):
         return reverse("posts:detail-post", kwargs={"post_id": self.pk})
     
-# LIKES_CHOICES = (
-#     ("Like", "Like"),
-#     ("Unlike", "Unlike")
-# )  
-    
-# class Like(models.Model):
-#     user = models.ForeignKey(get_user_model(), on_delete = models.CASCADE)
-#     post = models.ForeignKey(Post, related_name="likes", on_delete=models.CASCADE)
-
-    
-    # class Meta:
-    #     unique_together = ('user', 'post')
-    
-    # def __str__(self) -> str:
-    #     return str(self.post)
     
 class Comment(MPTTModel):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, verbose_name = "Пост",related_name = 'comment_post')

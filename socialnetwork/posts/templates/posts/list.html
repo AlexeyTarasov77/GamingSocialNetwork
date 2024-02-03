@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "./base_posts.html" %}
 {% load static %}
 {% load humanize %}
 
@@ -51,6 +51,9 @@
                     {% include "posts/includes/pagination.html" with page=page_obj %}
                 </div>
             </div>
+        </div>
+        <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 50">
+      
         </div>
     </div>  
 {% endblock content %}

@@ -1,4 +1,6 @@
+import showErrorToast from './notifications.js'
 document.addEventListener("DOMContentLoaded", function() {
+    if (document.forms.commentForm) {
     const csrftoken = document.querySelector('form input[name="csrfmiddlewaretoken"]').value
     const commentForm = document.forms.commentForm;
     const commentFormContent = commentForm.content;
@@ -7,61 +9,42 @@ document.addEventListener("DOMContentLoaded", function() {
     const commentPostId = commentForm.getAttribute('data-post-id');
 
     commentForm.addEventListener('submit', createComment);
-
-    function commentsReplyList() {
-    $('.reply-list .comments-list').hide()
-    $('.reply-list .comments-list').hide()
-    $('.reply-list .comments-list li:first').show()
-        $('.reply-list .comments-list').hide()
-    $('.reply-list .comments-list li:first').show()
-
-        $(".show-more-replies").click(function() {
-            let commentId = $(this).data("comment-id");
-            $(".reply-comment-" + commentId + " .comments-list").show();
-            $(this).hide();
-            $(".hide-replies[data-comment-id='" + commentId + "']").show();
-        });
-
-        $(".hide-replies").click(function() {
-            let commentId = $(this).data("comment-id");
-            $(".reply-comment-" + commentId + " .comments-list").hide();
-            $(this).hide();
-            $(".show-more-replies[data-comment-id='" + commentId + "']").show();
-        });
-    }
-
-    // commentsReplyList()
     replyUser()
+    likeComment()
 
     function replyUser() {
     document.querySelectorAll('.btn-reply').forEach(e => {
         e.addEventListener('click', replyComment);
-    });
+        });
     }
-    $('.comment-like').click(function () {
-    console.log(2);
-    let commentId = $(this).data('likecomment-id');
-    let commentLike = $(this);
-    $.ajax({
-        type: 'POST',
-        url: $('#comment-url').text(),
-        data: {object_id: commentId, csrfmiddlewaretoken: csrftoken}
-    })
-    .done(function (data) {
-        commentLike.closest('.comment-head').find('.num-likes-count').text(data.likes_count);
-        if (data.is_liked) {
-            commentLike.removeClass('bi-heart');
-            commentLike.addClass('bi-heart-fill text-danger')
-        }  else { 
-            commentLike.removeClass('text-danger', 'bi-heart-fill')
-            commentLike.addClass('bi-heart')
-        };
-    })
 
-    .fail(function (err) {
-        console.log(err);
-    })
-    })
+    function likeComment() {
+        $('.comment-like').click(function () {
+        let commentId = $(this).data('likecomment-id');
+        let commentLike = $(this);
+        $.ajax({
+            type: 'POST',
+            url: $('#comment-url').text(),
+            data: {object_id: commentId, csrfmiddlewaretoken: csrftoken}
+        })
+        .done(function (data) {
+            commentLike.closest('.comment-head').find('.num-likes-count').text(data.likes_count);
+            if (data.is_liked) {
+                commentLike.removeClass('bi-heart');
+                commentLike.addClass('bi-heart-fill text-danger')
+            }  else { 
+                commentLike.removeClass('text-danger', 'bi-heart-fill')
+                commentLike.addClass('bi-heart')
+            };
+        })
+
+        .fail(function (err) {
+            console.log(err);
+            showErrorToast()
+        })
+      })
+    }
+
 
     function replyComment() {
     const commentUsername = this.getAttribute('data-comment-username');
@@ -118,4 +101,29 @@ document.addEventListener("DOMContentLoaded", function() {
             console.log(error)
         }
     }
+  }
+
+    function commentsReplyList() {
+    $('.reply-list .comments-list').hide()
+    $('.reply-list .comments-list').hide()
+    $('.reply-list .comments-list li:first').show()
+        $('.reply-list .comments-list').hide()
+    $('.reply-list .comments-list li:first').show()
+
+        $(".show-more-replies").click(function() {
+            let commentId = $(this).data("comment-id");
+            $(".reply-comment-" + commentId + " .comments-list").show();
+            $(this).hide();
+            $(".hide-replies[data-comment-id='" + commentId + "']").show();
+        });
+
+        $(".hide-replies").click(function() {
+            let commentId = $(this).data("comment-id");
+            $(".reply-comment-" + commentId + " .comments-list").hide();
+            $(this).hide();
+            $(".show-more-replies[data-comment-id='" + commentId + "']").show();
+        });
+    }
+
+    // commentsReplyList()
 });

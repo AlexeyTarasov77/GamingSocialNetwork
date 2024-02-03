@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "./base_posts.html" %}
 {% load static %}
 {% load humanize %}
 
@@ -101,11 +101,14 @@
       {% endfor %}
     </div>
     {% endif %}
+    <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 50">
+      
+    </div>
 </div>
 
 {% endblock content %}
 
 {% block js %}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<script src="{% static "posts/js/comment.js" %}"></script>
+<script type="module" src="{% static "posts/js/comment.js" %}"></script>
 {% endblock js %}
