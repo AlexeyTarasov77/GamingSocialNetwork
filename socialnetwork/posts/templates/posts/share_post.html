@@ -1,4 +1,5 @@
 {% extends "./base_posts.html" %}
+{% load static %}
 
 {% block title %}Share a post{% endblock %}
 {% block content %}
@@ -34,16 +35,12 @@
                     </div>
             {% endfor %}
         </div>
-        <button class="btn btn-primary">Отправить</button>
+        <button class="btn btn-primary" id="submit">Отправить</button>
     </form>
 </div>
 {% endif %} 
 {% endblock %}
-
 {% block js %}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<script>
-    $('label[for="id_username"]').addClass('none');
-    $('label[for="id_email"]').addClass('none');
-</script>
+<script type="module" src="{% static "posts/js/sharePost.js" %}"></script>
 {% endblock js %}

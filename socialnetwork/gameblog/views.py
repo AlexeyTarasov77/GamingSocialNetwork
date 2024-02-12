@@ -48,17 +48,4 @@ class GetNews(generic.ListView):
         response = requests.get(f'http://api.steampowered.com/ISteamNews/GetNewsForApp/v0002/?appid={self.kwargs.get('game_id')}&count=10&maxlength=0&format=json&feeds=steam_community_announcements', headers=headers)
         if response.status_code == 200:
             return response.json()
-        
-        
-
-    
-        
-    
-    
-    
-
-        
-        
-        
-        
-    
+         

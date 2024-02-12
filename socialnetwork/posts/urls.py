@@ -13,6 +13,6 @@ urlpatterns = [
     path("like-post/", views.LikePostAPIView.as_view(), name="like-post"),
     path("like-comment/", views.LikeCommentAPIView.as_view(), name="like-comment"),
     path("share-post/<int:post_id>/", views.share_post, name="share-post"),
-    path("comment-post/<int:post_id>/", views.CreateCommentView.as_view(), name="comment-post"),
+    path("comment-post/<int:post_id>/", views.CreateCommentAPIView.as_view(), name="comment-post"),
     
 ]

@@ -8,7 +8,7 @@ menu = [{'title': "Посты", 'url_name': 'posts:list-posts', 'id': 'menu-item
 
 sidebar = [
         {'url_name': 'gameblog:main', 'icon': 'bx bx-grid-alt', 'tooltip': 'Главная'},
-        {'url_name': '#', 'icon': 'bx bx-user', 'tooltip': 'Профиль'},
+        # {'url_name': 'user.profile_user.get_absolute_url', 'icon': 'bx bx-user', 'tooltip': 'Профиль'},
         {'url_name': '#', 'icon': 'bx bx-bell', 'tooltip': 'Уведомления'},
         {'url_name': '#', 'icon': 'bx bx-message-square-detail', 'tooltip': 'Cooбщения'},
         {'url_name': '#', 'icon': 'bx bx-info-circle', 'tooltip': 'Поддержка'},

@@ -21,14 +21,14 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('accounts/', include('allauth.urls')),
+    path('', include('allauth.urls')),
     path('', include('gameblog.urls', namespace='gameblog')),
     # path('articles/', include('articles.urls', namespace='articles')),
     # path('chat/', include('chat.urls', namespace='chat')),
     # path('events/', include('events.urls', namespace='events')),
     path('posts/', include('posts.urls', namespace='posts')),
     # path('searchteam/', include('searchteam.urls', namespace='searchteam')),
-    # path('users/', include('users.urls', namespace='users')),
+    path('', include('users.urls', namespace='users')),
 ]
 
 if settings.DEBUG:

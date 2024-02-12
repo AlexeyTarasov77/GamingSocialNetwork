@@ -1,4 +1,5 @@
 import showErrorToast from './notifications.js'
+import btnStatus from './btnStatus.js';
 document.addEventListener("DOMContentLoaded", function() {
     if (document.forms.commentForm) {
     const csrftoken = document.querySelector('form input[name="csrfmiddlewaretoken"]').value
@@ -39,7 +40,6 @@ document.addEventListener("DOMContentLoaded", function() {
         })
 
         .fail(function (err) {
-            console.log(err);
             showErrorToast()
         })
       })
@@ -54,8 +54,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
     async function createComment(event) {
         event.preventDefault();
-        commentFormSubmit.disabled = true;
-        commentFormSubmit.innerText = "Ожидаем ответа сервера...";
+        btnStatus(false, 'Ожидаем ответа от сервера...', commentFormSubmit)
         try {
             const response = await fetch(`http://localhost:8000/posts/comment-post/${commentPostId}/`, {
                 method: 'POST',
@@ -66,15 +65,14 @@ document.addEventListener("DOMContentLoaded", function() {
                 body: new FormData(commentForm),
             });
             const comment = await response.json();
-
             let commentTemplate = `<ul id="comment-thread-${comment.id}" class="comments-list">
             <li>
                 <div class="comment-main-level">
                     <div class="comment-avatar"><img src="http://i9.photobucket.com/albums/a88/creaticode/avatar_1_zps8e1c80cd.jpg" alt=""></div>
                     <div class="comment-box">
                         <div class="comment-head">
-                            <h6 class="comment-name {% if node.is_root_node or node.get_root.author.username == node.author.username%}by-author{% endif %}">${comment.author}</h6>
-                            <span>${comment.time_create}</span>
+                            <h6 class="comment-name {% if node.is_root_node or node.get_root.author.username == node.author.username%}by-author{% endif %} ${comment.by_author ? "by-author" : ""}">${comment.author}</h6>
+                            <span>${formatDateTime(comment.time_create)}</span>
                             <a href="#commentForm" data-comment-id="${comment.id}" data-comment-username="${comment.author}" class="btn-reply"><i class="bi bi-reply"></i></a>
                             <i class="bi bi-heart"></i>
                         </div>
@@ -86,14 +84,13 @@ document.addEventListener("DOMContentLoaded", function() {
             </li>
         </ul>`;
         if (comment.is_child) {
-            document.querySelector(`#comment-thread-${comment.parent_id}`).insertAdjacentHTML("beforeend", commentTemplate);
+            document.querySelector(`#comment-thread-${comment.parent}`).insertAdjacentHTML("beforeend", commentTemplate);
         }
         else {
             document.querySelector('.nested-comments').insertAdjacentHTML("beforeend", commentTemplate)
         }
         commentForm.reset()
-        commentFormSubmit.disabled = false;
-        commentFormSubmit.innerText = "Добавить комментарий";
+        btnStatus(true, "Добавить комментарий", commentFormSubmit)
         commentFormParentInput.value = null;
         replyUser();
     }
@@ -107,7 +104,7 @@ document.addEventListener("DOMContentLoaded", function() {
     $('.reply-list .comments-list').hide()
     $('.reply-list .comments-list').hide()
     $('.reply-list .comments-list li:first').show()
-        $('.reply-list .comments-list').hide()
+    $('.reply-list .comments-list').hide()
     $('.reply-list .comments-list li:first').show()
 
         $(".show-more-replies").click(function() {
@@ -125,5 +122,11 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    // commentsReplyList()
+    function formatDateTime(isoDateTime) {
+        const date = new Date(isoDateTime);
+        const months = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'];
+        const outputDate = {day: date.getDate(), month: months[date.getMonth()], year: date.getFullYear(), hours: date.getHours(), minutes: date.getMinutes()}
+        return `${outputDate.day} ${outputDate.month} ${outputDate.year} г. ${outputDate.hours}:${outputDate.minutes < 10 ? '0' + outputDate.minutes : outputDate.minutes}`;
+    }
+    commentsReplyList()
 });

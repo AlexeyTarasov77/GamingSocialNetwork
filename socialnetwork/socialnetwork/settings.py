@@ -44,6 +44,7 @@ DJANGO_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
+    'django.contrib.postgres'
 ]
 
 THIRD_PARTY_APPS = [
@@ -219,8 +220,8 @@ ACCOUNT_EMAIL_REQUIRED = True # обязательное указание ема
 ACCOUNT_LOGIN_ATTEMPTS_TIMEOUT = 30 # заблокировать доступ на 30с после 5 попыток неудачного доступа
 ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True # залогинить юзера при потдтверждении емеила
 LOGIN_URL = 'account_login' # имя маршрута для редиректа неавторизованных юзеров
-LOGIN_REDIRECT_URL = 'gameblog:main'
-LOGOUT_REDIRECT_URL = 'account_login'
+LOGIN_REDIRECT_URL = 'gameblog:main' # редирект после успешного логина
+LOGOUT_REDIRECT_URL = 'account_login' # редирект после логаута
 ACCOUNT_PRESERVE_USERNAME_CASING = False # хранить юзернеймы в нижнем регистре
 ACCOUNT_USERNAME_MIN_LENGTH = 3
 # ACCOUNT_TEMPLATE_DIR = 'users/templates/account'

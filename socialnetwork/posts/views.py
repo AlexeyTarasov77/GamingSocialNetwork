@@ -1,7 +1,7 @@
 from typing import Any
 from django.db.models.base import Model as Model
 from django.db.models.query import QuerySet
-from django.http import HttpRequest, HttpResponse, HttpResponseRedirect, JsonResponse
+from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse, reverse_lazy
 from django.views import generic
@@ -11,8 +11,8 @@ from django.db.models import Count
 from . import forms
 from django.core.mail import send_mail
 from decouple import config
-from rest_framework import views, permissions
-from .serializers import LikeSerializer
+from rest_framework import views, permissions, generics, status
+from .serializers import LikeSerializer, CommentSerializer
 from rest_framework.response import Response
 from taggit.models import Tag
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -119,8 +119,8 @@ def share_post(request, post_id):
         form = forms.ShareForm(request.POST)
         if form.is_valid():
             cd = form.cleaned_data
-            cd['username'] = post.author # move data to hidden form field
-            cd['email'] = post.author.email # # move data to hidden form field
+            cd['username'] = post.author 
+            cd['email'] = post.author.email 
             post_url = request.build_absolute_uri(post.get_absolute_url()) 
             subject = f"{cd['username']} recommends you read: {post.name}"
             message = f"Read {post.name} at {post_url}\n\n" \
@@ -164,6 +164,25 @@ class LikeCommentAPIView(LikeAPIView):
     def get_object(self, obj_id):
         return get_object_or_404(Comment, id=obj_id)
         
+class CreateCommentAPIView(generics.CreateAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+    serializer_class = CommentSerializer
+    def perform_create(self, serializer):
+        serializer.save(
+            post_id = self.kwargs.get('post_id', None),
+            parent_id = self.request.data.get('parent') or None,
+            author = self.request.user
+        )
         
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        comment_data = serializer.data
+        comment_data['author'] = serializer.instance.author.username
+        comment_data['is_child'] = serializer.instance.is_child_node()
+        comment_data['by_author'] = serializer.instance.is_root_node() or serializer.instance.get_root().author.username == serializer.instance.author.username
+        print(comment_data)
+        return Response(comment_data, status=status.HTTP_201_CREATED)
 
         

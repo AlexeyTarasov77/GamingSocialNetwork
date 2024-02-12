@@ -1,4 +1,6 @@
 {% load mptt_tags %}
+{% load humanize %}
+
 <p id="comment-url" class="none">{% url "posts:like-comment" %}</p>
 <div class="comments-container">
     {% if post.comment_post %}
@@ -42,7 +44,7 @@
                     <div class="comment-box">
                         <div class="comment-head">
                             <h6 class="comment-name {% if node.is_root_node or node.get_root.author.username == node.author.username%}by-author{% endif %}">{{node.author.username}}</h6>
-                            <span>{{node.time_create}}</span>
+                            <span style="padding-right: 1em;">{{node.time_create}}</span>{% if node.time_create == node.time_update %}<span>*Изменено {{node.time_update|naturaltime}}</span>{% endif %}
                             <span class="num-likes ms-4">Понравилось: <i class="num-likes-count">{{node.liked.count}}</i></span>
                             <a href="#commentForm" data-comment-id="{{ node.pk }}" data-comment-username="{{ node.author }}" class="btn-reply"><i class="bi bi-reply"></i></a>
                            {% if user in node.liked.all %}<i class="bi bi-heart-fill text-danger comment-like" data-likecomment-id="{{node.pk}}"></i>{% else %}<i class="bi bi-heart comment-like" data-likecomment-id="{{node.pk}}"></i>{% endif %}
