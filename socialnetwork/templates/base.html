@@ -42,7 +42,7 @@
             {% for sld in sidebar_links_default %}
               <a href="{% if sld.url_name != '#' %}{% url sld.url_name %}{% else %}#{% endif %}" class="nav_link" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="{{sld.tooltip}}"> <i class="{{sld.icon}} nav_icon"></i></a> 
             {% endfor %}
-            <a href="{{user.profile_user.get_absolute_url}}" class="nav_link" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Профиль"> <i class='bx bx-user nav_icon'></i></a>
+            <a href="{% if user.profile_user.get_absolute_url and user.is_authenticated %}{{user.profile_user.get_absolute_url}}{% else %}{% url "account_login" %}{% endif %}" class="nav_link" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Профиль"> <i class='bx bx-user nav_icon'></i></a>
             {% block sidebar_links_extra %}{% endblock sidebar_links_extra %}
           </div>
       </div> <a href="{% url "account_logout" %}" id="logout" class="nav_link" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Выйти"> <i class='bx bx-log-out nav_icon'></i></a>

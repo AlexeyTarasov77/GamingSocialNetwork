@@ -1,7 +1,5 @@
 from django.db import models
 from django.contrib.auth import get_user_model
-from django.dispatch import receiver
-from allauth.account.signals import user_signed_up
 import os
 from django.utils.text import slugify
 from django.urls import reverse
@@ -25,8 +23,12 @@ class Profile(models.Model):
     date_of_birth = models.DateTimeField(null=True, blank=True)
     time_update = models.DateTimeField(auto_now=True)
     
+    def __str__(self) -> str:
+        return f'Профиль пользователя - {self.user}. Слаг - {self.user_slug}'
+        
     def save(self, *args, **kwargs):
-        self.user_slug = slugify(self.user_slug)
+        self.user_slug = slugify(self.user.username)
+        super(Profile, self).save(*args, **kwargs)
     
     @property
     def get_profile_image(self):
@@ -35,10 +37,3 @@ class Profile(models.Model):
     def get_absolute_url(self):
         return reverse("users:profile", kwargs={"username": self.user_slug})
     
-
-    
-    
-@receiver(user_signed_up, sender=get_user_model())
-def create_user_profile(request, user, **kwargs):
-    print('signal')
-    print(Profile.objects.create(user=user))

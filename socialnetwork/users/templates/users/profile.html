@@ -6,6 +6,7 @@
 
 
 {% block content %}
+<div class="is_owner none">{{is_owner}}</div>
 <input type="hidden" value="{{user.profile_user.get_absolute_url}}" id="url">
 {% csrf_token %}
 <div class="wrapper">
@@ -13,9 +14,15 @@
         <div class="profile__background">
             <img src="https://wallpapers.com/images/hd/profile-picture-background-10tprnkqwqif4lyv.jpg" alt="">
             <div class="background__menu pe-5">
-                <div class="menu__buttons d-flex justify-content-end gap-5">
-                    <button type="button" id="follow" class="btn btn-primary">Подписаться</button>
-                    <button type="button" id="friend-req" class="btn btn-primary">Заявка в друзья</button>
+                <div class="menu__buttons d-flex justify-content-end gap-4">
+                    {% if is_owner %}
+                        <a href="{% url "users:profile-update" profile.user_slug %}" type="button" id="friend-req" class="btn btn-dark">Изменить информацию</a>
+                        <a href="#" type="button" id="friend-req" class="btn btn-dark">Заявки в друзья</a>
+                    {% else %}
+                        <button type="button" id="follow" class="btn btn-dark">Подписаться</button>
+                        <button type="button" id="friend-req" class="btn btn-dark btn-sm">Отправить заявку в друзья</button>
+                    {% endif %}
+                    
                 </div>
             </div>
             <div class="background__message">
@@ -39,8 +46,10 @@
                 <circle cx="8" cy="8" r="8"/>
             </svg>
             {% endif %}
+            {% if is_owner %}
             <input type="file" name="image" id="photoInput" class='none' data-user-id="{{profile.user.id}}">
-            <span class="photo__username fs-1 mx-5">{{profile.user.username}} {% if profile.is_online %} | <span class="text-success fs-2 online">Online</span> {% else %} | <span class="text-danger fs-2 offline">Offline</span>{% endif %}</span>
+            {% endif %}
+            <span class="photo__username fs-1 mx-5">{{profile.user.username}} {% if is_owner %}(Вы){% endif %} {% if profile.is_online %} &nbsp; | <span class="text-success fs-2 online">Online</span> {% else %} | <span class="text-danger fs-2 offline">Offline</span>{% endif %}</span>
         </div>
         <div class="profile__nav">
             <nav class="navbar navbar-expand-lg">
@@ -51,19 +60,19 @@
                   <div class="collapse navbar-collapse  d-flex justify-content-center" id="navbarNav">
                     <ul class="navbar-nav">
                       <li class="nav-item">
-                        <button class="nav-link active" aria-current="page" data-name="main" onclick="clickAction('main')">Главная</button>
+                        <button class="nav-link active" data-name="main" onclick="clickAction('main')">Главная</button>
                       </li>
                       <li class="nav-item">
-                        <button class="nav-link" href="#" data-name="bio" onclick="clickAction('bio')">Биография</button>
+                        <button class="nav-link" data-name="bio" onclick="clickAction('bio')">Биография</button>
                       </li>
                       <li class="nav-item">
-                        <button class="nav-link" href="#" data-name="friends" onclick="clickAction('friends')">Список друзей</button>
+                        <button class="nav-link" data-name="friends" onclick="clickAction('friends')">Список друзей</button>
                       </li>
                       <li class="nav-item">
-                        <button class="nav-link" href="#" data-name="following" onclick="clickAction('following')">Подписки</button>
+                        <button class="nav-link" data-name="following" onclick="clickAction('following')">Подписки</button>
                       </li>
                       <li class="nav-item">
-                        <button class="nav-link" href="#" data-name="followers" onclick="clickAction('followers')">Подписчики</button>
+                        <button class="nav-link" data-name="followers" onclick="clickAction('followers')">Подписчики</button>
                       </li>
                     </ul>
                   </div>
@@ -85,7 +94,7 @@
                     {% if profile.following %}
                     <ul class="list-group">
                         {% for f in profile.following.all %}
-                            <li class="list-group-item-info"><a href="#">{{f.username}}</a></li>
+                            <li class="list-group-item-info"><a href="{{user.profile_user.get_absolute_url}}">{{f.username}}</a></li>
                         {% endfor %}
                     </ul>
                     {% else %} <p class="empty fs-3">Пользователь {{profile.user.username}} ни за кем не следит</p>
@@ -95,7 +104,7 @@
                 {% if profile.friends %}
                     <ul class="list-group">
                         {% for f in profile.friends.all %}
-                            <li class="list-group-item-info"><a href="#">{{f.username}}</a></li>
+                            <li class="list-group-item-info"><a href="{{user.profile_user.get_absolute_url}}">{{f.username}}</a></li>
                         {% endfor %}
                     </ul>
                     {% else %} <p class="empty fs-3">У пользователя {{profile.user.username}} нет друзей</p>
@@ -105,7 +114,7 @@
                 {% if profile.followers %}
                     <ul class="list-group">
                         {% for f in profile.followers.all %}
-                            <li class="list-group-item-info"><a href="#">{{f.username}}</a></li>
+                            <li class="list-group-item-info"><a href="{{user.profile_user.get_absolute_url}}">{{f.username}}</a></li>
                         {% endfor %}
                     </ul>
                     {% else %} <p class="empty fs-3">На пользователя {{profile.user.username}} никто не подписан</p>

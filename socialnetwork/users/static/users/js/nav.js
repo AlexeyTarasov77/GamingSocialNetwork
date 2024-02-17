@@ -33,19 +33,25 @@
 // }
 
 $(document).ready(function () {
-  hideContent();
+  hideContent(true);
 })
 
-function hideContent() {
+function hideContent(initial) {
   $('.content__bio').hide();
   $('.content__following').hide();
   $('.content__followers').hide();
   $('.content__friends').hide();
-  $('.content__main').hide();
+  if (!initial) {
+    $('.content__main').hide()
+    $('.nav-link').removeClass('active');
+  }
+  // initial ? '' : $('.content__main').hide();
+  // $('.nav-link').removeClass('active');
 }
 
 function clickAction(clickedItem) {
-  hideContent();
+  hideContent(false);
+  $(`[data-name="${clickedItem}"]`).addClass('active');
   $(`.content__${clickedItem}`).show()
 }
 

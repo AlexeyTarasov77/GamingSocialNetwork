@@ -76,3 +76,12 @@ body{
 .icon__link {
     color: #ff6600;
 }
+
+.active{
+    font-size: 1.05em;
+}
+
+.nav-link{
+    transition: all 0.4s;
+}
+

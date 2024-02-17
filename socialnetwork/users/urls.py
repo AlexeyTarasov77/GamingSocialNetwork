@@ -4,5 +4,8 @@ from . import views
 app_name = 'users'
 
 urlpatterns = [
-    path('accounts/profile/<slug:username>/', views.ProfileView.as_view(), name='profile')
+    path('accounts/profile/<slug:username>/', views.ProfileView.as_view(), name='profile'),
+    path('accounts/profile/update/<slug:username>/', views.ProfileUpdateView.as_view(), name='profile-update'),
+    path('accounts/profile/', views.profile_middleware, name='profile_middleware'),
 ]
+
