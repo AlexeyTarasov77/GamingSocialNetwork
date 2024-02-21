@@ -4,57 +4,83 @@ document.addEventListener('DOMContentLoaded', function () {
   const toastElList = document.querySelectorAll('.toast')
   const toastList = [...toastElList].map(toastEl => new bootstrap.Toast(toastEl))
 
-  const NavLinkColor = document.querySelectorAll('.navbar-light .navbar-nav .nav-link')
-  const linkColor = document.querySelectorAll('.nav_link');
-  const SideBarActiveLinkId = localStorage.getItem('SideBarActiveLinkId');
-  const NavBarActiveLinkId = localStorage.getItem('NavBarActiveLinkId');
+  const navbarLinks = document.querySelectorAll('.navbar-light .navbar-nav .nav-link')
+  const sidebarLinks = document.querySelectorAll('a.nav_link');
+  setClick()
+  // const SideBarActiveLinkId = localStorage.getItem('SideBarActiveLinkId');
+  // const NavBarActiveLinkId = localStorage.getItem('NavBarActiveLinkId');
 
-  function colorLink(){
-    if(linkColor){
-    linkColor.forEach(l=> l.classList.remove('active'))
-    this.classList.add('active');
-    localStorage.setItem('SideBarActiveLinkId', this.id);
-    }
-  }
-  function NavColorLink() {
-    if (NavLinkColor) {
-      NavLinkColor.forEach(l=> l.classList.remove('nav-active'));
-      this.classList.add('nav-active')
-      localStorage.setItem('NavBarActiveLinkId', this.id);
-    }
-  }
-  linkColor.forEach(l=> {
-    l.addEventListener('click', colorLink)
-    if (l.id === SideBarActiveLinkId) {
-      l.classList.add('active');
-  }
-  })
-  localStorage.removeItem('SideBarActiveLinkId');
+  // function sidebarLinkActive(){
+  //   if(sidebarLink){
+  //     sidebarLink.forEach(l=> l.classList.remove('active'))
+  //     this.classList.add('active');
+  //     localStorage.setItem('SideBarActiveLinkId', this.id);
+  //   }
+  // }
+  // function navbarLinkActive() {
+  //   if (navbarLink) {
+  //     navbarLink.forEach(l=> l.classList.remove('nav-active'));
+  //     this.classList.add('nav-active')
+  //     localStorage.setItem('NavBarActiveLinkId', this.id);
+  //   }
+  // }
+  // sidebarLink.forEach(l=> {
+  //   l.addEventListener('click', sidebarLinkActive)
+  //   if (l.id === SideBarActiveLinkId) {
+  //     l.classList.add('active');
+  // }
+  // })
+  // localStorage.removeItem('SideBarActiveLinkId');
   
-  NavLinkColor.forEach(l=> {
-    l.addEventListener('click', NavColorLink)
-    if (l.id === NavBarActiveLinkId) {
-      l.classList.add('nav-active');
+  // navbarLink.forEach(l=> {
+  //   l.addEventListener('click', navbarLinkActive)
+  //   if (l.id === NavBarActiveLinkId) {
+  //     l.classList.add('nav-active');
+  //   }
+  // })
+  // localStorage.removeItem('NavBarActiveLinkId')
+
+  function initial() {
+    localStorage.clear();
+    navbarLinks.forEach(nl=> {nl.classList.remove('nav-active')});
+    sidebarLinks.forEach(sl=> {sl.classList.remove('active')})
+  }
+
+  function setLinkActive(e, linkType) {
+    initial();
+    item = e.target
+    if (linkType === 'navbarActive') {
+      item.classList.add('nav-active');
+      localStorage.setItem(linkType, item.id)
+    } else {
+      item = item.parentElement
+      item.classList.add('active');
+      localStorage.setItem(linkType, item.id)
     }
-  })
-  localStorage.removeItem('NavBarActiveLinkId')
+  }
+
+  function setClick() {
+    navbarLinks.forEach(nl=> {nl.onclick = (event) => setLinkActive(event, 'navbarActive')});
+    sidebarLinks.forEach(sl=> {sl.onclick = (event) => setLinkActive(event, 'sidebarActive')})
+  }
+
+  function setInitialActive(links, key, className) {
+    links.forEach(l => {
+      if (l.id === localStorage.getItem(key)) {
+        console.log(l.id);
+        l.classList.add(className)
+      }
+    })
+  }
+
+  window.onload = function () {
+    if (localStorage.getItem('navbarActive')) {
+      setInitialActive(navbarLinks, 'navbarActive', 'nav-active')
+    } else {
+      setInitialActive(sidebarLinks, 'sidebarActive', 'active')
+    }
+  }
+
 });
 
-// document.addEventListener('DOMContentLoaded', function () {
-//   const linkColor = document.querySelectorAll('.navbar-light .navbar-nav .nav-link');
-//   const activeLinkId = localStorage.getItem('activeLinkId');
-//   function colorLink() {
-//       linkColor.forEach(l => l.classList.remove('active'));
-//       this.classList.add('active');
-//       localStorage.setItem('activeLinkId', this.id);
-//   }
-
-//   linkColor.forEach(l => {
-//       l.addEventListener('click', colorLink);
-//       if (l.id === activeLinkId) {
-//           l.classList.add('nav-active');
-//           localStorage.removeItem('activeLinkId');
-//       }
-//   });
-// });
-
+// window.onbeforeunload = () => {localStorage.clear()}

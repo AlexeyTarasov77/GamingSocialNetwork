@@ -34,7 +34,10 @@ class ProfileView(LoginRequiredMixin, generic.DetailView):
     
     
 def profile_middleware(request):
-    return redirect(request.user.profile_user.get_absolute_url())
+    if request.user.is_authenticated:
+        return redirect(request.user.profile_user.get_absolute_url())
+    else: 
+        return redirect("account_login")
 
 class ProfileUpdateView(generic.UpdateView):
     slug_url_kwarg = 'username'

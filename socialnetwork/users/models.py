@@ -15,12 +15,13 @@ class Profile(models.Model):
     user = models.OneToOneField(get_user_model(), related_name='profile_user', on_delete=models.CASCADE)
     user_slug = models.SlugField(verbose_name='URL профиля', unique=True, null=True, blank=True)
     is_online = models.BooleanField(default=False);
-    image = models.ImageField(upload_to=get_avatar_path, blank=True, null=True)
+    image = models.ImageField(upload_to=get_avatar_path, blank=True, null=True, verbose_name="Фото профиля")
+    bg_image = models.ImageField(upload_to=get_avatar_path, blank=True, null=True, verbose_name="Шапка профиля")
     following = models.ManyToManyField(get_user_model(), related_name='profile_following', blank=True)
     followers = models.ManyToManyField(get_user_model(), related_name='profile_followers', blank=True)
     friends = models.ManyToManyField(get_user_model(), related_name='profile_friends', blank=True)
-    bio = models.TextField(blank=True, null=True)
-    date_of_birth = models.DateTimeField(null=True, blank=True)
+    bio = models.TextField(blank=True, null=True, verbose_name="Биография")
+    date_of_birth = models.DateTimeField(null=True, blank=True, verbose_name="Дата рождения")
     time_update = models.DateTimeField(auto_now=True)
     
     def __str__(self) -> str:
@@ -33,6 +34,10 @@ class Profile(models.Model):
     @property
     def get_profile_image(self):
         return self.image.url if self.image else '/static/users/images/profile.jpeg'
+    
+    @property
+    def get_background_image(self):
+        return self.bg_image.url if self.bg_image else '/static/users/images/background.jpeg'
     
     def get_absolute_url(self):
         return reverse("users:profile", kwargs={"username": self.user_slug})

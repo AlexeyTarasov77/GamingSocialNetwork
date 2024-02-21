@@ -37,6 +37,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 DJANGO_APPS = [
+    'daphne', # run django on asgi server
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -60,6 +61,7 @@ THIRD_PARTY_APPS = [
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.steam',
     'widget_tweaks',
+    'channels',
 ]
 
 LOCAL_APPS = [
@@ -107,6 +109,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'socialnetwork.wsgi.application'
+ASGI_APPLICATION = 'socialnetwork.asgi.application' 
 
 
 # Database
