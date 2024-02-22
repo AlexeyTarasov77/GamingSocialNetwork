@@ -6,6 +6,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
   const navbarLinks = document.querySelectorAll('.navbar-light .navbar-nav .nav-link')
   const sidebarLinks = document.querySelectorAll('a.nav_link');
+  const userId = document.querySelector('#userId');
+  
+  id = userId.value !== 'None' ? userId.value : null;
+  if (id) {
+    console.log(id);
+    const socket = new WebSocket(`ws://${window.location.host}/ws/status/${id}/`)
+  }
+  
   setClick()
   // const SideBarActiveLinkId = localStorage.getItem('SideBarActiveLinkId');
   // const NavBarActiveLinkId = localStorage.getItem('NavBarActiveLinkId');
@@ -67,7 +75,6 @@ document.addEventListener('DOMContentLoaded', function () {
   function setInitialActive(links, key, className) {
     links.forEach(l => {
       if (l.id === localStorage.getItem(key)) {
-        console.log(l.id);
         l.classList.add(className)
       }
     })
@@ -82,5 +89,3 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
 });
-
-// window.onbeforeunload = () => {localStorage.clear()}

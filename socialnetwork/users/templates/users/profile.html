@@ -37,7 +37,7 @@
         </div>
         <div class="profile__photo">
             <img src="{{profile.get_profile_image}}" alt="" width="200" height="200">
-            {% if profile.is_online %}
+            {% if profile.online > 0 %}
             <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-circle-fill text-success" viewBox="0 0 16 16" id="online-icon">
                 <circle cx="8" cy="8" r="8"/>
             </svg>
@@ -49,7 +49,7 @@
             {% if is_owner %}
             <input type="file" name="image" id="photoInput" class='none' data-user-id="{{profile.user.id}}">
             {% endif %}
-            <span class="photo__username fs-1 mx-5">{{profile.user.username}} {% if is_owner %}(Вы){% endif %} {% if profile.is_online %} &nbsp; | <span class="text-success fs-2 online">Online</span> {% else %} | <span class="text-danger fs-2 offline">Offline</span>{% endif %}</span>
+            <span class="photo__username fs-1 mx-5">{{profile.user.username}} {% if is_owner %}(Вы){% endif %} {% if profile.online > 0 %} &nbsp; | <span class="text-success fs-2 online">Online</span> {% else %} | <span class="text-danger fs-2 offline">Offline</span>{% endif %}</span>
         </div>
         <div class="profile__nav">
             <nav class="navbar navbar-expand-lg">

@@ -102,7 +102,6 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'gameblog.context_processors.menu_links',
                 'gameblog.context_processors.sidebar_links',
-                'django.template.context_processors.request',
             ],
         },
     },
@@ -205,18 +204,6 @@ AUTHENTICATION_BACKENDS = [
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
-# SOCIALACCOUNT_PROVIDERS = {
-#     'google': {
-#         # For each OAuth based provider, either add a ``SocialApp``
-#         # (``socialaccount`` app) containing the required client
-#         # credentials, or list them here:
-#         'APP': {
-#             'client_id': '123',
-#             'secret': '456',
-#             'key': ''
-#         }
-#     }
-# }
 
 ACCOUNT_CHANGE_EMAIL = True # разрешить пользователю изменять email
 ACCOUNT_EMAIL_REQUIRED = True # обязательное указание емаила при реге
