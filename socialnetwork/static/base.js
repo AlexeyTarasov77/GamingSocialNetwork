@@ -4,49 +4,15 @@ document.addEventListener('DOMContentLoaded', function () {
   const toastElList = document.querySelectorAll('.toast')
   const toastList = [...toastElList].map(toastEl => new bootstrap.Toast(toastEl))
 
+  showNotification()
+
   const navbarLinks = document.querySelectorAll('.navbar-light .navbar-nav .nav-link')
   const sidebarLinks = document.querySelectorAll('a.nav_link');
-  const userId = document.querySelector('#userId');
-  
-  id = userId.value !== 'None' ? userId.value : null;
-  if (id) {
-    console.log(id);
-    const socket = new WebSocket(`ws://${window.location.host}/ws/status/${id}/`)
-  }
+
+  const socket = new WebSocket(`ws://${window.location.host}/ws/status/`)
+
   
   setClick()
-  // const SideBarActiveLinkId = localStorage.getItem('SideBarActiveLinkId');
-  // const NavBarActiveLinkId = localStorage.getItem('NavBarActiveLinkId');
-
-  // function sidebarLinkActive(){
-  //   if(sidebarLink){
-  //     sidebarLink.forEach(l=> l.classList.remove('active'))
-  //     this.classList.add('active');
-  //     localStorage.setItem('SideBarActiveLinkId', this.id);
-  //   }
-  // }
-  // function navbarLinkActive() {
-  //   if (navbarLink) {
-  //     navbarLink.forEach(l=> l.classList.remove('nav-active'));
-  //     this.classList.add('nav-active')
-  //     localStorage.setItem('NavBarActiveLinkId', this.id);
-  //   }
-  // }
-  // sidebarLink.forEach(l=> {
-  //   l.addEventListener('click', sidebarLinkActive)
-  //   if (l.id === SideBarActiveLinkId) {
-  //     l.classList.add('active');
-  // }
-  // })
-  // localStorage.removeItem('SideBarActiveLinkId');
-  
-  // navbarLink.forEach(l=> {
-  //   l.addEventListener('click', navbarLinkActive)
-  //   if (l.id === NavBarActiveLinkId) {
-  //     l.classList.add('nav-active');
-  //   }
-  // })
-  // localStorage.removeItem('NavBarActiveLinkId')
 
   function initial() {
     localStorage.clear();
@@ -89,3 +55,18 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
 });
+
+function showNotification() {
+  const messages = document.querySelectorAll('.msg');
+  if (messages.length > 0) {
+    handleClass(messages, 'opacity-0', 'opacity-100')
+    setTimeout(() => {
+      handleClass(messages, 'opacity-100', 'opacity-0')
+    }, 5000)
+  }
+}
+
+function handleClass(objects, className1, className2) {
+  objects.forEach(obj => obj.classList.remove(className1))
+  objects.forEach(obj => obj.classList.add(className2))
+}

@@ -1,0 +1,8 @@
+<div class="notifications">
+    {% if messages %}
+        {% for msg in messages %}
+            {% if msg.tags == 'success' %}<div class="msg position-fixed start-50 translate-middle-x alert alert-success opacity-0" style="transition: opacity 0.4s;  top: 25%;">{{msg}}</div>{% endif %}
+            {% if msg.tags == 'warning' %}<div class="msg position-fixed start-50 translate-middle-x alert alert-warning opacity-0" style="transition: opacity 0.4s;  top: 25%;">{{msg}}</div>{% endif %}
+        {% endfor %}
+    {% endif %}
+</div>

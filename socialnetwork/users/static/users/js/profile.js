@@ -1,5 +1,6 @@
 $(document).ready(function () {
   if ($('.is_owner').text() == 'True') {
+    // showNotification();
     changeAvatar()
   }
 })
@@ -28,4 +29,19 @@ function changeAvatar() {
     })
   })
 }
+
+// function showNotification() {
+//   const msg = document.querySelector('.msg');
+//   if (msg) {
+//     handleClass('opacity-0', 'opacity-100')
+//     setTimeout(() => {
+//       handleClass('opacity-100', 'opacity-0')
+//     }, 5000)
+//   }
+// }
+
+// function handleClass(className1, className2) {
+//   msg.classList.remove(className1);
+//   msg.classList.add(className2);
+// }
 

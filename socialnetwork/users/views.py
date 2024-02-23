@@ -9,6 +9,7 @@ from .models import Profile
 from .forms import ProfileUpdateForm
 from django.db.utils import ProgrammingError, OperationalError
 from django.db import IntegrityError
+from django.contrib import messages
 
 # Create your views here.
 class ProfileView(LoginRequiredMixin, generic.DetailView):
@@ -45,6 +46,10 @@ class ProfileUpdateView(generic.UpdateView):
     template_name = 'users/profile_update.html'
     model = Profile
     form_class = ProfileUpdateForm
+    def form_valid(self, form):
+        messages.success(self.request, "Профиль успешно обновлен")
+        return super().form_valid(form)
+    
     
     
     
