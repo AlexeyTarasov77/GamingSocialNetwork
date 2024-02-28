@@ -2,7 +2,7 @@ from typing import Any
 from django.db.models.base import Model as Model
 from django.db.models.query import QuerySet
 from django.http import JsonResponse
-from django.shortcuts import get_object_or_404, redirect, render
+from django.shortcuts import get_object_or_404, redirect
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Profile
@@ -10,6 +10,9 @@ from .forms import ProfileUpdateForm
 from django.db.utils import ProgrammingError, OperationalError
 from django.db import IntegrityError
 from django.contrib import messages
+from rest_framework import generics
+from .serializers import SubscribeSerializer
+from rest_framework.response import Response
 
 # Create your views here.
 class ProfileView(LoginRequiredMixin, generic.DetailView):
@@ -50,7 +53,31 @@ class ProfileUpdateView(generic.UpdateView):
         messages.success(self.request, "Профиль успешно обновлен")
         return super().form_valid(form)
     
-    
+
+class SubscribeAPIView(generics.GenericAPIView):
+    queryset = Profile.objects.all()
+    serializer_class = SubscribeSerializer
+    lookup_field = 'user_slug'
+    lookup_url_kwarg = 'username'
+
+    def get(self, request, username):
+        user_profile = self.get_object()
+        if request.user in user_profile.followers.all():
+            return Response({'is_subscribed': True})
+        else:
+            return Response({'is_subscribed': False})
+        
+    def patch(self, request, username): 
+        user_profile = self.get_object() # получение профиля пользователя на которого подписываются
+        user = request.user # получение текущего пользователя который хочеть подписаться/отписаться
+        if user in user_profile.followers.all(): # если пользователь уже подписан
+            user_profile.followers.remove(user) # отписаться
+            user.profile_following.remove(user_profile.user) # удалить из подписок пользователя от которого отписываемся
+            return Response({'is_subscribed': False})
+        else:  # если пользователь еще не подписан
+            user_profile.followers.add(request.user) # подписаться
+            user.profile_following.add(user_profile.user) # добавить в подписки пользователя на которого подписываемся
+            return Response({'is_subscribed': True})
     
     
 

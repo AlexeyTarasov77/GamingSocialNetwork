@@ -1,4 +1,4 @@
-import showErrorToast from './notifications.js'
+import showToast from '../../../../static/notifications.js';
 import btnStatus from './btnStatus.js';
 document.addEventListener("DOMContentLoaded", function() {
     if (document.forms.commentForm) {
@@ -39,8 +39,13 @@ document.addEventListener("DOMContentLoaded", function() {
             };
         })
 
-        .fail(function (err) {
-            showErrorToast()
+        .fail(function (error) {
+            console.log(error.status);
+            if (error.status == 401) {
+                showToast("Что бы поставить лайк необходимо авторизоваться!", 'warning')
+            } else {
+                showToast("Упс! Что-то пошло не так... Попробуйте повторить попытку позже", 'danger', 'Ошибка')
+            }
         })
       })
     }

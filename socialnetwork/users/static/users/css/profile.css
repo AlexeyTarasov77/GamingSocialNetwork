@@ -89,3 +89,20 @@ body{
     transition: opacity 0.4s;
     top: 25%;
 }
+
+.nav__content {
+    width: 90%;
+}
+
+.follower, .friend, .subscriber {
+    display: flex;
+    align-items: center;
+    gap: 2%;
+}
+
+.follower__photo img , .friend__photo img, .subscriber__photo img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 0.5px solid black;
+}

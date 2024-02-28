@@ -50,6 +50,9 @@
 </div>
 <main>
   {% block content %}{% endblock content %}
+  <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 50">
+      
+  </div>
 </main>
 {% include "notifications.html" %}
 <input type="hidden" id="userId" value={{user.id}}>

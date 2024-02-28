@@ -1,10 +1,14 @@
+import showToast from "../../../../static/notifications.js";
+
 $(document).ready(function () {
   if ($('.is_owner').text() == 'True') {
     // showNotification();
     changeAvatar()
+  } else {
+    subscribe()
   }
 })
-
+const csrftoken = $('input[name="csrfmiddlewaretoken"]').val();
 function changeAvatar() {
   $('.profile__photo img').click(() => $('#photoInput').click())
   $('#photoInput').on('change', function () {
@@ -30,18 +34,32 @@ function changeAvatar() {
   })
 }
 
-// function showNotification() {
-//   const msg = document.querySelector('.msg');
-//   if (msg) {
-//     handleClass('opacity-0', 'opacity-100')
-//     setTimeout(() => {
-//       handleClass('opacity-100', 'opacity-0')
-//     }, 5000)
-//   }
-// }
+function subscribe() {
+  const subscribeBtn = $('#follow');
+  subscribeBtn.click(function () {
+  console.log(csrftoken);
 
-// function handleClass(className1, className2) {
-//   msg.classList.remove(className1);
-//   msg.classList.add(className2);
-// }
-
+    $.ajax({
+      type: 'PATCH',
+      url: `/accounts/profile/subscribe/${subscribeBtn.data('user-slug')}/`,
+      beforeSend: (xhr, settings) => xhr.setRequestHeader('X-CSRFToken', csrftoken),
+      // data: {csrfmiddlewaretoken: csrftoken}
+    })
+    .done(function (data) {
+      if (data.is_subscribed) {
+        subscribeBtn.removeClass('btn-dark');
+        subscribeBtn.addClass('btn-danger');
+        subscribeBtn.text('Отписаться');
+        showToast("Вы подписаны!")
+      } else {
+        subscribeBtn.removeClass('btn-danger');
+        subscribeBtn.addClass('btn-dark');
+        subscribeBtn.text('Подписаться');
+        showToast("Вы отписались!", "warning")
+      }
+    })
+    .fail(function (err) {
+      showToast("Упс! Что-то пошло не так... Попробуйте повторить попытку позже", 'danger', 'Ошибка')
+    })
+  })
+}

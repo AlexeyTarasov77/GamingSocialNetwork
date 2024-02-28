@@ -14,7 +14,7 @@ def get_avatar_path(instance, filename):
 class Profile(models.Model):
     user = models.OneToOneField(get_user_model(), related_name='profile_user', on_delete=models.CASCADE)
     user_slug = models.SlugField(verbose_name='URL профиля', unique=True, null=True, blank=True)
-    online = models.IntegerField(default=0);
+    online = models.PositiveIntegerField(default=0);
     image = models.ImageField(upload_to=get_avatar_path, blank=True, null=True, verbose_name="Фото профиля")
     bg_image = models.ImageField(upload_to=get_avatar_path, blank=True, null=True, verbose_name="Шапка профиля")
     following = models.ManyToManyField(get_user_model(), related_name='profile_following', blank=True)

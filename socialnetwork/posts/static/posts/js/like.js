@@ -1,4 +1,4 @@
-import showErrorToast from './notifications.js'
+import showToast from '../../../../static/notifications.js';
 $(document).ready(function() {
     const csrftoken = $('input[name="csrfmiddlewaretoken"]').val()
     $(".heart").click(function() {
@@ -20,8 +20,13 @@ $(document).ready(function() {
                     heartEl.removeClass("is-active")
                 } 
         })
-        .fail(function(err) {
-            showErrorToast()
+        .fail(function(error) {
+            console.log(error.status);
+            if (error.status == 401) {
+                showToast("Что бы поставить лайк необходимо авторизоваться!", 'warning')
+            } else {
+                showToast("Упс! Что-то пошло не так... Попробуйте повторить попытку позже", 'danger', 'Ошибка')
+            }
         })
     });
 });

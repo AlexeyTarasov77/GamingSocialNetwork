@@ -1,1 +1,25 @@
 {% extends "./base_posts.html" %}
+{% load widget_tweaks %}
+
+{% block content %}
+<div class="create-form p-5">
+    <form action="" method="post">
+        {% csrf_token %}
+        {% for f in form %}
+        <div class="mb-3">
+            <label for="{{f.id_for_label}}" class="form-label">{{f.label}}</label>
+            {% render_field f class="form-control form-control-sm" %}
+            {% if f.help_text %}<div class="form-text">{{f.help_text}}</div>{% endif %}
+            {% if f.errors %}
+                {% for err in f.errros %}
+                    <div id="validationServer03Feedback" class="invalid-feedback">
+                        {{err}}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+        {% endfor %}
+        <button class="btn btn-success px-5">Обновить</button>
+    </form>
+</div>
+{% endblock content %}

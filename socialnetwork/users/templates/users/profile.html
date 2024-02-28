@@ -19,7 +19,11 @@
                         <a href="{% url "users:profile-update" profile.user_slug %}" type="button" id="friend-req" class="btn btn-dark">Изменить информацию</a>
                         <a href="#" type="button" id="friend-req" class="btn btn-dark">Заявки в друзья</a>
                     {% else %}
-                        <button type="button" id="follow" class="btn btn-dark">Подписаться</button>
+                        {% if user in profile.followers.all %}
+                        <button type="button" id="follow" class="btn btn-danger" data-user-slug="{{profile.user_slug}}">Отписаться</button>
+                        {% else %}
+                        <button type="button" id="follow" class="btn btn-dark" data-user-slug="{{profile.user_slug}}">Подписаться</button>
+                        {% endif %}
                         <button type="button" id="friend-req" class="btn btn-dark btn-sm">Отправить заявку в друзья</button>
                     {% endif %}
                     
@@ -78,7 +82,7 @@
                   </div>
                 </div>
               </nav>
-            <div class="nav__content">
+            <div class="nav__content p-3">
                 <div class="content__main">
                     <h2>Основной контент</h2>
                 </div>
@@ -92,9 +96,13 @@
                 </div>
                 <div class="content__following">
                     {% if profile.following %}
+                    <h2 class="following__title">Подписки</h2>
                     <ul class="list-group">
                         {% for f in profile.following.all %}
-                            <li class="list-group-item-info"><a href="{{user.profile_user.get_absolute_url}}">{{f.username}}</a></li>
+                            <li class="list-group-item follower">
+                                <div class="follower__photo"><img src="{{f.profile_user.get_profile_image}}" alt=""></div>
+                                <div class="follower__name"><h4><a class="text-info" href="{{f.profile_user.get_absolute_url}}">{{f.username}}</a></h4></div>
+                            </li>
                         {% endfor %}
                     </ul>
                     {% else %} <p class="empty fs-3">Пользователь {{profile.user.username}} ни за кем не следит</p>
@@ -102,9 +110,13 @@
                 </div>
                 <div class="content__friends">
                 {% if profile.friends %}
+                    <h2 class="friends__title">Друзья</h2>
                     <ul class="list-group">
                         {% for f in profile.friends.all %}
-                            <li class="list-group-item-info"><a href="{{user.profile_user.get_absolute_url}}">{{f.username}}</a></li>
+                            <li class="list-group-item friend">
+                                <div class="friend__photo"><img src="{{f.profile_user.get_profile_image}}" alt=""></div>
+                                <div class="friend__name"><h4><a class="text-info" href="{{f.profile_user.get_absolute_url}}">{{f.username}}</a></h4></div>
+                            </li>
                         {% endfor %}
                     </ul>
                     {% else %} <p class="empty fs-3">У пользователя {{profile.user.username}} нет друзей</p>
@@ -112,9 +124,13 @@
                 </div>
                 <div class="content__followers">
                 {% if profile.followers %}
+                    <h2 class="followers__title">Подписчики</h2>
                     <ul class="list-group">
                         {% for f in profile.followers.all %}
-                            <li class="list-group-item-info"><a href="{{user.profile_user.get_absolute_url}}">{{f.username}}</a></li>
+                            <li class="list-group-item subscriber">
+                                <div class="subscriber__photo"><img src="{{f.profile_user.get_profile_image}}" alt=""></div>
+                                <div class="subscriber__name"><h4><a class="text-info" href="{{f.profile_user.get_absolute_url}}">{{f.username}}</a></h4></div>
+                            </li>
                         {% endfor %}
                     </ul>
                     {% else %} <p class="empty fs-3">На пользователя {{profile.user.username}} никто не подписан</p>
@@ -128,6 +144,6 @@
 
 {% block js %}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script src="{% static "users/js/profile.js" %}"></script>
+    <script type="module" src="{% static "users/js/profile.js" %}"></script>
     <script src="{% static "users/js/nav.js" %}"></script>
 {% endblock js %}

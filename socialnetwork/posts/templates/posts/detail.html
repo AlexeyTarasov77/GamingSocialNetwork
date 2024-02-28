@@ -41,6 +41,12 @@
                             <img src="{{post.photo.url}}" alt="">
                         </div>
                     {% endif %}
+                    {% if is_owner %}
+                      <div class="owner__row d-flex gap-4 my-3">
+                        <div class="row__delete"><a href="{% url "posts:delete-post" post.id %}" class="delete__btn btn btn-danger">Удалить</a></div>
+                        <div class="row__update"><a href="{% url "posts:update-post" post.id %}" class="update__btn btn btn-warning">Обновить</a></div>
+                      </div>
+                    {% endif %}
                   </div>
                   <div class="card-footer">
                     <div class="lcr">
@@ -101,9 +107,6 @@
       {% endfor %}
     </div>
     {% endif %}
-    <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 50">
-      
-    </div>
 </div>
 
 {% endblock content %}
