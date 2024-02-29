@@ -17,14 +17,18 @@
                 <div class="menu__buttons d-flex justify-content-end gap-4">
                     {% if is_owner %}
                         <a href="{% url "users:profile-update" profile.user_slug %}" type="button" id="friend-req" class="btn btn-dark">Изменить информацию</a>
-                        <a href="#" type="button" id="friend-req" class="btn btn-dark">Заявки в друзья</a>
+                        <a href="{% url "users:profile-friend-requests" profile.user_slug %}" type="button" id="friend-req" class="btn btn-dark">Заявки в друзья</a>
                     {% else %}
                         {% if user in profile.followers.all %}
-                        <button type="button" id="follow" class="btn btn-danger" data-user-slug="{{profile.user_slug}}">Отписаться</button>
+                            <button type="button" id="follow" class="btn btn-danger" data-user-slug="{{profile.user_slug}}">Отписаться</button>
                         {% else %}
-                        <button type="button" id="follow" class="btn btn-dark" data-user-slug="{{profile.user_slug}}">Подписаться</button>
+                            <button type="button" id="follow" class="btn btn-dark" data-user-slug="{{profile.user_slug}}">Подписаться</button>
                         {% endif %}
-                        <button type="button" id="friend-req" class="btn btn-dark btn-sm">Отправить заявку в друзья</button>
+                        {% if not user in profile.friends.all %}
+                            <button type="button" id="friend-req" class="btn btn-dark btn-sm" data-user-slug="{{profile.user_slug}}" >Отправить заявку в друзья</button>
+                        {% else %}
+                            <button type="button" id="friend-req" class="btn btn-danger btn-sm" data-user-slug="{{profile.user_slug}}" >Удалить из друзей</button>{% endif %}
+                        
                     {% endif %}
                     
                 </div>
@@ -84,7 +88,8 @@
               </nav>
             <div class="nav__content p-3">
                 <div class="content__main">
-                    <h2>Основной контент</h2>
+                    <h2 class="main__title">Основной контент</h2>
+                    
                 </div>
                 <div class="content__bio">
                     {% if profile.bio %}
@@ -96,7 +101,7 @@
                 </div>
                 <div class="content__following">
                     {% if profile.following %}
-                    <h2 class="following__title">Подписки</h2>
+                    <h2 class="following__title">Подписки - {{profile.following.count}}</h2>
                     <ul class="list-group">
                         {% for f in profile.following.all %}
                             <li class="list-group-item follower">
@@ -110,7 +115,7 @@
                 </div>
                 <div class="content__friends">
                 {% if profile.friends %}
-                    <h2 class="friends__title">Друзья</h2>
+                    <h2 class="friends__title">Друзья - {{profile.friends.count}}</h2>
                     <ul class="list-group">
                         {% for f in profile.friends.all %}
                             <li class="list-group-item friend">
@@ -124,7 +129,7 @@
                 </div>
                 <div class="content__followers">
                 {% if profile.followers %}
-                    <h2 class="followers__title">Подписчики</h2>
+                    <h2 class="followers__title">Подписчики - {{profile.followers.count}}</h2>
                     <ul class="list-group">
                         {% for f in profile.followers.all %}
                             <li class="list-group-item subscriber">

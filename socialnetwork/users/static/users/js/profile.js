@@ -47,14 +47,18 @@ function subscribe() {
     })
     .done(function (data) {
       if (data.is_subscribed) {
+        console.log(1);
         subscribeBtn.removeClass('btn-dark');
         subscribeBtn.addClass('btn-danger');
         subscribeBtn.text('Отписаться');
-        showToast("Вы подписаны!")
+        $('.toast').remove()
+        showToast("Вы подписались!")
       } else {
+        console.log(2);
         subscribeBtn.removeClass('btn-danger');
         subscribeBtn.addClass('btn-dark');
         subscribeBtn.text('Подписаться');
+        $('.toast').remove()
         showToast("Вы отписались!", "warning")
       }
     })

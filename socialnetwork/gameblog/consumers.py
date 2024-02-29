@@ -27,16 +27,16 @@ class UserStatusConsumer(AsyncWebsocketConsumer):
         
     async def connect (self):
         await self.accept ()
-        await self.channel_layer.group_add ("users", self.channel_name)
+        await self.channel_layer.group_add("users", self.channel_name)
  
-        user = self.scope ['user']
+        user = self.scope['user']
         if user.is_authenticated:
             await self.update_user_incr(user)
     
     async def disconnect (self, code):
-        await self.channel_layer.group_discard ("users", self.channel_name)
+        await self.channel_layer.group_discard("users", self.channel_name)
  
-        user = self.scope ['user']
+        user = self.scope['user']
         if user.is_authenticated:
             await self.update_user_decr(user)
  

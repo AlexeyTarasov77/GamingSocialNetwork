@@ -71,6 +71,10 @@ class DeletePost(generic.DeleteView):
     template_name = "posts/delete.html"
     model = Post
     success_url = reverse_lazy("posts:list-posts")
+    context_object_name = "post"
+    def form_valid(self, form: BaseModelForm) -> HttpResponse:
+        messages.success(self.request, "Пост успешно удален")
+        return super().form_valid(form)
 
 
 class UpdatePost(generic.UpdateView):
@@ -78,7 +82,7 @@ class UpdatePost(generic.UpdateView):
     model = Post
     form_class = forms.UpdatePostForm
     def form_valid(self, form: BaseModelForm) -> HttpResponse:
-        messages.success(self.request, "Пост успешно обновлен")
+        messages.warning(self.request, "Пост успешно обновлен")
         return super().form_valid(form)
 
 

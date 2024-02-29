@@ -1,1 +1,10 @@
 {% extends "./base_posts.html" %}
+{% block content %}
+<div class="delete-confirm mb-3">
+    <h1>Вы уверены что хотите удалить пост - "{{post.name}}"</h1>
+    <form action="{% url "posts:delete-post" object.id %}" method="post">
+        {% csrf_token %}
+        <button class="btn btn-danger">Удалить</button>
+    </form>
+</div>
+{% endblock content %}

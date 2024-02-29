@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+<div class="wrapper">
+    <div class="requests">
+        <div class="requests__column">
+            <div class="column__title"><h2>Заявки в друзья. Всего {{friend_requests.count}} заяв{{friend_requests.count|pluralize:"ка,ок"}}</h2></div>
+            {% for request in friend_requests %}
+            <div class="column__row">
+                <div class="row__request">
+                    <div class="request__container">
+                        <div class="request__title"><h4>Заявка в друзья от пользователя {{request.from_user}}</h4></div>
+                        <div class="request__buttons">
+                            <div class="buttons__decline"><button class="btn btn-danger">Отклонить</button></div>
+                            <div class="buttons__accept"><button class="btn btn-success">Принять</button></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
