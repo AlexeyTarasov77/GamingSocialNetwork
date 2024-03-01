@@ -1,17 +1,20 @@
 {% extends "base.html" %}
+{% load static %}
 
-<div class="wrapper">
+{% block content %}
+{% csrf_token %}
+<div class="wrapper p-5">
     <div class="requests">
-        <div class="requests__column">
+        <div class="requests__column d-flex flex-column g-5">
             <div class="column__title"><h2>Заявки в друзья. Всего {{friend_requests.count}} заяв{{friend_requests.count|pluralize:"ка,ок"}}</h2></div>
             {% for request in friend_requests %}
             <div class="column__row">
                 <div class="row__request">
                     <div class="request__container">
                         <div class="request__title"><h4>Заявка в друзья от пользователя {{request.from_user}}</h4></div>
-                        <div class="request__buttons">
-                            <div class="buttons__decline"><button class="btn btn-danger">Отклонить</button></div>
-                            <div class="buttons__accept"><button class="btn btn-success">Принять</button></div>
+                        <div class="request__buttons d-flex">
+                            <div class="buttons__decline me-4"><button class="handling-btn btn btn-danger" data-user-slug={{request.to_profile.user_slug}} data-type="DELETE" data-user-pk="{{request.from_user.pk}}">Отклонить</button></div>
+                            <div class="buttons__accept"><button class="handling-btn btn btn-success" data-user-slug={{request.to_profile.user_slug}} data-type="POST" data-user-pk="{{request.from_user.pk}}">Принять</button></div>
                         </div>
                     </div>
                 </div>
@@ -20,3 +23,8 @@
         </div>
     </div>
 </div>
+{% endblock content %}
+{% block js %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script type="module" src="{% static "users/js/friend_requests.js" %}"></script>
+{% endblock js %}

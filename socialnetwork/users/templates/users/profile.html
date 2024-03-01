@@ -24,10 +24,13 @@
                         {% else %}
                             <button type="button" id="follow" class="btn btn-dark" data-user-slug="{{profile.user_slug}}">Подписаться</button>
                         {% endif %}
-                        {% if not user in profile.friends.all %}
-                            <button type="button" id="friend-req" class="btn btn-dark btn-sm" data-user-slug="{{profile.user_slug}}" >Отправить заявку в друзья</button>
+                        {% if not user in profile.friends.all and not request_exist%}
+                            <button type="button" id="friend-req" class="btn btn-dark btn-sm" data-user-slug="{{profile.user_slug}}" data-type="POST" data-action="send">Отправить заявку в друзья</button>
+                        {% elif request_exist %}
+                            <button type="button" id="friend-req" class="btn btn-danger btn-sm" data-user-slug="{{profile.user_slug}}" data-type="DELETE" data-action="cancel">Отменить заявку</button>
                         {% else %}
-                            <button type="button" id="friend-req" class="btn btn-danger btn-sm" data-user-slug="{{profile.user_slug}}" >Удалить из друзей</button>{% endif %}
+                            <button type="button" id="friend-req" class="btn btn-danger btn-sm" data-user-slug="{{profile.user_slug}}" data-type="DELETE" data-action="delete">Удалить из друзей</button>
+                        {% endif %}
                         
                     {% endif %}
                     

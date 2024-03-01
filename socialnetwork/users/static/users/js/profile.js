@@ -1,14 +1,15 @@
 import showToast from "../../../../static/notifications.js";
 
+const csrftoken = $('input[name="csrfmiddlewaretoken"]').val();
 $(document).ready(function () {
   if ($('.is_owner').text() == 'True') {
     // showNotification();
     changeAvatar()
   } else {
     subscribe()
+    friendRequest()
   }
 })
-const csrftoken = $('input[name="csrfmiddlewaretoken"]').val();
 function changeAvatar() {
   $('.profile__photo img').click(() => $('#photoInput').click())
   $('#photoInput').on('change', function () {
@@ -43,7 +44,6 @@ function subscribe() {
       type: 'PATCH',
       url: `/accounts/profile/subscribe/${subscribeBtn.data('user-slug')}/`,
       beforeSend: (xhr, settings) => xhr.setRequestHeader('X-CSRFToken', csrftoken),
-      // data: {csrfmiddlewaretoken: csrftoken}
     })
     .done(function (data) {
       if (data.is_subscribed) {
@@ -62,6 +62,34 @@ function subscribe() {
         showToast("Вы отписались!", "warning")
       }
     })
+    .fail(function (err) {
+      showToast("Упс! Что-то пошло не так... Попробуйте повторить попытку позже", 'danger', 'Ошибка')
+    })
+  })
+}
+
+function friendRequest(){
+  const reqBtn = $('#friend-req');
+  reqBtn.click(function () {
+    $.ajax({
+      type: reqBtn.data("type"),
+      url: `/accounts/profile/api/friend_requests/${reqBtn.data("user-slug")}/`,
+      data: {"action": reqBtn.data("action")},
+      beforeSend: (xhr, settings) => xhr.setRequestHeader('X-CSRFToken', csrftoken),
+    })
+    .done(function (data) {
+      if (data?.sent) {
+        reqBtn.removeClass('btn-dark');
+        reqBtn.addClass('btn-danger');
+        reqBtn.text('Отменить заявку');
+        showToast("Заявка отправлена!")
+      } else if (data.removed) {
+        reqBtn.removeClass('btn-danger');
+        reqBtn.addClass('btn-dark');
+        reqBtn.text('Отправить заявку в друзья');
+        showToast(data.msg)
+      }
+})
     .fail(function (err) {
       showToast("Упс! Что-то пошло не так... Попробуйте повторить попытку позже", 'danger', 'Ошибка')
     })

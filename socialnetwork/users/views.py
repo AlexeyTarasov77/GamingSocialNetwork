@@ -10,7 +10,7 @@ from .forms import ProfileUpdateForm
 from django.db.utils import ProgrammingError, OperationalError
 from django.db import IntegrityError
 from django.contrib import messages
-from rest_framework import generics
+from rest_framework import generics, status
 from .serializers import SubscribeSerializer
 from rest_framework.response import Response
 from django.contrib.auth.models import User
@@ -37,9 +37,11 @@ class ProfileView(LoginRequiredMixin, generic.DetailView):
 
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
+        profile = self.get_object()
         context["is_owner"] = (
-            True if self.get_object().user == self.request.user else False
+            True if profile.user == self.request.user else False
         )
+        context["request_exist"] = True if profile.requests.filter(from_user=self.request.user).exists() else False
         return context
 
 
@@ -64,6 +66,7 @@ class ProfileUpdateView(generic.UpdateView):
 def friend_requests_view(request, username):
     user = get_object_or_404(User, profile_user__user_slug=username)
     friend_requests = FriendRequest.objects.filter(to_user=user)
+    print(friend_requests)
     return render(request, "users/friend_requests.html", {"friend_requests": friend_requests})
 
 
@@ -99,15 +102,28 @@ class FriendRequestAPIView(generics.GenericAPIView):
         
     def post(self, request, username):
         """Создание заявки в друзья"""
-        data = {"from_user": request.user, "to_user": self.get_object().user}
+        profile = self.get_object()
+        data = {"from_user": request.user, "to_user": profile.user, "to_profile": profile}
         FriendRequest.objects.create(**data)
+        
+        return Response({"sent": True}, status=status.HTTP_201_CREATED)
         
     def delete(self, request, username):
         """Удаление из друзей"""
+        user_profile1 = self.get_object()
         user1 = self.get_object().user
+        user_profile2 = get_object_or_404(Profile, user=request.user)
         user2 = request.user
-        user1.friends.remove(user2)
-        user2.friends.remove(user1)
+        action = request.data["action"]
+        msg = ''
+        if action == 'delete':
+            user_profile1.friends.remove(user2)
+            user_profile2.friends.remove(user1)
+            msg = 'Удален из друзей'
+        elif action == 'cancel':
+            FriendRequest.objects.get(from_user=user2, to_user=user1).delete()
+            msg='Заявка в друзья отменена'
+        return Response({"removed": True, "msg": msg}, status=status.HTTP_204_NO_CONTENT)
         
         
 class FriendRequestHandlerAPIView(generics.GenericAPIView):
@@ -121,13 +137,16 @@ class FriendRequestHandlerAPIView(generics.GenericAPIView):
         user_profile2 = get_object_or_404(Profile, user__pk=request.data["user_pk"])
         user_profile1.friends.add(user_profile2.user)
         user_profile2.friends.add(user_profile1.user)
-        FriendRequest.objects.delete(from_user=user_profile1.user, to_user=user_profile2.user)
+        FriendRequest.objects.get(from_user=user_profile1.user, to_user=user_profile2.user).delete()
+        return Response({"accepted": True}, status=status.HTTP_201_CREATED)
         
         
     def delete(self, request, username):
         """Отклонение заявки в друзья"""
         user1 = self.get_object().user
         user2 = get_object_or_404(User, pk=request.data["user_pk"])
-        FriendRequest.objects.delete(from_user=user1, to_user=user2)
+        FriendRequest.objects.get(from_user=user1, to_user=user2).delete()
+        return Response({"accepted": False}, status=status.HTTP_201_CREATED)
+        
         
 

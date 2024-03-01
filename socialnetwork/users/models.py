@@ -23,7 +23,6 @@ class Profile(models.Model):
     bio = models.TextField(blank=True, null=True, verbose_name="Биография")
     date_of_birth = models.DateTimeField(null=True, blank=True, verbose_name="Дата рождения")
     time_update = models.DateTimeField(auto_now=True)
-    friend_requests = models.ForeignKey("FriendRequest", verbose_name="Заявки в друзья", on_delete=models.CASCADE, null=True, blank=True)
     
     def __str__(self) -> str:
         return f'Профиль пользователя - {self.user}. Слаг - {self.user_slug}'
@@ -44,6 +43,7 @@ class Profile(models.Model):
         return reverse("users:profile", kwargs={"username": self.user_slug})
     
 class FriendRequest(models.Model):
+    to_profile = models.ForeignKey(Profile, related_name='requests', on_delete=models.CASCADE, verbose_name="Заявки в друзья")
     from_user = models.OneToOneField(get_user_model(), related_name='request_from', on_delete=models.CASCADE)
     to_user = models.OneToOneField(get_user_model(), related_name='request_to', on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True)
