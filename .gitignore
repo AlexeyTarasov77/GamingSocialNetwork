@@ -1,9 +1,10 @@
 *.pyc
-__pycache__
+__pycache__/
 db.sqlite3
 /env
 *.env
 .vscode
-.DS_Store
+*.DS_Store
 **/migrations/*.py
 socialnetworkvenv
+Makefile

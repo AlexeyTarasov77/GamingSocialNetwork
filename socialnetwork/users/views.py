@@ -27,7 +27,6 @@ class ProfileView(LoginRequiredMixin, generic.DetailView):
     def post(self, request, *args, **kwargs):
         if request.FILES["image"]:
             # try:
-            print(request.FILES)
             instance = self.get_object()
             instance.image = request.FILES["image"]
             instance.save()
@@ -72,16 +71,9 @@ def friend_requests_view(request, username):
 
 class SubscribeAPIView(generics.GenericAPIView):
     queryset = Profile.objects.all()
-    # serializer_class = SubscribeSerializer
     lookup_field = "user_slug"
     lookup_url_kwarg = "username"
 
-    # def get(self, request, username):
-    #     user_profile = self.get_object()
-    #     if request.user in user_profile.followers.all():
-    #         return Response({"is_subscribed": True})
-    #     else:
-    #         return Response({"is_subscribed": False})
 
     def patch(self, request, username):
         user_profile = self.get_object()  # получение профиля пользователя на которого подписываются
@@ -95,6 +87,10 @@ class SubscribeAPIView(generics.GenericAPIView):
             user.profile_user.following.add(user_profile.user) # добавить в подписки пользователя на которого подписываемся
             return Response({"is_subscribed": True})
         
+def friend_request_remove(from_user: User, to_user: User) -> None:
+    """Удаление заявки в друзья"""
+    FriendRequest.objects.get(from_user=from_user, to_user=to_user).delete()
+        
 class FriendRequestAPIView(generics.GenericAPIView):
     queryset = Profile.objects.all()
     lookup_field = "user_slug"
@@ -102,26 +98,28 @@ class FriendRequestAPIView(generics.GenericAPIView):
         
     def post(self, request, username):
         """Создание заявки в друзья"""
-        profile = self.get_object()
-        data = {"from_user": request.user, "to_user": profile.user, "to_profile": profile}
+        profile = self.get_object() # профиль пользователя которому отправляют заявку
+        data = {"from_user": request.user, "to_user": profile.user, "to_profile": profile} # формирование данных для создания заявки
         FriendRequest.objects.create(**data)
         
         return Response({"sent": True}, status=status.HTTP_201_CREATED)
         
     def delete(self, request, username):
-        """Удаление из друзей"""
-        user_profile1 = self.get_object()
-        user1 = self.get_object().user
-        user_profile2 = get_object_or_404(Profile, user=request.user)
-        user2 = request.user
-        action = request.data["action"]
-        msg = ''
-        if action == 'delete':
+        """Удаление из друзей или отмена заявки"""
+        user_profile1 = self.get_object() # получение профиля пользователя которому отправляли заявку
+        user1 = self.get_object().user # получение юзера из профиля пользователя
+        user_profile2 = get_object_or_404(Profile, user=request.user) # получение профиля пользователя который отправил заявку (или хочеть удалить из друзей)
+        user2 = request.user # соответствующий юзер
+        action = request.data["action"] # действие которое надо выполнить (либо удаление заявки либо отмена отправки)
+        msg = '' # инициализация сообщения для возврата на клиент в зависимости от выполненного действия
+        if action == 'delete': 
+            # если действие - удалить из друзей, взаимоудаляем 
             user_profile1.friends.remove(user2)
             user_profile2.friends.remove(user1)
             msg = 'Удален из друзей'
         elif action == 'cancel':
-            FriendRequest.objects.get(from_user=user2, to_user=user1).delete()
+            # если пользователь хочет отменить заявку просто удаляем ее у соответствующего пользователя
+            friend_request_remove(user2, user1)
             msg='Заявка в друзья отменена'
         return Response({"removed": True, "msg": msg}, status=status.HTTP_204_NO_CONTENT)
         
@@ -133,20 +131,24 @@ class FriendRequestHandlerAPIView(generics.GenericAPIView):
     
     def post(self, request, username):
         """Принятие заявки в друзья"""
-        user_profile1 = self.get_object()
-        user_profile2 = get_object_or_404(Profile, user__pk=request.data["user_pk"])
-        user_profile1.friends.add(user_profile2.user)
+        user_profile1 = self.get_object() # получение профиля пользователя который принимает заявку
+        user_profile2 = get_object_or_404(Profile, user__pk=request.data["user_pk"]) # получение профиля пользователя которому принадлежит заявка
+        # взаимодобавление в друзья к друг другу
+        user_profile1.friends.add(user_profile2.user) 
         user_profile2.friends.add(user_profile1.user)
-        FriendRequest.objects.get(from_user=user_profile1.user, to_user=user_profile2.user).delete()
+        # удаление заявки
+        friend_request_remove(user_profile2.user, user_profile1.user)
         return Response({"accepted": True}, status=status.HTTP_201_CREATED)
         
         
     def delete(self, request, username):
         """Отклонение заявки в друзья"""
-        user1 = self.get_object().user
-        user2 = get_object_or_404(User, pk=request.data["user_pk"])
-        FriendRequest.objects.get(from_user=user1, to_user=user2).delete()
-        return Response({"accepted": False}, status=status.HTTP_201_CREATED)
+        user1 = self.get_object().user # получение юзера из профиля пользователя который отклоняет заявку 
+        user2 = get_object_or_404(User, pk=request.data["user_pk"]) # юзер который отправил заявку (чья заявка отклоняеться)
+        friend_request_remove(user2, user1) # удаление заявки
+        return Response({"accepted": False}, status=status.HTTP_204_NO_CONTENT) 
+    
+    
         
         
 
