@@ -61,7 +61,7 @@ document.addEventListener("DOMContentLoaded", function() {
         event.preventDefault();
         btnStatus(false, 'Ожидаем ответа от сервера...', commentFormSubmit)
         try {
-            const response = await fetch(`http://localhost:8000/posts/comment-post/${commentPostId}/`, {
+            const response = await fetch(`${window.location.origin}/posts/comment-post/${commentPostId}/`, {
                 method: 'POST',
                 headers: {
                     'X-CSRFToken': csrftoken,
@@ -92,7 +92,7 @@ document.addEventListener("DOMContentLoaded", function() {
             document.querySelector(`#comment-thread-${comment.parent}`).insertAdjacentHTML("beforeend", commentTemplate);
         }
         else {
-            document.querySelector('.nested-comments').insertAdjacentHTML("beforeend", commentTemplate)
+            document.querySelector('.nested-comments').insertAdjacentHTML("afterbegin", commentTemplate)
         }
         commentForm.reset()
         btnStatus(true, "Добавить комментарий", commentFormSubmit)

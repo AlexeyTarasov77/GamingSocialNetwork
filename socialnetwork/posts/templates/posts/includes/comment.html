@@ -39,21 +39,21 @@
             <li>
                 <div class="comment-main-level">
                     <!-- Avatar -->
-                    <div class="comment-avatar"><img src="http://i9.photobucket.com/albums/a88/creaticode/avatar_1_zps8e1c80cd.jpg" alt=""></div>
+                    <div class="comment-avatar"><img src="{{node.author.profile_user.get_profile_image}}" alt=""></div>
                     <!-- Contenedor del Comentario -->
                     <div class="comment-box">
                         <div class="comment-head">
-                            <h6 class="comment-name {% if node.is_root_node or node.get_root.author.username == node.author.username%}by-author{% endif %}">{{node.author.username}}</h6>
+                            <h6 class="comment-name fs-5 {% if node.is_root_node or node.get_root.author.username == node.author.username%}by-author{% endif %}"><a href="{{node.author.profile_user.get_absolute_url}}">{{node.author.username}}</a></h6>
                             <span style="padding-right: 1em;">{{node.time_create}}</span>{% if node.time_create == node.time_update %}<span>*Изменено {{node.time_update|naturaltime}}</span>{% endif %}
                             <span class="num-likes ms-4">Понравилось: <i class="num-likes-count">{{node.liked.count}}</i></span>
-                            <a href="#commentForm" data-comment-id="{{ node.pk }}" data-comment-username="{{ node.author }}" class="btn-reply"><i class="bi bi-reply"></i></a>
+                            <a href="#comentForm" data-comment-id="{{ node.pk }}" data-comment-username="{{ node.author }}" class="btn-reply"><i class="bi bi-reply"></i></a>
                            {% if user in node.liked.all %}<i class="bi bi-heart-fill text-danger comment-like" data-likecomment-id="{{node.pk}}"></i>{% else %}<i class="bi bi-heart comment-like" data-likecomment-id="{{node.pk}}"></i>{% endif %}
                         </div>
                         <div class="comment-content">
                             {{node.content}}
                         </div>
                         {% if node.get_descendant_count > 1 and node.is_root_node %}
-                        <button class="btn btn-success btn-sm show-more-replies mt-5" data-comment-id="{{ node.pk }}">Показать больше</button>
+                        <button class="btn btn-success btn-sm show-more-replies mt-5" data-comment-id="{{ node.pk }}">Показать ответы</button>
                         <button class="btn btn-danger btn-sm hide-replies mt-5" data-comment-id="{{ node.pk }}" style="display:none;">Скрыть</button>
                         {% endif %}
                     </div>

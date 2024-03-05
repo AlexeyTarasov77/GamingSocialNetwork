@@ -7,13 +7,11 @@ from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Profile, FriendRequest
 from .forms import ProfileUpdateForm
-from django.db.utils import ProgrammingError, OperationalError
-from django.db import IntegrityError
 from django.contrib import messages
 from rest_framework import generics, status
-from .serializers import SubscribeSerializer
 from rest_framework.response import Response
 from django.contrib.auth.models import User
+from posts.models import Post
 
 
 # Create your views here.
@@ -26,23 +24,31 @@ class ProfileView(LoginRequiredMixin, generic.DetailView):
 
     def post(self, request, *args, **kwargs):
         if request.FILES["image"]:
-            # try:
             instance = self.get_object()
             instance.image = request.FILES["image"]
             instance.save()
             return JsonResponse({"path": instance.image.url})
-        # except [ProgrammingError, OperationalError, IntegrityError] as error:
-        #     return JsonResponse({'error': error}, status=500)
-
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
         profile = self.get_object()
+        user = profile.user
         context["is_owner"] = (
             True if profile.user == self.request.user else False
         )
+        # отправлял ли текущий пользователь запрос в друзья
         context["request_exist"] = True if profile.requests.filter(from_user=self.request.user).exists() else False
+        
         return context
 
+
+def profile_posts_view(request, username):
+    user = get_object_or_404(User, profile_user__user_slug=username)
+    context = {'own_posts': user.post_author.all(),
+               'liked_posts': user.post_like.all(),
+               'saved_posts': user.post_save.all(),
+               'is_owner': True if user == request.user else False
+               }
+    return render(request, 'users/profile_posts.html', context)
 
 def profile_middleware(request):
     if request.user.is_authenticated:

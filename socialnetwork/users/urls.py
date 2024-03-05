@@ -10,6 +10,7 @@ urlpatterns = [
     path('accounts/profile/api/friend_requests/<slug:username>/', views.FriendRequestAPIView.as_view(), name='profile-requests'),
     path('accounts/profile/api/friend_requests/handler/<slug:username>/', views.FriendRequestHandlerAPIView.as_view(), name='profile-requests-handler'),
     path('accounts/profile/friend_requests/<slug:username>/', views.friend_requests_view, name='profile-friend-requests'),
+    path('accounts/profile/posts/<slug:username>/', views.profile_posts_view, name='profile-posts'),
     path('accounts/profile/', views.profile_middleware, name='profile_middleware'),
 ]
 

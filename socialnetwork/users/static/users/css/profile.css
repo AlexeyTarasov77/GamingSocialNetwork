@@ -77,8 +77,10 @@ body{
     color: #ff6600;
 }
 
-.active{
-    font-size: 1.05em;
+.btn-active{
+    font-size: 1.1em;
+    font-weight: bold;
+    color: #232323;
 }
 
 .nav-link{

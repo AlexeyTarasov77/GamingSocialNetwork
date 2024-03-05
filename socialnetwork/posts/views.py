@@ -24,7 +24,7 @@ from django.contrib import messages
 class ListPosts(generic.ListView):
     template_name = "posts/list.html"
     context_object_name = "posts_list"
-    paginate_by = 2
+    paginate_by = 5
 
     def get_queryset(self):
         queryset = Post.published.annotate(
@@ -198,6 +198,21 @@ class LikeCommentAPIView(LikeAPIView):
     def get_object(self, obj_id):
         return get_object_or_404(Comment, id=obj_id)
 
+
+class SavePostAPIView(generics.GenericAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+    queryset = Post.published.all()
+    lookup_url_kwarg = 'post_id'
+    
+    def patch(self, request, post_id):
+        post = self.get_object()
+        if request.user in post.saved.all():
+            post.saved.remove(request.user)
+            return Response({"is_saved": False})
+        else:
+            post.saved.add(request.user)
+            return Response({"is_saved": True})
+    
 
 class CreateCommentAPIView(generics.CreateAPIView):
     permission_classes = [permissions.IsAuthenticated]

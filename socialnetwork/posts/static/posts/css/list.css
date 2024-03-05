@@ -68,6 +68,18 @@ main {
   font-family: "Roboto", sans-serif;
 }
 
+#save {
+  font-size: 1.2em;
+}
+
+#save-icon svg {
+  -webkit-transition: color 0.35s !important;
+  transition: color 0.35s !important;
+}
+#save-icon svg:hover {
+  color: rgb(255, 170, 0) !important;
+}
+
 .heart {
   width: 100px;
   height: 100px;

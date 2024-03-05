@@ -22,8 +22,8 @@ $(document).ready(function() {
         })
         .fail(function(error) {
             console.log(error.status);
-            if (error.status == 401) {
-                showToast("Что бы поставить лайк необходимо авторизоваться!", 'warning')
+            if (error.status == 403) {
+                showToast("Что бы поставить лайк необходимо авторизоваться!\n<a class='btn btn-dark btn-sm' href='/accounts/login/'>Войти</a>", 'warning')
             } else {
                 showToast("Упс! Что-то пошло не так... Попробуйте повторить попытку позже", 'danger', 'Ошибка')
             }

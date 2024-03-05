@@ -29,13 +29,6 @@
     height: 100vh;
 }
 
-// #like-btn, #unlike-btn {
-//     background: none;
-//     border: none;
-//     #like-span, #unlike-span{
-//         font-size: 22px;
-//     }
-// }
 
 .like-container {
     display: flex;
@@ -60,6 +53,18 @@
 main {
     font-family: 'Roboto', sans-serif;
 }
+
+#save {
+    font-size: 1.2em;
+}
+
+#save-icon svg{
+    transition: color 0.35s !important;
+    &:hover {
+        color: rgb(255, 170, 0) !important;
+    }
+}
+
 .heart {
     width: 100px;
     height: 100px;

@@ -62,6 +62,8 @@ THIRD_PARTY_APPS = [
     'allauth.socialaccount.providers.steam',
     'widget_tweaks',
     'channels',
+    'django_celery_results',
+    'django_celery_beat',
 ]
 
 LOCAL_APPS = [
@@ -110,16 +112,6 @@ TEMPLATES = [
 WSGI_APPLICATION = 'socialnetwork.wsgi.application'
 ASGI_APPLICATION = 'socialnetwork.asgi.application' 
 
-
-CHANNEL_LAYERS = {
-    "default": {
-        "BACKEND": "channels_redis.core.RedisChannelLayer",
-        "CONFIG": {
-            "hosts": [("localhost", 6379)],
-        },
-    },
-}
-
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
@@ -131,6 +123,15 @@ DATABASES = {
         'PASSWORD': config('DB_PASSWORD'),
         'HOST': config('DB_HOST'),
         'PORT': config('DB_PORT'),
+    }
+}
+
+# cache configuration
+
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.redis.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379/1",
     }
 }
 
@@ -177,7 +178,17 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-# CUSTOM SETTINGS
+#    <-----CUSTOM SETTINGS------>
+
+# DJANGO-CHANNELS
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("localhost", 6379)],
+        },
+    },
+}
 
 # USE INSENSITIVE TAGS
 TAGGIT_CASE_INSENSITIVE = True
@@ -213,13 +224,18 @@ AUTHENTICATION_BACKENDS = [
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
-
 ACCOUNT_CHANGE_EMAIL = True # разрешить пользователю изменять email
 ACCOUNT_EMAIL_REQUIRED = True # обязательное указание емаила при реге
-ACCOUNT_LOGIN_ATTEMPTS_TIMEOUT = 30 # заблокировать доступ на 30с после 5 попыток неудачного доступа
 ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True # залогинить юзера при потдтверждении емеила
 LOGIN_URL = 'account_login' # имя маршрута для редиректа неавторизованных юзеров
 LOGIN_REDIRECT_URL = "users:profile_middleware" # редирект после успешного логина
 LOGOUT_REDIRECT_URL = 'account_login' # редирект после логаута
 ACCOUNT_PRESERVE_USERNAME_CASING = False # хранить юзернеймы в нижнем регистре
 ACCOUNT_USERNAME_MIN_LENGTH = 3
+
+# CELERY 
+
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
+CELERY_RESULT_BACKEND = 'django-db'
+CELERY_CACHE_BACKEND = 'default'
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
