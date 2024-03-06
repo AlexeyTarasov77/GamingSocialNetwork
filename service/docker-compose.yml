@@ -7,6 +7,8 @@ services:
   db:
     image: postgres:15-alpine
     container_name: socialnetwork-db
+    ports:
+      - 5432:5432
     restart: always
     environment: # установка переменных окружения
       - POSTGRES_PASSWORD=postgres
@@ -31,7 +33,7 @@ services:
     restart: always
     command: sh -c "python3 manage.py makemigrations &&
                     python3 manage.py migrate &&
-                    python3 manage.py runserver"
+                    python3 manage.py runserver 0.0.0.0:8000"
 
   redis:
     image: redis:7.2.3-alpine
