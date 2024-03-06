@@ -1,0 +1,51 @@
+
+
+volumes:
+  postgres_data:
+
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: socialnetwork-db
+    restart: always
+    environment: # установка переменных окружения
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  socialnetwork:
+    build: ./socialnetwork
+    ports:
+      - 8000:8000
+    volumes:
+      - ./socialnetwork:/service
+    env_file: ./socialnetwork/socialnetwork/.env
+    depends_on:
+      - redis
+      - db
+    links:
+      - redis
+      - db
+    container_name: socialnetwork-service
+    restart: always
+    command: sh -c "python3 manage.py makemigrations &&
+                    python3 manage.py migrate &&
+                    python3 manage.py runserver"
+
+  redis:
+    image: redis:7.2.3-alpine
+    container_name: socialnetwork-redis
+    restart: unless-stopped
+
+  celery:
+    build: ./socialnetwork
+    container_name: socialnetwork-celery
+    env_file: ./socialnetwork/socialnetwork/.env
+    depends_on:
+      - db
+      - redis
+    restart: always
+    command: celery -A socialnetwork worker --loglevel=info --beat
+
+  

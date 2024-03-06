@@ -1,0 +1,75 @@
+{% extends "./base-users.html" %}
+{% load static %}
+{% block links %}
+<link rel="stylesheet" href="{% static "users/css/profile_posts.css" %}">
+{% endblock links %}
+{% block content %}
+<div class="posts">
+    <div class="posts__nav p-3">
+        <div class="nav__button mb-3"><button id="own"  data-name="own" class="nav-link btn btn-active">Собственные посты</button></div>
+        <div class="nav__button mb-3"><button id="liked" data-name="liked"  class="nav-link btn">Понравившиеся посты</button></div>
+        <div class="nav__button mb-3"><button id="saved" data-name="saved"  class="nav-link btn">Сохраненные посты</button></div>
+        <div class="nav__button mb-3"><button id="saved" data-name="drafts"  class="nav-link btn">Черновики</button></div>
+    </div>
+    <div class="posts__content">
+        <div class="content__own row g-4">
+            {% for post in own_posts %}
+                <div class="own__post col-6 col-md-4 border border-secondary-subtle px-1">
+                    <div class="post__photo mb-3"><img class="card-img-top" src="{% if post.photo %}{{post.photo.url}}{% else %}https://luxurycollectionrealestate.com/wp-content/themes/realestate-7/images/no-image.png{% endif %}" alt="" width=150 height=200></div>
+                    <div class="card-body">
+                        <div class="post__title card-title">
+                            <h5><a href="{{post.get_absolute_url}}">{{post.name}}</a></h5>
+                        </div>
+                        <div class="post__content"><p class="card-text">{{post.content|truncatewords:15}}</p></div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="content__liked row g-4">
+            {% for post in liked_posts %}
+                <div class="liked__post col-6 col-md-4 border border-secondary-subtle px-1">
+                    <div class="post__photo mb-3"><img class="card-img-top" src="{% if post.photo %}{{post.photo.url}}{% else %}https://luxurycollectionrealestate.com/wp-content/themes/realestate-7/images/no-image.png{% endif %}" alt="" width=150 height=200></div>
+                    <div class="card-body">
+                        <div class="post__title card-title">
+                            <h5><a href="{{post.get_absolute_url}}">{{post.name}}</a></h5>
+                        </div>
+                        <div class="post__content"><p class="card-text">{{post.content|truncatewords:15}}</p></div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="content__drafts row g-4">
+            {% for post in drafts_posts %}
+                <div class="drafts__post col-6 col-md-4 border border-secondary-subtle px-1">
+                    <div class="post__photo mb-3"><img class="card-img-top" src="{% if post.photo %}{{post.photo.url}}{% else %}https://luxurycollectionrealestate.com/wp-content/themes/realestate-7/images/no-image.png{% endif %}" alt="" width=150 height=200></div>
+                    <div class="card-body">
+                        <div class="post__title card-title">
+                            <h5><a href="{{post.get_absolute_url}}">{{post.name}}</a></h5>
+                        </div>
+                        <div class="post__content"><p class="card-text">{{post.content|truncatewords:15}}</p></div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        {% if is_owner %}
+        <div class="content__saved row g-4">
+            {% for post in saved_posts %}
+                <div class="saved__post col-6 col-md-4 border border-secondary-subtle px-1">
+                    <div class="post__photo mb-3"><img class="card-img-top" src="{% if post.photo %}{{post.photo.url}}{% else %}https://luxurycollectionrealestate.com/wp-content/themes/realestate-7/images/no-image.png{% endif %}" alt="" width=150 height=200></div>
+                    <div class="card-body">
+                        <div class="post__title card-title">
+                            <h5><a href="{{post.get_absolute_url}}">{{post.name}}</a></h5>
+                        </div>
+                        <div class="post__content"><p class="card-text">{{post.content|truncatewords:15}}</p></div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock content %}
+{% block js %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script type="module" src="{% static "users/js/profilePosts.js" %}"></script>
+{% endblock js %}
