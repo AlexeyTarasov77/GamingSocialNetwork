@@ -74,6 +74,8 @@ LOCAL_APPS = [
     'gameblog.apps.GameblogConfig',
     'posts.apps.PostsConfig',
     'searchteam.apps.SearchteamConfig',
+    'cart.apps.CartConfig',
+    'gameshop.apps.GameshopConfig',
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -203,6 +205,7 @@ EMAIL_HOST_USER = config('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 EMAIL_PORT = config('EMAIL_PORT')
 EMAIL_USE_TLS = config('EMAIL_USE_TLS')
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 # REST FRAMEWORK
 
@@ -238,5 +241,5 @@ ACCOUNT_USERNAME_MIN_LENGTH = 3
 CELERY_BROKER_URL = 'redis://redis:6379/0'
 CELERY_RESULT_BACKEND = 'redis://redis:6379/2'
 CELERY_CACHE_BACKEND = 'default'
-CELERY_BROKER_CONNECT_RETRY_ON_STARTUP = True
+CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
 CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'

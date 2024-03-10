@@ -18,6 +18,8 @@ from rest_framework.response import Response
 from taggit.models import Tag
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from .import tasks
 
 
 # Create your views here.
@@ -27,22 +29,23 @@ class ListPosts(generic.ListView):
     paginate_by = 5
 
     def get_queryset(self):
-        queryset = Post.published.annotate(
+        queryset = (Post.published.annotate(
             count_likes=Count("liked"), count_comments=Count("comment_post")
-        ).order_by("-count_likes", "-count_comments")
+        )
+        .select_related("author")
+        .order_by("-count_likes", "-count_comments"))
         tag_slug = self.kwargs.get("tag_slug")
         if tag_slug is not None:
             tag = get_object_or_404(Tag, slug=tag_slug)
             queryset = queryset.filter(tags__in=[tag])
-        return queryset
-
+        return queryset.prefetch_related("tags", "liked", "saved")
 
 class DetailPost(generic.DetailView):
     template_name = "posts/detail.html"
     context_object_name = "post"
 
     def get_object(self, queryset: QuerySet[Any] | None = ...) -> Model:
-        return get_object_or_404(Post, pk=self.kwargs.get("post_id"))
+        return get_object_or_404(Post.objects.select_related("author").prefetch_related("tags"), pk=self.kwargs.get("post_id"))
 
     def get_context_data(self, **kwargs) -> dict[str, Any]:
         post = self.get_object()
@@ -136,22 +139,14 @@ class CreateCommentView(generic.CreateView):
 
 
 # Share post by email address
+@login_required
 def share_post(request, post_id):
     post = get_object_or_404(Post, id=post_id, status=Post.Status.PUBLISHED)
     sent = False  # tmp variable to check if email sent successfully
     if request.method == "POST":
         form = forms.ShareForm(request.POST)
         if form.is_valid():
-            cd = form.cleaned_data
-            cd["username"] = post.author
-            cd["email"] = post.author.email
-            post_url = request.build_absolute_uri(post.get_absolute_url())
-            subject = f"{cd['username']} recommends you read: {post.name}"
-            message = (
-                f"Read {post.name} at {post_url}\n\n"
-                f"{cd['username']}'s comments: {cd['notes']}"
-            )
-            send_mail(subject, message, config("EMAIL_HOST_USER"), [cd["to"]])
+            tasks.share_post_by_mail.delay(request.user.id, post_id, form.cleaned_data, request.build_absolute_uri(post.get_absolute_url()))
             sent = True
     else:
         form = forms.ShareForm()
@@ -170,7 +165,6 @@ class LikeAPIView(views.APIView):
 
     def post(self, request, *args, **kwargs):
         obj_id = request.POST.get("object_id")  # получить id текущего поста из запроса
-        print(request.POST.get("object_id"))
         obj = self.get_object(obj_id)
 
         if request.user in obj.liked.all():  # если текущий пользователь уже лайкал пост
@@ -237,5 +231,4 @@ class CreateCommentAPIView(generics.CreateAPIView):
             or serializer.instance.get_root().author.username
             == serializer.instance.author.username
         )
-        print(comment_data)
         return Response(comment_data, status=status.HTTP_201_CREATED)

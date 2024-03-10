@@ -23,7 +23,11 @@
                         <div class="text-muted small">Опубликовано: {{post.time_publish|naturaltime}}</div>
                         {% if post.tags.all %}
                         <p class="card-title">Теги: 
-                          <div class="tags-list d-flex gap-3">{% for tag in post.tags.all %}<span class="post-tag text-primary rounded border border-primary p-2 border-opacity-50"><a href="{% url "posts:list-posts-by-tag" tag.slug %}" class="tag-link">{{tag.name|upper}}</a></span> {% endfor %}</div>
+                          <div class="tags-list d-flex gap-3">
+                            {% with tags=post.tags.all %}
+                            {% for tag in tags %}<span class="post-tag text-primary rounded border border-primary p-2 border-opacity-50"><a href="{% url "posts:list-posts-by-tag" tag.slug %}" class="tag-link">{{tag.name|upper}}</a></span> {% endfor %}
+                            {% endwith %}
+                          </div>
                         </p>
                         {% endif %}
                       </div>
@@ -52,12 +56,16 @@
                     <div class="lcr">
                         <span class="d-inline-block text-muted">
                           <small class="align-middle" id="num-likes">
-                            <strong id="num-likes-count">{{post.num_likes}}</strong> {{post.num_likes|pluralize:"like,likes"}}</small>  <i class="bi bi-heart-fill"></i>
+                            {% with likes_count=post.num_likes %}
+                            <strong id="num-likes-count">{{likes_count}}</strong> {{likes_count|pluralize:"like,likes"}}</small>  <i class="bi bi-heart-fill"></i>
+                            {% endwith %}
                         </span>
                         
                         <a href="javascript:void(0)" class="d-inline-block text-muted ml-3">
                           <small class="align-middle">  &nbsp;
+                            {% with comments_count=post.num_comments %}
                             <strong>{{post.num_comments}}</strong>  {{post.num_comments|pluralize:"comment,comments"}}</small>  <i class="bi bi-chat-right-text-fill"></i>
+                            {% endwith %}
                         </a>
                         <a href="javascript:void(0)" class="d-inline-block text-muted ml-3">
                           <i class="ion ion-md-share align-middle"></i>&nbsp;

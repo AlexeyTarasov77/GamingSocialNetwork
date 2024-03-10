@@ -47,6 +47,7 @@ services:
     depends_on:
       - db
       - redis
+      - socialnetwork
     restart: always
     command: celery -A socialnetwork worker --loglevel=info --beat
 

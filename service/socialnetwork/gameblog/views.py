@@ -1,5 +1,5 @@
 from datetime import timedelta
-from typing import Any
+from typing import Any, Final
 from django.core.paginator import Paginator
 from django.db.models.query import QuerySet
 from django.http import HttpRequest, HttpResponse, JsonResponse
@@ -12,11 +12,12 @@ from django.db.models import Count, Q
 import requests
 from decouple import config
 from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.auth import get_user_model
 
 
-
-total_likes_required = 20
-total_comments_required = 10
+count_users = get_user_model().objects.count()
+TOTAL_LIKES_REQUIRED: Final[int] = count_users // 3
+TOTAL_COMMENTS_REQUIRED: Final[int] = count_users // 4
 
 # Create your views here.
 class MainView(generic.ListView):
@@ -32,7 +33,7 @@ class MainView(generic.ListView):
         context['recommended_posts'] = Post.published.annotate(
             total_likes = Count('liked'),
             total_comments=Count('comment_post')
-        ).filter(Q(total_likes__gte=total_likes_required) | Q(total_comments__gte=total_comments_required))[:10]
+        ).filter(Q(total_likes__gte=TOTAL_LIKES_REQUIRED) | Q(total_comments__gte=TOTAL_COMMENTS_REQUIRED))[:10]
         try:
             context['video_url'] = BackgroundVideo.objects.latest('pk')
         except ObjectDoesNotExist:

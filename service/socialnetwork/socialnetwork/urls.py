@@ -23,6 +23,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
     path('', include('gameblog.urls', namespace='gameblog')),
+    path('shop/', include('gameshop.urls', namespace='shop')),
     # path('articles/', include('articles.urls', namespace='articles')),
     # path('chat/', include('chat.urls', namespace='chat')),
     # path('events/', include('events.urls', namespace='events')),

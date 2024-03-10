@@ -2,7 +2,7 @@ menu = [{'title': "Посты", 'url_name': 'posts:list-posts', 'id': 'menu-item
         {'title': "Статьи", 'url_name': '#', 'id': 'menu-item-2'},
         {'title': "Игровые события", 'url_name': '#', 'id': 'menu-item-3'},
         {'title': "Поиск команды", 'url_name': '#', 'id': 'menu-item-4'},
-        {'title': "Магазин 🛒", 'url_name': '#', 'id': 'menu-item-5'},
+        {'title': "Магазин 🛒", 'url_name': 'shop:products-list', 'id': 'menu-item-5'},
         {'title': "Настройки ⚙", 'url_name': '#', 'id': 'menu-item-6'},
         ]
 

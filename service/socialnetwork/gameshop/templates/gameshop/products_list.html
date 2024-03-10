@@ -1,0 +1,54 @@
+{% extends "./base-gameshop.html" %}
+{% load static %}
+
+{% block links %}
+<link rel="stylesheet" href="{% static "gameshop/list.css" %}">
+{% endblock links %}
+{% block content %}
+<div class="products">
+    <div class="container">
+        <div class="well well-sm">
+            <strong>Отображение</strong>
+            <div class="btn-group">
+                <button href="#" id="list" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-th-list">
+                </span>Списком</button> <button href="#" id="grid" class="btn btn-default btn-sm"><span
+                    class="glyphicon glyphicon-th"></span>В сетке</button>
+            </div>
+        </div>
+        <div id="products" class="row list-group">
+            {% for product in products %}
+            <div class="item  col-xs-4 col-lg-4">
+                <div class="thumbnail">
+                    <img class="group list-group-image" src="{% if product.image %}{{product.image.url}}{% endif %}" alt="" />
+                    <div class="caption">
+                        <h4 class="group inner list-group-item-heading">
+                            <a href="{{product.get_absolute_url}}">{{product.title|capfirst}}</a></h4>
+                        <h3 class="group inner list-group-item-text">Категория: {% if product.category %}<a href="{% url "products-list" %}?category={{product.category.slug}}">{{product.category.name}}</a>{% else %}Без категории{% endif %}</h3>
+                        <p class="group inner list-group-item-text">
+                            {{product.description|truncatewords:"25"}}</p>
+                        <div class="row">
+                            <div class="col-xs-12 col-md-6">
+                                <p class="lead">
+                                    {% if product.discount %}
+                                    <div class="col-6 text-end"><span class="text-decoration-line-through fw-bold text-danger">$ {{product.price}} <span class="badge rounded-pill bg-info">discount</span></span> <span class="h4 fw-bold">$ {{product.get_discounted_price}}</span></div>
+                                    {% else %}
+                                    <div class="col-6 text-end"><span class="h4 fw-bold">$ {{product.price}}</span></div>
+                                    {% endif %}
+                                </p>
+                            </div>
+                            <div class="col-xs-12 col-md-6">
+                                <a class="btn btn-success" href="#">Добавить в корзину</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% include "includes/pagination.html" with page=page_obj %}
+{% endblock content %}
+{% block js %}
+<script type="module" src="{% static "list.js" %}"></script>
+{% endblock js %}

@@ -49,8 +49,10 @@
                                 {% include "posts/includes/like.html" %}
                               </p>
                               <ul class="list-group list-group-flush">
-                                <li class="list-group-item" id="num-likes"><span id="num-likes-count">{{post.num_likes}}</span> {{post.num_likes|pluralize:"like, likes"}}</li>
-                                <li class="list-group-item">{{post.num_comments}} {{post.num_comments|pluralize:"comment, comments"}}</li>
+                                {% with likes_count=post.num_likes comments_count=post.num_comments %}
+                                <li class="list-group-item" id="num-likes"><span id="num-likes-count">{{post.likes_count}}</span> {{post.likes_count|pluralize:"like, likes"}}</li>
+                                <li class="list-group-item">{{post.comments_count}} {{post.comments_count|pluralize:"comment, comments"}}</li>
+                                {% endwith %}
                               </ul>
                               <p class="card-text"><a href="{{post.get_absolute_url}}" class="btn btn-primary">Читать более...</a></p>
                               <div class="card-footer">
@@ -68,7 +70,7 @@
         
                 </div>
                 <div class="posts__pagination">
-                    {% include "posts/includes/pagination.html" with page=page_obj %}
+                    {% include "includes/pagination.html" with page=page_obj %}
                 </div>
             </div>
         </div>

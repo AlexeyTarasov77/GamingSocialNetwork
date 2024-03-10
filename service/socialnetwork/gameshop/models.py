@@ -1,3 +1,94 @@
+from django.core.validators import MaxValueValidator
 from django.db import models
+from django.urls import reverse
+
+from .mixins import SaveModelMixin
+
 
 # Create your models here.
+class Product(SaveModelMixin, models.Model):
+    """
+    A model representing a product.
+    """
+
+    AVAILABLE_CHOICES = (
+        (True, "В наличии"),
+        (False, "Нет в наличии"),
+    )
+    category = models.ForeignKey(
+        "Category", on_delete=models.CASCADE, related_name="products"
+    )
+    title = models.CharField("Название", max_length=250)
+    brand = models.CharField("Бренд", max_length=250)
+    description = models.TextField("Описание", blank=True)
+    slug = models.SlugField("URL", max_length=250)
+    price = models.DecimalField("Цена", max_digits=7, decimal_places=2)
+    image = models.ImageField(
+        "Изображение",
+        upload_to="photos/gameshop/products",
+        default="photos/default.jpg",
+    )
+    available = models.BooleanField(
+        "Наличие", default=AVAILABLE_CHOICES[0][0], choices=AVAILABLE_CHOICES
+    )
+    created_at = models.DateTimeField("Дата создания", auto_now_add=True, db_index=True)
+    updated_at = models.DateTimeField("Дата изменения", auto_now=True)
+    discount = models.PositiveIntegerField(
+        validators=[MaxValueValidator(100)], default=0
+    )
+
+    class Meta:
+        verbose_name = "Товар"
+        verbose_name_plural = "Товары"
+        ordering = ("-created_at",)
+
+    def get_absolute_url(self):
+        return reverse("gameshop:product_detail", kwargs={"slug": self.slug})
+
+    def __str__(self):
+        return self.title
+
+    def get_discounted_price(self):
+        discounted_price = self.price - (self.price * self.discount / 100)
+        return round(discounted_price, 2)
+
+
+class ProductManager(models.Manager):
+    def get_queryset(self):
+        return super(ProductManager, self).get_queryset().filter(available=True)
+
+
+class ProductProxy(Product):
+    objects = ProductManager()
+
+    class Meta:
+        proxy = True
+
+
+class Category(SaveModelMixin, models.Model):
+    name = models.CharField("Категория", max_length=250, db_index=True)
+    parent = models.ForeignKey(
+        "self", on_delete=models.CASCADE, related_name="children", blank=True, null=True
+    )
+    slug = models.SlugField(
+        "URL", max_length=250, unique=True, null=False, editable=True
+    )
+    created_at = models.DateTimeField("Дата создания", auto_now_add=True)
+
+    class Meta:
+        unique_together = ("slug", "parent")
+        verbose_name = "Категория"
+        verbose_name_plural = "Категории"
+
+    def __str__(self) -> str:
+        full_path = [self.name]
+        k = self.parent
+        while k is not None:  # пока у категории есть родитель формируем путь
+            full_path.append(k.name)
+            k = k.parent
+        return " -> ".join(
+            full_path[::-1]
+        )  # возвращаем конечную иерархию категорий в обратном порядке
+
+    def get_absolute_url(self):
+        return reverse("gameshop:category_list", kwargs={"slug": self.slug})
