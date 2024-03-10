@@ -11,7 +11,7 @@ class ProductListView(generic.ListView):
     paginate_by = 15
 
     def get_queryset(self):
-        cat = self.request.GET.get("category")
+        cat = self.kwargs.get("cat_slug")
         queryset = ProductProxy.objects.select_related("category")
         if cat:
             queryset = queryset.filter(category__slug=cat)
@@ -19,8 +19,10 @@ class ProductListView(generic.ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        cat = self.request.GET.get("category")
-        context["category"] = cat if cat else 'Все категории'
+        cat_slug = self.kwargs.get("cat_slug")
+        if cat_slug:
+            category = get_object_or_404(Category, slug=cat_slug)
+        context["category"] = category.name if cat_slug else 'Все категории'
         return context
     
 class ProductDetailView(generic.DetailView):

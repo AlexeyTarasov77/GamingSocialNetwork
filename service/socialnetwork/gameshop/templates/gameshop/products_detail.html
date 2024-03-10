@@ -23,7 +23,7 @@
                             {% if product.discount %}
                             <div class="col-6 text-end"><span class="text-decoration-line-through fw-bold text-danger">$ {{product.price}} <span class="badge rounded-pill bg-info">discount</span></span> <span class="h4 fw-bold">$ {{product.get_discounted_price}}</span></div>
                             {% else%}
-                            <div class="col-6 text-end"><span class="h4 fw-bold">$ {{product.price}}</span></div>
+                            <div class="col-6 text-end"><span class="h4 fw-bold">$ {{product.get_price}}</span></div>
                             {% endif %}
                         </div>
                     </div>

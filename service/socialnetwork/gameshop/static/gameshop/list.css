@@ -17,7 +17,7 @@
 }
 .item.list-group-item:nth-of-type(odd):hover,.item.list-group-item:hover
 {
-    background: #428bca;
+    background: #92ccff97;
 }
 
 .item.list-group-item .list-group-image

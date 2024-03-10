@@ -2,8 +2,8 @@ document.addEventListener("DOMContentLoaded", function () {
   listBtn = document.querySelector('#list');
   gridBtn = document.querySelector('#grid');
   products = document.querySelectorAll('#products .item');
-  listBtn.onclick = () => products.forEach(element => element.addClass('list-group-item'));
-  gridBtn.onclick = () => products.forEach(element => {element.removeClass('list-group-item'); element.addClass('grid-group-item')});
+  listBtn.onclick = () => products.forEach(element => element.classList.add('list-group-item'));
+  gridBtn.onclick = () => products.forEach(element => {element.classList.remove('list-group-item'); element.classList.add('grid-group-item')});
 })
 
 

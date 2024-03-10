@@ -8,6 +8,7 @@
 <div class="products">
     <div class="container">
         <div class="well well-sm">
+            <div class="category h2">Категория: {{category}}</div>
             <strong>Отображение</strong>
             <div class="btn-group">
                 <button href="#" id="list" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-th-list">
@@ -15,15 +16,15 @@
                     class="glyphicon glyphicon-th"></span>В сетке</button>
             </div>
         </div>
-        <div id="products" class="row list-group">
+        <div id="products" class="row">
             {% for product in products %}
-            <div class="item  col-xs-4 col-lg-4">
+            <div class="item col-xs-4 col-lg-4">
                 <div class="thumbnail">
                     <img class="group list-group-image" src="{% if product.image %}{{product.image.url}}{% endif %}" alt="" />
                     <div class="caption">
                         <h4 class="group inner list-group-item-heading">
                             <a href="{{product.get_absolute_url}}">{{product.title|capfirst}}</a></h4>
-                        <h3 class="group inner list-group-item-text">Категория: {% if product.category %}<a href="{% url "products-list" %}?category={{product.category.slug}}">{{product.category.name}}</a>{% else %}Без категории{% endif %}</h3>
+                        <h5 class="group inner list-group-item-text">Категория: <a href="{% url "shop:category-list" product.category.slug %}">{{product.get_category}}</a></h5>
                         <p class="group inner list-group-item-text">
                             {{product.description|truncatewords:"25"}}</p>
                         <div class="row">
@@ -32,7 +33,7 @@
                                     {% if product.discount %}
                                     <div class="col-6 text-end"><span class="text-decoration-line-through fw-bold text-danger">$ {{product.price}} <span class="badge rounded-pill bg-info">discount</span></span> <span class="h4 fw-bold">$ {{product.get_discounted_price}}</span></div>
                                     {% else %}
-                                    <div class="col-6 text-end"><span class="h4 fw-bold">$ {{product.price}}</span></div>
+                                    <div class="col-6 text-end"><span class="h4 fw-bold">{{product.get_price}}</span></div>
                                     {% endif %}
                                 </p>
                             </div>
@@ -50,5 +51,14 @@
 {% include "includes/pagination.html" with page=page_obj %}
 {% endblock content %}
 {% block js %}
-<script type="module" src="{% static "list.js" %}"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        listBtn = document.querySelector('#list');
+        gridBtn = document.querySelector('#grid');
+        products = document.querySelectorAll('#products .item');
+        listBtn.onclick = () => products.forEach(element => element.classList.add('list-group-item'));
+        gridBtn.onclick = () => products.forEach(element => {element.classList.remove('list-group-item'); element.classList.add('grid-group-item')});
+    });
+</script>
+<script type="module" src="{% static "gameshop/list.js" %}"></script>
 {% endblock js %}
