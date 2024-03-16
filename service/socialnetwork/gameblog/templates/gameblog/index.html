@@ -17,13 +17,26 @@
                 <h3>Gaming blog</h3>
             </div>
             <div class="center" id="about">
-                <h2>About me, The Gaming geek</h2>
+                <h2>Hi dear gamer</h2>
                 {% if video_url %}
                      <br>
                      <iframe width="75%" height="500px"       src="{{video_url}}"> 
                      </iframe>
                 {% endif %}
-
+              </div>
+              <div class="actions">
+                <div class="actions__column">
+                  <div class="column__title">
+                    Недавние действия пользователей
+                  </div>
+                  {% for action in last_actions %}
+                  <div class="column__row">
+                    <div class="row__action">
+                      {% include "actions/action.html" %}
+                    </div>
+                  </div>
+                  {% endfor %}
+                </div>
               </div>
               <div class="ads">
                 <div class="ads__row">

@@ -22,14 +22,15 @@ class ProductListView(generic.ListView):
         cat_slug = self.kwargs.get("cat_slug")
         if cat_slug:
             category = get_object_or_404(Category, slug=cat_slug)
-        context["category"] = category.name if cat_slug else 'Все категории'
+        context["category"] = category.name if cat_slug else "Все категории"
         return context
-    
+
+
 class ProductDetailView(generic.DetailView):
     queryset = ProductProxy.objects.select_related("category")
     template_name = "gameshop/products_detail.html"
     context_object_name = "product"
-    
+
 
 # def category_list(request, slug):
 #     category = get_object_or_404(Category, slug=slug)

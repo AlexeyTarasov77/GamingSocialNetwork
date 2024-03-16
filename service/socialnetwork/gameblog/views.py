@@ -13,6 +13,7 @@ import requests
 from decouple import config
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth import get_user_model
+from actions.models import Action
 
 
 count_users = get_user_model().objects.count()
@@ -30,6 +31,12 @@ class MainView(generic.ListView):
     
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
+        actions = Action.objects.exclude(user=self.request.user)
+        following_ids = self.request.user.profile_following.values_list('id', flat=True)
+        if following_ids:
+            actions = actions.filter(user_id__in=following_ids)
+        actions = actions.select_related('user', 'user__profile_user').prefetch_related('target')[:10]
+        context["last_actions"] = actions
         context['recommended_posts'] = Post.published.annotate(
             total_likes = Count('liked'),
             total_comments=Count('comment_post')

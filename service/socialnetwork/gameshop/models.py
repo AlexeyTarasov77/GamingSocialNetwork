@@ -53,19 +53,14 @@ class Product(SaveSlugMixin, models.Model):
         return self.title
 
     @property
-    def get_price(self):
-        if self.price == 0:
-            return mark_safe("<span class='text-success'>Бесплатно</span>")
-        return f"$ {self.price}"
+    def final_price(self):
+        price = self.price - (self.price * self.discount / 100) # вычисление суммы с возможной скидкой 
+        return round(price, 2)
     
     @property
     def get_category(self):
         return self.category if self.category else 'Без категории'
 
-    @property
-    def get_discounted_price(self):
-        discounted_price = self.price - (self.price * self.discount / 100)
-        return round(discounted_price, 2)
 
 
 class ProductManager(models.Manager):

@@ -1,5 +1,6 @@
 {% extends "./base-gameshop.html" %}
 {% load static %}
+{% load price_filters %}
 
 {% block links %}
 <link rel="stylesheet" href="{% static "gameshop/list.css" %}">
@@ -31,9 +32,9 @@
                             <div class="col-xs-12 col-md-6">
                                 <p class="lead">
                                     {% if product.discount %}
-                                    <div class="col-6 text-end"><span class="text-decoration-line-through fw-bold text-danger">$ {{product.price}} <span class="badge rounded-pill bg-info">discount</span></span> <span class="h4 fw-bold">$ {{product.get_discounted_price}}</span></div>
+                                    <div class="col-6 text-end"><span class="text-decoration-line-through fw-bold text-danger">{{product.price|fp}}<span class="badge rounded-pill bg-info">discount</span></span> <span class="h4 fw-bold">{{product.final_price|fp}}</span></div>
                                     {% else %}
-                                    <div class="col-6 text-end"><span class="h4 fw-bold">{{product.get_price}}</span></div>
+                                    <div class="col-6 text-end"><span class="h4 fw-bold">{{product.final_price|fp}}</span></div>
                                     {% endif %}
                                 </p>
                             </div>

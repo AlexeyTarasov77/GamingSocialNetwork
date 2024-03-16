@@ -64,6 +64,7 @@ THIRD_PARTY_APPS = [
     'channels',
     'django_celery_results',
     'django_celery_beat',
+    'sorl.thumbnail'
 ]
 
 LOCAL_APPS = [
@@ -106,6 +107,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'gameblog.context_processors.menu_links',
                 'gameblog.context_processors.sidebar_links',
+                'cart.context_processors.cart',
             ],
         },
     },

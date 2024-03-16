@@ -6,7 +6,7 @@ COPY requirements.txt .
 
 RUN python -m pip install --upgrade pip --no-warn-script-location
 
-RUN apt-get update && apt-get install -y postgresql-client build-essential postgresql-server-dev-all
+RUN apt-get update && apt-get install -y postgresql-client build-essential postgresql-server-dev-all libjpeg62 libjpeg62-dev zlib1g-dev
 
 RUN pip install -r requirements.txt --no-cache-dir --no-warn-script-location
 
