@@ -33,6 +33,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
+INTERNAL_IPS = ['127.0.0.1', '0.0.0.0',]
 
 # Application definition
 
@@ -64,7 +65,8 @@ THIRD_PARTY_APPS = [
     'channels',
     'django_celery_results',
     'django_celery_beat',
-    'sorl.thumbnail'
+    'sorl.thumbnail',
+    'debug_toolbar',
 ]
 
 LOCAL_APPS = [
@@ -77,11 +79,13 @@ LOCAL_APPS = [
     'searchteam.apps.SearchteamConfig',
     'cart.apps.CartConfig',
     'gameshop.apps.GameshopConfig',
+    'actions.apps.ActionsConfig',
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
 MIDDLEWARE = [
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -245,3 +249,10 @@ CELERY_RESULT_BACKEND = 'redis://redis:6379/2'
 CELERY_CACHE_BACKEND = 'default'
 CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
 CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
+
+# REDIS FOR APPS
+
+REDIS_HOST = 'redis'
+REDIS_PORT = '6379'
+REDIS_DB = 3
+

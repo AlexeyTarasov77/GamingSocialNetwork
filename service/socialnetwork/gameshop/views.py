@@ -4,6 +4,7 @@ from django.shortcuts import render, get_object_or_404
 from django.views import generic
 from .models import ProductProxy, Category
 
+
 # Create your views here.
 class ProductListView(generic.ListView):
     template_name = "gameshop/products_list.html"
@@ -30,6 +31,13 @@ class ProductDetailView(generic.DetailView):
     queryset = ProductProxy.objects.select_related("category")
     template_name = "gameshop/products_detail.html"
     context_object_name = "product"
+
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        context["recommended_products"] = ProductProxy.objects.exclude(pk=self.object.pk).filter(
+            category=self.object.category
+        )[:6]
+        return context
 
 
 # def category_list(request, slug):

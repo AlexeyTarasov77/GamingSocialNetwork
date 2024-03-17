@@ -43,6 +43,8 @@ services:
   celery:
     build: ./socialnetwork
     container_name: socialnetwork-celery
+    volumes:
+      - ./socialnetwork:/service
     env_file: ./socialnetwork/socialnetwork/.env
     depends_on:
       - db

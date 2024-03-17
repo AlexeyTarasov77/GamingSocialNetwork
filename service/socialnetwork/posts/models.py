@@ -21,7 +21,6 @@ class Post(models.Model):
     time_publish = models.DateTimeField(verbose_name = 'Дата публикации', default = timezone.now)
     status = models.CharField(verbose_name = 'Статус', choices = Status.choices, default = Status.PUBLISHED, max_length = 2)
     photo = models.ImageField(verbose_name="Фото", blank=True, upload_to = 'photos/posts/', null=True)
-    count_views = models.PositiveIntegerField(verbose_name="Кол-во просмотров", default=0)
     saved = models.ManyToManyField(get_user_model(), verbose_name = 'Сохраненные', related_name='post_save', blank = True, related_query_name='post_saves')
     liked = models.ManyToManyField(get_user_model(), verbose_name = 'Лайки', related_name='post_like', blank = True, related_query_name='post_likes')
     author = models.ForeignKey(get_user_model(), verbose_name="Автор", on_delete=models.CASCADE, related_name = 'post_author')
@@ -45,11 +44,6 @@ class Post(models.Model):
     @property
     def num_comments(self):
         return self.comment_post.count()
-    
-    @property
-    def up_post_views(self):
-        self.post_views += 1
-        self.save()
     
 
     def get_absolute_url(self):

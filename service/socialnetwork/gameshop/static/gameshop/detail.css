@@ -1,0 +1,11 @@
+#quantity {
+    width: 20% !important;
+    padding: 0;
+}
+
+#quantity:focus{
+    outline: none;
+    border: 0.1px solid #9c9c9c79;
+    outline-style: none;
+    box-shadow: none;
+}

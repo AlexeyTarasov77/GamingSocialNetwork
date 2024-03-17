@@ -1,6 +1,5 @@
 {% extends "./base-gameshop.html" %}
-{% load static %}
-{% load price_filters %}
+{% load static %}  {% load price_filters %} {% load thumbnail %}
 
 {% block links %}
 <link rel="stylesheet" href="{% static "gameshop/list.css" %}">
@@ -19,32 +18,7 @@
         </div>
         <div id="products" class="row">
             {% for product in products %}
-            <div class="item col-xs-4 col-lg-4">
-                <div class="thumbnail">
-                    <img class="group list-group-image" src="{% if product.image %}{{product.image.url}}{% endif %}" alt="" />
-                    <div class="caption">
-                        <h4 class="group inner list-group-item-heading">
-                            <a href="{{product.get_absolute_url}}">{{product.title|capfirst}}</a></h4>
-                        <h5 class="group inner list-group-item-text">Категория: <a href="{% url "shop:category-list" product.category.slug %}">{{product.get_category}}</a></h5>
-                        <p class="group inner list-group-item-text">
-                            {{product.description|truncatewords:"25"}}</p>
-                        <div class="row">
-                            <div class="col-xs-12 col-md-6">
-                                <p class="lead">
-                                    {% if product.discount %}
-                                    <div class="col-6 text-end"><span class="text-decoration-line-through fw-bold text-danger">{{product.price|fp}}<span class="badge rounded-pill bg-info">discount</span></span> <span class="h4 fw-bold">{{product.final_price|fp}}</span></div>
-                                    {% else %}
-                                    <div class="col-6 text-end"><span class="h4 fw-bold">{{product.final_price|fp}}</span></div>
-                                    {% endif %}
-                                </p>
-                            </div>
-                            <div class="col-xs-12 col-md-6">
-                                <a class="btn btn-success" href="#">Добавить в корзину</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            {% include "./components/product.html" %}
             {% endfor %}
         </div>
     </div>

@@ -6,7 +6,7 @@ register = template.Library()
 @register.filter(name="fp")
 def format_price(value):
     value = str(value)
-    if value == "0":
+    if value == "0.00":
         return mark_safe("<span class='text-success'>Бесплатно</span>")
     else:
         return f"$ {value}"

@@ -104,4 +104,4 @@ class Category(SaveSlugMixin, models.Model):
         )  # возвращаем конечную иерархию категорий в обратном порядке
 
     def get_absolute_url(self):
-        return reverse("shop:category-list", kwargs={"slug": self.slug})
+        return reverse("shop:category-list", args=[self.slug])

@@ -1,4 +1,11 @@
 from typing import Any
+
+import redis
+from django.conf import settings
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Count
 from django.db.models.base import Model as Model
 from django.db.models.query import QuerySet
 from django.forms import BaseModelForm
@@ -6,20 +13,17 @@ from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse, reverse_lazy
 from django.views import generic
-from django.template.exceptions import TemplateDoesNotExist
-from .models import Post, Comment
-from django.db.models import Count
-from . import forms
-from django.core.mail import send_mail
-from decouple import config
-from rest_framework import views, permissions, generics, status
-from .serializers import LikeSerializer, CommentSerializer
+from rest_framework import generics, permissions, status, views
 from rest_framework.response import Response
 from taggit.models import Tag
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib import messages
-from django.contrib.auth.decorators import login_required
-from .import tasks
+
+from . import forms, tasks
+from .models import Comment, Post
+from .serializers import CommentSerializer, LikeSerializer
+
+r = redis.Redis(
+    host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=settings.REDIS_DB
+)
 
 
 # Create your views here.
@@ -29,11 +33,13 @@ class ListPosts(generic.ListView):
     paginate_by = 5
 
     def get_queryset(self):
-        queryset = (Post.published.annotate(
-            count_likes=Count("liked"), count_comments=Count("comment_post")
+        queryset = (
+            Post.published.annotate(
+                count_likes=Count("liked"), count_comments=Count("comment_post")
+            )
+            .select_related("author")
+            .order_by("-count_likes", "-count_comments")
         )
-        .select_related("author")
-        .order_by("-count_likes", "-count_comments"))
         tag_slug = self.kwargs.get("tag_slug")
         if tag_slug is not None:
             tag = get_object_or_404(Tag, slug=tag_slug)
@@ -45,7 +51,32 @@ class DetailPost(generic.DetailView):
     context_object_name = "post"
 
     def get_object(self, queryset: QuerySet[Any] | None = ...) -> Model:
-        return get_object_or_404(Post.objects.select_related("author").prefetch_related("tags"), pk=self.kwargs.get("post_id"))
+        return get_object_or_404(
+            Post.objects.select_related("author").prefetch_related("tags"),
+            pk=self.kwargs.get("post_id"),
+        )
+
+    def __get_simillar_posts(self):
+        post = self.object
+        post_tags_ids = post.tags.values_list("id", flat=True)
+        similar_posts = (
+            Post.published.filter(tags__in=post_tags_ids)
+            .exclude(id=post.id)
+            .annotate(same_tags=Count("tags"))
+            .order_by("-same_tags", "-time_publish")[:4]
+        )
+        return similar_posts
+    
+    def __incr_views(self):
+        post = self.object
+        user_id = self.request.user.id
+        viewed_users_ids = r.get('post:%s:viewers' % post.id)
+        if not user_id in viewed_users_ids:
+            r.sadd('post:%s:viewers' % post.id, user_id)
+            total_views = r.incr('post:%s:views' % post.id)
+        else: 
+            total_views = r.get('post:%s:views' % post.id)
+        return total_views
 
     def get_context_data(self, **kwargs) -> dict[str, Any]:
         post = self.get_object()
@@ -53,20 +84,9 @@ class DetailPost(generic.DetailView):
         context["is_owner"] = True if self.request.user == post.author else False
         context["form"] = forms.CommentForm
         context["filtered_comments"] = post.comment_post.filter(is_active=True)
-        post_tags_ids = post.tags.values_list(
-            "id", flat=True
-        )  # получение айди тегов у текущего поста в виде списка
-        # фильтрация постов у которых теги содержат полученные теги текущего (1+ совпадений)
-        similar_posts = Post.published.filter(tags__in=post_tags_ids).exclude(
-            id=post.id
-        )  # исключить текущий пост из выборки
-        # вычисляеться число общих тегов
-        similar_posts = similar_posts.annotate(same_tags=Count("tags")).order_by(
-            "-same_tags", "-time_publish"
-        )[
-            :4
-        ]  # упорядочить рек. посты по убыванию кол-ва общих тегов и времени публикации
-        context["recommended_posts"] = similar_posts
+        context["recommended_posts"] = self.__get_simillar_posts()
+        total_views = self.__incr_views()
+        context["views_count"] = total_views
         return context
 
 
@@ -75,6 +95,7 @@ class DeletePost(generic.DeleteView):
     model = Post
     success_url = reverse_lazy("posts:list-posts")
     context_object_name = "post"
+
     def form_valid(self, form: BaseModelForm) -> HttpResponse:
         messages.success(self.request, "Пост успешно удален")
         return super().form_valid(form)
@@ -84,6 +105,7 @@ class UpdatePost(generic.UpdateView):
     template_name = "posts/update.html"
     model = Post
     form_class = forms.UpdatePostForm
+
     def form_valid(self, form: BaseModelForm) -> HttpResponse:
         messages.warning(self.request, "Пост успешно обновлен")
         return super().form_valid(form)
@@ -146,7 +168,12 @@ def share_post(request, post_id):
     if request.method == "POST":
         form = forms.ShareForm(request.POST)
         if form.is_valid():
-            tasks.share_post_by_mail.delay(request.user.id, post_id, form.cleaned_data, request.build_absolute_uri(post.get_absolute_url()))
+            tasks.share_post_by_mail.delay(
+                request.user.id,
+                post_id,
+                form.cleaned_data,
+                request.build_absolute_uri(post.get_absolute_url()),
+            )
             sent = True
     else:
         form = forms.ShareForm()
@@ -196,8 +223,8 @@ class LikeCommentAPIView(LikeAPIView):
 class SavePostAPIView(generics.GenericAPIView):
     permission_classes = [permissions.IsAuthenticated]
     queryset = Post.published.all()
-    lookup_url_kwarg = 'post_id'
-    
+    lookup_url_kwarg = "post_id"
+
     def patch(self, request, post_id):
         post = self.get_object()
         if request.user in post.saved.all():
@@ -206,7 +233,7 @@ class SavePostAPIView(generics.GenericAPIView):
         else:
             post.saved.add(request.user)
             return Response({"is_saved": True})
-    
+
 
 class CreateCommentAPIView(generics.CreateAPIView):
     permission_classes = [permissions.IsAuthenticated]
