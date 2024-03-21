@@ -29,14 +29,26 @@ class MainView(generic.ListView):
         two_days_ago = timezone.now() - timedelta(days=2)
         return Ad.objects.filter(time_create__gte = two_days_ago)
     
+    def __get_last_actions(self):
+        print(self.request.META.get("REMOTE_ADDR"))
+        user = self.request.user
+        actions = Action.objects.all()
+        if user.is_authenticated:
+            actions = actions.exclude(user=user)
+            following_ids = user.profile_following.values_list('id', flat=True)
+            if following_ids:
+                actions = actions.filter(user_id__in=following_ids)
+        actions = actions.select_related('user', 'user__profile_user').prefetch_related('target')[:10]
+        return actions
+    
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
-        actions = Action.objects.exclude(user=self.request.user)
-        following_ids = self.request.user.profile_following.values_list('id', flat=True)
-        if following_ids:
-            actions = actions.filter(user_id__in=following_ids)
-        actions = actions.select_related('user', 'user__profile_user').prefetch_related('target')[:10]
-        context["last_actions"] = actions
+        # actions = Action.objects.exclude(user=self.request.user)
+        # following_ids = self.request.user.profile_following.values_list('id', flat=True)
+        # if following_ids:
+        #     actions = actions.filter(user_id__in=following_ids)
+        # actions = actions.select_related('user', 'user__profile_user').prefetch_related('target')[:10]
+        context["last_actions"] = self.__get_last_actions()
         context['recommended_posts'] = Post.published.annotate(
             total_likes = Count('liked'),
             total_comments=Count('comment_post')

@@ -36,25 +36,12 @@
                     </div>
                     <div class="col">
                         <div class="row p-3">
-                            <div class="col-6">
-                                <label for="select-quantity">Количевство</label>
-                                &nbsp;
-                                <div class="d-flex mb-3" id="select-quantity">
-                                    <div class="input-group-prepend">
-                                      <button class="btn btn-outline-secondary" type="button" id="minus-btn"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash-lg" viewBox="0 0 16 16">
-                                        <path fill-rule="evenodd" d="M2 8a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11A.5.5 0 0 1 2 8"/>
-                                      </svg></button>
-                                    </div>
-                                    <input type="text" class="form-control text-center" value="1" id="quantity" aria-describedby="quantity" name="qty" readonly>
-                                    <div class="input-group-append">
-                                      <button class="btn btn-outline-secondary" type="button" id="plus-btn"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
-                                        <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2"/>
-                                      </svg></button>
-                                    </div>
-                                </div>
-                            </div>
+                            <form class="col-6" hx-post="{% url "cart:add" product.id %}" hx-trigger="submit" hx-target="span.count" id="add-to-cart-form">
+                                {% csrf_token %}
+                                {% include "includes/quantity.html" with qty=1 %}
+                            </form>
                             <div class="col-6 text-end">
-                                <button type="button" id="add-button" data-id="{{product.id}}" class="btn btn-secondary btn-sm">
+                                <button type="button" id="add-button" class="btn btn-secondary btn-sm">
                                     Add to cart
                                 </button>
                             </div>
@@ -80,5 +67,5 @@
 {% endblock content %}
 
 {% block js %}
-<script src="{% static "gameshop/detail.js" %}"></script>
+<script src="{% static "gameshop/quantity.js" %}"></script>
 {% endblock js %}

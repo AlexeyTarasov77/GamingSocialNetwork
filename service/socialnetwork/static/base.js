@@ -3,15 +3,17 @@ document.addEventListener('DOMContentLoaded', function () {
   const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
   const toastElList = document.querySelectorAll('.toast')
   const toastList = [...toastElList].map(toastEl => new bootstrap.Toast(toastEl))
-
+  const userID = parseInt(document.querySelector('#userId').value)
+    
   showNotification()
 
   const navbarLinks = document.querySelectorAll('.navbar-light .navbar-nav .nav-link')
   const sidebarLinks = document.querySelectorAll('a.nav_link');
 
-  const socket = new WebSocket(`ws://${window.location.host}/ws/status/`)
+  if (userID) {
+    const socket = new WebSocket(`ws://${window.location.host}/ws/status/`)
+  }
 
-  
   setClick()
 
   function initial() {

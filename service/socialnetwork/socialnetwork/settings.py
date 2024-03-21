@@ -33,7 +33,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
-INTERNAL_IPS = ['127.0.0.1', '0.0.0.0',]
+INTERNAL_IPS = ['127.0.0.1', '0.0.0.0', 'localhost', '192.168.65.1']
 
 # Application definition
 
@@ -256,3 +256,6 @@ REDIS_HOST = 'redis'
 REDIS_PORT = '6379'
 REDIS_DB = 3
 
+# CART SESSION KEY
+
+CART_SESSION_KEY = 'cart'

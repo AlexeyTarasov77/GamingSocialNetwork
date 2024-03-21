@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% load static %} {% load mathfilters %} {% load price_filters %}
+{% load static %} {% load math_filters %} {% load price_filters %}
 
 {% block content %}
 
@@ -41,10 +41,10 @@
 
               <div class="col-6 text-end">
                 {%if product.discount%}
-                <span class="text-decoration-line-through fw-bold text-danger">$ {{product.price|mul:item.qty|fp}}</span>
-                <span class="h6 fw-bold">$ {{product.get_discounted_price|mul:item.qty|fp}}</span>
+                <span class="text-decoration-line-through fw-bold text-danger">{{item.price|mul:item.qty|fp}}</span>
+                <span class="h6 fw-bold">{{item.price|mul:item.qty|fp}}</span>
                 {% else %}
-                <span class="h6 fw-bold">$ {{product.price|mul:item.qty|fp}}</span>
+                <span class="h6 fw-bold">{{item.price|mul:item.qty|fp}}</span>
                 {% endif%}
               </div>
             </div>
@@ -53,31 +53,7 @@
           <div class="col">
             <div class="row p-3">
               <div class="col-12">
-                <label for="qty">Количевство</label>
-
-                &nbsp;
-
-                <div class="input-group mb-3" id="qty">
-                  <div class="input-group-prepend">
-                    <button class="btn btn-outline-secondary" type="button" id="minus-btn">-</button>
-                  </div>
-                  <input type="text" class="form-control text-center" value="1" id="quantity" aria-describedby="quantity">
-                  <div class="input-group-append">
-                    <button class="btn btn-outline-secondary" type="button" id="plus-btn">+</button>
-                  </div>
-                </div>
-
-                {% comment %} <select id="select{{product.id}}">
-                  <option selected>{{item.qty}}</option>
-
-                  <option value="">1</option>
-
-                  <option value="">2</option>
-
-                  <option value="">3</option>
-
-                  <option value="">4</option>
-                </select> {% endcomment %}
+                {% include "includes/quantity.html" with qty={{item.qty}} %}
 
                 <br />
                 <br />
@@ -128,7 +104,7 @@
         type="button"
         class="btn btn-success btn-md text-bg-light mt-4"
       >
-      <a class="nav-link text-decoration-none" href="{% url 'payment:checkout' %}">Checkout</a>
+      <a class="nav-link text-decoration-none" href="#">Checkout</a>
       </button>
     </div>
   </div>
@@ -136,4 +112,21 @@
   <br />
   <br />
 </main>
+<style>
+  #quantity {
+    width: 10% !important;
+    padding: 0;
+}
+
+#quantity:focus{
+    outline: none;
+    border: 0.1px solid #9c9c9c79;
+    outline-style: none;
+    box-shadow: none;
+}
+</style>
 {% endblock %}
+
+{% block js %}
+<script src="{% static "gameshop/quantity.js" %}"></script>
+{% endblock js %}

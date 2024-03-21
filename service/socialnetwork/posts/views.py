@@ -22,7 +22,7 @@ from .models import Comment, Post
 from .serializers import CommentSerializer, LikeSerializer
 
 r = redis.Redis(
-    host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=settings.REDIS_DB
+    host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=settings.REDIS_DB, decode_responses=True
 )
 
 
@@ -69,8 +69,8 @@ class DetailPost(generic.DetailView):
     
     def __incr_views(self):
         post = self.object
-        user_id = self.request.user.id
-        viewed_users_ids = r.get('post:%s:viewers' % post.id)
+        user_id = str(self.request.user.id)
+        viewed_users_ids = r.smembers('post:%s:viewers' % post.id) or []
         if not user_id in viewed_users_ids:
             r.sadd('post:%s:viewers' % post.id, user_id)
             total_views = r.incr('post:%s:views' % post.id)

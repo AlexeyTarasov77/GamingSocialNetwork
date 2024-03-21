@@ -2,6 +2,7 @@ from decimal import Decimal
 
 from django.http import HttpRequest
 from gameshop.models import ProductProxy, Product
+from django.conf import settings
 
 
 class Cart:
@@ -10,15 +11,15 @@ class Cart:
         assert isinstance(request, HttpRequest), "request must be an HttpRequest object"
         self.session = request.session
 
-        cart = self.session.get("session_key")
+        cart = self.session.get(settings.CART_SESSION_KEY)
 
         if not cart:
-            cart = self.session["session_key"] = {}
+            cart = self.session[settings.CART_SESSION_KEY] = {}
 
         self.cart = cart
 
-    def __len__(self):
-        return len(self.cart.keys())
+    def __len__(self):  # вернуть сумму количества товаров
+        return sum([item["qty"] for item in self.cart.values()])
 
     def __iter__(self):
         product_ids = self.cart.keys()  # ['1', '2', '3', ...]
@@ -41,7 +42,7 @@ class Cart:
         """Save the cart"""
         self.session.modified = True
 
-    def add_or_update(self, product: Product, quantity: int):
+    def add_or_update(self, product: Product, quantity: int = 1):
         """Add a product to the cart or update its quantity"""
 
         product_id = str(product.id)
@@ -49,7 +50,7 @@ class Cart:
         if product_id not in self.cart:
             self.cart[product_id] = {
                 "qty": quantity,
-                "price": str(product.total_price() * quantity),
+                "price": str(product.final_price),
             }
         else:
             self.cart[product_id]["qty"] = quantity
@@ -61,12 +62,6 @@ class Cart:
         if product_id in self.cart:
             del self.cart[product_id]
             self.save()
-
-    # def update(self, product, quantity):
-    #     product_id = str(product.id)
-    #     if product_id in self.cart:
-    #         self.cart[product_id]["qty"] = quantity
-    #         self.save()
 
     def get_total_price(self):
         return sum(Decimal(item["price"]) * item["qty"] for item in self.cart.values())
