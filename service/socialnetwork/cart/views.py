@@ -23,5 +23,5 @@ def cart_add_or_update(request, product_id):
 def cart_remove(request, product_id): 
     cart = Cart(request)
     cart.delete(product_id)
-    data = {'total_price': cart.get_total_price(), 'total_items': len(cart)}
-    return JsonResponse(data)
+    # data = {'total_price': cart.get_total_price(), 'total_items': len(cart)}
+    return HttpResponse(cart.get_total_price())

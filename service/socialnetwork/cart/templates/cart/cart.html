@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% load static %} {% load math_filters %} {% load price_filters %}
+{% load static %} {% load math_filters %} {% load shop_tags %} {% load thumbnail %}
 
 {% block content %}
 
@@ -19,8 +19,9 @@
     <div class="row mb-4 border product-item">
       <div class="col-md-3 col-lg-2 order-md-first bg-light">
         <img
-          class="img-fluid mx-auto d-block"
-          width="200px"
+          class="mx-auto d-block"
+          width="170px"
+          height="300px"
           alt="Responsive image"
           src="{{product.image.url}}"
         />
@@ -40,7 +41,7 @@
               <div class="col-6">Product</div>
 
               <div class="col-6 text-end">
-                {%if product.discount%}
+                {% if product.discount%}
                 <span class="text-decoration-line-through fw-bold text-danger">{{item.price|mul:item.qty|fp}}</span>
                 <span class="h6 fw-bold">{{item.price|mul:item.qty|fp}}</span>
                 {% else %}
@@ -53,17 +54,16 @@
           <div class="col">
             <div class="row p-3">
               <div class="col-12">
-                {% include "includes/quantity.html" with qty={{item.qty}} %}
+                {% include "gameshop/includes/quantity.html" with qty=item.qty %}
 
                 <br />
                 <br />
 
                 <button
                   type="button"
-                  data-index="{{product.id}}"
                   class="btn btn-primary btn-sm update-button"
                 >
-                  Update
+                  Изменить
                 </button>
 
                 &nbsp;
@@ -71,9 +71,14 @@
                 <button
                   type="button"
                   class="btn btn-danger btn-sm delete-button"
-                  data-index="{{product.id}}"
+                  hx-post="{% url "cart:remove" product.id %}"
+                  hx-headers='{"X-CSRFToken": "{{csrf_token}}"}'
+                  hx-target="#total"
+                  id="cart-action"
+                  data-action="remove"
+                  data-success-msg="Товар удален из корзины"
                 >
-                  Delete
+                  Удалить 
                 </button>
 
                 
@@ -128,5 +133,7 @@
 {% endblock %}
 
 {% block js %}
-<script src="{% static "gameshop/quantity.js" %}"></script>
+<script src="https://unpkg.com/htmx.org@1.9.10" integrity="sha384-D1Kt99CQMDuVetoL1lrYwg5t+9QdHe7NLX/SoJYkXDFfX37iInKRy5xLSi8nO7UC" crossorigin="anonymous"></script>
+<script type="module" src="{% static "gameshop/js/htmx_events.js" %}"></script>
+<script src="{% static "gameshop/js/quantity.js" %}"></script>
 {% endblock js %}

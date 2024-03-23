@@ -1,8 +1,8 @@
 {% extends "./base-gameshop.html" %}
-{% load static %}  {% load price_filters %} {% load thumbnail %}
+{% load static %}  {% load shop_tags %} {% load thumbnail %}
 
 {% block links %}
-<link rel="stylesheet" href="{% static "gameshop/list.css" %}">
+<link rel="stylesheet" href="{% static "gameshop/css/list.css" %}">
 {% endblock links %}
 {% block content %}
 <div class="products">
@@ -26,7 +26,7 @@
 {% include "includes/pagination.html" with page=page_obj %}
 {% endblock content %}
 {% block js %}
-<script>
+{% comment %} <script>
     document.addEventListener("DOMContentLoaded", function () {
         listBtn = document.querySelector('#list');
         gridBtn = document.querySelector('#grid');
@@ -34,6 +34,6 @@
         listBtn.onclick = () => products.forEach(element => element.classList.add('list-group-item'));
         gridBtn.onclick = () => products.forEach(element => {element.classList.remove('list-group-item'); element.classList.add('grid-group-item')});
     });
-</script>
-<script type="module" src="{% static "gameshop/list.js" %}"></script>
+</script> {% endcomment %}
+<script type="module" src="{% static "gameshop/js/list.js" %}"></script>
 {% endblock js %}

@@ -1,4 +1,4 @@
-{% load price_filters %} {% load thumbnail %}
+{% load shop_tags %} {% load thumbnail %}
 
 <div class="item col-xs-4 col-lg-4">
     <div class="thumbnail">
@@ -14,11 +14,7 @@
             <div class="row">
                 <div class="col-xs-12 col-md-6">
                     <p class="lead">
-                        {% if product.discount %}
-                        <div class="col-6 text-end"><span class="text-decoration-line-through fw-bold text-danger">{{product.price|fp}}<span class="badge rounded-pill bg-info">discount</span></span> <span class="h4 fw-bold">{{product.final_price|fp}}</span></div>
-                        {% else %}
-                        <div class="col-6 text-end"><span class="h4 fw-bold">{{product.final_price|fp}}</span></div>
-                        {% endif %}
+                        {% price product %}
                     </p>
                 </div>
                 <div class="col-xs-12 col-md-6">

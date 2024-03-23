@@ -1,0 +1,7 @@
+
+{% load shop_tags %}
+{% if product.discount %}
+<div class="col-6 text-end"><span class="text-decoration-line-through fw-bold text-danger">{{product.price|fp}}<span class="badge rounded-pill bg-info">discount</span></span> <span class="h4 fw-bold">{{product.final_price|fp}}</span></div>
+{% else %}
+<div class="col-6 text-end"><span class="h4 fw-bold">{{product.final_price|fp}}</span></div>
+{% endif %}

@@ -1,12 +1,12 @@
 {% extends "base.html" %}
-{% load static %}
+{% load static %} {% load shop_tags %}
 {% block sidebar_links_extra %}
 <a href="{% url "cart:view" %}" class="nav_link" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Корзина">
     <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
         <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l1.313 7h8.17l1.313-7zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
     </svg>
     <span class="position-absolute top-0 translate-middle badge rounded-pill bg-danger" style="width: 2rem; left: 30%">
-        <span class="count">99+</span>
+        <span class="count">{% cart_len cart %}</span>
         <span class="visually-hidden">Предметы в корзине</span>
     </span>
 </a> 
@@ -24,7 +24,7 @@
         transform: translate(-50%, -50%)
     } 
 </style>
-<div class="cart">
+<div class="cart" style="z-index: 999;">
     <div class="cart__modal">
         <div class="modal fade" id="cart-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
@@ -50,7 +50,7 @@
                 <path d="M5.929 1.757a.5.5 0 1 0-.858-.514L2.217 6H.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h.623l1.844 6.456A.75.75 0 0 0 3.69 15h8.622a.75.75 0 0 0 .722-.544L14.877 8h.623a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1.717L10.93 1.243a.5.5 0 1 0-.858.514L12.617 6H3.383zM4 10a1 1 0 0 1 2 0v2a1 1 0 1 1-2 0zm3 0a1 1 0 0 1 2 0v2a1 1 0 1 1-2 0zm4-1a1 1 0 0 1 1 1v2a1 1 0 1 1-2 0v-2a1 1 0 0 1 1-1"/>
             </svg>
             <span class="position-absolute top-0 start-75 translate-middle badge rounded-pill bg-danger">
-                <span class="count">99+</span>
+                <span class="count">{% cart_len cart %}</span>
                 <span class="visually-hidden">Предметы в корзине</span>
             </span>
         </button>
@@ -59,6 +59,6 @@
 
 
 
-<script src="{% static "gameshop/htmx_events.js" %}"></script> 
+<script src="{% static "gameshop/js/htmx_events.js" %}" type="module"></script> 
 <script src="https://unpkg.com/htmx.org@1.9.10" integrity="sha384-D1Kt99CQMDuVetoL1lrYwg5t+9QdHe7NLX/SoJYkXDFfX37iInKRy5xLSi8nO7UC" crossorigin="anonymous"></script>
 {% endblock body %}

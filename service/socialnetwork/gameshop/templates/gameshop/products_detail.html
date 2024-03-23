@@ -1,7 +1,7 @@
 {% extends "./base-gameshop.html" %}
-{% load price_filters %} {% load thumbnail %} {% load static %}
+{% load shop_tags %} {% load thumbnail %} {% load static %}
 {% block links %}
-<link rel="stylesheet" href="{% static "gameshop/detail.css" %}">
+<link rel="stylesheet" href="{% static "gameshop/css/detail.css" %}">
 {% endblock links %}
 
 {% block content %}
@@ -27,22 +27,18 @@
                     <div class="col border-bottom">
                         <div class="row p-3">
                             <div class="col-6"> Цена </div>
-                            {% if product.discount %}
-                            <div class="col-6 text-end"><span class="text-decoration-line-through fw-bold text-danger">{{product.price|fp}} <span class="badge rounded-pill bg-info">discount</span></span> <span class="h4 fw-bold">{{product.final_price|fp}}</span></div>
-                            {% else %}
-                            <div class="col-6 text-end"><span class="h4 fw-bold">{{product.final_price|fp}}</span></div>
-                            {% endif %}
+                            {% price product %}
                         </div>
                     </div>
                     <div class="col">
                         <div class="row p-3">
-                            <form class="col-6" hx-post="{% url "cart:add" product.id %}" hx-trigger="submit" hx-target="span.count" id="add-to-cart-form">
+                            <form class="col-6" hx-post="{% url "cart:add" product.id %}" hx-trigger="click from:#submit-btn" hx-target="span.count" id="cart-action" data-success-msg="Товар добавлен в корзину!">
                                 {% csrf_token %}
-                                {% include "includes/quantity.html" with qty=1 %}
+                                {% include "gameshop/includes/quantity.html" with qty=1 %}
                             </form>
                             <div class="col-6 text-end">
-                                <button type="button" id="add-button" class="btn btn-secondary btn-sm">
-                                    Add to cart
+                                <button type="button" id="submit-btn" class="btn btn-secondary btn-sm">
+                                    Добавить в корзину
                                 </button>
                             </div>
                         </div>
@@ -67,5 +63,5 @@
 {% endblock content %}
 
 {% block js %}
-<script src="{% static "gameshop/quantity.js" %}"></script>
+<script src="{% static "gameshop/js/quantity.js" %}"></script>
 {% endblock js %}

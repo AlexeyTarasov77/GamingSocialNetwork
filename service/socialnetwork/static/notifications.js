@@ -11,8 +11,11 @@ export default function showToast(msg, type='success', title='Уведомлен
         ${msg}
       </div>
   </div>`
-  $('.toast-container').append(toast)
-  new bootstrap.Toast($('.toast')).show()
+  // $('.toast-container').append(toast)
+  const toastContainer = document.querySelector('.toast-container')
+  toastContainer.insertAdjacentHTML('afterbegin', toast)
+  const createdToast = document.querySelector('.toast');
+  new bootstrap.Toast(createdToast).show()
 }
 
 
