@@ -1,129 +1,28 @@
-{% extends "base.html" %}
+{% extends "gameshop/base-gameshop.html" %}
 
-{% load static %} {% load math_filters %} {% load shop_tags %} {% load thumbnail %}
+{% load static %} 
 
 {% block content %}
 
-<main class="pt-5">
+<div class="pt-5">
   <div class="container">
     <h1 class="h5">Shopping cart</h1>
 
     <hr />
 
-    {% for item in cart %}
+    {% include "cart/includes/cart-content.html" %}
 
-    {% with product=item.product %}
-
-    <br />
-
-    <div class="row mb-4 border product-item">
-      <div class="col-md-3 col-lg-2 order-md-first bg-light">
-        <img
-          class="mx-auto d-block"
-          width="170px"
-          height="300px"
-          alt="Responsive image"
-          src="{{product.image.url}}"
-        />
-      </div>
-
-      <div class="col-md-9 col-lg-10 ps-md-3 ps-lg-10">
-        <a
-          href="{{product.get_absolute_url}}"
-          class="text-info text-decoration-none"
-        >
-          <h1 class="h5 pt-2">{{product.title}}</h1>
-        </a>
-
-        <div class="border">
-          <div class="col border-bottom">
-            <div class="row p-3">
-              <div class="col-6">Product</div>
-
-              <div class="col-6 text-end">
-                {% if product.discount%}
-                <span class="text-decoration-line-through fw-bold text-danger">{{item.price|mul:item.qty|fp}}</span>
-                <span class="h6 fw-bold">{{item.price|mul:item.qty|fp}}</span>
-                {% else %}
-                <span class="h6 fw-bold">{{item.price|mul:item.qty|fp}}</span>
-                {% endif%}
-              </div>
-            </div>
-          </div>
-
-          <div class="col">
-            <div class="row p-3">
-              <div class="col-12">
-                {% include "gameshop/includes/quantity.html" with qty=item.qty %}
-
-                <br />
-                <br />
-
-                <button
-                  type="button"
-                  class="btn btn-primary btn-sm update-button"
-                >
-                  Изменить
-                </button>
-
-                &nbsp;
-
-                <button
-                  type="button"
-                  class="btn btn-danger btn-sm delete-button"
-                  hx-post="{% url "cart:remove" product.id %}"
-                  hx-headers='{"X-CSRFToken": "{{csrf_token}}"}'
-                  hx-target="#total"
-                  id="cart-action"
-                  data-action="remove"
-                  data-success-msg="Товар удален из корзины"
-                >
-                  Удалить 
-                </button>
-
-                
-              </div> 
-      
-              
-            </div>
-            
-          </div>
-          
-        </div>
-        
-      </div>
-      
-    </div>
-
-    {% endwith %}
-    {% endfor %}
-    
-    <div class="col-12 text-end">
-      <div class="h6 fw-bold">
-        Total: $
-        <div id="total" class="d-inline-flex">
-          {{ cart.get_total_price }}
-        </div>
-      </div>
-      <button
-        type="button"
-        class="btn btn-success btn-md text-bg-light mt-4"
-      >
-      <a class="nav-link text-decoration-none" href="#">Checkout</a>
-      </button>
-    </div>
+  <br />
+  <br />
   </div>
-
-  <br />
-  <br />
-</main>
+</div>
 <style>
-  #quantity {
+input.quantity-input {
     width: 10% !important;
     padding: 0;
 }
 
-#quantity:focus{
+input.quantity-input:focus{
     outline: none;
     border: 0.1px solid #9c9c9c79;
     outline-style: none;
@@ -131,9 +30,8 @@
 }
 </style>
 {% endblock %}
-
 {% block js %}
-<script src="https://unpkg.com/htmx.org@1.9.10" integrity="sha384-D1Kt99CQMDuVetoL1lrYwg5t+9QdHe7NLX/SoJYkXDFfX37iInKRy5xLSi8nO7UC" crossorigin="anonymous"></script>
-<script type="module" src="{% static "gameshop/js/htmx_events.js" %}"></script>
-<script src="{% static "gameshop/js/quantity.js" %}"></script>
+<script src="{% static "gameshop/js/htmx_events.js" %}" type="module"></script> 
 {% endblock js %}
+
+

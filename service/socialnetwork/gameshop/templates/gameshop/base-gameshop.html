@@ -11,7 +11,6 @@
     </span>
 </a> 
 {% endblock sidebar_links_extra %}
-
 {% block body %}
 <style>
     #modal-btn:hover{
@@ -19,9 +18,9 @@
     }
     #cart-modal{
         position: absolute; 
-        top: 60%; 
+        top: 50%; 
         left: 50%; 
-        transform: translate(-50%, -50%)
+        transform: translate(-50%, -50%);
     } 
 </style>
 <div class="cart" style="z-index: 999;">
@@ -34,31 +33,31 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                ...
+                    {% include "cart/includes/cart-content.html" %}
                 </div>
                 <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                <button type="button" class="btn btn-primary">Сохранить изменения</button>
                 </div>
-            </div>
             </div>
         </div>
     </div>
-    <div class="cart__button  position-absolute" style="right: 5%; top: 5px;">
-        <button class="btn border-dark" data-bs-toggle="modal" data-bs-target="#cart-modal" id="modal-btn">
-            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#000" class="bi bi-basket2-fill" viewBox="0 0 16 16">
-                <path d="M5.929 1.757a.5.5 0 1 0-.858-.514L2.217 6H.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h.623l1.844 6.456A.75.75 0 0 0 3.69 15h8.622a.75.75 0 0 0 .722-.544L14.877 8h.623a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1.717L10.93 1.243a.5.5 0 1 0-.858.514L12.617 6H3.383zM4 10a1 1 0 0 1 2 0v2a1 1 0 1 1-2 0zm3 0a1 1 0 0 1 2 0v2a1 1 0 1 1-2 0zm4-1a1 1 0 0 1 1 1v2a1 1 0 1 1-2 0v-2a1 1 0 0 1 1-1"/>
-            </svg>
-            <span class="position-absolute top-0 start-75 translate-middle badge rounded-pill bg-danger">
-                <span class="count">{% cart_len cart %}</span>
-                <span class="visually-hidden">Предметы в корзине</span>
-            </span>
-        </button>
-    </div>
+</div>
+
+<div class="cart__button  position-absolute" style="right: 5%; top: 5px;">
+    <button class="btn border-dark" data-bs-toggle="modal" data-bs-target="#cart-modal" id="modal-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#000" class="bi bi-basket2-fill" viewBox="0 0 16 16">
+            <path d="M5.929 1.757a.5.5 0 1 0-.858-.514L2.217 6H.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h.623l1.844 6.456A.75.75 0 0 0 3.69 15h8.622a.75.75 0 0 0 .722-.544L14.877 8h.623a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1.717L10.93 1.243a.5.5 0 1 0-.858.514L12.617 6H3.383zM4 10a1 1 0 0 1 2 0v2a1 1 0 1 1-2 0zm3 0a1 1 0 0 1 2 0v2a1 1 0 1 1-2 0zm4-1a1 1 0 0 1 1 1v2a1 1 0 1 1-2 0v-2a1 1 0 0 1 1-1"/>
+        </svg>
+        <span class="position-absolute top-0 start-75 translate-middle badge rounded-pill bg-danger">
+            <span class="count">{% cart_len cart %}</span>
+            <span class="visually-hidden">Предметы в корзине</span>
+        </span>
+    </button>
 </div>
 
 
 
-<script src="{% static "gameshop/js/htmx_events.js" %}" type="module"></script> 
 <script src="https://unpkg.com/htmx.org@1.9.10" integrity="sha384-D1Kt99CQMDuVetoL1lrYwg5t+9QdHe7NLX/SoJYkXDFfX37iInKRy5xLSi8nO7UC" crossorigin="anonymous"></script>
+<script src="{% static "gameshop/js/htmx_events.js" %}" type="module"></script> 
 {% endblock body %}

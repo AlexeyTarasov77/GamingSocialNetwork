@@ -38,6 +38,14 @@ header {
     right: 0;
 }
 
+#modal {
+    position: absolute; 
+    top: 50%; 
+    left: 50%; 
+    transform: translate(-50%, -50%);
+    /* z-index: 999; */
+}
+
 .nav_icon {
     color: #ffffff; 
     transition: 0.3s ease;

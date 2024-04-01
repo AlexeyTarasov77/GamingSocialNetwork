@@ -54,11 +54,11 @@ main {
     font-family: 'Roboto', sans-serif;
 }
 
-#save {
+.save {
     font-size: 1.2em;
 }
 
-#save-icon svg{
+.save-icon svg{
     transition: color 0.35s !important;
     &:hover {
         color: rgb(255, 170, 0) !important;

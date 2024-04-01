@@ -9,7 +9,6 @@ services:
     container_name: socialnetwork-db
     ports:
       - 5432:5432
-    restart: always
     environment: # установка переменных окружения
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_USER=postgres
@@ -30,7 +29,6 @@ services:
       - redis
       - db
     container_name: socialnetwork-service
-    restart: always
     command: sh -c "python3 manage.py makemigrations &&
                     python3 manage.py migrate &&
                     python3 manage.py runserver 0.0.0.0:8000"
@@ -38,7 +36,6 @@ services:
   redis:
     image: redis:7.2.3-alpine
     container_name: socialnetwork-redis
-    restart: unless-stopped
 
   celery:
     build: ./socialnetwork
@@ -50,7 +47,6 @@ services:
       - db
       - redis
       - socialnetwork
-    restart: always
     command: celery -A socialnetwork worker --loglevel=info --beat
 
   

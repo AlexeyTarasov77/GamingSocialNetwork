@@ -37,6 +37,9 @@ class Cart:
             item["price"] = Decimal(item["price"])
             item["total"] = item["price"] * item["qty"]
             yield item
+            
+    def __contains__(self, product_id):
+        return str(product_id) in self.cart
 
     def save(self):
         """Save the cart"""
@@ -62,6 +65,11 @@ class Cart:
         if product_id in self.cart:
             del self.cart[product_id]
             self.save()
+            
+    def clear(self):
+        # remove cart from session
+        self.session[settings.CART_SESSION_KEY] = {}
+        self.save()
 
     def get_total_price(self):
         return sum(Decimal(item["price"]) * item["qty"] for item in self.cart.values())

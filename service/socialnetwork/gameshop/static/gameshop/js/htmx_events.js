@@ -8,10 +8,25 @@ htmx.on('htmx:afterRequest', (e) => {
             if (dispatchEl.getAttribute('data-action') === 'remove') {
               dispatchEl.closest('.product-item').remove();
             }
-            showToast(dispatchEl.getAttribute('data-success-msg'));
+            const msg = dispatchEl.getAttribute('data-success-msg')
+            msg ? showToast(msg) : ""
         } 
     }
     if(xhr.status >= 400 && xhr.status < 600) {
         showToast('Упс! Что-то пошло не так... Попробуйте повторить попытку позже', 'danger', 'Ошибка');
     }
 })
+
+;(function () {
+    const modal = new bootstrap.Modal(document.getElementById("modal"));
+    htmx.on('htmx:afterSwap', function (e) {
+      if (e.detail.target.id == 'dialog') {
+        modal.show();
+      }
+    })
+    htmx.on('htmx:beforeSwap', function (e) {
+      if (e.detail.target.id == 'dialog' && !e.detail.xhr.responseText) {
+        modal.hide();
+      }
+    })
+  })()
