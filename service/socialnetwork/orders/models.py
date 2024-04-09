@@ -4,6 +4,10 @@ from django.contrib.auth import get_user_model
 # Create your models here.
 
 class Order(models.Model):
+    PAID_STATUS_CHOICES = (
+        (True, 'Оплачено'),
+        (False, 'В ожидании'),
+    )
     first_name = models.CharField(max_length=50) 
     last_name = models.CharField(max_length=50)
     email = models.EmailField()
@@ -12,7 +16,7 @@ class Order(models.Model):
     city = models.CharField(max_length=100)
     created = models.DateTimeField(auto_now_add=True) 
     updated = models.DateTimeField(auto_now=True) 
-    paid = models.BooleanField(default=False)
+    paid = models.BooleanField(default=False, choices=PAID_STATUS_CHOICES) # оплачен заказ или же нет
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, blank=True)
     class Meta:
         ordering = ['-created']

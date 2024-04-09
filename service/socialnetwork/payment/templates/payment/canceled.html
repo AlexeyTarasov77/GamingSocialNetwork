@@ -1,0 +1,12 @@
+{% extends "gameshop/base-gameshop.html" %}
+{% load static %}
+{% block title %}Отмененный заказ{% endblock title %}
+
+{% block content %}
+<div class="container d-flex flex-column align-items-center">
+    <div class="mt-5">
+        <h1>О нет! Кажеться что то пошло не так. <a class="btn btn-outline-danger btn-lg" href="{% url "payment:process" %}">Повторить попытку</a></h1>
+    </div>
+    <img src="{% static "payment/images/fail-icon.png" %}" class="img-fluid my-5" width="250" height="250">
+</div>
+{% endblock content %}

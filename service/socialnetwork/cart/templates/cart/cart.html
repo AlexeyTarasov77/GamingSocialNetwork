@@ -10,7 +10,113 @@
 
     <hr />
 
-    {% include "cart/includes/cart-content.html" %}
+    {% load shop_tags %} {% load static %}
+<div class="cart-content">
+  {% for item in cart %}
+  
+  {% with product=item.product %}
+  
+  <br />
+  
+  <div class="row mb-4 border product-item">
+    <div class="col-md-3 col-lg-2 order-md-first bg-light">
+      <img
+        class="mx-auto d-block product-image"
+        width="100%"
+        height="100%"
+        alt="Responsive image"
+        src="{{product.image.url}}"
+      />
+    </div>
+  
+    <div class="col-md-9 col-lg-10 ps-md-3 ps-lg-10">
+      <a
+        href="{{product.get_absolute_url}}"
+        class="text-info text-decoration-none"
+      >
+        <h1 class="h5 pt-2">{{product.title}}</h1>
+      </a>
+  
+      <div class="border">
+        <div class="col border-bottom">
+          <div class="row p-3">
+            <div class="col-6">{{product.brand}}</div>
+  
+            <div class="col-6 text-end">
+              {% if product.discount %}
+              <span class="text-decoration-line-through fw-bold text-danger">
+                {% comment %} {{item.price|mul:item.qty|format_price}} {% endcomment %}
+                {{item.total|format_price}}
+              </span>
+              <span class="h6 fw-bold">{{item.total|format_price}}</span>
+              {% else %}
+              <span class="h6 fw-bold">{{item.total|format_price}}</span>
+              {% endif%}
+            </div>
+          </div>
+        </div>
+  
+        <div class="col">
+          <div class="row p-3">
+            <div class="col-12">
+              {% include "gameshop/includes/quantity.html" with qty=item.qty %}
+  
+              <br />
+              <br />
+  
+              &nbsp;
+  
+              <button
+                type="button"
+                class="btn btn-danger btn-sm delete-button"
+                hx-post="{% url "cart:remove" product.id %}"
+                hx-headers='{"X-CSRFToken": "{{csrf_token}}"}'
+                hx-target="#total"
+                id="cart-action"
+                data-action="remove"
+                data-success-msg="Товар удален из корзины"
+              >
+                Удалить
+              </button>
+  
+  
+            </div>
+  
+  
+          </div>
+  
+        </div>
+  
+      </div>
+  
+    </div>
+  
+  </div>
+  
+  {% endwith %}
+  {% endfor %}
+  
+  <div class="col-12 text-end">
+      <div class="h6 fw-bold">
+        Total: $
+        <div id="total" class="d-inline-flex">
+          {{ cart.get_total_price }}
+        </div>
+      </div>
+      <a
+        type="button"
+        href="#dialog"
+        class="btn btn-success btn-md text-bg-light mt-4 {% if not cart %}disabled{% endif %}"
+        hx-get="{% url "orders:order_create" %}" 
+        hx-target="#dialog"
+        id="cart-action"
+      >
+      Оформить заказ
+      </a>
+    </div>
+  </div>
+</div>
+
 
   <br />
   <br />
@@ -28,10 +134,11 @@ input.quantity-input:focus{
     outline-style: none;
     box-shadow: none;
 }
-</style>
+</style> 
 {% endblock %}
 {% block js %}
 <script src="{% static "gameshop/js/htmx_events.js" %}" type="module"></script> 
+<script src="{% static "gameshop/js/quantity.js" %}"></script>
 {% endblock js %}
 
 

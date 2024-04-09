@@ -1,0 +1,13 @@
+
+<button
+    type="button"
+    class="btn btn-danger btn-sm delete-button"
+    hx-post="{% url "cart:remove" product.id %}"
+    hx-headers='{"X-CSRFToken": "{{csrf_token}}"}'
+    hx-target="#total"
+    id="cart-action"
+    data-action="remove"
+    data-success-msg="Товар удален из корзины"
+    >
+    Удалить
+</button>

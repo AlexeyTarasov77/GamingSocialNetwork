@@ -1,0 +1,12 @@
+{% extends "gameshop/base-gameshop.html" %}
+{% load static %}
+{% block title %}Успешный платёж{% endblock title %}
+
+{% block content %}
+<div class="container d-flex flex-column align-items-center">
+    <div class="mt-5">
+        <h1>Платёж прошел успешно! Благодарим вас за доверие.</h1>
+    </div>
+    <img src="{% static "payment/images/success-icon.png" %}" class="img-fluid my-5" width="250" height="250">
+</div>
+{% endblock content %}

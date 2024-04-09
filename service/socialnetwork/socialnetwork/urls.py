@@ -28,6 +28,7 @@ urlpatterns = [
     path("shop/", include("gameshop.urls", namespace="shop")),
     path("cart/", include("cart.urls", namespace="cart")),
     path("orders/", include("orders.urls", namespace="orders")),
+    path("payment/", include("payment.urls", namespace="payment")),
     # path('articles/', include('articles.urls', namespace='articles')),
     # path('chat/', include('chat.urls', namespace='chat')),
     # path('events/', include('events.urls', namespace='events')),

@@ -1,7 +1,8 @@
 from django.core.validators import MaxValueValidator
 from django.db import models
 from django.urls import reverse
-from django.utils.safestring import mark_safe
+from django.conf import settings
+import os
 
 from .mixins import SaveSlugMixin
 
@@ -17,11 +18,11 @@ class Product(SaveSlugMixin, models.Model):
         (False, "Нет в наличии"),
     )
     category = models.ForeignKey(
-        "Category", on_delete=models.CASCADE, related_name="products"
+        "Category", on_delete=models.CASCADE, related_name="products", null=True, blank=True
     )
     title = models.CharField("Название", max_length=250)
     brand = models.CharField("Бренд", max_length=250)
-    description = models.TextField("Описание", blank=True)
+    description = models.TextField("Описание", blank=True, null=True)
     slug = models.SlugField("URL", max_length=250, blank=True)
     price = models.DecimalField("Цена", max_digits=7, decimal_places=2, default=0)
     image = models.ImageField(
@@ -60,6 +61,12 @@ class Product(SaveSlugMixin, models.Model):
     @property
     def get_category(self):
         return self.category if self.category else 'Без категории'
+    
+    @property
+    def get_image(self):
+        if not self.image:
+            return os.path.join(settings.MEDIA_ROOT, 'photos/default.jpeg')
+        return self.image.url
 
 
 

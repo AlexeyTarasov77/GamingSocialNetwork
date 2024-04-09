@@ -1,5 +1,4 @@
-{% load math_filters %} {% load shop_tags %} {% load static %}
-<div class="checkout"></div>
+{% load cart_tags %} {% load shop_tags %} {% load static %}
 <div class="cart-content">
   {% for item in cart %}
   
@@ -32,13 +31,14 @@
             <div class="col-6">{{product.brand}}</div>
   
             <div class="col-6 text-end">
-              {% if product.discount%}
+              {% if product.discount %}
               <span class="text-decoration-line-through fw-bold text-danger">
-                {{item.price|mul:item.qty|fp}}
+                {% comment %} {{item.price|mul:item.qty|format_price}} {% endcomment %}
+                {{item.total|format_price}}
               </span>
-              <span class="h6 fw-bold">{{item.price|mul:item.qty|fp}}</span>
+              <span class="h6 fw-bold">{{item.total|format_price}}</span>
               {% else %}
-              <span class="h6 fw-bold">{{item.price|mul:item.qty|fp}}</span>
+              <span class="h6 fw-bold">{{item.total|format_price}}</span>
               {% endif%}
             </div>
           </div>
@@ -100,7 +100,7 @@
       </div>
       <button
         type="button"
-        class="btn btn-success btn-md text-bg-light mt-4"
+        class="btn btn-success btn-md text-bg-light mt-4 {% if not cart %}disabled{% endif %}"
         hx-get="{% url "orders:order_create" %}" 
         hx-target="#dialog"
         id="cart-action"

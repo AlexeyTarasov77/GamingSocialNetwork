@@ -83,7 +83,9 @@ LOCAL_APPS = [
     "gameshop.apps.GameshopConfig",
     "actions.apps.ActionsConfig",
     "orders.apps.OrdersConfig",
+    'payment.apps.PaymentConfig',
 ]
+
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
@@ -251,7 +253,7 @@ ACCOUNT_USERNAME_MIN_LENGTH = 3
 
 # CELERY
 
-CELERY_BROKER_URL = "redis://redis:6379/0"
+CELERY_BROKER_URL = "amqp://guest:guest@rabbitmq:5672//"
 CELERY_RESULT_BACKEND = "redis://redis:6379/2"
 CELERY_CACHE_BACKEND = "default"
 CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
@@ -266,3 +268,9 @@ REDIS_DB = 3
 # CART SESSION KEY
 
 CART_SESSION_KEY = "cart"
+
+# STRIPE SETTINS 
+
+STRIPE_PUBLISH_KEY = config("STRIPE_PUBLISH_KEY")
+STRIPE_SECRET_KEY = config("STRIPE_SECRET_KEY")
+STRIPE_API_VERSION = '2023-10-16'

@@ -12,6 +12,7 @@
             hx-trigger="click from:#order-submit" 
             hx-headers='{"X-CSRFToken": "{{csrf_token}}"}'
             id="cart-action"
+            data-action="order"
         >
             {{form|crispy}}
         </form>

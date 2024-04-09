@@ -18,7 +18,13 @@
                     </p>
                 </div>
                 <div class="col-xs-12 col-md-6">
-                    <a class="btn btn-success" href="#">Добавить в корзину</a>
+                    <button class="btn btn-success"
+                     hx-post="{% url "cart:add" product.id %}" 
+                     hx-target="span.count" id="cart-action" 
+                     hx-headers='{"X-CSRFToken": "{{csrf_token}}"}'
+                     data-success-msg="Товар добавлен в корзину!">
+                     Добавить в корзину
+                    </button>
                 </div>
             </div>
         </div>

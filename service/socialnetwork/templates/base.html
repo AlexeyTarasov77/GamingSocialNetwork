@@ -48,7 +48,7 @@
   </nav>
 </div>
 <div id="modal" class="modal fade">
-  <div id="dialog" class="modal-dialog" hx-target="this"></div>
+  <div id="dialog" class="modal-dialog">{% block modal_content %}{% endblock modal_content %}</div>
 </div>
 {% block body %}{% endblock body %}
 <main>

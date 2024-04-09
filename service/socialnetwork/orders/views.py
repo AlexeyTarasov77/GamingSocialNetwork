@@ -1,17 +1,19 @@
 from django.shortcuts import redirect, render
-from django.urls import reverse
-from django.http import HttpResponseRedirect
+from django.urls import reverse_lazy
+from django.http import HttpResponse, HttpResponse
 from django.contrib.auth.decorators import login_required
 from . import forms
 from .models import Order, OrderItem
 from .tasks import confirm_order
 from cart.cart import Cart
 from django.db import transaction
+from django.conf import settings
 
 # Create your views here.
 
-@login_required
 def order_create_view(request):
+    if not request.user.is_authenticated:
+        return HttpResponse(status=401)
     if request.method == "POST":
         cart = Cart(request)
         form = forms.OrderCreateForm(request.POST)
@@ -25,7 +27,8 @@ def order_create_view(request):
                 OrderItem.objects.bulk_create(order_items)
                 cart.clear()
                 confirm_order.delay(order.id, f"{cd["first_name"]} {cd['last_name']}", cd["email"])
-                return HttpResponseRedirect(reverse("orders:order_created"))
+                request.session["order_id"] = order.id
+                return HttpResponse(request.build_absolute_uri(reverse_lazy("payment:process")))
     else:
         form = forms.OrderCreateForm()
     return render(request, "orders/order_create.html", {"form": form})

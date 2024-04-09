@@ -33,7 +33,7 @@ class Cart:
             item
         ) in (
             cart.values()
-        ):  # {'product': product, 'qty': 1, 'price': 1000, 'total': 1000}
+        ):  # {'product': product, 'qty': 2, 'price': 1000, 'total': 2000}
             item["price"] = Decimal(item["price"])
             item["total"] = item["price"] * item["qty"]
             yield item

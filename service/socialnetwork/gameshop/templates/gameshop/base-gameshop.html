@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load static %} {% load shop_tags %}
+{% load static %} {% load shop_tags %} 
 {% block sidebar_links_extra %}
 <a href="{% url "cart:view" %}" class="nav_link" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Корзина">
     <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
@@ -11,41 +11,80 @@
     </span>
 </a> 
 {% endblock sidebar_links_extra %}
-{% block body %}
-<style>
-    #modal-btn:hover{
-        background-color: #fff !important
-    }
-    #cart-modal{
-        position: absolute; 
-        top: 50%; 
-        left: 50%; 
-        transform: translate(-50%, -50%);
-    } 
-</style>
-<div class="cart" style="z-index: 999;">
-    <div class="cart__modal">
-        <div class="modal fade" id="cart-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Корзина</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+
+
+{% block modal_content %}
+<div class="modal-content">
+    <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Корзина</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <div class="modal-body">
+        {% if cart %}
+        <div class="list-group">
+            {% for item in cart %}
+                {% with product=item.product %}
+                <div class="cart-item list-group-item d-flex justify-content-between">
+                    <div class="info">
+                        <div class="item-name">
+                            <a
+                            href="{{product.get_absolute_url}}"
+                            class="text-info text-decoration-none"
+                            >
+                            <h1 class="h5 pt-2">{{product.title}}</h1>
+                        </a>
+                        </div>
+                        <div class="item-brand">
+                            <p class="text-secondary">{{product.brand}}</p>
+                        </div>
+                        <div class="item-price">
+                            {% if product.discount %}
+                            <span class="text-decoration-line-through fw-bold text-danger">
+                                {{item.total|format_price}}
+                            </span>
+                            <span class="h6 fw-bold">{{item.total|format_price}}</span>
+                            {% else %}
+                            <span class="h6 fw-bold">{{item.total|format_price}}</span>
+                            {% endif%}
+                        </div>
+                    </div>
+                    <div class="buttons d-flex flex-column justify-content-between">
+                        <style>
+                            input.quantity-input {
+                                width: 20%;
+                                padding: 0;
+                            }
+                            
+                            input.quantity-input:focus{
+                                outline: none;
+                                border: 0.1px solid #9c9c9c79;
+                                outline-style: none;
+                                box-shadow: none;
+                            }
+                        </style>
+                        <div class="quantity">{% include "gameshop/includes/quantity.html" with qty=item.qty %}</div>
+                        <div class="remove">{% include "cart/components/remove_btn.html" %}</div>
+                    </div>
                 </div>
-                <div class="modal-body">
-                    {% include "cart/includes/cart-content.html" %}
-                </div>
-                <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
-                <button type="button" class="btn btn-primary">Сохранить изменения</button>
-                </div>
-            </div>
+                {% endwith %}
+            {% endfor %}
+        </div>
+        {% else %}
+        <h5>Корзина пуста</h5>
+        {% endif %}
+    </div>
+    <div class="modal-footer">
+        <div class="checkout">
+            {% include "cart/components/checkout_btn.html" %}
         </div>
     </div>
 </div>
+{% endblock modal_content %}
 
-<div class="cart__button  position-absolute" style="right: 5%; top: 5px;">
-    <button class="btn border-dark" data-bs-toggle="modal" data-bs-target="#cart-modal" id="modal-btn">
+{% block body %}
+<div class="cart-btn position-absolute" style="right: 5%; top: 5px;">
+    <button class="btn border-dark" data-bs-toggle="modal" data-bs-target="#modal" id="modal-btn">
         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#000" class="bi bi-basket2-fill" viewBox="0 0 16 16">
             <path d="M5.929 1.757a.5.5 0 1 0-.858-.514L2.217 6H.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h.623l1.844 6.456A.75.75 0 0 0 3.69 15h8.622a.75.75 0 0 0 .722-.544L14.877 8h.623a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1.717L10.93 1.243a.5.5 0 1 0-.858.514L12.617 6H3.383zM4 10a1 1 0 0 1 2 0v2a1 1 0 1 1-2 0zm3 0a1 1 0 0 1 2 0v2a1 1 0 1 1-2 0zm4-1a1 1 0 0 1 1 1v2a1 1 0 1 1-2 0v-2a1 1 0 0 1 1-1"/>
         </svg>

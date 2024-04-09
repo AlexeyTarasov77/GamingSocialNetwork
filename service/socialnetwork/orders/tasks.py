@@ -6,7 +6,7 @@ from .models import Order
 @shared_task
 def confirm_order(order_id: int, full_name: str, email: str):
     order = get_object_or_404(Order.objects.prefetch_related("items"), id=order_id)
-    subject = f"Здравствуйте, {full_name}!\nВаш заказ No{order.id} успешно оформлен."
+    subject = f"Здравствуйте, {full_name}! Ваш заказ No{order.id} успешно оформлен."
     order_items = """\n""".join([f"Товар: {item.product.title}, Цена: {item.price}, Количество: {item.quantity}" for item in order.items.all()])
     message = (
         f"""

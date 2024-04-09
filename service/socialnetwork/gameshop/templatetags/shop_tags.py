@@ -4,10 +4,10 @@ from cart.cart import Cart
 
 register = template.Library()
 
-@register.filter(name="fp")
+
+@register.filter()
 def format_price(value):
-    value = str(value)
-    if value == "0.00":
+    if value == 0:
         return mark_safe("<span class='text-success'>Бесплатно</span>")
     else:
         return f"$ {value}"
@@ -19,7 +19,8 @@ def cart_len(cart: Cart):
         return "99+"
     elif cart_len <= 99:
         return cart_len
-    
+
+
 @register.inclusion_tag("gameshop/components/price.html", name="price")
 def get_product_price(product):
     return {"product": product}

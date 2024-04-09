@@ -64,6 +64,7 @@ setuptools==69.1.1
 six==1.16.0
 sorl-thumbnail==12.10.0
 sqlparse==0.4.4
+stripe==8.9.0
 Twisted==24.3.0
 txaio==23.1.1
 typing_extensions==4.10.0

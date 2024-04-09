@@ -37,6 +37,19 @@ services:
     image: redis:7.2.3-alpine
     container_name: socialnetwork-redis
 
+  rabbitmq:
+    image: rabbitmq:3.9.20-management-alpine
+    container_name: socialnetwork-rabbitmq
+    ports:
+      - 5672:5672
+      - 15672:15672
+    healthcheck:
+      test: ["CMD", "rabbitmqctl", "status"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+      start_period: 2s
+
   celery:
     build: ./socialnetwork
     container_name: socialnetwork-celery
@@ -44,9 +57,18 @@ services:
       - ./socialnetwork:/service
     env_file: ./socialnetwork/socialnetwork/.env
     depends_on:
-      - db
-      - redis
-      - socialnetwork
+      rabbitmq:
+        condition: service_healthy
+      db: 
+        condition: service_started
+      redis: 
+        condition: service_started
+      socialnetwork: 
+        condition: service_started
+
+
     command: celery -A socialnetwork worker --loglevel=info --beat
+
+
 
   

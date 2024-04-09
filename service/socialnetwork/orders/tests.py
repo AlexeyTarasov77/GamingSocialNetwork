@@ -1,6 +1,8 @@
 from django.contrib.auth import get_user_model
-from django.test import Client, TestCase
+from django.test import Client, TestCase, RequestFactory
+from django.contrib.sessions.middleware import SessionMiddleware
 from django.urls import reverse
+from gameshop.models import ProductProxy
 
 from . import forms
 from .models import Order
@@ -14,6 +16,11 @@ class OrderCreateTestCase(TestCase):
         self.client = Client()
         user = User.objects.create_user(username="testuser", password="12345")
         self.client.login(username="testuser", password="12345")
+        self.product = ProductProxy.objects.create(title='Example Product', price=10.0, brand='Example Brand')
+        self.request = RequestFactory().post(reverse('cart:add-to-cart', kwargs={'product_id': self.product.id}), {
+            'product_qty': 2,
+        })
+        self.middleware = SessionMiddleware()
 
     def test_order_create(self):
         response = self.client.post(
@@ -28,7 +35,6 @@ class OrderCreateTestCase(TestCase):
             },
         )
         self.assertEqual(response.status_code, 302)
-        print(Order.objects.all())
         self.assertTrue(Order.objects.filter(first_name="TestName", id=1).exists())
 
     def test_order_view(self):
