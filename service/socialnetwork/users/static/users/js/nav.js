@@ -1,5 +1,5 @@
 $(document).ready(function () {
-  const listClasses = ['.content__bio', '.content__following', '.content__followers', '.content__friends'];
+  const listClasses = ['.content__bio', '.content__following', '.content__followers', '.content__friends', '.content__orders'];
   const mainClass = '.content__main';
   const navBar = new NavBar(listClasses, mainClass);
   navBar.hideContent(true);
@@ -18,6 +18,7 @@ export default class NavBar{
 
     hideContent(initial) {
       for (const el of this.listClasses) {
+        console.log(el);
           $(el).hide();
       }
       if (!initial) {

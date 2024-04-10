@@ -1,4 +1,4 @@
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.http import HttpResponse, HttpResponse
 from django.contrib.auth.decorators import login_required
@@ -32,3 +32,8 @@ def order_create_view(request):
     else:
         form = forms.OrderCreateForm()
     return render(request, "orders/order_create.html", {"form": form})
+
+
+def order_detail_view(request, order_id):
+    order = get_object_or_404(Order, id=order_id)
+    return render(request, "orders/order_detail.html", {"order": order})

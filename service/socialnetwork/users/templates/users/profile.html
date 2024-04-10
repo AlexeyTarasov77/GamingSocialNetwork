@@ -25,7 +25,7 @@
                         {% else %}
                             <button type="button" id="follow" class="btn btn-dark" data-user-slug="{{profile.user_slug}}">Подписаться</button>
                         {% endif %}
-                        {% if not user in profile.friends.all and not request_exist%}
+                        {% if not user in profile.friends.all and not request_exist %}
                             <button type="button" id="friend-req" class="btn btn-dark btn-sm" data-user-slug="{{profile.user_slug}}" data-type="POST" data-action="send">Отправить заявку в друзья</button>
                         {% elif request_exist %}
                             <button type="button" id="friend-req" class="btn btn-danger btn-sm" data-user-slug="{{profile.user_slug}}" data-type="DELETE" data-action="cancel">Отменить заявку</button>
@@ -89,6 +89,9 @@
                       <li class="nav-item">
                         <a class="nav-link" href="{% url "users:profile-posts" profile.user_slug %}">Посты</a>
                       </li>
+                      <li class="nav-item">
+                        <button class="nav-link" data-name="orders">Мои заказы</button>
+                      </li>
                     </ul>
                   </div>
                 </div>
@@ -147,6 +150,28 @@
                     </ul>
                     {% else %} <p class="empty fs-3">На пользователя {{profile.user.username}} никто не подписан</p>
                 {% endif %}
+                </div>
+                <div class="content__orders">
+                    <table class="table">
+                        <thead>
+                          <tr>
+                            <th scope="col">Номер заказа</th>
+                            <th scope="col">Дата создания</th>
+                            <th scope="col">Статус</th>
+                            <th scope="col">Сумма заказа</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {% for order in user.orders.all %}
+                          <tr>
+                            <td class="num"><a href="{{order.get_absolute_url}}">{{order.id}}</a></td>
+                            <td class="num">{{order.created}}</td>
+                            <td class="num text-{% if order.paid %}success{% else %}warning{% endif %} btn-sm">{{order.get_paid_display}}</td>
+                            <td class="num">${{order.get_total_cost}}</td>
+                          </tr>
+                          {% endfor %}
+                        </tbody>
+                      </table>
                 </div>
             </div>
         </div>
