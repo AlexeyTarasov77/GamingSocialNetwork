@@ -83,7 +83,7 @@ LOCAL_APPS = [
     "gameshop.apps.GameshopConfig",
     "actions.apps.ActionsConfig",
     "orders.apps.OrdersConfig",
-    'payment.apps.PaymentConfig',
+    "payment.apps.PaymentConfig",
 ]
 
 
@@ -269,8 +269,9 @@ REDIS_DB = 3
 
 CART_SESSION_KEY = "cart"
 
-# STRIPE SETTINS 
+# STRIPE SETTINS
 
 STRIPE_PUBLISH_KEY = config("STRIPE_PUBLISH_KEY")
 STRIPE_SECRET_KEY = config("STRIPE_SECRET_KEY")
-STRIPE_API_VERSION = '2023-10-16'
+STRIPE_API_VERSION = "2023-10-16"
+STRIPE_WEBHOOK_SECRET = config("STRIPE_WEBHOOK_SECRET")

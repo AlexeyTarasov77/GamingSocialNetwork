@@ -16,7 +16,8 @@ class Order(models.Model):
     postal_code = models.CharField(max_length=20) 
     city = models.CharField(max_length=100)
     created = models.DateTimeField(auto_now_add=True) 
-    updated = models.DateTimeField(auto_now=True) 
+    updated = models.DateTimeField(auto_now=True)
+    # stripe_id = models.CharField(max_length=250, blank=True) 
     paid = models.BooleanField(default=False, choices=PAID_STATUS_CHOICES) # оплачен заказ или же нет
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, blank=True, related_name="orders")
     class Meta:
