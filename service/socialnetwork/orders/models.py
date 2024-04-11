@@ -2,6 +2,7 @@ from django.db import models
 from django.urls import reverse
 from gameshop.models import Product
 from django.contrib.auth import get_user_model
+from django.conf import settings
 # Create your models here.
 
 class Order(models.Model):
@@ -17,7 +18,7 @@ class Order(models.Model):
     city = models.CharField(max_length=100)
     created = models.DateTimeField(auto_now_add=True) 
     updated = models.DateTimeField(auto_now=True)
-    # stripe_id = models.CharField(max_length=250, blank=True) 
+    stripe_id = models.CharField(max_length=250, blank=True) 
     paid = models.BooleanField(default=False, choices=PAID_STATUS_CHOICES) # оплачен заказ или же нет
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, blank=True, related_name="orders")
     class Meta:
@@ -28,6 +29,15 @@ class Order(models.Model):
         return f'Order {self.id}'
     def get_total_cost(self):
         return sum(item.get_cost() for item in self.items.all())
+    
+    def get_stripe_url(self):
+        if not self.stripe_id:
+            return ''
+        if '_test_' in settings.STRIPE_SECRET_KEY:
+            path = '/test/'
+        else:
+            path = '/'
+        return f'https://dashboard.stripe.com{path}payments/{self.stripe_id}'
     
     def get_absolute_url(self):
         return reverse("orders:order_detail",args=[self.pk])

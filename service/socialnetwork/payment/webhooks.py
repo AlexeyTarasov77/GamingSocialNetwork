@@ -28,6 +28,7 @@ def stripe_webhook(request):
             order_id = session.client_reference_id
             order = get_object_or_404(Order, id=order_id)
             order.paid = True
+            order.stripe_id = session.payment_intent
             order.save()
 
     return HttpResponse()

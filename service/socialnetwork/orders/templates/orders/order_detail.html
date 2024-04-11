@@ -17,9 +17,7 @@
             <tbody>
                 <tr>
                     <td class="num">{{order.id}}</td>
-                    <td class="num">{{order.created}}</td>
-                    <td class="num text-{% if order.paid %}success{% else %}warning{% endif %} btn-sm">{{order.get_paid_display}}</td>
-                    <td class="num">${{order.get_total_cost}}</td>
+                    {% include "orders/components/order_table_info.html" %}
                 </tr>
             </tbody>
         </table>

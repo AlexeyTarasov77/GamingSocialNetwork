@@ -31,7 +31,8 @@ services:
     container_name: socialnetwork-service
     command: sh -c "python3 manage.py makemigrations &&
                     python3 manage.py migrate &&
-                    python3 manage.py runserver 0.0.0.0:8000"
+                    python3 manage.py runserver 0.0.0.0:8000 &&
+                    stripe listen --forward-to localhost:8000/payment/stripe/webhook/"
 
   redis:
     image: redis:7.2.3-alpine
