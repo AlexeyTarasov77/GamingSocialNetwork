@@ -1,0 +1,12 @@
+{% extends "./base-users.html" %}
+{% load orders_tags %}
+{% block content %}
+<div class="orders">
+    <div class="container">
+        <h1 class="text-center fw-bold my-5">Мои заказы</h1>
+        <div class="orders-list">
+            {% show_order_table orders many=True %}
+        </div>
+    </div>
+</div>
+{% endblock content %}

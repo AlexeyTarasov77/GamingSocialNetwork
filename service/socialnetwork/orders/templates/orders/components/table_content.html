@@ -1,0 +1,24 @@
+<tr>
+    <td class="num">
+        {% url "orders:order_detail" as order_detail_url %}
+        {% if request.path == order_detail_url %}{{order.id}}{% else %}<a href="{{order.get_absolute_url}}">{{order.id}}</a>{% endif %}
+    </td>
+    <td class="num">{{order.created}}</td>
+    {% if order.paid %}
+    <td class="num">
+        <a 
+            href="{{order.get_stripe_url}}"
+            data-bs-toggle="tooltip" 
+            data-bs-placement="bottom" 
+            data-bs-title="Смотреть детали платежа"
+        >
+            <span class="badge text-bg-success">{{order.get_paid_display}}</span>
+        </a>
+    </td>
+    {% else %}
+    <td class="num">
+        <span class="badge text-bg-warning">{{order.get_paid_display}}</span>
+    </td>
+    {% endif %}
+    <td class="num">${{order.get_total_cost}}</td>
+</tr>

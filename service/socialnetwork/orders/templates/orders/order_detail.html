@@ -1,57 +1,16 @@
 {% extends "gameshop/base-gameshop.html" %}
+{% load orders_tags %}
 {% block title %}Заказ №{{order.id}}{% endblock title %}
 {% block content %}
 <div class="container">
     <h1 class="mt-5">Подробности заказа</h1>
     <div class="table-responsive mt-4">
         <h3>Информация о заказе</h3>
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th scope="col">Номер заказа</th>
-                    <th scope="col">Дата создания</th>
-                    <th scope="col">Статус</th>
-                    <th scope="col">Сумма заказа</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td class="num">{{order.id}}</td>
-                    {% include "orders/components/order_table_info.html" %}
-                </tr>
-            </tbody>
-        </table>
+        {% show_order_table order %}
     </div>
     <div class="table-responsive mt-4">
         <h3>Содержимое заказа</h3>
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th scope="col">Изображение</th>
-                    <th scope="col">Продукт</th>
-                    <th scope="col">Цена</th>
-                    <th scope="col">Количевство</th>
-                    <th scope="col">Итого</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for item in order.items.all %}
-                <tr class="row{% cycle "1" "2" %}">
-                    <td>
-                        <img src="{{item.product.get_image}}" class="img-fluid" style="max-width: 150px;" alt="Product Image">
-                    </td>
-                    <td>{{ item.product.title }}</td>
-                    <td class="num">${{ item.price }}</td>
-                    <td class="num">{{ item.quantity }}</td>
-                    <td class="num">${{ item.get_cost }}</td>
-                </tr>
-                {% endfor %}
-                <tr class="total">
-                    <td colspan="4">Итого</td>
-                    <td class="num">${{ order.get_total_cost }}</td>
-                </tr>
-            </tbody>
-        </table>
+        {% include "orders/includes/order_items_table.html" %}
     </div>
 </div>
 {% endblock content %}

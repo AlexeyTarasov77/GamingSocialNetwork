@@ -1,0 +1,19 @@
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th scope="col">Номер заказа</th>
+            <th scope="col">Дата создания</th>
+            <th scope="col">Статус</th>
+            <th scope="col">Сумма заказа</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% if many %}
+                {% for order in orders %}
+                    {% include "orders/components/table_content.html" %}
+                {% endfor %}
+        {% else %}
+            {% include "orders/components/table_content.html" with order=orders %}    
+        {% endif %}
+    </tbody>
+</table>

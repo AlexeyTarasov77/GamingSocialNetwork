@@ -1,6 +1,6 @@
 {% extends "./base-users.html" %}
 
-{% load static %}
+{% load static %} {% load orders_tags %}
 {% block links %}
 <link rel="stylesheet" href="{% static "users/css/profile.css" %}">
 {% endblock links %}
@@ -87,11 +87,13 @@
                         <button class="nav-link" data-name="followers">Подписчики</button>
                       </li>
                       <li class="nav-item">
-                        <a class="nav-link" href="{% url "users:profile-posts" profile.user_slug %}">Посты</a>
+                        <a class="nav-link" href="{% url "users:my_posts" profile.user_slug %}">Посты</a>
                       </li>
+                      {% if is_owner %}
                       <li class="nav-item">
                         <button class="nav-link" data-name="orders">Мои заказы</button>
                       </li>
+                      {% endif %}
                     </ul>
                   </div>
                 </div>
@@ -151,26 +153,11 @@
                     {% else %} <p class="empty fs-3">На пользователя {{profile.user.username}} никто не подписан</p>
                 {% endif %}
                 </div>
+                {% if is_owner %}
                 <div class="content__orders">
-                    <table class="table">
-                        <thead>
-                          <tr>
-                            <th scope="col">Номер заказа</th>
-                            <th scope="col">Дата создания</th>
-                            <th scope="col">Статус</th>
-                            <th scope="col">Сумма заказа</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {% for order in user.orders.all %}
-                          <tr>
-                            <td class="num"><a href="{{order.get_absolute_url}}">{{order.id}}</a></td>
-                            {% include "orders/components/order_table_info.html" %}
-                          </tr>
-                          {% endfor %}
-                        </tbody>
-                      </table>
+                    {% show_order_table user.orders.all True %}
                 </div>
+                {% endif %}
             </div>
         </div>
     </div>

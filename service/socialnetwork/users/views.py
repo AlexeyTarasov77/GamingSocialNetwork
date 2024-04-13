@@ -1,18 +1,19 @@
 from typing import Any
+from .decorators import owner_required
+from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.models import User
 from django.db.models.base import Model as Model
 from django.db.models.query import QuerySet
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views import generic
-from django.contrib.auth.mixins import LoginRequiredMixin
-from .models import Profile, FriendRequest
-from .forms import ProfileUpdateForm
-from django.contrib import messages
+from posts.models import Post
 from rest_framework import generics, status
 from rest_framework.response import Response
-from django.contrib.auth.models import User
-from posts.models import Post
 
+from .forms import ProfileUpdateForm
+from .models import FriendRequest, Profile
 
 # Create your views here.
 class ProfileView(LoginRequiredMixin, generic.DetailView):
@@ -48,7 +49,7 @@ class ProfileView(LoginRequiredMixin, generic.DetailView):
         return context
 
 
-def profile_posts_view(request, username):
+def my_posts_view(request, username):
     user = get_object_or_404(
         User,
         profile_user__user_slug=username,
@@ -60,8 +61,18 @@ def profile_posts_view(request, username):
         "drafts_posts": Post.objects.filter(author=user, status="DF"),
         "is_owner": True if user == request.user else False,
     }
-    return render(request, "users/profile_posts.html", context)
+    return render(request, "users/my_posts.html", context)
 
+@owner_required
+def my_orders_view(request, username):
+    user = get_object_or_404(
+        User.objects.select_related("profile_user").prefetch_related("orders"),
+        profile_user__user_slug=username,
+    )
+    context = {
+        "orders": user.orders.all()
+    }
+    return render(request, "users/my_orders.html", context)
 
 def profile_middleware(request):
     if request.user.is_authenticated:
