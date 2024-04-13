@@ -14,7 +14,6 @@ htmx.on('htmx:afterRequest', (e) => {
                 dispatchEl.closest('.product-item').remove();
                 break;
               case 'order':
-                console.log('order');
                 getPayment(xhr.responseText)
                 break;
             }
@@ -45,13 +44,7 @@ htmx.on('htmx:afterRequest', (e) => {
     })
   })()
 
-async function getPayment(url) {
-  console.log(url);
+function getPayment(url) {
   modal.hide()
   window.location.href = url
-  // const response = await fetch(window.location.origin + url);
-  // const modalContent = await response.text();
-  // const dialog = document.getElementById('dialog');
-  // dialog.innerHTML = modalContent
-  // modal.show();
 }
