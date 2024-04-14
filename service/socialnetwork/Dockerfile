@@ -6,7 +6,9 @@ COPY requirements.txt .
 
 RUN python -m pip install --upgrade pip --no-warn-script-location
 
-RUN apt-get update && apt-get install -y postgresql-client build-essential postgresql-server-dev-all 
+RUN apt update && apt install -y postgresql-client build-essential postgresql-server-dev-all 
+
+RUN apt install -y python3-pip libpango-1.0-0 libharfbuzz0b libpangoft2-1.0-0
 
 RUN pip install -r requirements.txt --no-cache-dir --no-warn-script-location
 

@@ -3,6 +3,7 @@ from django.utils.safestring import mark_safe
 from django.http import HttpResponse
 from .models import Order, OrderItem
 import datetime, csv
+from django.urls import reverse
 
 
 # Register your models here.
@@ -14,13 +15,14 @@ class OrderItemInline(admin.TabularInline):
 class OrderAdmin(admin.ModelAdmin):
     list_display = [
         "id",
-        "first_name",
-        "last_name",
+        "order_full_name",
         "email",
         "address",
         "postal_code",
         "city",
         "paid",
+        "order_total_cost",
+        "order_to_pdf",
         "order_stripe_payment",
         "created",
         "updated",
@@ -29,12 +31,24 @@ class OrderAdmin(admin.ModelAdmin):
     inlines = [OrderItemInline]
     actions = ["export_to_csv"]
     
-    @admin.display(description="Stripe payment")
+    @admin.display(description="Платеж Stripe")
     def order_stripe_payment(self, obj):
-        url = obj.get_stripe_url()
+        url = obj.stripe_url
         if url:
             return mark_safe(f'<a href="{url}" target="_blank">{obj.stripe_id}</a>')
         return ""
+    
+    @admin.display(description="Полное имя")
+    def order_full_name(self, obj):
+        return obj.full_name
+    
+    @admin.display(description="Общая стоимость")
+    def order_total_cost(self, obj):
+        return obj.total_cost
+    
+    @admin.display(description="PDF Фактура")
+    def order_to_pdf(self, obj):
+        return mark_safe(f'<a href="{reverse("orders:order_pdf", args=[obj.id])}">Открыть</a>')
 
     
     @admin.action(description="Export selected orders to CSV")

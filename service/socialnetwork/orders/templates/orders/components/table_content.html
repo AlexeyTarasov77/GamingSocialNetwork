@@ -7,7 +7,7 @@
     {% if order.paid %}
     <td class="num">
         <a 
-            href="{{order.get_stripe_url}}"
+            href="{{order.stripe_url}}"
             data-bs-toggle="tooltip" 
             data-bs-placement="bottom" 
             data-bs-title="Смотреть детали платежа"
@@ -20,5 +20,5 @@
         <span class="badge text-bg-warning">{{order.get_paid_display}}</span>
     </td>
     {% endif %}
-    <td class="num">${{order.get_total_cost}}</td>
+    <td class="num">${{order.total_cost}}</td>
 </tr>

@@ -27,10 +27,17 @@ class Order(models.Model):
         ]
     def __str__(self):
         return f'Order {self.id}'
-    def get_total_cost(self):
+    
+    @property
+    def total_cost(self):
         return sum(item.get_cost() for item in self.items.all())
     
-    def get_stripe_url(self):
+    @property
+    def full_name(self):
+        return f'{self.first_name} {self.last_name}'
+    
+    @property
+    def stripe_url(self):
         if not self.stripe_id:
             return ''
         if '_test_' in settings.STRIPE_SECRET_KEY:

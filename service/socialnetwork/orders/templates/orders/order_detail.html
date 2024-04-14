@@ -3,7 +3,7 @@
 {% block title %}Заказ №{{order.id}}{% endblock title %}
 {% block content %}
 <div class="container">
-    <h1 class="mt-5">Подробности заказа</h1>
+    <h1 class="mt-5 fw-bold">Подробности заказа</h1>
     <div class="table-responsive mt-4">
         <h3>Информация о заказе</h3>
         {% show_order_table order %}
@@ -11,6 +11,9 @@
     <div class="table-responsive mt-4">
         <h3>Содержимое заказа</h3>
         {% include "orders/includes/order_items_table.html" %}
+    </div>
+    <div class="show_pdf fs-4" style="margin-left: 80%">
+        <a href="{% url "orders:order_pdf" order.id %}">PDF Фактура</a>
     </div>
 </div>
 {% endblock content %}

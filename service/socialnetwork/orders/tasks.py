@@ -10,7 +10,7 @@ def confirm_order(order_id: int, full_name: str, email: str):
     order_items = """\n""".join([f"Товар: {item.product.title}, Цена: {item.price}, Количество: {item.quantity}" for item in order.items.all()])
     message = (
         f"""
-        Заказ No{order.id} на сумму {order.get_total_cost()} поступил в обработку и ожидает оплаты.\n 
+        Заказ No{order.id} на сумму {order.total_cost} поступил в обработку и ожидает оплаты.\n 
         Детали заказа:\n
         Имя: {order.first_name}, Фамилия: {order.last_name}, Email: {order.email}, Адрес: {order.address}, Почтовый индекс: {order.postal_code}, Город: {order.city}.
         Товары в заказе:\n

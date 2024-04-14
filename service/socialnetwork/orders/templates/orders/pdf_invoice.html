@@ -1,0 +1,24 @@
+{% load orders_tags %}
+<html>
+<body class="d-flex flex-column align-items-center">
+    <h1 class="fw-bold mt-3 mb-1">™GameShop - GamingSocialNetwork</h1>
+    <div>
+        Фактура no. {{ order.id }}<br> 
+        <span class="text-secondary">
+        {{ order.created|date:"M d, Y" }}
+        </span>
+    </div>
+    <br>
+    <h3 class="mt-5">Подробности заказа</h3>
+    <div class="table-responsive my-3">
+        <h3>Информация о заказе</h3>
+        {% show_order_table order %}
+    </div>
+    <br>
+    <div class="table-responsive mt-4">
+        <h3>Содержимое заказа</h3>
+        {% include "orders/includes/order_items_table.html" %}
+    </div>
+</div>
+</body>
+</html>

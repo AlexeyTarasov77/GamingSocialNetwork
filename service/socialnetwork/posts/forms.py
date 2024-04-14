@@ -50,9 +50,3 @@ class CreateForm(forms.ModelForm):
         
 class UpdatePostForm(CreateForm):
     pass
-    # class Meta:
-    #     model = Post
-    #     fields = ["name", "content", "status", "tags", "photo"]
-    #     widgets = {
-    #         'content': forms.Textarea(attrs={'rows': 5, 'columns': '10'})
-    #     }
