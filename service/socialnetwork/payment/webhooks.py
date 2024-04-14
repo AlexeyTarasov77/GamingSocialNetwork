@@ -3,7 +3,7 @@ from django.shortcuts import get_object_or_404
 import stripe
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
-
+from .tasks import payment_completed
 from orders.models import Order
 
 
@@ -30,5 +30,6 @@ def stripe_webhook(request):
             order.paid = True
             order.stripe_id = session.payment_intent
             order.save()
+            payment_completed.delay(order.id)
 
     return HttpResponse()
