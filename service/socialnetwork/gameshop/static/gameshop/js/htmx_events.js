@@ -26,6 +26,8 @@ htmx.on('htmx:afterRequest', (e) => {
       let msg = 'Упс! Что-то пошло не так... Попробуйте повторить попытку позже'
       if (xhr.status === 401) {
         msg = `Для выполнения этого действия необходимо авторизоваться. Для этого перейдите по ссылке ниже\n<a href='${window.location.origin}/accounts/login/?next=${window.location.pathname}' class="btn btn-dark">Авторизация</a>`
+      } else if (xhr.status === 406) {
+        msg = xhr.responseText || 'Упс! Что-то пошло не так... Попробуйте повторить попытку позже'
       }
         showToast(msg, 'danger', 'Ошибка');
     }

@@ -84,6 +84,7 @@ LOCAL_APPS = [
     "actions.apps.ActionsConfig",
     "orders.apps.OrdersConfig",
     "payment.apps.PaymentConfig",
+    "coupons.apps.CouponsConfig",
 ]
 
 

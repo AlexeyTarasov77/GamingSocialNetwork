@@ -33,7 +33,7 @@
             <div class="col-6 text-end">
               {% if product.discount %}
               <span class="text-decoration-line-through fw-bold text-danger">
-                {% comment %} {{item.price|mul:item.qty|format_price}} {% endcomment %}
+                {% comment %} {{item.price|:item.qty|format_price}} {% endcomment %}
                 {{item.total|format_price}}
               </span>
               <span class="h6 fw-bold">{{item.total|format_price}}</span>

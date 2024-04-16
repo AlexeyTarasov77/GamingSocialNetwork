@@ -6,7 +6,7 @@ volumes:
 services:
   db:
     image: postgres:15-alpine
-    container_name: socialnetwork-db
+    container_name: sc-db
     ports:
       - 5432:5432
     environment: # установка переменных окружения
@@ -28,19 +28,18 @@ services:
     links:
       - redis
       - db
-    container_name: socialnetwork-service
+    container_name: sc-service
     command: sh -c "python3 manage.py makemigrations &&
                     python3 manage.py migrate &&
-                    python3 manage.py runserver 0.0.0.0:8000 &&
-                    stripe listen --forward-to localhost:8000/payment/stripe/webhook/"
+                    python3 manage.py runserver 0.0.0.0:8000"
 
   redis:
     image: redis:7.2.3-alpine
-    container_name: socialnetwork-redis
+    container_name: sc-redis
 
   rabbitmq:
     image: rabbitmq:3.9.20-management-alpine
-    container_name: socialnetwork-rabbitmq
+    container_name: sc-rabbitmq
     ports:
       - 5672:5672
       - 15672:15672
@@ -53,7 +52,7 @@ services:
 
   celery:
     build: ./socialnetwork
-    container_name: socialnetwork-celery
+    container_name: sc-celery
     volumes:
       - ./socialnetwork:/service
     env_file: ./socialnetwork/socialnetwork/.env
@@ -69,6 +68,13 @@ services:
 
 
     command: celery -A socialnetwork worker --loglevel=info --beat
+
+  stripe:
+    image: stripe/stripe-cli:latest
+    container_name: sc-stripe
+    command: listen --forward-to localhost:8000/payment/stripe/webhook/
+    depends_on:
+      - socialnetwork
 
 
 

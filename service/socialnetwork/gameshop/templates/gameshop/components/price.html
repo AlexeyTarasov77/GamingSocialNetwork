@@ -1,9 +1,9 @@
 
 {% load shop_tags %}
 {% if product.discount %}
-<span class="text-decoration-line-through fw-bold text-danger">
+<span class="text-decoration-line-through fw-bold text-danger fs-6">
     {{product.price|format_price}}
-    <span class="badge rounded-pill bg-info">discount</span>
+    <span class="badge rounded-pill bg-warning">discount</span>
 </span> <span class="h4 fw-bold">{{product.final_price|format_price}}</span>
 {% else %}
 <span class="h4 fw-bold">{{product.final_price|format_price}}</span>

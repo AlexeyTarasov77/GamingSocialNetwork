@@ -41,7 +41,7 @@
                         <div class="item-price">
                             {% if product.discount %}
                             <span class="text-decoration-line-through fw-bold text-danger">
-                                {{item.total|format_price}}
+                                {{product.final_price|format_price}}
                             </span>
                             <span class="h6 fw-bold">{{item.total|format_price}}</span>
                             {% else %}

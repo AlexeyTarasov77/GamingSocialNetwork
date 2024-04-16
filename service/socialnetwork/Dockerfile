@@ -20,5 +20,7 @@ EXPOSE 8000
 
 # USER service-user
 
+# CMD ["stripe", "listen", "--forward-to", "localhost:8000/payment/stripe/webhook/"]
+
 ENV PYTHONUNBUFFERED 1
 ENV PYTHONDONTWRITEBYTECODE 1

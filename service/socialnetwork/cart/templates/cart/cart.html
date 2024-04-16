@@ -1,6 +1,6 @@
 {% extends "gameshop/base-gameshop.html" %}
 
-{% load static %} 
+{% load static %}  {% load crispy_forms_tags %} {% load shop_tags %}
 
 {% block content %}
 
@@ -45,8 +45,7 @@
             <div class="col-6 text-end">
               {% if product.discount %}
               <span class="text-decoration-line-through fw-bold text-danger">
-                {% comment %} {{item.price|mul:item.qty|format_price}} {% endcomment %}
-                {{item.total|format_price}}
+                {{product.price|mul:item.qty|format_price}}
               </span>
               <span class="h6 fw-bold">{{item.total|format_price}}</span>
               {% else %}
@@ -97,12 +96,25 @@
   {% endfor %}
   
   <div class="col-12 text-end">
+    {% if cart.coupon %}
       <div class="h6 fw-bold">
-        Total: $
-        <div id="total" class="d-inline-flex">
-          {{ cart.get_total_price }}
+        SubTotal: $
+        <div id="subtotal" class="d-inline-flex flex-column">
+          <span class="text-decoration-line-through fw-bold text-danger fs-5">
+            {{cart.get_total_price}}
+            <span class="badge rounded-pill bg-warning">coupon - {{cart.coupon.discount}}% off.</span>
+          </span>
+        </div>
+        <div class="coupon mt-2">Активный Купон: {{cart.coupon.code}}</div>
+      </div>
+      <div class="h5 fw-bold mt-4">Total: $
+        <div id="total" class="d-inline-flex text-success">
+          {{cart.get_discounted_total_price}}
         </div>
       </div>
+      {% else %}
+        <div class="h6 fw-bold">{{ cart.get_total_price }}</div>
+    {% endif %}
       <a
         type="button"
         href="#dialog"
@@ -115,6 +127,29 @@
       </a>
     </div>
   </div>
+
+  {% if not cart.coupon %}
+  <div class="col-sm-4 text-start">
+    <div class="h6 fw-bold">
+      Ecть скидочный купон?
+      <div class="d-inline-flex">
+        Введите его ниже для получения скидки
+      </div>
+    </div>
+    <form 
+      method="post"
+      hx-post="{% url "coupons:apply" %}"
+      hx-trigger="click from:#submit-btn" 
+      hx-target="#total" 
+      id="cart-action" 
+      data-success-msg="Купон успешно применен!"> 
+      {% csrf_token %}
+      {{coupon_form|crispy}}
+      <button type="button" id="submit-btn" class="btn btn-primary btn-sm">Применить</button>
+    </form>
+  </div>
+  {% endif %}
+</div>
 </div>
 
 

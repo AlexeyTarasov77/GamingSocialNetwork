@@ -32,7 +32,12 @@
                     </div>
                     <div class="col">
                         <div class="row p-3">
-                            <form class="col-6" hx-post="{% url "cart:add" product.id %}" hx-trigger="click from:#submit-btn" hx-target="span.count" id="cart-action" data-success-msg="Товар добавлен в корзину!">
+                            <form
+                             class="col-6" 
+                             hx-post="{% url "cart:add" product.id %}" 
+                             hx-trigger="click from:#submit-btn" 
+                             hx-target="span.count" id="cart-action" 
+                             data-success-msg="Товар добавлен в корзину!">
                                 {% csrf_token %}
                                 {% include "gameshop/includes/quantity.html" with qty=1 %}
                             </form>

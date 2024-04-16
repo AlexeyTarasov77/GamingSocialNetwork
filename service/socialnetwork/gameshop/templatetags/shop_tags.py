@@ -4,7 +4,9 @@ from cart.cart import Cart
 
 register = template.Library()
 
-
+@register.filter()
+def mul(value, arg):
+    return value * arg
 @register.filter()
 def format_price(value):
     if value == 0:
