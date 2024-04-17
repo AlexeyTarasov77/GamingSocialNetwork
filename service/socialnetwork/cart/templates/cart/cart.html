@@ -98,22 +98,25 @@
   <div class="col-12 text-end">
     {% if cart.coupon %}
       <div class="h6 fw-bold">
-        SubTotal: $
-        <div id="subtotal" class="d-inline-flex flex-column">
-          <span class="text-decoration-line-through fw-bold text-danger fs-5">
-            {{cart.get_total_price}}
-            <span class="badge rounded-pill bg-warning">coupon - {{cart.coupon.discount}}% off.</span>
+        SubTotal: 
+        <div id="subtotal" class="d-flex flex-column">
+          <span class="text-decoration-line-through fw-bold">
+            $ {{cart.get_total_price|floatformat:2}}
           </span>
+          <div class="coupon mt-2">
+            Купон: "{{cart.coupon.code}}" <span class="text-warning">(- {{cart.coupon.discount}}% off.)</span> 
+          </div>
+          <div class="coupon-discount text-danger mt-1"> - {{cart.get_discount|floatformat:2}} $</div>
+
         </div>
-        <div class="coupon mt-2">Активный Купон: {{cart.coupon.code}}</div>
       </div>
       <div class="h5 fw-bold mt-4">Total: $
         <div id="total" class="d-inline-flex text-success">
-          {{cart.get_discounted_total_price}}
+          {{cart.get_discounted_total_price|floatformat:2}}
         </div>
       </div>
       {% else %}
-        <div class="h6 fw-bold">{{ cart.get_total_price }}</div>
+        <div class="h6 fw-bold">{{ cart.get_total_price|floatformat:2 }}</div>
     {% endif %}
       <a
         type="button"

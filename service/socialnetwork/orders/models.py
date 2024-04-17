@@ -3,6 +3,9 @@ from django.urls import reverse
 from gameshop.models import Product
 from django.contrib.auth import get_user_model
 from django.conf import settings
+from coupons.models import Coupon
+from django.core.validators import MinValueValidator, MaxValueValidator
+from decimal import Decimal
 # Create your models here.
 
 class Order(models.Model):
@@ -19,8 +22,16 @@ class Order(models.Model):
     created = models.DateTimeField(auto_now_add=True) 
     updated = models.DateTimeField(auto_now=True)
     stripe_id = models.CharField(max_length=250, blank=True) 
+    coupon = models.ForeignKey(Coupon, related_name='orders', null=True,
+                               blank=True,
+                               on_delete=models.SET_NULL)
+    discount = models.IntegerField(default=0, validators=
+                                   [MinValueValidator(0),
+                                    MaxValueValidator(100)])
     paid = models.BooleanField(default=False, choices=PAID_STATUS_CHOICES) # оплачен заказ или же нет
-    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, blank=True, related_name="orders")
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE,
+                             blank=True,
+                             related_name="orders")
     class Meta:
         ordering = ['-created']
         indexes = [ models.Index(fields=['-created']),
@@ -29,8 +40,20 @@ class Order(models.Model):
         return f'Order {self.id}'
     
     @property
-    def total_cost(self):
+    def total_cost_before_discount(self):
         return sum(item.get_cost() for item in self.items.all())
+    
+    
+    def get_discount(self):
+        total_cost = self.total_cost_before_discount
+        if self.discount:
+            return total_cost * (self.discount / Decimal(100)) 
+        return Decimal(0)
+    
+    @property
+    def total_cost(self):
+        total_cost = self.total_cost_before_discount
+        return total_cost - self.get_discount()
     
     @property
     def full_name(self):

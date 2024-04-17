@@ -28,9 +28,43 @@
                     <td class="num">${{ item.get_cost }}</td>
                 </tr>
                 {% endfor %}
+                {% if order.coupon %} 
+                <tr class="subtotal">
+                    <td>Subtotal</td>
+                    <td colspan="3"></td> 
+                    <td class="num">
+                        ${{ order.total_cost_before_discount|floatformat:2 }}
+                    </td> 
+                </tr>
+                <tr> 
+                    <td>
+                        "{{ order.coupon.code }}" coupon
+                        ({{ order.discount }}% off)
+                    </td>
+                        <td colspan="3"></td>
+                        <td class="num text-danger">
+                            – ${{ order.get_discount|floatformat:2 }}
+                        </td> 
+                </tr>
+                {% endif %}
                 <tr class="total">
                     <td colspan="4">Итого</td>
-                    <td class="num">${{ order.total_cost }}</td>
+                    {% comment %} {% if cart.coupon %}
+                    <td>
+                        "{{ cart.coupon.code }}" ({{ cart.coupon.discount }}% off)
+                        <span class="text-danger"> - ${{ cart.get_discount|floatformat:2 }}</span>
+                    </td>
+                    {% endif %} {% endcomment %}
+                    <td class="num">
+                        {% comment %} <ul class="list-group">
+                            <li class="list-group-item"> Купон:
+                                "{{ cart.coupon.code }}" ({{ cart.coupon.discount }}% off)
+                                <span class="text-danger"> - ${{ cart.get_discount|floatformat:2 }}</span>
+                            </li>
+                            <li class="list-group-item">${{ order.total_cost }}</li>
+                        </ul> {% endcomment %}
+                        ${{ order.total_cost }}
+                    </td>
                 </tr>
             </tbody>
         </table>
