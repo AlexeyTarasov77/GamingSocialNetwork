@@ -74,7 +74,7 @@
                           <i class="ion ion-md-share align-middle"></i>&nbsp;
                           <small class="align-middle">Repost</small>  <i class="bi bi-reply"></i>
                         </a>
-                        <a href="{% url "posts:share-post" post.id %}" class="d-inline-block text-muted ml-3">
+                        <a href="javascript:void(0)" hx-get="{% url "posts:share-post" post.id %}" hx-target="#dialog" class="d-inline-block text-muted ml-3">
                             <i class="ion ion-md-share align-middle"></i>&nbsp;
                             <small class="align-middle">Share</small>  <i class="bi bi-share-fill"></i>
                         </a>

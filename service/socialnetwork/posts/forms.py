@@ -7,8 +7,6 @@ from django.forms.utils import ErrorList
 from .models import Comment, Post
 
 class ShareForm(forms.Form):
-    username = forms.CharField(required=False, widget=forms.TextInput(attrs={'style': 'display:none'}), label='')
-    email = forms.EmailField(required=False, widget=forms.EmailInput(attrs={'style': 'display:none'}), label='')
     to = forms.EmailField(
         widget=forms.EmailInput(attrs={'class': 'form-control', 'placeholder':'yourgmail@gmail.com'}),
         label='Email адресс получателя',

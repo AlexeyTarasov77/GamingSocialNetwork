@@ -164,7 +164,7 @@ class CreateCommentView(generic.CreateView):
 @login_required
 def share_post(request, post_id):
     post = get_object_or_404(Post, id=post_id, status=Post.Status.PUBLISHED)
-    sent = False  # tmp variable to check if email sent successfully
+    form = forms.ShareForm()
     if request.method == "POST":
         form = forms.ShareForm(request.POST)
         if form.is_valid():
@@ -174,11 +174,9 @@ def share_post(request, post_id):
                 form.cleaned_data,
                 request.build_absolute_uri(post.get_absolute_url()),
             )
-            sent = True
-    else:
-        form = forms.ShareForm()
+            return HttpResponse()
     return render(
-        request, "posts/share_post.html", {"post": post, "form": form, "sent": sent}
+        request, "posts/share_post.html", locals()
     )
 
 

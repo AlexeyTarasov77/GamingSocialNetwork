@@ -47,7 +47,7 @@
       </div> <a href="{% url "account_logout" %}" id="logout" class="nav_link" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Выйти"> <i class='bx bx-log-out nav_icon'></i></a>
   </nav>
 </div>
-<div id="modal" class="modal fade">
+<div id="modal" class="modal fade" tabindex="-1">
   <div id="dialog" class="modal-dialog">{% block modal_content %}{% endblock modal_content %}</div>
 </div>
 {% block body %}{% endblock body %}

@@ -74,11 +74,13 @@
         <h5>Корзина пуста</h5>
         {% endif %}
     </div>
+    {% if cart %}
     <div class="modal-footer">
         <div class="checkout">
             {% include "cart/components/checkout_btn.html" %}
         </div>
     </div>
+    {% endif %}
 </div>
 {% endblock modal_content %}
 

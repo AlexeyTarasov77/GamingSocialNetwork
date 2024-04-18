@@ -1,46 +1,40 @@
-{% extends "./base_posts.html" %}
-{% load static %}
+{% block modal_content %}
+<div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title">
+        Поделиться постом "{{ post.name }}" по электронной почте
+      </h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <div class="modal-body">
 
-{% block title %}Share a post{% endblock %}
-{% block content %}
-{% if sent %}
-<h1>Электронное письмо было успешно отправлено</h1> <p>
-"{{ post.name }}" был успешно отправлен по адрессу - 
-  {{ form.cleaned_data.to }}.
-</p>
-{% else %}
-<style>
-    .share-form{
-        height: 50vh;
-    }
-    .btn-primary {
-        width: 50%;
-        margin: 0 auto
-    }
-
-    .mb-3{
-        gap: 1.2rem;
-    }
-</style>
-<h1>Поделиться постом "{{ post.name }}" по электронной почте</h1> 
-<div class="share-form d-flex flex-column justify-content-center align-items-center">
-    <form method="post" class="d-flex flex-column g-3 needs-validation">
-        {% csrf_token %}
-        <div class="mb-3 d-flex flex-column">
-            {% for f in form %}
-                    {{f.label_tag}}
-                    {{f}}
-                    <div class="invalid-feedback">
-                        {{f.errors}}
-                    </div>
-            {% endfor %}
+        <div class="share d-flex flex-column justify-content-center align-items-center">
+            <form method="post" class="d-flex flex-column g-3 needs-validation justify-content-between"
+             id="posts-action"
+             hx-post="{% url "posts:share-post" post.id %}"
+             hx-trigger="click from:#submit"
+             hx-target="#dialog"
+             data-success-msg-title="Электронное письмо было успешно отправлено!"
+             data-success-msg=" '{{ post.name }}' был успешно отправлен по адрессу - 
+             {{ form.cleaned_data.to }}.">
+                {% csrf_token %}
+                
+                    {% for f in form %}
+                        <div class="mb-3 d-flex flex-column">
+                            {{f.label_tag}}
+                            {{f}}
+                            <div class="invalid-feedback">
+                                {{f.errors}}
+                            </div>
+                        </div>
+                    {% endfor %}
+                
+            </form>
         </div>
-        <button class="btn btn-primary" id="submit">Отправить</button>
-    </form>
-</div>
-{% endif %} 
-{% endblock %}
-{% block js %}
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<script type="module" src="{% static "posts/js/sharePost.js" %}"></script>
-{% endblock js %}
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+      <button type="button" class="btn btn-primary" id="submit">Отправить</button>
+    </div>
+  </div>
+{% endblock modal_content %}
