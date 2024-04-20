@@ -1,17 +1,18 @@
-from django.shortcuts import get_object_or_404, redirect, render
-from django.urls import reverse_lazy
-from django.http import HttpResponse, HttpResponse
+import weasyprint
+from cart.cart import Cart
+from django.conf import settings
+from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
+from django.db import transaction
+from django.http import HttpResponse
+from django.shortcuts import get_object_or_404, redirect, render
+from django.template.loader import render_to_string
+from django.urls import reverse_lazy
+from users.decorators import owner_required
+
 from . import forms
 from .models import Order, OrderItem
 from .tasks import confirm_order
-from cart.cart import Cart
-from django.db import transaction
-from django.conf import settings
-from django.template.loader import render_to_string 
-from django.contrib.admin.views.decorators import staff_member_required
-import weasyprint
-
 
 # Create your views here.
 
@@ -39,11 +40,12 @@ def order_create_view(request):
         form = forms.OrderCreateForm()
     return render(request, "orders/order_create.html", {"form": form})
 
-
+@owner_required("orders")
 def order_detail_view(request, order_id):
     order = get_object_or_404(Order, id=order_id)
     return render(request, "orders/order_detail.html", {"order": order})
 
+@owner_required("orders")
 def order_to_pdf(request, order_id):
     order = get_object_or_404(Order, id=order_id) 
     html = render_to_string('orders/pdf_invoice.html', {'order': order})

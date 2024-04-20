@@ -1,5 +1,5 @@
 from typing import Any
-from .decorators import owner_required
+
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
@@ -12,8 +12,10 @@ from posts.models import Post
 from rest_framework import generics, status
 from rest_framework.response import Response
 
+from .decorators import owner_required
 from .forms import ProfileUpdateForm
 from .models import FriendRequest, Profile
+
 
 # Create your views here.
 class ProfileView(LoginRequiredMixin, generic.DetailView):
@@ -63,16 +65,16 @@ def my_posts_view(request, username):
     }
     return render(request, "users/my_posts.html", context)
 
-@owner_required
+
+@owner_required("users")
 def my_orders_view(request, username):
     user = get_object_or_404(
         User.objects.select_related("profile_user").prefetch_related("orders"),
         profile_user__user_slug=username,
     )
-    context = {
-        "orders": user.orders.all()
-    }
+    context = {"orders": user.orders.all()}
     return render(request, "users/my_orders.html", context)
+
 
 def profile_middleware(request):
     if request.user.is_authenticated:
