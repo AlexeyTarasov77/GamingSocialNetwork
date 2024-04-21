@@ -3,7 +3,6 @@
 {% load static %}  {% load crispy_forms_tags %} {% load shop_tags %}
 
 {% block content %}
-
 <div class="pt-5">
   <div class="container">
     <h1 class="h5">Shopping cart</h1>
@@ -115,8 +114,12 @@
           {{cart.get_discounted_total_price|floatformat:2}}
         </div>
       </div>
-      {% else %}
-        <div class="h6 fw-bold">{{ cart.get_total_price|floatformat:2 }}</div>
+    {% else %}
+    <div class="h5 fw-bold mt-4">Total: $
+      <div id="total" class="d-inline-flex text-success">
+        {{cart.get_total_price|floatformat:2}}
+      </div>
+    </div>
     {% endif %}
       <a
         type="button"
