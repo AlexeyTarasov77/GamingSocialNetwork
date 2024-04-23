@@ -3,6 +3,7 @@ from gameshop.models import ProductProxy
 from django.http import JsonResponse, HttpResponse
 from django.views.decorators.http import require_POST
 from coupons.forms import CouponApplyForm
+from gameshop.recommender import Recommender
 
 from .cart import Cart
 
@@ -10,7 +11,13 @@ from .cart import Cart
 # Create your views here.
 def cart_view(request):
     coupon_form = CouponApplyForm()
-    return render(request, "cart/cart.html", {"coupon_form": coupon_form})
+    rec = Recommender()
+    cart = Cart(request)
+    context = {
+        "coupon_form": coupon_form,
+        "recommended_products": rec.suggest_products_for([item["product"] for item in cart]),
+    }
+    return render(request, "cart/cart.html", context)
 
 @require_POST
 def cart_add_or_update(request, product_id):

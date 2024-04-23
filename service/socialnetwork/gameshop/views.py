@@ -1,5 +1,5 @@
 from typing import Any
-from django.db.models.query import QuerySet
+from .recommender import Recommender
 from django.shortcuts import render, get_object_or_404
 from django.views import generic
 from .models import ProductProxy, Category
@@ -34,9 +34,8 @@ class ProductDetailView(generic.DetailView):
 
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
-        context["recommended_products"] = ProductProxy.objects.exclude(pk=self.object.pk).filter(
-            category=self.object.category
-        )[:6]
+        rec = Recommender()
+        context["recommended_products"] = rec.suggest_products_for([self.object])
         return context
 
 

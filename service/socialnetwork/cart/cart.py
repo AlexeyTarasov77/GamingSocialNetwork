@@ -40,11 +40,7 @@ class Cart:
         for product in products:
             cart[str(product.id)]["product"] = product
 
-        for (
-            item
-        ) in (
-            cart.values()
-        ):  # {'product': product, 'qty': 2, 'price': 1000, 'total': 2000}
+        for item in cart.values():  # {'product': product, 'qty': 2, 'price': 1000, 'total': 2000}
             item["price"] = Decimal(item["price"])
             item["total"] = item["price"] * item["qty"]
             yield item
