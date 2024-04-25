@@ -8,12 +8,14 @@ class Recommender:
     def get_product_key(self, id):
         return f"product:{id}:purchased_with"
     def products_bought(self, products):
+        assert products, "No products specified"
         product_ids = [p.id for p in products]
         for product_id in product_ids:
             for with_id in product_ids:
                 if product_id != with_id:
                     r.zincrby(self.get_product_key(product_id), 1, with_id)
     def suggest_products_for(self, products, max_result=6):
+        assert products, "No products specified"
         product_ids = [p.id for p in products]
         # если продукт всего 1 - просто возвращаем элемементы находящиеся в его множестве
         if len(products) == 1:

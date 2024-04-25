@@ -13,10 +13,9 @@ def cart_view(request):
     coupon_form = CouponApplyForm()
     rec = Recommender()
     cart = Cart(request)
-    context = {
-        "coupon_form": coupon_form,
-        "recommended_products": rec.suggest_products_for([item["product"] for item in cart]),
-    }
+    context = {"coupon_form": coupon_form}
+    if len(cart) > 0:
+        context["recommended_products"] = rec.suggest_products_for([item["product"] for item in cart])
     return render(request, "cart/cart.html", context)
 
 @require_POST

@@ -27,8 +27,9 @@ def order_create_view(request):
                 order = form.save(commit=False)
                 cd = form.cleaned_data
                 order.user = request.user
-                order.coupon = cart.coupon
-                order.discount = cart.coupon.discount
+                if cart.coupon:
+                    order.coupon = cart.coupon
+                    order.discount = cart.coupon.discount
                 order.save()
                 order_items = [OrderItem(order=order, product=item["product"], price=item["price"], quantity=item["qty"]) for item in cart]
                 OrderItem.objects.bulk_create(order_items)
