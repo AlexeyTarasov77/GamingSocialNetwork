@@ -11,17 +11,24 @@ from .models import Post
 
 
 @shared_task
-def share_post_by_mail(user_id: int, post_id: int, cd: dict, post_url):
+def share_post_by_mail(
+    user_id: int, post_id: int, cd: dict, post_url, new_post: bool = False
+):
     user = get_object_or_404(get_user_model(), id=user_id)
     post = get_object_or_404(Post, id=post_id, status=Post.Status.PUBLISHED)
-    cd["username"] = user.username
-    cd["email"] = user.email
-    subject = f"User: {cd['username']} recommends you read: post - {post.name}, posted by {post.author}"
-    message = (
-        f"Read {post.name} at {post_url}\n\n"
-        f"{cd['username']}'s comment: {cd['notes']}"
-    )
-    send_mail(subject, message, None, [cd["to"]])
+    if new_post:
+        subject = f"Пользователь {user} из списка ваших подписчиков опубликовал новый пост: {post.name}"
+        message = f"Вы можете посмотреть его по ссылке: {post_url}\n\n"
+        recipients = user.profile.followers.all().values_list("email", flat=True)
+    else:
+        recipients = [cd["to"]]
+        subject = f"Пользователь: {user} поделился с вами постом: {post.name}, опубликованным - {post.author}"
+        message = (
+            f"Вы можете посмотреть пост - {post.name} по ссылке {post_url}\n\n"
+            f"Комментарий пользователя {user}: {cd['notes']}"
+        )
+
+    send_mail(subject, message, None, recipients)
 
 
 @shared_task
@@ -31,7 +38,7 @@ def recommend_posts_by_mail():
         Post.published.filter(created_at__gte=two_days_ago)
         .annotate(
             count_likes=Count("liked"),
-            count_comments=Count("comment_post"),
+            count_comments=Count("comments"),
             count_saved=Count("saved"),
         )
         .order_by("-count_likes", "-count_comments", "-count_saved")[:3]

@@ -3,6 +3,7 @@ from .views import ListPosts, DetailPost
 from .models import Post
 from django.urls import reverse
 from django.contrib.auth import get_user_model
+from . import forms
 import json
 # Create your tests here.
 User = get_user_model()
@@ -38,4 +39,25 @@ class DetailPostTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'posts/detail.html')
         self.assertFalse(response.context['is_owner'])
+        
+        
+class AddPostTestCase(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.user = User.objects.create_user(username='testuser', password='12345')
+        self.client.login(username=self.user.username, password='12345')
+    def test_post_request(self):
+        data = {
+            'name': 'Testing Add Post',
+            'content': 'Test Content',
+            'author_id': self.user.id
+        }
+        response = self.client.post(reverse('posts:add-post'), data)
+        self.assertEqual(response.status_code, 302)
+        self.assertTrue(Post.objects.filter(name=data.name, content=data.content).exists())
+    def test_get_request(self):
+        response = self.client.get(reverse('posts:add-post'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'posts/create.html')
+        self.assertEqual(response.content['form'], forms.CreatePostForm())
         

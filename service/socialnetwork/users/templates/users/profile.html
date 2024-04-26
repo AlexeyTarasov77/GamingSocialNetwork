@@ -8,7 +8,7 @@
 
 {% block content %}
 <div class="is_owner none">{{is_owner}}</div>
-<input type="hidden" value="{{user.profile_user.get_absolute_url}}" id="url">
+<input type="hidden" value="{{user.profile.get_absolute_url}}" id="url">
 {% csrf_token %}
 <div class="wrapper">
     <div class="profile">
@@ -117,8 +117,8 @@
                     <ul class="list-group">
                         {% for f in profile.following.all %}
                             <li class="list-group-item follower">
-                                <div class="follower__photo"><img src="{{f.profile_user.get_profile_image}}" alt=""></div>
-                                <div class="follower__name"><h4><a class="text-info" href="{{f.profile_user.get_absolute_url}}">{{f.username}}</a></h4></div>
+                                <div class="follower__photo"><img src="{{f.profile.get_profile_image}}" alt=""></div>
+                                <div class="follower__name"><h4><a class="text-info" href="{{f.profile.get_absolute_url}}">{{f.username}}</a></h4></div>
                             </li>
                         {% endfor %}
                     </ul>
@@ -131,8 +131,8 @@
                     <ul class="list-group">
                         {% for f in profile.friends.all %}
                             <li class="list-group-item friend">
-                                <div class="friend__photo"><img src="{{f.profile_user.get_profile_image}}" alt=""></div>
-                                <div class="friend__name"><h4><a class="text-info" href="{{f.profile_user.get_absolute_url}}">{{f.username}}</a></h4></div>
+                                <div class="friend__photo"><img src="{{f.profile.get_profile_image}}" alt=""></div>
+                                <div class="friend__name"><h4><a class="text-info" href="{{f.profile.get_absolute_url}}">{{f.username}}</a></h4></div>
                             </li>
                         {% endfor %}
                     </ul>
@@ -145,8 +145,8 @@
                     <ul class="list-group">
                         {% for f in profile.followers.all %}
                             <li class="list-group-item subscriber">
-                                <div class="subscriber__photo"><img src="{{f.profile_user.get_profile_image}}" alt=""></div>
-                                <div class="subscriber__name"><h4><a class="text-info" href="{{f.profile_user.get_absolute_url}}">{{f.username}}</a></h4></div>
+                                <div class="subscriber__photo"><img src="{{f.profile.get_profile_image}}" alt=""></div>
+                                <div class="subscriber__name"><h4><a class="text-info" href="{{f.profile.get_absolute_url}}">{{f.username}}</a></h4></div>
                             </li>
                         {% endfor %}
                     </ul>

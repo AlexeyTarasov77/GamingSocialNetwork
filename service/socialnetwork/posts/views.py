@@ -3,9 +3,11 @@ from typing import Any
 import redis
 from django.conf import settings
 from django.contrib import messages
+from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.db.models import Count
+from django.db import models
+from django.db.models import Case, Count, Q, Value, When
 from django.db.models.base import Model as Model
 from django.db.models.query import QuerySet
 from django.forms import BaseModelForm
@@ -22,8 +24,13 @@ from .models import Comment, Post
 from .serializers import CommentSerializer, LikeSerializer
 
 r = redis.Redis(
-    host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=settings.REDIS_DB, decode_responses=True
+    host=settings.REDIS_HOST,
+    port=settings.REDIS_PORT,
+    db=settings.REDIS_DB,
+    decode_responses=True,
 )
+
+User = get_user_model()
 
 
 # Create your views here.
@@ -35,16 +42,36 @@ class ListPosts(generic.ListView):
     def get_queryset(self):
         queryset = (
             Post.published.annotate(
-                count_likes=Count("liked"), count_comments=Count("comment_post")
+                count_likes=Count("liked"), count_comments=Count("comments")
             )
             .select_related("author")
             .order_by("-count_likes", "-count_comments")
         )
+        user = self.request.user
+        if user.is_authenticated:
+            profile = user.profile
+            queryset = queryset.exclude(author_id=user.id)
+            suggested_authors = User.objects.filter(
+                Q(id__in=profile.following.all())
+                | Q(id__in=profile.friends.all())
+                | Q(id__in=profile.followers.all())
+            )
+            if suggested_authors:
+                suggested_authors_ids = [author.id for author in suggested_authors]
+
+                queryset = queryset.annotate(
+                    is_suggested_author=Case(
+                        When(author_id__in=suggested_authors_ids, then=Value(1)),
+                        default=Value(0),
+                        output_field=models.IntegerField(),
+                    )
+                ).order_by("-is_suggested_author")
         tag_slug = self.kwargs.get("tag_slug")
         if tag_slug is not None:
             tag = get_object_or_404(Tag, slug=tag_slug)
             queryset = queryset.filter(tags__in=[tag])
-        return queryset.prefetch_related("tags", "liked", "saved")
+        return queryset.prefetch_related("tags", "liked", "saved", "comments")
+
 
 class DetailPost(generic.DetailView):
     template_name = "posts/detail.html"
@@ -66,16 +93,16 @@ class DetailPost(generic.DetailView):
             .order_by("-same_tags", "-time_publish")[:4]
         )
         return similar_posts
-    
+
     def __incr_views(self):
         post = self.object
         user_id = str(self.request.user.id)
-        viewed_users_ids = r.smembers('post:%s:viewers' % post.id) or []
+        viewed_users_ids = r.smembers("post:%s:viewers" % post.id) or []
         if not user_id in viewed_users_ids:
-            r.sadd('post:%s:viewers' % post.id, user_id)
-            total_views = r.incr('post:%s:views' % post.id)
-        else: 
-            total_views = r.get('post:%s:views' % post.id)
+            r.sadd("post:%s:viewers" % post.id, user_id)
+            total_views = r.incr("post:%s:views" % post.id)
+        else:
+            total_views = r.get("post:%s:views" % post.id)
         return total_views
 
     def get_context_data(self, **kwargs) -> dict[str, Any]:
@@ -83,7 +110,7 @@ class DetailPost(generic.DetailView):
         context = super().get_context_data(**kwargs)
         context["is_owner"] = True if self.request.user == post.author else False
         context["form"] = forms.CommentForm
-        context["filtered_comments"] = post.comment_post.filter(is_active=True)
+        context["filtered_comments"] = post.comments.filter(is_active=True)
         context["recommended_posts"] = self.__get_simillar_posts()
         total_views = self.__incr_views()
         context["views_count"] = total_views
@@ -113,13 +140,22 @@ class UpdatePost(generic.UpdateView):
 
 class AddPost(LoginRequiredMixin, generic.CreateView):
     template_name = "posts/create.html"
-    form_class = forms.CreateForm
-    model = Post
+    form_class = forms.CreatePostForm
+    queryset = Post.objects.select_related("author")
 
     def form_valid(self, form):
         post = form.save(commit=False)
-        post.author_id = self.request.user.id
+        user_id = self.request.user.id
+        post.author_id = user_id
         post.save()
+        form.save_m2m()
+        tasks.share_post_by_mail.delay(
+            user_id,
+            post.id,
+            None,
+            self.request.build_absolute_uri(post.get_absolute_url()),
+            True,
+        )
         return redirect(post.get_absolute_url())
 
 
@@ -175,9 +211,7 @@ def share_post(request, post_id):
                 request.build_absolute_uri(post.get_absolute_url()),
             )
             return HttpResponse()
-    return render(
-        request, "posts/share_post.html", locals()
-    )
+    return render(request, "posts/share_post.html", locals())
 
 
 # API'S

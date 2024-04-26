@@ -1,20 +1,21 @@
 from datetime import timedelta
 from typing import Any, Final
+
+import requests
+from actions.models import Action
+from decouple import config
+from django.contrib.auth import get_user_model
+from django.core.exceptions import ObjectDoesNotExist
 from django.core.paginator import Paginator
+from django.db.models import Count, Q
 from django.db.models.query import QuerySet
 from django.http import HttpRequest, HttpResponse, JsonResponse
-from django.utils import timezone
 from django.shortcuts import render
+from django.utils import timezone
 from django.views import generic
-from .models import Ad, BackgroundVideo
 from posts.models import Post
-from django.db.models import Count, Q
-import requests
-from decouple import config
-from django.core.exceptions import ObjectDoesNotExist
-from django.contrib.auth import get_user_model
-from actions.models import Action
 
+from .models import Ad, BackgroundVideo
 
 count_users = get_user_model().objects.count()
 TOTAL_LIKES_REQUIRED: Final[int] = count_users // 3
@@ -38,7 +39,7 @@ class MainView(generic.ListView):
             following_ids = user.profile_following.values_list('id', flat=True)
             if following_ids:
                 actions = actions.filter(user_id__in=following_ids)
-        actions = actions.select_related('user', 'user__profile_user').prefetch_related('target')[:10]
+        actions = actions.select_related('user', 'user__profile').prefetch_related('target')[:10]
         return actions
     
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
@@ -46,7 +47,7 @@ class MainView(generic.ListView):
         context["last_actions"] = self.__get_last_actions()
         context['recommended_posts'] = Post.published.annotate(
             total_likes = Count('liked'),
-            total_comments=Count('comment_post')
+            total_comments=Count('comments')
         ).filter(Q(total_likes__gte=TOTAL_LIKES_REQUIRED) | Q(total_comments__gte=TOTAL_COMMENTS_REQUIRED))[:10]
         try:
             context['video_url'] = BackgroundVideo.objects.latest('pk')

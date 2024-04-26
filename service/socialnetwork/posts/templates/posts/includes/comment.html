@@ -3,7 +3,7 @@
 
 <p id="comment-url" class="none">{% url "posts:like-comment" %}</p>
 <div class="comments-container">
-    {% if post.comment_post %}
+    {% if post.comments %}
     <h1>Комментарии</h1>
 <style>
     .bi-reply{
@@ -39,11 +39,11 @@
             <li>
                 <div class="comment-main-level">
                     <!-- Avatar -->
-                    <div class="comment-avatar"><img src="{{node.author.profile_user.get_profile_image}}" alt=""></div>
+                    <div class="comment-avatar"><img src="{{node.author.profile.get_profile_image}}" alt=""></div>
                     <!-- Contenedor del Comentario -->
                     <div class="comment-box">
                         <div class="comment-head">
-                            <h6 class="comment-name fs-5 {% if node.is_root_node or node.get_root.author.username == node.author.username%}by-author{% endif %}"><a href="{{node.author.profile_user.get_absolute_url}}">{{node.author.username}}</a></h6>
+                            <h6 class="comment-name fs-5 {% if node.is_root_node or node.get_root.author.username == node.author.username%}by-author{% endif %}"><a href="{{node.author.profile.get_absolute_url}}">{{node.author.username}}</a></h6>
                             <span style="padding-right: 1em;">{{node.time_create}}</span>{% if node.time_create == node.time_update %}<span>*Изменено {{node.time_update|naturaltime}}</span>{% endif %}
                             <span class="num-likes ms-4">Понравилось: <i class="num-likes-count">{{node.liked.count}}</i></span>
                             <a href="#comentForm" data-comment-id="{{ node.pk }}" data-comment-username="{{ node.author }}" class="btn-reply"><i class="bi bi-reply"></i></a>

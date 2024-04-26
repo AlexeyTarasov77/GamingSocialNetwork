@@ -50,16 +50,16 @@ class ProfileView(LoginRequiredMixin, generic.DetailView):
 
         return context
 
-
+@owner_required("users")
 def my_posts_view(request, username):
     user = get_object_or_404(
         User,
         profile_user__user_slug=username,
     )
     context = {
-        "own_posts": user.post_author.all(),
-        "liked_posts": user.post_like.all(),
-        "saved_posts": user.post_save.all(),
+        "own_posts": user.posts.all(),
+        "liked_posts": user.liked_posts.all(),
+        "saved_posts": user.saved_posts.all(),
         "drafts_posts": Post.objects.filter(author=user, status="DF"),
         "is_owner": True if user == request.user else False,
     }
@@ -69,8 +69,8 @@ def my_posts_view(request, username):
 @owner_required("users")
 def my_orders_view(request, username):
     user = get_object_or_404(
-        User.objects.select_related("profile_user").prefetch_related("orders"),
-        profile_user__user_slug=username,
+        User.objects.select_related("profile").prefetch_related("orders"),
+        profile__user_slug=username,
     )
     context = {"orders": user.orders.all()}
     return render(request, "users/my_orders.html", context)
@@ -78,7 +78,7 @@ def my_orders_view(request, username):
 
 def profile_middleware(request):
     if request.user.is_authenticated:
-        return redirect(request.user.profile_user.get_absolute_url())
+        return redirect(request.user.profile.get_absolute_url())
     else:
         return redirect("account_login")
 
@@ -118,13 +118,13 @@ class SubscribeAPIView(generics.GenericAPIView):
         )  # получение текущего пользователя который хочеть подписаться/отписаться
         if user in user_profile.followers.all():  # если пользователь уже подписан
             user_profile.followers.remove(user)  # отписаться
-            user.profile_user.following.remove(
+            user.profile.following.remove(
                 user_profile.user
             )  # удалить из подписок пользователя от которого отписываемся
             return Response({"is_subscribed": False})
         else:  # если пользователь еще не подписан
             user_profile.followers.add(request.user)  # подписаться
-            user.profile_user.following.add(
+            user.profile.following.add(
                 user_profile.user
             )  # добавить в подписки пользователя на которого подписываемся
             return Response({"is_subscribed": True})

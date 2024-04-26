@@ -4,6 +4,7 @@ from django.contrib.auth import get_user_model
 
 class ProfileUpdateForm(forms.ModelForm):
     username = forms.CharField(max_length=50, required=False, label="Имя пользователя", widget=forms.TextInput(attrs={'class': 'form-control'})) # поле для изменения username для связанного юзера
+    email = forms.EmailField(label="Электронная почта", widget=forms.EmailInput(attrs={'class': 'form-control'}))
     class Meta:
         model = Profile
         fields = ['image', 'bg_image', 'bio', 'date_of_birth']
@@ -15,8 +16,9 @@ class ProfileUpdateForm(forms.ModelForm):
         }
     def __init__(self, *args, **kwargs):
             super().__init__(*args, **kwargs)
-            self.order_fields(['username', 'bio', 'image', 'bg_image', 'date_of_birth'])
+            self.order_fields(['username', 'email', 'bio', 'image', 'bg_image', 'date_of_birth'])
             self.fields['username'].initial = self.instance.user.username  
+            self.fields['email'].initial = self.instance.user.email
 
     def clean_username(self):
         username = self.cleaned_data['username']
@@ -27,6 +29,7 @@ class ProfileUpdateForm(forms.ModelForm):
     def save(self, commit=True): # при сохранении обновить у пользователя username взятый с формы
         user = self.instance.user 
         user.username = self.cleaned_data['username']
+        user.email = self.cleaned_data['email']
         user.save()
         return super().save(commit)
         
