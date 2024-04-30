@@ -9,7 +9,6 @@ from django.conf import settings
 class Cart:
 
     def __init__(self, request: HttpRequest) -> None:
-        assert isinstance(request, HttpRequest), "request must be an HttpRequest object"
         self.session = request.session
 
         cart = self.session.get(settings.CART_SESSION_KEY)

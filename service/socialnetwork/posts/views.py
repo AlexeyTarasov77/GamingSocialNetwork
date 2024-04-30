@@ -18,7 +18,7 @@ from django.views import generic
 from rest_framework import generics, permissions, status, views
 from rest_framework.response import Response
 from taggit.models import Tag
-
+from .mixins import ListPostsQuerySetMixin
 from . import forms, tasks
 from .models import Comment, Post
 from .serializers import CommentSerializer, LikeSerializer
@@ -34,43 +34,11 @@ User = get_user_model()
 
 
 # Create your views here.
-class ListPosts(generic.ListView):
+class ListPosts(ListPostsQuerySetMixin, generic.ListView):
     template_name = "posts/list.html"
     context_object_name = "posts_list"
     paginate_by = 5
 
-    def get_queryset(self):
-        queryset = (
-            Post.published.annotate(
-                count_likes=Count("liked"), count_comments=Count("comments")
-            )
-            .select_related("author")
-            .order_by("-count_likes", "-count_comments")
-        )
-        user = self.request.user
-        if user.is_authenticated:
-            profile = user.profile
-            queryset = queryset.exclude(author_id=user.id)
-            suggested_authors = User.objects.filter(
-                Q(id__in=profile.following.all())
-                | Q(id__in=profile.friends.all())
-                | Q(id__in=profile.followers.all())
-            )
-            if suggested_authors:
-                suggested_authors_ids = [author.id for author in suggested_authors]
-
-                queryset = queryset.annotate(
-                    is_suggested_author=Case(
-                        When(author_id__in=suggested_authors_ids, then=Value(1)),
-                        default=Value(0),
-                        output_field=models.IntegerField(),
-                    )
-                ).order_by("-is_suggested_author")
-        tag_slug = self.kwargs.get("tag_slug")
-        if tag_slug is not None:
-            tag = get_object_or_404(Tag, slug=tag_slug)
-            queryset = queryset.filter(tags__in=[tag])
-        return queryset.prefetch_related("tags", "liked", "saved", "comments")
 
 
 class DetailPost(generic.DetailView):
