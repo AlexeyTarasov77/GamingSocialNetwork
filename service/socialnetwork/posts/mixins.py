@@ -23,12 +23,11 @@ class ListPostsQuerySetMixin:
         queryset = queryset.exclude(author_id=user.id)
         from .views import r
         for post in queryset:
-            if r.sismember("post:%s:viewers" % post.id, self.request.user.id): 
+            if r.sismember("post:%s:viewers" % post.id, user.id): 
                 queryset = queryset.exclude(id=post.id)
         suggested_authors = User.objects.filter(
             Q(id__in=profile.following.all())
             | Q(id__in=profile.friends.all())
-            | Q(id__in=profile.followers.all())
         )
         if suggested_authors:
             suggested_authors_ids = [author.id for author in suggested_authors]

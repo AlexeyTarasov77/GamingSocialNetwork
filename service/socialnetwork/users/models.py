@@ -48,11 +48,9 @@ class Profile(models.Model):
         self.user_slug = slugify(self.user.username)
         super(Profile, self).save(*args, **kwargs)
 
-    @property
     def get_profile_image(self):
         return self.image.url if self.image else "/static/users/images/profile.jpeg"
 
-    @property
     def get_background_image(self):
         return (
             self.bg_image.url

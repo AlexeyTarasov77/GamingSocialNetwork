@@ -6,22 +6,17 @@ from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.db import models
-from django.db.models import Case, Count, Q, Value, When
+from django.db.models import Count
 from django.db.models.base import Model as Model
 from django.db.models.query import QuerySet
 from django.forms import BaseModelForm
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
-from django.urls import reverse, reverse_lazy
+from django.urls import reverse_lazy
 from django.views import generic
-from rest_framework import generics, permissions, status, views
-from rest_framework.response import Response
-from taggit.models import Tag
 from .mixins import ListPostsQuerySetMixin
 from . import forms, tasks
-from .models import Comment, Post
-from .serializers import CommentSerializer, LikeSerializer
+from .models import Post
 
 r = redis.Redis(
     host=settings.REDIS_HOST,
@@ -37,8 +32,8 @@ User = get_user_model()
 class ListPosts(ListPostsQuerySetMixin, generic.ListView):
     template_name = "posts/list.html"
     context_object_name = "posts_list"
-    paginate_by = 5
-
+    paginate_by = 10
+    
 
 
 class DetailPost(generic.DetailView):
@@ -126,44 +121,6 @@ class AddPost(LoginRequiredMixin, generic.CreateView):
         )
         return redirect(post.get_absolute_url())
 
-
-class CreateCommentView(generic.CreateView):
-    model = Comment
-    form_class = forms.CommentForm
-
-    def is_ajax(self):  # метод для проверки являеться ли полученный запрос ajax или нет
-        return self.request.headers.get("X-Requested-With") == "XMLHttpRequest"
-
-    def form_valid(self, form):
-        comment = form.save(commit=False)
-        comment.post_id = self.kwargs.get("post_id")
-        comment.author = self.request.user
-        comment.parent_id = form.cleaned_data.get("parent")
-        comment.save()
-
-        try:
-            if self.is_ajax():
-                if self.request.user.is_authenticated:
-                    data = {
-                        "is_child": comment.is_child_node(),
-                        "id": comment.id,
-                        "author": comment.author.username,
-                        "parent_id": comment.parent_id,
-                        "time_create": comment.time_create.strftime(
-                            "%Y-%b-%d %H:%M:%S"
-                        ),
-                        "content": comment.content,
-                        # 'author_avatar': comment.get_avatar
-                    }
-                    return JsonResponse(data, status=200)
-                else:
-                    return JsonResponse(status=403)
-            else:
-                return redirect(comment.post.get_absolute_url())
-        except Exception as e:
-            print(e)
-
-
 # Share post by email address
 @login_required
 def share_post(request, post_id):
@@ -180,82 +137,3 @@ def share_post(request, post_id):
             )
             return HttpResponse()
     return render(request, "posts/share_post.html", locals())
-
-
-# API'S
-
-
-class LikeAPIView(views.APIView):
-    permission_classes = [
-        permissions.IsAuthenticated
-    ]  # Вернуть данные только если пользователь аутентифицирован
-
-    def post(self, request, *args, **kwargs):
-        obj_id = request.POST.get("object_id")  # получить id текущего поста из запроса
-        obj = self.get_object(obj_id)
-
-        if request.user in obj.liked.all():  # если текущий пользователь уже лайкал пост
-            obj.liked.remove(request.user)  # удалить его из отношения
-            data = {
-                "likes_count": obj.liked.count(),
-                "is_liked": False,
-            }  # сформированная дата для отправки на клиент
-        else:  # если пользователя нет в таблице отношений добавить его и сформировать другую дату
-            obj.liked.add(request.user)
-            data = {"likes_count": obj.liked.count(), "is_liked": True}
-        serializer = LikeSerializer(data)  # сериализовать данные в json формат
-        return Response(serializer.data)  # вернуть на клиент сериализованные данные
-
-    def get_object(obj_id):
-        pass
-
-
-class LikePostAPIView(LikeAPIView):
-    def get_object(self, obj_id):
-        return get_object_or_404(Post, id=obj_id)
-
-
-class LikeCommentAPIView(LikeAPIView):
-    def get_object(self, obj_id):
-        return get_object_or_404(Comment, id=obj_id)
-
-
-class SavePostAPIView(generics.GenericAPIView):
-    permission_classes = [permissions.IsAuthenticated]
-    queryset = Post.published.all()
-    lookup_url_kwarg = "post_id"
-
-    def patch(self, request, post_id):
-        post = self.get_object()
-        if request.user in post.saved.all():
-            post.saved.remove(request.user)
-            return Response({"is_saved": False})
-        else:
-            post.saved.add(request.user)
-            return Response({"is_saved": True})
-
-
-class CreateCommentAPIView(generics.CreateAPIView):
-    permission_classes = [permissions.IsAuthenticated]
-    serializer_class = CommentSerializer
-
-    def perform_create(self, serializer):
-        serializer.save(
-            post_id=self.kwargs.get("post_id", None),
-            parent_id=self.request.data.get("parent") or None,
-            author=self.request.user,
-        )
-
-    def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        self.perform_create(serializer)
-        comment_data = serializer.data
-        comment_data["author"] = serializer.instance.author.username
-        comment_data["is_child"] = serializer.instance.is_child_node()
-        comment_data["by_author"] = (
-            serializer.instance.is_root_node()
-            or serializer.instance.get_root().author.username
-            == serializer.instance.author.username
-        )
-        return Response(comment_data, status=status.HTTP_201_CREATED)

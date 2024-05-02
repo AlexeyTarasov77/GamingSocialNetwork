@@ -61,7 +61,7 @@ document.addEventListener("DOMContentLoaded", function() {
         event.preventDefault();
         btnStatus(false, 'Ожидаем ответа от сервера...', commentFormSubmit)
         try {
-            const response = await fetch(`${window.location.origin}/posts/comment-post/${commentPostId}/`, {
+            const response = await fetch(`${window.location.origin}/api/posts/comment-post/${commentPostId}/`, {
                 method: 'POST',
                 headers: {
                     'X-CSRFToken': csrftoken,
@@ -70,10 +70,11 @@ document.addEventListener("DOMContentLoaded", function() {
                 body: new FormData(commentForm),
             });
             const comment = await response.json();
+            console.log(comment);
             let commentTemplate = `<ul id="comment-thread-${comment.id}" class="comments-list">
             <li>
                 <div class="comment-main-level">
-                    <div class="comment-avatar"><img src="http://i9.photobucket.com/albums/a88/creaticode/avatar_1_zps8e1c80cd.jpg" alt=""></div>
+                    <div class="comment-avatar"><img src="${comment.author_image}" alt=""></div>
                     <div class="comment-box">
                         <div class="comment-head">
                             <h6 class="comment-name {% if node.is_root_node or node.get_root.author.username == node.author.username%}by-author{% endif %} ${comment.by_author ? "by-author" : ""}">${comment.author}</h6>

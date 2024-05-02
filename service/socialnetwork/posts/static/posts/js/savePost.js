@@ -5,7 +5,7 @@ $(document).ready(function () {
     const postId = $(this).data('post-id')
     $.ajax({
       type: "PATCH",
-      url: `${window.location.origin}/posts/save-post/${postId}/`,
+      url: `${window.location.origin}/api/posts/save-post/${postId}/`,
       beforeSend: (xhr, settings) => xhr.setRequestHeader('X-CSRFToken', $('input[name="csrfmiddlewaretoken"]').val()),
     })
     .done((data) => {

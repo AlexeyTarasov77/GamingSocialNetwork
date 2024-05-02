@@ -31,6 +31,7 @@ class Post(models.Model):
         choices=Status.choices,
         default=Status.PUBLISHED,
         max_length=2,
+        db_index=True,
     )
     photo = models.ImageField(
         verbose_name="Фото", blank=True, upload_to="photos/posts/", null=True
@@ -61,6 +62,9 @@ class Post(models.Model):
 
     def __str__(self):
         return self.name
+    
+    def is_published(self):
+        return self.status == Post.Status.PUBLISHED
 
     @property
     def num_likes(self):
@@ -75,6 +79,9 @@ class Post(models.Model):
 
 
 class Comment(MPTTModel):
+    class CommentManager(models.Manager):
+        def get_queryset(self):
+            return super().get_queryset().filter(is_active=True)
     post = models.ForeignKey(
         Post, on_delete=models.CASCADE, verbose_name="Пост", related_name="comments"
     )
@@ -99,6 +106,8 @@ class Comment(MPTTModel):
         related_name="comment_parent",
         verbose_name="Родительский комментарий",
     )
+    objects = models.Manager
+    active = CommentManager()
 
     class MPTTMeta:
         order_insertion_by = ["-time_create"]

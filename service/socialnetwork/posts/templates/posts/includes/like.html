@@ -1,5 +1,5 @@
 {% load static %}
-<input type="hidden" id="like-url" value="{% url 'posts:like-post' %}">
+<input type="hidden" id="like-url" value="{% url 'api:posts:like-post' %}">
 <div class="like-container">
     {% if request.user in post.liked.all %}
     <div class="heart is-active" data-post-id="{{ post.id }}"></div>

@@ -1,7 +1,7 @@
 {% load mptt_tags %}
 {% load humanize %}
 
-<p id="comment-url" class="none">{% url "posts:like-comment" %}</p>
+<p id="comment-url" class="none">{% url "api:posts:like-comment" %}</p>
 <div class="comments-container">
     {% if post.comments %}
     <h1>Комментарии</h1>
@@ -19,7 +19,7 @@
     {% else %}
     <div class="comment-form d-flex flex-column justify-content-center align-items-center">
         <h4>Добавить комментарий</h4>
-        <form method="post" action="{% url "posts:comment-post" post.pk %}" class="d-flex flex-column g-3" id="commentForm" name="commentForm" data-post-id="{{ post.pk }}">
+        <form method="post" action="{% url "api:posts:comment-post" post.pk %}" class="d-flex flex-column g-3" id="commentForm" name="commentForm" data-post-id="{{ post.pk }}">
             {% csrf_token %}
             <div class="mb-3 d-flex flex-column">
                 {% for f in form %}
