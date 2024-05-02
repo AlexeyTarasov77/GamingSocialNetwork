@@ -54,7 +54,7 @@ class ProfileView(LoginRequiredMixin, generic.DetailView):
 def my_posts_view(request, username):
     user = get_object_or_404(
         User,
-        profile_user__user_slug=username,
+        profile__user_slug=username,
     )
     context = {
         "own_posts": user.posts.all(),

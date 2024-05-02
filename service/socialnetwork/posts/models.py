@@ -63,6 +63,9 @@ class Post(models.Model):
     def __str__(self):
         return self.name
     
+    def tag_list(self):
+        return [t.name for t in self.tags.all()]
+    
     def is_published(self):
         return self.status == Post.Status.PUBLISHED
 

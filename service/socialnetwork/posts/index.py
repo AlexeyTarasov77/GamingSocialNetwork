@@ -7,4 +7,8 @@ class PostsIndex(AlgoliaIndex):
     should_index = 'is_published'
     fields = ['name', 'content', 'author', 'status']
     index_name = 'posts'
-    tags = 'tags'
+    tags = 'tag_list'
+    settings = {
+        'searchableAttributes': ['name', 'content'],
+        'attributesForFaceting': ['author', 'status']
+    }

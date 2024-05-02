@@ -5,6 +5,7 @@ from rest_framework import viewsets, status, permissions
 from rest_framework.response import Response
 from posts.mixins import ListPostsQuerySetMixin
 from django.urls import reverse_lazy
+from api.search_api.views import BaseSearchAPIView
 from django.shortcuts import get_object_or_404
 
 class PostsViewSet(ListPostsQuerySetMixin, viewsets.ModelViewSet):
@@ -12,7 +13,9 @@ class PostsViewSet(ListPostsQuerySetMixin, viewsets.ModelViewSet):
     
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
-
+        
+class PostsSearchAPIView(BaseSearchAPIView):
+    index_name = "posts"
 
 class LikeAPIView(views.APIView):
     permission_classes = [
