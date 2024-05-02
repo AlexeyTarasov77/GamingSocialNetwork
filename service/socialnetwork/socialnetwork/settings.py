@@ -69,6 +69,7 @@ THIRD_PARTY_APPS = [
     "django_celery_beat",
     "sorl.thumbnail",
     "debug_toolbar",
+    "algoliasearch_django",
 ]
 
 LOCAL_APPS = [
@@ -232,7 +233,9 @@ REST_FRAMEWORK = {
     # or allow read-only access for unauthenticated users.
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly"
-    ]
+    ],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10
 }
 
 # ALL_AUTH
@@ -277,3 +280,12 @@ STRIPE_PUBLISH_KEY = config("STRIPE_PUBLISH_KEY")
 STRIPE_SECRET_KEY = config("STRIPE_SECRET_KEY")
 STRIPE_API_VERSION = "2023-10-16"
 STRIPE_WEBHOOK_SECRET = config("STRIPE_WEBHOOK_SECRET")
+
+# ALGOLIA SEARCH ENGINE
+
+ALGOLIA = {
+    'APPLICATION_ID': config('APPLICATION_ID'),
+    'API_KEY': config('API_KEY'),
+    'INDEX_PREFIX': 'socialnetwork',
+}
+
