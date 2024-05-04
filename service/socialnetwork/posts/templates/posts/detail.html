@@ -1,5 +1,6 @@
 {% extends "./base_posts.html" %}
-{% load static %}
+{% load static %} 
+{% load i18n %}
 {% load humanize %}
 
 {% block links %}
@@ -10,25 +11,25 @@
 
 {% block content %}
 <div class="post-detail">
-    <a href="{% url "posts:list-posts" %}" class="btn btn-primary" id="go-back">Вернуться к постам</a>
+    <a href="{% url "posts:list-posts" %}" class="btn btn-primary" id="go-back">{% trans "Вернуться к постам" %}</a>
     <div class="container posts-content">
         <div class="row">
             <div class="col-lg-6">
                 <div class="card mb-4">
                   <div class="card-body">
-                    <div class="card-title"><h3>{{post.title}}</h3></div>
+                    <div class="card-title"><h3>{{ post.title }}</h3></div>
                     <div class="media mb-3">
                       <img src="https://bootdey.com/img/Content/avatar/avatar1.png" class="d-block ui-w-40 rounded-circle" alt="">
                       <div class="media-body ml-3">
-                        {{post.author}}
-                        <div class="text-muted small">Опубликовано: {{post.time_publish|naturaltime}}</div>
+                        {{ post.author }}
+                        <div class="text-muted small">{% trans "Опубликовано" %}: {{ post.time_publish|naturaltime }}</div>
                         {% if post.tags.all %}
-                        <p class="card-title">Теги: 
+                        <p class="card-title">{% trans "Теги" %}:
                           <div class="tags-list d-flex gap-3">
                             {% with tags=post.tags.all %}
                             {% for tag in tags %}
                               <span class="post-tag text-primary rounded border border-primary p-2 border-opacity-50">
-                                <a href="{% url "posts:list-posts-by-tag" tag.slug %}" class="tag-link">{{tag.name|upper}}</a>
+                                <a href="{% url "posts:list-posts-by-tag" tag.slug %}" class="tag-link">{{ tag.name|upper }}</a>
                               </span> 
                             {% endfor %}
                             {% endwith %}
@@ -36,13 +37,13 @@
                         </p>
                         {% endif %}
                         <div class="count-views d-flex">
-                          <div class="badge text-bg-primary text-wrap">{{views_count}}</div> &nbsp; Просмотров
+                          <div class="badge text-bg-primary text-wrap">{{ views_count }}</div> &nbsp; {% trans "Просмотров" %}
                         </div>
                       </div>
                     </div>
                     
                     <p class="card-text">
-                      {{post.content|linebreaks}}
+                      {{ post.content|linebreaks }}
                     </p>
                     
                     <p class="card-text">
@@ -50,13 +51,13 @@
                     </p>
                     {% if post.photo %}
                         <div class="post-photo">
-                            <img src="{{post.photo.url}}" alt="">
+                            <img src="{{ post.photo.url }}" alt="">
                         </div>
                     {% endif %}
                     {% if is_owner %}
                       <div class="owner__row d-flex gap-4 my-3">
-                        <div class="row__delete"><a href="{% url "posts:delete-post" post.id %}" class="delete__btn btn btn-danger">Удалить</a></div>
-                        <div class="row__update"><a href="{% url "posts:update-post" post.id %}" class="update__btn btn btn-warning">Обновить</a></div>
+                        <div class="row__delete"><a href="{% url "posts:delete-post" post.id %}" class="delete__btn btn btn-danger">{% trans "Удалить" %}</a></div>
+                        <div class="row__update"><a href="{% url "posts:update-post" post.id %}" class="update__btn btn btn-warning">{% trans "Обновить" %}</a></div>
                       </div>
                     {% endif %}
                   </div>
@@ -65,28 +66,28 @@
                         <span class="d-inline-block text-muted">
                           <small class="align-middle" id="num-likes">
                             {% with likes_count=post.num_likes %}
-                            <strong id="num-likes-count">{{likes_count}}</strong> {{likes_count|pluralize:"like,likes"}}</small>  <i class="bi bi-heart-fill"></i>
+                            <strong id="num-likes-count">{{ likes_count }}</strong> {{ likes_count|pluralize:"like,likes" }}</small>  <i class="bi bi-heart-fill"></i>
                             {% endwith %}
                         </span>
                         
                         <a href="javascript:void(0)" class="d-inline-block text-muted ml-3">
                           <small class="align-middle">  &nbsp;
                             {% with comments_count=post.num_comments %}
-                            <strong>{{post.num_comments}}</strong>  {{post.num_comments|pluralize:"comment,comments"}}</small>  <i class="bi bi-chat-right-text-fill"></i>
+                            <strong>{{ post.num_comments }}</strong>  {{ post.num_comments|pluralize:"comment,comments" }}</small>  <i class="bi bi-chat-right-text-fill"></i>
                             {% endwith %}
                         </a>
                         <a href="javascript:void(0)" class="d-inline-block text-muted ml-3">
                           <i class="ion ion-md-share align-middle"></i>&nbsp;
-                          <small class="align-middle">Repost</small>  <i class="bi bi-reply"></i>
+                          <small class="align-middle">{% trans "Repost" %}</small>  <i class="bi bi-reply"></i>
                         </a>
                         <a href="javascript:void(0)" hx-get="{% url "posts:share-post" post.id %}" hx-target="#dialog" class="d-inline-block text-muted ml-3">
                             <i class="ion ion-md-share align-middle"></i>&nbsp;
-                            <small class="align-middle">Share</small>  <i class="bi bi-share-fill"></i>
+                            <small class="align-middle">{% trans "Share" %}</small>  <i class="bi bi-share-fill"></i>
                         </a>
                     </div>
                     <div class="meta">
                         <small>
-                            {% if post.time_update %} Изменено: {{post.time_update|naturaltime}}{% endif %}
+                            {% if post.time_update %} {% trans "Изменено" %}: {{ post.time_update|naturaltime }}{% endif %}
                         </small>
                     </div>
                   </div>
@@ -99,25 +100,25 @@
     </div>
     {% if recommended_posts %}
     <div class="recommended_posts row gap-5 mt-5">
-      <h3 class="card-title text-center">Вам так же может понравиться: </h3>
+      <h3 class="card-title text-center">{% trans "Вам так же может понравиться" %}: </h3>
       {% for rec_post in recommended_posts %}
       <div class="card mb-3 d-flex justify-content-between col-6 col-md-4" style="max-width: 540px;">
         <div class="row g-0">
           {% if rec_post.photo %}
           <div class="col-md-4 mt-5">
-            <img src="{{rec_post.photo.url}}" class="img-fluid rounded" alt="...">
+            <img src="{{ rec_post.photo.url }}" class="img-fluid rounded" alt="...">
           </div>
           {% endif %}
           <div class="col-md-8">
-            <div class="card-header">{{rec_post.author}}</div>
+            <div class="card-header">{{ rec_post.author }}</div>
             <div class="card-body">
-              <h5 class="card-title"><a href="{{rec_post.get_absolute_url}}">{{rec_post.title}}</a></h5>
-              <p class="card-text">{{rec_post.content|linebreaks|truncatewords:30}}</p>
+              <h5 class="card-title"><a href="{{ rec_post.get_absolute_url }}">{{ rec_post.title }}</a></h5>
+              <p class="card-text">{{ rec_post.content|linebreaks|truncatewords:30 }}</p>
             </div>
           </div>
         </div>
         <div class="card-footer" id="time_create">
-          <small class="text-body-secondary">Создано - {{rec_post.time_create}}</small>
+          <small class="text-body-secondary">{% trans "Создано" %} - {{ rec_post.time_create }}</small>
         </div>
       </div>
       {% endfor %}

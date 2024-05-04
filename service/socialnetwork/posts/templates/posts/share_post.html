@@ -1,8 +1,9 @@
+{% load i18n %}
 {% block modal_content %}
 <div class="modal-content">
     <div class="modal-header">
       <h5 class="modal-title">
-        Поделиться постом "{{ post.title }}" по электронной почте
+        {% trans "Поделиться постом" %} "{{ post.title }}" {% trans "по электронной почте" %}
       </h5>
       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
@@ -14,17 +15,17 @@
              hx-post="{% url "posts:share-post" post.id %}"
              hx-trigger="click from:#submit"
              hx-target="#dialog"
-             data-success-msg-title="Электронное письмо было успешно отправлено!"
-             data-success-msg=" '{{ post.title }}' был успешно отправлен по адрессу - 
+             data-success-msg-title="{% trans "Электронное письмо было успешно отправлено!" %}"
+             data-success-msg="'{{ post.title }}' {% trans " был успешно отправлен по адрессу - " %}
              {{ form.cleaned_data.to }}.">
                 {% csrf_token %}
                 
                     {% for f in form %}
                         <div class="mb-3 d-flex flex-column">
-                            {{f.label_tag}}
-                            {{f}}
+                            {{ f.label_tag }}
+                            {{ f }}
                             <div class="invalid-feedback">
-                                {{f.errors}}
+                                {{ f.errors }}
                             </div>
                         </div>
                     {% endfor %}
@@ -33,8 +34,8 @@
         </div>
     </div>
     <div class="modal-footer">
-      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
-      <button type="button" class="btn btn-primary" id="submit">Отправить</button>
+      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{% trans "Закрыть" %}</button>
+      <button type="button" class="btn btn-primary" id="submit">{% trans "Отправить" %}</button>
     </div>
   </div>
 {% endblock modal_content %}

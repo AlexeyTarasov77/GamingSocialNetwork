@@ -1,0 +1,265 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-05-04 14:18+0000\n"
+"PO-Revision-Date: 2024-05-04 16:31+0200\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.4.2\n"
+
+#: posts/forms.py:13
+msgid "Email адресс получателя"
+msgstr "Email address of the recipient"
+
+#: posts/forms.py:17
+msgid "Заметки"
+msgstr "Notes"
+
+#: posts/forms.py:31
+msgid "Введите комментарий"
+msgstr "Write a comment"
+
+#: posts/forms.py:51
+msgid "Введите имя поста"
+msgstr "Enter the name of the post"
+
+#: posts/forms.py:52
+msgid "Введите текст поста"
+msgstr "Enter the text of the post"
+
+#: posts/forms.py:53
+msgid "Установите статус поста"
+msgstr "Set the status of the post"
+
+#: posts/forms.py:54
+msgid "Выберите подходящие теги для вашего поста"
+msgstr "Choose the appropriate tags for your post"
+
+#: posts/forms.py:57 posts/models.py:27
+msgid "Заголовок поста"
+msgstr "Post title"
+
+#: posts/forms.py:58
+msgid "Текст поста"
+msgstr "Post text"
+
+#: posts/forms.py:59
+msgid "Статус поста"
+msgstr "Post status"
+
+#: posts/forms.py:60
+msgid "Фото поста *опционально"
+msgstr "Post photo *optional"
+
+#: posts/forms.py:61 posts/models.py:61 posts/templates/posts/detail.html:27
+msgid "Теги"
+msgstr "Tags"
+
+#: posts/models.py:17
+msgid "Черновик"
+msgstr "Draft"
+
+#: posts/models.py:18 posts/templates/posts/detail.html:25
+#: posts/templates/posts/list.html:81
+msgid "Опубликовано"
+msgstr "Published"
+
+#: posts/models.py:21
+msgid "Новость"
+msgstr "News"
+
+#: posts/models.py:22
+msgid "Статья"
+msgstr "Article"
+
+#: posts/models.py:23 posts/models.py:67 posts/models.py:102
+msgid "Пост"
+msgstr "Post"
+
+#: posts/models.py:29
+msgid "Контент"
+msgstr "Content"
+
+#: posts/models.py:30 posts/models.py:108
+msgid "Дата создания"
+msgstr "Time create"
+
+#: posts/models.py:31
+msgid "Дата обновления"
+msgstr "Time update"
+
+#: posts/models.py:33
+msgid "Дата публикации"
+msgstr "Publish date"
+
+#: posts/models.py:36
+msgid "Статус"
+msgstr "Status"
+
+#: posts/models.py:43
+msgid "Фото"
+msgstr "Post photo *optional"
+
+#: posts/models.py:47
+msgid "Сохраненные"
+msgstr "Saved"
+
+#: posts/models.py:52 posts/models.py:113
+msgid "Лайки"
+msgstr "Likes"
+
+#: posts/models.py:56 posts/models.py:105 posts/templates/posts/list.html:49
+msgid "Автор"
+msgstr "Author"
+
+#: posts/models.py:60
+msgid "Тип контента"
+msgstr "Content type"
+
+#: posts/models.py:68 posts/templates/posts/list.html:25
+msgid "Посты"
+msgstr "Posts"
+
+#: posts/models.py:109
+msgid "Дата изменения"
+msgstr "Time update"
+
+#: posts/models.py:110
+msgid "Активен"
+msgstr "Is active"
+
+#: posts/models.py:123
+msgid "Родительский комментарий"
+msgstr "Parent comment"
+
+#: posts/models.py:134
+msgid "Комментарий"
+msgstr "Comment"
+
+#: posts/models.py:135
+msgid "Комментарии"
+msgstr "Comments"
+
+#: posts/templates/posts/base_posts.html:4
+msgid "Добавить пост"
+msgstr "Add post"
+
+#: posts/templates/posts/create.html:22
+msgid "Создать"
+msgstr "Create"
+
+#: posts/templates/posts/delete.html:4
+msgid "Вы уверены, что хотите удалить пост -"
+msgstr "Are you sure that you wanna delete post -"
+
+#: posts/templates/posts/delete.html:7 posts/templates/posts/detail.html:59
+msgid "Удалить"
+msgstr "Delete"
+
+#: posts/templates/posts/detail.html:14
+msgid "Вернуться к постам"
+msgstr "Back to posts"
+
+#: posts/templates/posts/detail.html:40
+msgid "Просмотров"
+msgstr "Views"
+
+#: posts/templates/posts/detail.html:60 posts/templates/posts/update.html:22
+msgid "Обновить"
+msgstr "Update"
+
+#: posts/templates/posts/detail.html:81
+msgid "Repost"
+msgstr "Repost"
+
+#: posts/templates/posts/detail.html:85
+msgid "Share"
+msgstr "Share"
+
+#: posts/templates/posts/detail.html:90 posts/templates/posts/list.html:81
+msgid "Изменено"
+msgstr "Updated"
+
+#: posts/templates/posts/detail.html:103
+msgid "Вам так же может понравиться"
+msgstr "You also may like"
+
+#: posts/templates/posts/detail.html:121
+msgid "Создано"
+msgstr "Created"
+
+#: posts/templates/posts/list.html:18
+msgid "Все потоки"
+msgstr "All streams"
+
+#: posts/templates/posts/list.html:28
+msgid "Статьи"
+msgstr "Articles"
+
+#: posts/templates/posts/list.html:31
+msgid "Новости"
+msgstr "News"
+
+#: posts/templates/posts/list.html:58
+msgid "Сохранено"
+msgstr "Saved"
+
+#: posts/templates/posts/list.html:67
+msgid "Сохранить"
+msgstr "Save"
+
+#: posts/templates/posts/list.html:79
+msgid "Читать более..."
+msgstr "Read more…"
+
+#: posts/templates/posts/list.html:87
+msgid "Постов пока нет 🙁"
+msgstr "No posts yet🙁"
+
+#: posts/templates/posts/share_post.html:6
+msgid "Поделиться постом"
+msgstr "Share post"
+
+#: posts/templates/posts/share_post.html:6
+msgid "по электронной почте"
+msgstr "by email"
+
+#: posts/templates/posts/share_post.html:18
+msgid "Электронное письмо было успешно отправлено!"
+msgstr "The email was successfully sent!"
+
+#: posts/templates/posts/share_post.html:19
+msgid " был успешно отправлен по адрессу - "
+msgstr " was successfully sent to the address - "
+
+#: posts/templates/posts/share_post.html:37
+msgid "Закрыть"
+msgstr "Close"
+
+#: posts/templates/posts/share_post.html:38
+msgid "Отправить"
+msgstr "Send"
+
+#: socialnetwork/settings.py:180
+msgid "English"
+msgstr "English"
+
+#: socialnetwork/settings.py:181
+msgid "Ukrainian"
+msgstr "Ukrainian"
+
+#: socialnetwork/settings.py:182
+msgid "Russian"
+msgstr "Russian"

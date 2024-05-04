@@ -1,0 +1,257 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-05-04 14:18+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Ukrainian <uk@li.org>\n"
+"Language: uk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: posts/forms.py:13
+msgid "Email адресс получателя"
+msgstr "Email адрес отримувача"
+
+#: posts/forms.py:17
+msgid "Заметки"
+msgstr "Примітки"
+
+#: posts/forms.py:31
+msgid "Введите комментарий"
+msgstr "Введіть коментар"
+
+#: posts/forms.py:51
+msgid "Введите имя поста"
+msgstr "Введіть ім'я поста"
+
+#: posts/forms.py:52
+msgid "Введите текст поста"
+msgstr "Введіть текст поста"
+
+#: posts/forms.py:53
+msgid "Установите статус поста"
+msgstr "Встановіть статус поста"
+
+#: posts/forms.py:54
+msgid "Выберите подходящие теги для вашего поста"
+msgstr "Виберіть відповідні теги для вашого поста"
+
+#: posts/forms.py:57 posts/models.py:27
+msgid "Заголовок поста"
+msgstr "Заголовок поста"
+
+#: posts/forms.py:58
+msgid "Текст поста"
+msgstr "Текст поста"
+
+#: posts/forms.py:59
+msgid "Статус поста"
+msgstr "Статус поста"
+
+#: posts/forms.py:60
+msgid "Фото поста *опционально"
+msgstr "Фото поста *опціонально"
+
+#: posts/forms.py:61 posts/models.py:61 posts/templates/posts/detail.html:27
+msgid "Теги"
+msgstr "Теги"
+
+#: posts/models.py:17
+msgid "Черновик"
+msgstr "Чернетка"
+
+#: posts/models.py:18 posts/templates/posts/detail.html:25
+#: posts/templates/posts/list.html:81
+msgid "Опубликовано"
+msgstr "Опубліковано"
+
+#: posts/models.py:21
+msgid "Новость"
+msgstr "Новина"
+
+#: posts/models.py:22
+msgid "Статья"
+msgstr "Стаття"
+
+#: posts/models.py:23 posts/models.py:67 posts/models.py:102
+msgid "Пост"
+msgstr "Пост"
+
+#: posts/models.py:29
+msgid "Контент"
+msgstr "Контент"
+
+#: posts/models.py:30 posts/models.py:108
+msgid "Дата создания"
+msgstr "Дата створення"
+
+#: posts/models.py:31
+msgid "Дата обновления"
+msgstr "Дата оновлення"
+
+#: posts/models.py:33
+msgid "Дата публикации"
+msgstr "Дата публікації"
+
+#: posts/models.py:36
+msgid "Статус"
+msgstr "Статус"
+
+#: posts/models.py:43
+msgid "Фото"
+msgstr "Фото"
+
+#: posts/models.py:47
+msgid "Сохраненные"
+msgstr "Збережені"
+
+#: posts/models.py:52 posts/models.py:113
+msgid "Лайки"
+msgstr "Лайки"
+
+#: posts/models.py:56 posts/models.py:105 posts/templates/posts/list.html:49
+msgid "Автор"
+msgstr "Автор"
+
+#: posts/models.py:60
+msgid "Тип контента"
+msgstr "Тип контенту"
+
+#: posts/models.py:68 posts/templates/posts/list.html:25
+msgid "Посты"
+msgstr "Пости"
+
+#: posts/models.py:109
+msgid "Дата изменения"
+msgstr "Дата зміни"
+
+#: posts/models.py:110
+msgid "Активен"
+msgstr "Активний"
+
+#: posts/models.py:123
+msgid "Родительский комментарий"
+msgstr "Батьківський коментар"
+
+#: posts/models.py:134
+msgid "Комментарий"
+msgstr "Коментар"
+
+#: posts/models.py:135
+msgid "Комментарии"
+msgstr "Коментарі"
+
+#: posts/templates/posts/base_posts.html:4
+msgid "Добавить пост"
+msgstr "Додати пост"
+
+#: posts/templates/posts/create.html:22
+msgid "Создать"
+msgstr "Створити"
+
+#: posts/templates/posts/delete.html:4
+msgid "Вы уверены, что хотите удалить пост -"
+msgstr "Ви впевнені, що хочете видалити пост -"
+
+#: posts/templates/posts/delete.html:7 posts/templates/posts/detail.html:59
+msgid "Удалить"
+msgstr "Видалити"
+
+#: posts/templates/posts/detail.html:14
+msgid "Вернуться к постам"
+msgstr "Повернутися до постів"
+
+#: posts/templates/posts/detail.html:40
+msgid "Просмотров"
+msgstr "Переглядів"
+
+#: posts/templates/posts/detail.html:60 posts/templates/posts/update.html:22
+msgid "Обновить"
+msgstr "Оновити"
+
+#: posts/templates/posts/detail.html:81
+msgid "Repost"
+msgstr "Репост"
+
+#: posts/templates/posts/detail.html:85
+msgid "Share"
+msgstr "Поділитися"
+
+#: posts/templates/posts/detail.html:90 posts/templates/posts/list.html:81
+msgid "Изменено"
+msgstr "Змінено"
+
+#: posts/templates/posts/detail.html:103
+msgid "Вам так же может понравиться"
+msgstr "Вам також може сподобатися"
+
+#: posts/templates/posts/detail.html:121
+msgid "Создано"
+msgstr "Створено"
+
+#: posts/templates/posts/list.html:18
+msgid "Все потоки"
+msgstr "Усі потоки"
+
+#: posts/templates/posts/list.html:28
+msgid "Статьи"
+msgstr "Статті"
+
+#: posts/templates/posts/list.html:31
+msgid "Новости"
+msgstr "Новини"
+
+#: posts/templates/posts/list.html:58
+msgid "Сохранено"
+msgstr "Збережено"
+
+#: posts/templates/posts/list.html:67
+msgid "Сохранить"
+msgstr "Зберегти"
+
+#: posts/templates/posts/list.html:79
+msgid "Читать более..."
+msgstr "Читати далі..."
+
+#: posts/templates/posts/list.html:87
+msgid "Постов пока нет 🙁"
+msgstr "Постів поки немає 🙁"
+
+#: posts/templates/posts/share_post.html:6
+msgid "Поделиться постом"
+msgstr "Поділитися постом"
+
+#: posts/templates/posts/share_post.html:6
+msgid "по электронной почте"
+msgstr "по електронній пошті"
+
+#: posts/templates/posts/share_post.html:18
+msgid "Электронное письмо было успешно отправлено!"
+msgstr "Електронний лист було успішно відправлено!"
+
+#: posts/templates/posts/share_post.html:19
+msgid " был успешно отправлен по адрессу - "
+msgstr " було успішно відправлено за адресою - "
+
+#: posts/templates/posts/share_post.html:37
+msgid "Закрыть"
+msgstr "Закрити"
+
+#: posts/templates/posts/share_post.html:38
+msgid "Отправить"
+msgstr "Відправити"
+
+#: socialnetwork/settings.py:180
+msgid "English"
+msgstr "Англійська"
+
+#: socialnetwork/settings.py:181
+msgid "Ukrainian"
+msgstr "Українська"
+
+#: socialnetwork/settings.py:182
+msgid "Russian"
+msgstr "Російська"

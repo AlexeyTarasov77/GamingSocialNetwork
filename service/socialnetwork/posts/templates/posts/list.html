@@ -1,6 +1,7 @@
 {% extends "./base_posts.html" %}
 {% load static %}
 {% load humanize %}
+{% load i18n %}
 
 {% block links %}   
 <link rel="stylesheet" href="{% static "posts/css/list.css" %}">
@@ -14,20 +15,20 @@
     <div class="height-100">
         <nav class="navbar bg-primary border-bottom border-body" data-bs-theme="dark" style="width: 30%">
             <div class="container-fluid">
-                <a class="navbar-brand text-light" href="{% url "posts:list-posts" %}">Все потоки</a>
+                <a class="navbar-brand text-light" href="{% url "posts:list-posts" %}">{% trans "Все потоки" %}</a>
                 <button class="navbar-toggler bg-dark" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
                   <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarText">
                   <ul class="navbar-nav me-auto mb-2 mb-lg-0 fs-5">
                     <li class="nav-item">
-                      <a class="nav-link active" aria-current="page" href="{% url "posts:list-posts" %}?type=PS">Посты</a>
+                      <a class="nav-link active" aria-current="page" href="{% url "posts:list-posts" %}?type=PS">{% trans "Посты" %}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="{% url "posts:list-posts" %}?type=AR">Статьи</a>
+                        <a class="nav-link" aria-current="page" href="{% url "posts:list-posts" %}?type=AR">{% trans "Статьи" %}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="{% url "posts:list-posts" %}?type=NW">Новости</a>
+                        <a class="nav-link" aria-current="page" href="{% url "posts:list-posts" %}?type=NW">{% trans "Новости" %}</a>
                     </li>
                 </div>
             </div>
@@ -39,31 +40,31 @@
                         {% for post in posts_list %}
                         <div class="card mb-3">
                             {% if post.photo %}
-                                <img src="{{post.photo.url}}" class="card-img-top" alt="{{post.photo}}">
+                                <img src="{{ post.photo.url }}" class="card-img-top" alt="{{ post.photo }}">
                             {% endif %}
-                            <div class="card-header">{{post.get_type_display}}</div>
+                            <div class="card-header">{{ post.get_type_display }}</div>
                             <div class="card-body">
-                              <h5 class="card-title">{{post.title}}</h5>
-                              <p class="card-text">{{post.content|truncatewords:30}}</p>
-                              <p class="card-text"><small class="text-body-secondary"><p>Автор: <strong>{{post.author}}</strong></p></small></p>
+                              <h5 class="card-title">{{ post.title }}</h5>
+                              <p class="card-text">{{ post.content|truncatewords:30 }}</p>
+                              <p class="card-text"><small class="text-body-secondary"><p>{% trans "Автор" %}: <strong>{{ post.author }}</strong></p></small></p>
                               {% if user in post.saved.all %}
-                              <p class="card-text pb-4 save" data-post-id="{{post.id}}">
+                              <p class="card-text pb-4 save" data-post-id="{{ post.id }}">
                                 <span class="save-icon">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-floppy-fill text-warning" viewBox="0 0 16 16">
                                         <path d="M0 1.5A1.5 1.5 0 0 1 1.5 0H3v5.5A1.5 1.5 0 0 0 4.5 7h7A1.5 1.5 0 0 0 13 5.5V0h.086a1.5 1.5 0 0 1 1.06.44l1.415 1.414A1.5 1.5 0 0 1 16 2.914V14.5a1.5 1.5 0 0 1-1.5 1.5H14v-5.5A1.5 1.5 0 0 0 12.5 9h-9A1.5 1.5 0 0 0 2 10.5V16h-.5A1.5 1.5 0 0 1 0 14.5z"/>
                                         <path d="M3 16h10v-5.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5zm9-16H4v5.5a.5.5 0 0 0 .5.5h7a.5.5 0 0 0 .5-.5zM9 1h2v4H9z"/>
                                     </svg>
                                 </span>
-                                <span class="save-text">Сохранено</span>
+                                <span class="save-text">{% trans "Сохранено" %}</span>
                               </p>
                               {% else %}
-                              <p class="card-text pb-4 save" data-post-id="{{post.id}}">
+                              <p class="card-text pb-4 save" data-post-id="{{ post.id }}">
                                 <span class="save-icon">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-bookmark-fill text-warning" viewBox="0 0 16 16">
                                         <path d="M2 2v13.5a.5.5 0 0 0 .74.439L8 13.069l5.26 2.87A.5.5 0 0 0 14 15.5V2a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2"/>
                                     </svg>
                                 </span>
-                                <span class="save-text">Сохранить</span>
+                                <span class="save-text">{% trans "Сохранить" %}</span>
                               </p>
                               {% endif %}
                               <p class="card-text">
@@ -71,19 +72,19 @@
                               </p>
                               <ul class="list-group list-group-flush">
                                 {% with likes_count=post.num_likes comments_count=post.num_comments %}
-                                <li class="list-group-item" id="num-likes"><span id="num-likes-count">{{likes_count}}</span> {{likes_count|pluralize:"like, likes"}}</li>
-                                <li class="list-group-item">{{comments_count}} {{comments_count|pluralize:"comment, comments"}}</li>
+                                <li class="list-group-item" id="num-likes"><span id="num-likes-count">{{ likes_count }}</span> {{ likes_count|pluralize:"like, likes" }}</li>
+                                <li class="list-group-item">{{ comments_count }} {{ comments_count|pluralize:"comment, comments" }}</li>
                                 {% endwith %}
                               </ul>
-                              <p class="card-text"><a href="{{post.get_absolute_url}}" class="btn btn-primary">Читать более...</a></p>
+                              <p class="card-text"><a href="{{ post.get_absolute_url }}" class="btn btn-primary">{% trans "Читать более..." %}</a></p>
                               <div class="card-footer">
-                                <small class="text-body-secondary">Опубликовано: {{post.time_publish|naturaltime}} {% if post.time_update %} | Изменено: {{post.time_update|naturaltime}}{% endif %}</small>
+                                <small class="text-body-secondary">{% trans "Опубликовано" %}: {{ post.time_publish|naturaltime }} {% if post.time_update %} | {% trans "Изменено" %}: {{ post.time_update|naturaltime }}{% endif %}</small>
                               </div>
                             </div>
                         </div>
                         {% empty %}
                         <div class="empty-posts">
-                            <h2>Постов пока нет 🙁</h2>
+                            <h2>{% trans "Постов пока нет 🙁" %}</h2>
                             <img src="{% static "posts/img/posts-empty.png" %}" alt="">
                         </div>
                         {% endfor %}
@@ -97,6 +98,7 @@
         </div>
     </div>  
 {% endblock content %}
+
 {% block js %}
 <script type="module" src="{% static "posts/js/savePost.js" %}"></script>
 {% endblock js %}
