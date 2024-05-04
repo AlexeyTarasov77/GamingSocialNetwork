@@ -1,5 +1,4 @@
-from collections.abc import Mapping
-from typing import Any
+from django.utils.translation import gettext as _
 
 from django import forms
 from taggit.models import Tag
@@ -11,11 +10,11 @@ class ShareForm(forms.Form):
         widget=forms.EmailInput(
             attrs={"class": "form-control", "placeholder": "yourgmail@gmail.com"}
         ),
-        label="Email адресс получателя",
+        label=_("Email адресс получателя"),
     )
     notes = forms.CharField(
         widget=forms.Textarea(attrs={"class": "form-control", "rows": 5}),
-        label="Заметки",
+        label=_("Заметки"),
         required=False,
     )
 
@@ -29,7 +28,7 @@ class CommentForm(forms.ModelForm):
                 "class": "form-control",
                 "rows": 5,
                 "cols": 25,
-                "placeholder": "Введите комментарий",
+                "placeholder": _("Введите комментарий"),
             }
         ),
     )
@@ -47,19 +46,19 @@ class CreatePostForm(forms.ModelForm):
 
     class Meta:
         model = Post
-        fields = ["name", "content", "status", "photo", "tags"]
+        fields = ["title", "content", "status", "photo", "tags"]
         help_texts = {
-            "name": "Введите имя поста",
-            "content": "Введите текст поста",
-            "status": "Установите статус поста",
-            "tags": "Выберите подходящие теги для вашего поста",
+            "title": _("Введите имя поста"),
+            "content": _("Введите текст поста"),
+            "status": _("Установите статус поста"),
+            "tags": _("Выберите подходящие теги для вашего поста"),
         }
         labels = {
-            "name": "Заголовок поста",
-            "content": "Текст поста",
-            "status": "Статус поста",
-            "photo": "Фото поста *опционально",
-            "tags": "Теги",
+            "title": _("Заголовок поста"),
+            "content": _("Текст поста"),
+            "status": _("Статус поста"),
+            "photo": _("Фото поста *опционально"),
+            "tags": _("Теги"),
         }
         widgets = {
             "content": forms.Textarea(attrs={"rows": 5, "columns": "10"}),

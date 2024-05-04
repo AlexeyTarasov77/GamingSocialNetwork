@@ -2,7 +2,7 @@
 <div class="modal-content">
     <div class="modal-header">
       <h5 class="modal-title">
-        Поделиться постом "{{ post.name }}" по электронной почте
+        Поделиться постом "{{ post.title }}" по электронной почте
       </h5>
       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
@@ -15,7 +15,7 @@
              hx-trigger="click from:#submit"
              hx-target="#dialog"
              data-success-msg-title="Электронное письмо было успешно отправлено!"
-             data-success-msg=" '{{ post.name }}' был успешно отправлен по адрессу - 
+             data-success-msg=" '{{ post.title }}' был успешно отправлен по адрессу - 
              {{ form.cleaned_data.to }}.">
                 {% csrf_token %}
                 

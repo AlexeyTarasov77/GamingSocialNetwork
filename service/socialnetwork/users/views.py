@@ -15,7 +15,7 @@ from rest_framework.response import Response
 from .decorators import owner_required
 from .forms import ProfileUpdateForm
 from .models import FriendRequest, Profile
-
+from posts.views import r
 
 # Create your views here.
 class ProfileView(LoginRequiredMixin, generic.DetailView):
@@ -47,6 +47,7 @@ class ProfileView(LoginRequiredMixin, generic.DetailView):
             if profile.requests.filter(from_user=self.request.user).exists()
             else False
         )
+        context["is_online"] = (int(r.get(f"user:{profile.user.id}:status")) > 0)
 
         return context
 

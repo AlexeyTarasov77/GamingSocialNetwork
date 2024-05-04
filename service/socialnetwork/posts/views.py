@@ -42,7 +42,7 @@ class DetailPost(generic.DetailView):
 
     def get_object(self, queryset: QuerySet[Any] | None = ...) -> Model:
         return get_object_or_404(
-            Post.objects.select_related("author").prefetch_related("tags"),
+            Post.objects.select_related("author").prefetch_related("tags", "liked", "saved", "comments"),
             pk=self.kwargs.get("post_id"),
         )
 
@@ -53,6 +53,7 @@ class DetailPost(generic.DetailView):
             Post.published.filter(tags__in=post_tags_ids)
             .exclude(id=post.id)
             .annotate(same_tags=Count("tags"))
+            .select_related("author").prefetch_related("tags", "liked", "saved", "comments")
             .order_by("-same_tags", "-time_publish")[:4]
         )
         return similar_posts

@@ -15,16 +15,16 @@ def share_post_by_mail(
     user_id: int, post_id: int, cd: dict, post_url, new_post: bool = False
 ):
     user = get_object_or_404(get_user_model(), id=user_id)
-    post = get_object_or_404(Post, id=post_id, status=Post.Status.PUBLISHED)
+    post = get_object_or_404(Post.published.select_related("author"), id=post_id)
     if new_post:
-        subject = f"Пользователь {user} из списка ваших подписчиков опубликовал новый пост: {post.name}"
+        subject = f"Пользователь {user} из списка ваших подписчиков опубликовал новый пост: {post.title}"
         message = f"Вы можете посмотреть его по ссылке: {post_url}\n\n"
         recipients = user.profile.followers.all().values_list("email", flat=True)
     else:
         recipients = [cd["to"]]
-        subject = f"Пользователь: {user} поделился с вами постом: {post.name}, опубликованным - {post.author}"
+        subject = f"Пользователь: {user} поделился с вами постом: {post.title}, опубликованным - {post.author}"
         message = (
-            f"Вы можете посмотреть пост - {post.name} по ссылке {post_url}\n\n"
+            f"Вы можете посмотреть пост - {post.title} по ссылке {post_url}\n\n"
             f"Комментарий пользователя {user}: {cd['notes']}"
         )
 
@@ -47,7 +47,7 @@ def recommend_posts_by_mail():
         subject = "Рекомендации для вас"
         message_body = " ".join(
             [
-                f"Пост No{i+1}: {post.name}\n{HttpRequest.build_absolute_uri(post.get_absolute_url())}\n\n"
+                f"Пост No{i+1}: {post.title}\n{HttpRequest.build_absolute_uri(post.get_absolute_url())}\n\n"
                 for i, post in enumerate(posts)
             ]
         )

@@ -1,5 +1,4 @@
-menu = [{'title': "Посты", 'url_name': 'posts:list-posts', 'id': 'menu-item-1'},
-        {'title': "Статьи", 'url_name': '#', 'id': 'menu-item-2'},
+menu = [{'title': "Моя лента", 'url_name': 'posts:list-posts', 'id': 'menu-item-1'},
         {'title': "Игровые события", 'url_name': '#', 'id': 'menu-item-3'},
         {'title': "Поиск команды", 'url_name': '#', 'id': 'menu-item-4'},
         {'title': "Магазин 🛒", 'url_name': 'shop:products-list', 'id': 'menu-item-5'},

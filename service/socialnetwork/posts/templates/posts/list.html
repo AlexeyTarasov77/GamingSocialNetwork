@@ -12,6 +12,26 @@
 
 {% block content %}
     <div class="height-100">
+        <nav class="navbar bg-primary border-bottom border-body" data-bs-theme="dark" style="width: 30%">
+            <div class="container-fluid">
+                <a class="navbar-brand text-light" href="{% url "posts:list-posts" %}">Все потоки</a>
+                <button class="navbar-toggler bg-dark" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarText">
+                  <ul class="navbar-nav me-auto mb-2 mb-lg-0 fs-5">
+                    <li class="nav-item">
+                      <a class="nav-link active" aria-current="page" href="{% url "posts:list-posts" %}?type=PS">Посты</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="{% url "posts:list-posts" %}?type=AR">Статьи</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="{% url "posts:list-posts" %}?type=NW">Новости</a>
+                    </li>
+                </div>
+            </div>
+        </nav>
         <div class="container">
             <div class="posts">
                 <div class="posts__column">
@@ -21,8 +41,9 @@
                             {% if post.photo %}
                                 <img src="{{post.photo.url}}" class="card-img-top" alt="{{post.photo}}">
                             {% endif %}
+                            <div class="card-header">{{post.get_type_display}}</div>
                             <div class="card-body">
-                              <h5 class="card-title">{{post.name}}</h5>
+                              <h5 class="card-title">{{post.title}}</h5>
                               <p class="card-text">{{post.content|truncatewords:30}}</p>
                               <p class="card-text"><small class="text-body-secondary"><p>Автор: <strong>{{post.author}}</strong></p></small></p>
                               {% if user in post.saved.all %}

@@ -29,7 +29,7 @@ services:
       - redis
       - db
     container_name: sc-service
-    command: sh -c "python3 manage.py makemigrations &&
+    command: sh -c "python3 manage.py makemigrations --no-input &&
                     python3 manage.py migrate &&
                     python3 manage.py runserver 0.0.0.0:8000"
 

@@ -4,7 +4,7 @@ from django.urls import reverse
 from django.utils import timezone
 from mptt.models import MPTTModel, TreeForeignKey
 from taggit.managers import TaggableManager
-
+from django.utils.translation import gettext as _
 
 class PublishedManager(models.Manager):
     def get_queryset(self):
@@ -14,58 +14,67 @@ class PublishedManager(models.Manager):
 # Create your models here.
 class Post(models.Model):
     class Status(models.TextChoices):
-        DRAFT = "DF", "Черновик"
-        PUBLISHED = "PB", "Опубликовано"
+        DRAFT = "DF", _("Черновик")
+        PUBLISHED = "PB", _("Опубликовано")
+        
+    class Type(models.TextChoices):
+        NEWS = "NW", _("Новость")
+        ARTICLE = "AR", _("Статья")
+        POST = "PS", _("Пост")
+        
 
-    name = models.CharField(
-        verbose_name="Заголовок поста", max_length=100, db_index=True
+    title = models.CharField(
+        verbose_name=_("Заголовок поста"), max_length=100, db_index=True
     )
-    content = models.TextField(verbose_name="Контент")
-    time_create = models.DateTimeField(verbose_name="Дата создания", auto_now_add=True)
-    time_update = models.DateTimeField(verbose_name="Дата обновления", auto_now=True)
+    content = models.TextField(verbose_name=_("Контент"))
+    time_create = models.DateTimeField(verbose_name=_("Дата создания"), auto_now_add=True)
+    time_update = models.DateTimeField(verbose_name=_("Дата обновления"), auto_now=True)
     time_publish = models.DateTimeField(
-        verbose_name="Дата публикации", default=timezone.now
+        verbose_name=_("Дата публикации"), default=timezone.now
     )
     status = models.CharField(
-        verbose_name="Статус",
+        verbose_name=_("Статус"),
         choices=Status.choices,
         default=Status.PUBLISHED,
         max_length=2,
         db_index=True,
     )
     photo = models.ImageField(
-        verbose_name="Фото", blank=True, upload_to="photos/posts/", null=True
+        verbose_name=_("Фото"), blank=True, upload_to="photos/posts/", null=True
     )
     saved = models.ManyToManyField(
         get_user_model(),
-        verbose_name="Сохраненные",
+        verbose_name=_("Сохраненные"),
         related_name="saved_posts",
         blank=True,
     )
     liked = models.ManyToManyField(
-        get_user_model(), verbose_name="Лайки", related_name="liked_posts", blank=True
+        get_user_model(), verbose_name=_("Лайки"), related_name="liked_posts", blank=True
     )
     author = models.ForeignKey(
         get_user_model(),
-        verbose_name="Автор",
+        verbose_name=_("Автор"),
         on_delete=models.CASCADE,
         related_name="posts",
     )
-    tags = TaggableManager(blank=True, verbose_name="Теги")
+    type = models.CharField(max_length=100, verbose_name=_("Тип контента"), default=Type.POST, choices=Type.choices,)
+    tags = TaggableManager(blank=True, verbose_name=_("Теги"))
     published = PublishedManager()
     objects = models.Manager()  # The default manager
 
     class Meta:
         ordering = ["-time_create"]
-        verbose_name = "Пост"
-        verbose_name_plural = "Посты"
+        verbose_name = _("Пост")
+        verbose_name_plural = _("Посты")
 
     def __str__(self):
-        return self.name
+        return self.title
     
+    @property
     def tag_list(self):
         return [t.name for t in self.tags.all()]
     
+    @property
     def is_published(self):
         return self.status == Post.Status.PUBLISHED
 
@@ -79,6 +88,10 @@ class Post(models.Model):
 
     def get_absolute_url(self):
         return reverse("posts:detail-post", kwargs={"post_id": self.pk})
+    
+    @property
+    def url(self):
+        return self.get_absolute_url()
 
 
 class Comment(MPTTModel):
@@ -86,18 +99,18 @@ class Comment(MPTTModel):
         def get_queryset(self):
             return super().get_queryset().filter(is_active=True)
     post = models.ForeignKey(
-        Post, on_delete=models.CASCADE, verbose_name="Пост", related_name="comments"
+        Post, on_delete=models.CASCADE, verbose_name=_("Пост"), related_name="comments"
     )
     author = models.ForeignKey(
-        get_user_model(), verbose_name="Автор", on_delete=models.CASCADE
+        get_user_model(), verbose_name=_("Автор"), on_delete=models.CASCADE
     )
     content = models.TextField()
-    time_create = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
-    time_update = models.DateTimeField(auto_now=True, verbose_name="Дата изменения")
-    is_active = models.BooleanField(default=True)
+    time_create = models.DateTimeField(auto_now_add=True, verbose_name=_("Дата создания"))
+    time_update = models.DateTimeField(auto_now=True, verbose_name=_("Дата изменения"))
+    is_active = models.BooleanField(default=True, verbose_name=_("Активен"))
     liked = models.ManyToManyField(
         get_user_model(),
-        verbose_name="Лайки",
+        verbose_name=_("Лайки"),
         related_name="liked_comments",
         blank=True
     )
@@ -107,7 +120,7 @@ class Comment(MPTTModel):
         blank=True,
         null=True,
         related_name="comment_parent",
-        verbose_name="Родительский комментарий",
+        verbose_name=_("Родительский комментарий"),
     )
     objects = models.Manager
     active = CommentManager()
@@ -118,8 +131,8 @@ class Comment(MPTTModel):
     class Meta:
         ordering = ["-time_create"]
         indexes = [models.Index(fields=["-time_create", "parent"])]
-        verbose_name = "Комментарий"
-        verbose_name_plural = "Комментарии"
+        verbose_name = _("Комментарий")
+        verbose_name_plural = _( "Комментарии")
 
     def __str__(self) -> str:
         return f"{self.author}: {self.content}"

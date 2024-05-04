@@ -11,7 +11,7 @@ class ListPostsTestCase(TestCase):
     def setUp(self):
         self.client = Client()
         self.user = User.objects.create_user(username='testuser', password='12345')
-        self.obj = Post.objects.create(name='Test', content='Test', author_id=self.user.id)
+        self.obj = Post.objects.create(title='Test', content='Test', author_id=self.user.id)
 
     def test_get_request(self):
         response = self.client.get(reverse('posts:list-posts'))
@@ -26,7 +26,7 @@ class DetailPostTestCase(TestCase):
         self.factory = RequestFactory()
         self.client = Client()
         self.user = User.objects.create_user(username='testuser', password='12345')
-        self.obj = Post.objects.create(name='DetailTest', content='Detail Test Content', author_id=self.user.id)
+        self.obj = Post.objects.create(title='DetailTest', content='Detail Test Content', author_id=self.user.id)
         
     def test_get_request(self):
         print(self.obj.id)
@@ -48,13 +48,13 @@ class AddPostTestCase(TestCase):
         self.client.login(username=self.user.username, password='12345')
     def test_post_request(self):
         data = {
-            'name': 'Testing Add Post',
+            'title': 'Testing Add Post',
             'content': 'Test Content',
             'author_id': self.user.id
         }
         response = self.client.post(reverse('posts:add-post'), data)
         self.assertEqual(response.status_code, 302)
-        self.assertTrue(Post.objects.filter(name=data.name, content=data.content).exists())
+        self.assertTrue(Post.objects.filter(title=data.name, content=data.content).exists())
     def test_get_request(self):
         response = self.client.get(reverse('posts:add-post'))
         self.assertEqual(response.status_code, 200)

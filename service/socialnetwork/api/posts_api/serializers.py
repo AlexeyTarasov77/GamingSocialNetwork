@@ -26,4 +26,4 @@ class PostSerializer(serializers.ModelSerializer):
         return r.get("post:%s:views" % obj.id)
     class Meta:
         model = Post
-        fields = ('id', 'name', 'content', 'time_create', 'time_update', 'author', 'saved', 'liked', 'tag_list', 'status', 'photo', 'count_views', 'comments')
+        fields = ('id', 'title', 'content', 'time_create', 'time_update', 'author', 'saved', 'liked', 'tag_list', 'status', 'photo', 'count_views', 'comments')

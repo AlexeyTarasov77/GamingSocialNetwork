@@ -16,7 +16,7 @@
             <div class="col-lg-6">
                 <div class="card mb-4">
                   <div class="card-body">
-                    <div class="card-title"><h3>{{post.name}}</h3></div>
+                    <div class="card-title"><h3>{{post.title}}</h3></div>
                     <div class="media mb-3">
                       <img src="https://bootdey.com/img/Content/avatar/avatar1.png" class="d-block ui-w-40 rounded-circle" alt="">
                       <div class="media-body ml-3">
@@ -26,7 +26,11 @@
                         <p class="card-title">Теги: 
                           <div class="tags-list d-flex gap-3">
                             {% with tags=post.tags.all %}
-                            {% for tag in tags %}<span class="post-tag text-primary rounded border border-primary p-2 border-opacity-50"><a href="{% url "posts:list-posts-by-tag" tag.slug %}" class="tag-link">{{tag.name|upper}}</a></span> {% endfor %}
+                            {% for tag in tags %}
+                              <span class="post-tag text-primary rounded border border-primary p-2 border-opacity-50">
+                                <a href="{% url "posts:list-posts-by-tag" tag.slug %}" class="tag-link">{{tag.name|upper}}</a>
+                              </span> 
+                            {% endfor %}
                             {% endwith %}
                           </div>
                         </p>
@@ -107,7 +111,7 @@
           <div class="col-md-8">
             <div class="card-header">{{rec_post.author}}</div>
             <div class="card-body">
-              <h5 class="card-title"><a href="{{rec_post.get_absolute_url}}">{{rec_post.name}}</a></h5>
+              <h5 class="card-title"><a href="{{rec_post.get_absolute_url}}">{{rec_post.title}}</a></h5>
               <p class="card-text">{{rec_post.content|linebreaks|truncatewords:30}}</p>
             </div>
           </div>

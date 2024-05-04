@@ -20,7 +20,6 @@ User = get_user_model()
 class ListPostsQuerySetMixin:
     def __suggest_posts_for_user(self, user, queryset):
         profile = user.profile
-        queryset = queryset.exclude(author_id=user.id)
         from .views import r
         for post in queryset:
             if r.sismember("post:%s:viewers" % post.id, user.id): 
@@ -40,6 +39,7 @@ class ListPostsQuerySetMixin:
                 )
             ).order_by("-is_suggested_author")
     def get_queryset(self):
+        request = self.request
         queryset = (
             Post.published.annotate(
                 count_likes=Count("liked"), count_comments=Count("comments")
@@ -47,9 +47,15 @@ class ListPostsQuerySetMixin:
             .select_related("author")
             .order_by("-count_likes", "-count_comments")
         )
-        user = self.request.user
+        post_type = request.GET.get("type") or Post.Type.POST
+        if post_type and post_type in Post.Type.choices:
+            queryset = queryset.filter(type=post_type)
+        user = request.user
         if user.is_authenticated:
-            queryset = self.__suggest_posts_for_user(user, queryset)
+            queryset = queryset.exclude(author_id=user.id)
+            suggested_posts = self.__suggest_posts_for_user(user, queryset)
+            if suggested_posts:
+                queryset = suggested_posts
         tag_slug = self.kwargs.get("tag_slug")
         if tag_slug is not None:
             tag = get_object_or_404(Tag, slug=tag_slug)
