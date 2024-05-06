@@ -7,6 +7,8 @@
     <title>{% block title %}{% endblock title %}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/instantsearch.css@8.1.0/themes/reset-min.css" integrity="sha256-2AeJLzExpZvqLUxMfcs+4DWcMwNfpnjUeAAvEtPr0wU=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/instantsearch.css@8.1.0/themes/satellite-min.css" integrity="sha256-p/rGN4RGy6EDumyxF9t7LKxWGg6/MZfGhJM/asKkqvA=" crossorigin="anonymous">
     <link rel="stylesheet" href="{% static "base.css" %}">
     {% block links %}{% endblock links %}
 </head>
@@ -27,10 +29,11 @@
           {% endfor %}
           {% if user.is_superuser %}<li class="nav-item"><a class="nav-link text-success" href="/admin/">Админ панель</a></li>{% endif %}
         </ul>
-        <form class="d-flex" role="search">
-          <input class="form-control me-2" type="search" placeholder="Поиск" aria-label="Search" name="query">
+        {% comment %} <form class="d-flex" role="search" id="search-form" action="{% url "api:posts:search-post" %}">
+          <input class="form-control me-2" type="search" placeholder="Поиск" aria-label="Search" name="q" id="search-input">
           <button class="btn btn-outline-success" type="submit">Поиск</button>
-        </form>
+        </form> {% endcomment %}
+        <div id="searchbox"></div>
       </div>
     </div>
   </nav>
@@ -52,6 +55,12 @@
 </div>
 {% block body %}{% endblock body %}
 <main>
+  <div class="search-container">
+    <div id="hits"></div>
+    <div id="content-types"></div>
+    <div id="status"></div>
+  </div>
+  {% comment %} <div id="search-results"></div> {% endcomment %}
   {% block content %}{% endblock content %}
   <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 50">
       
@@ -60,7 +69,10 @@
 {% include "notifications.html" %}
 <input type="hidden" id="userId" value="{% if user.id %}{{user.id}}{% else %}0{% endif %}">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/algoliasearch@4.23.3/dist/algoliasearch-lite.umd.js" integrity="sha256-1QNshz86RqXe/qsCBldsUu13eAX6n/O98uubKQs87UI=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/instantsearch.js@4.68.0/dist/instantsearch.production.min.js" integrity="sha256-pk7I7Xu6RA1qVbVU7Haw3ULL8nd5CXM5ith59df0/7I=" crossorigin="anonymous"></script>
 <script src="{% static "base.js" %}"></script>
+<script src="{% static "search.js" %}"></script>
 {% block js %}{% endblock js %}
 </body>
 </html>
