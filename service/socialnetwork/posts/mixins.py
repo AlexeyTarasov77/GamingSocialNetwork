@@ -3,17 +3,10 @@ from .models import Post
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.shortcuts import get_object_or_404
+from django.core.cache import cache
 from taggit.models import Tag
-import redis
-from django.conf import settings
 
-
-# r = redis.Redis(
-#     host=settings.REDIS_HOST,
-#     port=settings.REDIS_PORT,
-#     db=settings.REDIS_DB,
-#     decode_responses=True,
-# )
+posts_feed_version_cache_key = "posts_feed_version"
 
 User = get_user_model()
 
@@ -40,6 +33,11 @@ class ListPostsQuerySetMixin:
             ).order_by("-is_suggested_author")
     def get_queryset(self):
         request = self.request
+        user = request.user
+        cache_key = f"posts_feed_for_user_{user.id}_{cache.get("posts_feed_version", 0)}"
+        data = cache.get(cache_key)
+        if data:
+            return data
         queryset = (
             Post.published.annotate(
                 count_likes=Count("liked"), count_comments=Count("comments")
@@ -50,7 +48,6 @@ class ListPostsQuerySetMixin:
         post_type = request.GET.get("type") or Post.Type.POST
         if post_type and post_type in Post.Type.choices:
             queryset = queryset.filter(type=post_type)
-        user = request.user
         if user.is_authenticated:
             queryset = queryset.exclude(author_id=user.id)
             suggested_posts = self.__suggest_posts_for_user(user, queryset)
@@ -60,4 +57,6 @@ class ListPostsQuerySetMixin:
         if tag_slug is not None:
             tag = get_object_or_404(Tag, slug=tag_slug)
             queryset = queryset.filter(tags__in=[tag])
-        return queryset.prefetch_related("tags", "liked", "saved", "comments")
+        queryset = queryset.prefetch_related("tags", "liked", "saved", "comments")
+        cache.set(cache_key, queryset, 360)
+        return queryset

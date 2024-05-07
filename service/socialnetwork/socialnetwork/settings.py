@@ -76,7 +76,6 @@ THIRD_PARTY_APPS = [
 
 LOCAL_APPS = [
     "users.apps.UsersConfig",
-    "articles.apps.ArticlesConfig",
     "chat.apps.ChatConfig",
     "events.apps.EventsConfig",
     "gameblog.apps.GameblogConfig",

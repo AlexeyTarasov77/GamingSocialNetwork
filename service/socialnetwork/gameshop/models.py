@@ -50,6 +50,10 @@ class Product(SaveSlugMixin, models.Model):
     def get_absolute_url(self):
         return reverse("shop:products-detail", kwargs={"slug": self.slug})
 
+    @property
+    def url(self):
+        return self.get_absolute_url()
+    
     def __str__(self):
         return self.title
 
@@ -58,15 +62,19 @@ class Product(SaveSlugMixin, models.Model):
         price = self.price - (self.price * self.discount / 100) # вычисление суммы с возможной скидкой 
         return round(price, 2)
     
-    @property
     def get_category(self):
         return self.category if self.category else 'Без категории'
     
-    @property
     def get_image(self):
         if not self.image:
             return os.path.join(settings.MEDIA_ROOT, 'photos/default.jpeg')
         return self.image.url
+    
+    def _category(self):
+        return self.get_category()
+    
+    def _available(self):
+        return self.get_available_display()
 
 
 

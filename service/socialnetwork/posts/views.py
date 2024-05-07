@@ -11,10 +11,11 @@ from django.db.models.base import Model as Model
 from django.db.models.query import QuerySet
 from django.forms import BaseModelForm
 from django.http import HttpResponse
+from django.core.cache import cache
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views import generic
-from .mixins import ListPostsQuerySetMixin
+from .mixins import ListPostsQuerySetMixin, posts_feed_version_cache_key
 from . import forms, tasks
 from .models import Post
 
@@ -120,6 +121,7 @@ class AddPost(LoginRequiredMixin, generic.CreateView):
             self.request.build_absolute_uri(post.get_absolute_url()),
             True,
         )
+        cache.set(posts_feed_version_cache_key, cache.get(posts_feed_version_cache_key, 0) + 1)
         return redirect(post.get_absolute_url())
 
 # Share post by email address

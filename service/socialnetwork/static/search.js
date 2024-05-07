@@ -51,9 +51,14 @@
 //     }
 // })
 
-const algoliaClient = algoliasearch('RBET4E0JU0', '6deb5d118df506fca82b57edf2487db2');
-
-const searchClient = {
+async function createAlgoliaInstance() {
+  return await fetch(`${window.location.origin}/api/search/credentials/`)
+    .then(response => response.json())
+    .then(data => algoliasearch(data.app_id, data.api_key))
+}
+createAlgoliaInstance()
+.then(algoliaClient => {
+  const searchClient = {
     search(requests) {
       if (requests.every(({ params }) => !params.query)) {
         return Promise.resolve({
@@ -70,41 +75,43 @@ const searchClient = {
           })),
         });
       }
-  
       return algoliaClient.search(requests);
     },
   }
 
-const search = instantsearch({
-  indexName: 'posts',
-  searchClient,
-});
+  const search = instantsearch({
+    indexName: 'posts',
+    searchClient,
+  });
 
-search.addWidgets([
-  instantsearch.widgets.searchBox({
-    container: '#searchbox',
-    placeholder: 'Поиск',
-  }),
+  search.addWidgets([
+    instantsearch.widgets.searchBox({
+      container: '#searchbox',
+      placeholder: 'Поиск',
+    }),
 
-  instantsearch.widgets.hits({
-    container: '#hits',
-    templates: {
-      item: `
-        <div>
-          <h6><a href="{{ url }}">{{#helpers.highlight}}{ "attribute": "title" }{{/helpers.highlight}}</a></h6>
-          <p>{{#helpers.highlight}}{ "attribute": "content" }{{/helpers.highlight}}</p>
-        </div>
-      `,
-    },
-  }),
-  instantsearch.widgets.refinementList({
-    container: '#content-types',
-    attribute: 'get_type_display',
-  }),
-  instantsearch.widgets.refinementList({
-    container: '#status',
-    attribute: 'get_status_display',
-  }),
-]);
+    instantsearch.widgets.hits({
+      container: '#hits',
+      templates: {
+        item: `
+          <div>
+            <h6><a href="{{ url }}">{{#helpers.highlight}}{ "attribute": "title" }{{/helpers.highlight}}</a></h6>
+            <p>{{#helpers.highlight}}{ "attribute": "content" }{{/helpers.highlight}}</p>
+          </div>
+        `,
+      },
+    }),
+    instantsearch.widgets.refinementList({
+      container: '#content-types',
+      attribute: 'get_type_display',
+    }),
+    instantsearch.widgets.refinementList({
+      container: '#status',
+      attribute: 'get_status_display',
+    }),
+  ]);
 
-search.start();
+  search.start();
+})
+
+
