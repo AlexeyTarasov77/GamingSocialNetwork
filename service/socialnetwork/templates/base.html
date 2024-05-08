@@ -55,12 +55,17 @@
 </div>
 {% block body %}{% endblock body %}
 <main>
-  <div class="search-container">
-    <div id="hits"></div>
-    <div id="content-types"></div>
-    <div id="status"></div>
+  <div class="search">
+    {% for index in indices %}
+      <div class="search-container mb-4">
+        <h4>{{index|capfirst}} results</h4>
+          <div id="{{index}}-hits"></div>
+          <div id="{{index}}-faceting-1"></div>
+          <div id="{{index}}-faceting-2"></div>
+          <div id="{{index}}-faceting-3"></div>
+      </div>
+    {% endfor %}
   </div>
-  {% comment %} <div id="search-results"></div> {% endcomment %}
   {% block content %}{% endblock content %}
   <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 50">
       

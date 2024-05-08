@@ -3,6 +3,11 @@ from algoliasearch_django import algolia_engine
 def get_client():
     return algolia_engine.client
 
+def get_list_indices():
+    client = get_client()
+    res = [index["name"] for index in client.list_indices()["items"]]
+    return res
+
 # def get_index(index_name):
 #     return get_client().init_index(index_name)
 

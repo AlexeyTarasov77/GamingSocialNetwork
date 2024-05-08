@@ -21,4 +21,8 @@ class SearchAPICredetials(views.APIView):
         app_id = config("APPLICATION_ID")
         search_api_key = config("SEARCH_ONLY_API_KEY")
         return Response({"app_id": app_id, "api_key": search_api_key}, status=status.HTTP_200_OK)
+    
+# class SearchAPIIndices(views.APIView):
+#     def get(self, request, *args, **kwargs):
+#         return Response({"indices": client.get_list_indices()}, status=status.HTTP_200_OK)
         

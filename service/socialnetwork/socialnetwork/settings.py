@@ -121,6 +121,7 @@ TEMPLATES = [
                 "django.contrib.messages.context_processors.messages",
                 "gameblog.context_processors.menu_links",
                 "gameblog.context_processors.sidebar_links",
+                "gameblog.context_processors.indices",
                 "cart.context_processors.cart",
             ],
         },
