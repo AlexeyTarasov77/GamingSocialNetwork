@@ -5,7 +5,7 @@ from django.db import models
 from django.db.models.signals import post_save
 from django.urls import reverse
 from django.utils.text import slugify
-
+from django.utils.translation import gettext as _
 
 # Create your models here.
 def get_avatar_path(instance, filename):
@@ -40,6 +40,7 @@ class Profile(models.Model):
         null=True, blank=True, verbose_name="Дата рождения"
     )
     time_update = models.DateTimeField(auto_now=True)
+    team = models.ForeignKey("gameteams.Team", verbose_name=_("Команда"), on_delete=models.SET_NULL, null=True, blank=True, related_name="members")
 
     def __str__(self) -> str:
         return f"Профиль пользователя - {self.user}. Слаг - {self.user_slug}"

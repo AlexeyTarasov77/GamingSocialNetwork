@@ -81,7 +81,7 @@ LOCAL_APPS = [
     "events.apps.EventsConfig",
     "gameblog.apps.GameblogConfig",
     "posts.apps.PostsConfig",
-    "searchteam.apps.SearchteamConfig",
+    "gameteams.apps.GameteamsConfig",
     "cart.apps.CartConfig",
     "gameshop.apps.GameshopConfig",
     "actions.apps.ActionsConfig",

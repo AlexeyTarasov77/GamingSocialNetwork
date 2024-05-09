@@ -4,7 +4,7 @@ from django.urls import reverse
 from django.conf import settings
 import os
 
-from .mixins import SaveSlugMixin
+from gameblog.mixins import SaveSlugMixin
 
 
 # Create your models here.
