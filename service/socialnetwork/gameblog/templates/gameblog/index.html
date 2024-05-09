@@ -1,33 +1,34 @@
 {% extends "base.html" %}
 {% load humanize %}
 {% load static %}
+{% load i18n %}
 {% block links %}
 <link rel="stylesheet" href="{% static "gameblog/css/index.css" %}">
 {% endblock links %}
-{% block title %}Главная страница{% endblock title %}
+{% block title %}{% trans "Главная страница" %}{% endblock title %}
 
 {% block content %}
 <div class="container">
     <div class="about">
         <div class="about__column">
             <div class="column__title">
-                <h1>Добро пожаловать на сайт!</h1>
+                <h1>{% trans "Добро пожаловать на сайт!" %}</h1>
             </div>
             <div class="column__subtitle">
                 <h3>Gaming blog</h3>
             </div>
             <div class="center" id="about">
-                <h2>Hi dear gamer</h2>
+                <h2>{% trans "Hi dear gamer" %}</h2>
                 {% if video_url %}
                      <br>
-                     <iframe width="75%" height="500px"       src="{{video_url}}"> 
+                     <iframe width="75%" height="500px"  src="{{video_url}}"> 
                      </iframe>
                 {% endif %}
               </div>
               <div class="actions">
                 <div class="actions__column">
                   <div class="column__title fs-3">
-                    Недавние действия пользователей
+                    {% trans "Недавние действия пользователей" %}
                   </div>
                   {% for action in last_actions %}
                   <div class="column__row">
@@ -41,7 +42,7 @@
               <div class="ads">
                 <div class="ads__row">
                     <div class="row__title">
-                        <h2>Важные обьявления</h2>
+                        <h2>{% trans "Важные обьявления" %}</h2>
                     </div>
                     <div class="row__list">
                         {% for ad in ads %}
@@ -49,38 +50,38 @@
                                 <p class="ad__name">{{ad.title}}</p>
                                 <p class="ad__text">{{add.description}}</p>
                                 {% if ad.attached_file %}
-                                <a href="{{ad.attached_file.url}}">Прикрепленный файл - {{ad.attached_file.filename}}</a>
+                                <a href="{{ad.attached_file.url}}">{% trans "Прикрепленный файл" %} - {{ad.attached_file.filename}}</a>
                                 {% endif %}
                             </div>
                         {% empty %}
                         <p class="list__empty">
-                            Обьявлений пока нет ☹️
+                            {% trans "Обьявлений пока нет" %} ☹️
                         </p>
                         {% endfor %}
                     </div>
                 </div>
             </div>
               <div id="news" class="columns">
-                <h2>NEWS</h2>
+                <h2>{% trans "NEWS" %}</h2>
                 <div class="column side">
-                  <h2>Ad content</h2>
+                  <h2>{% trans "Ad content" %}</h2>
                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit..</p>
                 </div>
                 <div class="column middle">
-                  <h2>News About Gaming</h2>
+                  <h2>{% trans "News About Gaming" %}</h2>
                   <p>
               PUBG Mobile developer Krafton has invested $22.4 million (around Rs 164 crore) in Indian esports and gaming firm Nodwin Gaming. The South Korean game developer and publisher is said to invest in Nodwin Gaming to “maintain some presence in what was once its key overseas market”, according to a TechCrunch report.
               Krafton is the publisher and owner of popular games like PUBG and PUBG Mobile.</p>
                 </div>
                 <div class="column side">
-                  <h2>Promotion content</h2>
+                  <h2>{% trans "Promotion content" %}</h2>
                   <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit..</p>
                 </div>
               </div>
               <hr>
               
               <div class="images">
-                <h1>Любимые игры сообщества</h1>
+                <h1>{% trans "Любимые игры сообщества" %}</h1>
                 <div class="image">
                   <a href="{% url "gameblog:news" game_id=578080 %}"><img src="https://akm-img-a-in.tosshub.com/sites/btmt/images/stories/pubg_game_660_141020121948.jpg"></a>
                   <p class="games">PUBG</p>
@@ -102,7 +103,7 @@
     </div>
     <div class="recommended"> 
         <div class="recommended__title">
-            <h2>Рекомендуемые публикации</h2>
+            <h2>{% trans "Рекомендуемые публикации" %}</h2>
         </div>
 
         <div class="recommended__column">
@@ -124,11 +125,11 @@
                     </div>
                   </div>
                   <div class="card-footer" id="time_create">
-                    <small class="text-body-secondary">Создано - {{rec_post.time_create}}</small>
+                    <small class="text-body-secondary">{% trans "Создано" %} - {{rec_post.time_create}}</small>
                   </div>
                 </div>
                 {% empty %}
-                <p class="no-data">Нет рекомендованных публикаций</p>
+                <p class="no-data">{% trans "Нет рекомендованных публикаций" %}</p>
                 {% endfor %}
             </div>
         </div>

@@ -1,24 +1,25 @@
 {% load mptt_tags %}
 {% load humanize %}
+{% load i18n %}
 
 <p id="comment-url" class="none">{% url "api:posts:like-comment" %}</p>
 <div class="comments-container">
     {% if post.comments %}
-    <h1>Комментарии</h1>
+    <h1>{% trans "Комментарии" %}</h1>
 <style>
     .bi-reply{
         font-size: 1.3em
     }
 </style>
     {% if not user.is_authenticated %}
-    <h3>Хотите добавить комментарий?</h3>
+    <h3>{% trans "Хотите добавить комментарий?" %}</h3>
     <div class="d-flex gap-3">
-        <a class="btn btn-dark" href="{% url "account_login" %}">Войти</a>
-        <a class="btn btn-success" href="{% url "account_signup" %}">Зарегестрироваться</a>
+        <a class="btn btn-dark" href="{% url "account_login" %}">{% trans "Войти" %}</a>
+        <a class="btn btn-success" href="{% url "account_signup" %}">{% trans "Зарегестрироваться" %}</a>
     </div>
     {% else %}
     <div class="comment-form d-flex flex-column justify-content-center align-items-center">
-        <h4>Добавить комментарий</h4>
+        <h4>{% trans "Добавить комментарий" %}</h4>
         <form method="post" action="{% url "api:posts:comment-post" post.pk %}" class="d-flex flex-column g-3" id="commentForm" name="commentForm" data-post-id="{{ post.pk }}">
             {% csrf_token %}
             <div class="mb-3 d-flex flex-column">
@@ -29,7 +30,7 @@
                         </div>
                 {% endfor %}
             </div>
-            <button class="btn btn-dark" type="submit" id="commentSubmit">Добавить комментарий</button>
+            <button class="btn btn-dark" type="submit" id="commentSubmit">{% trans "Добавить комментарий" %}</button>
         </form>
     </div>
     {% endif %}
@@ -44,8 +45,8 @@
                     <div class="comment-box">
                         <div class="comment-head">
                             <h6 class="comment-name fs-5 {% if node.is_root_node or node.get_root.author.username == node.author.username%}by-author{% endif %}"><a href="{{node.author.profile.get_absolute_url}}">{{node.author.username}}</a></h6>
-                            <span style="padding-right: 1em;">{{node.time_create}}</span>{% if node.time_create == node.time_update %}<span>*Изменено {{node.time_update|naturaltime}}</span>{% endif %}
-                            <span class="num-likes ms-4">Понравилось: <i class="num-likes-count">{{node.liked.count}}</i></span>
+                            <span style="padding-right: 1em;">{{node.time_create}}</span>{% if node.time_create == node.time_update %}<span>*{% trans "Изменено" %} {{node.time_update|naturaltime}}</span>{% endif %}
+                            <span class="num-likes ms-4">{% trans "Понравилось" %}: <i class="num-likes-count">{{node.liked.count}}</i></span>
                             <a href="#comentForm" data-comment-id="{{ node.pk }}" data-comment-username="{{ node.author }}" class="btn-reply"><i class="bi bi-reply"></i></a>
                            {% if user in node.liked.all %}<i class="bi bi-heart-fill text-danger comment-like" data-likecomment-id="{{node.pk}}"></i>{% else %}<i class="bi bi-heart comment-like" data-likecomment-id="{{node.pk}}"></i>{% endif %}
                         </div>
@@ -53,8 +54,8 @@
                             {{node.content}}
                         </div>
                         {% if node.get_descendant_count > 1 and node.is_root_node %}
-                        <button class="btn btn-success btn-sm show-more-replies mt-5" data-comment-id="{{ node.pk }}">Показать ответы</button>
-                        <button class="btn btn-danger btn-sm hide-replies mt-5" data-comment-id="{{ node.pk }}" style="display:none;">Скрыть</button>
+                        <button class="btn btn-success btn-sm show-more-replies mt-5" data-comment-id="{{ node.pk }}">{% trans "Показать ответы" %}</button>
+                        <button class="btn btn-danger btn-sm hide-replies mt-5" data-comment-id="{{ node.pk }}" style="display:none;">{% trans "Скрыть" %}</button>
                         {% endif %}
                     </div>
                 </div>
@@ -68,7 +69,7 @@
         {% endrecursetree %}
     </div>
     {% else %}
-    <h1>Комментариев пока нет  <i class="bx bx-chat"></i></h1>
+    <h1>{% trans "Комментариев пока нет" %}  <i class="bx bx-chat"></i></h1>
     {% endif %}
 </div> 
 

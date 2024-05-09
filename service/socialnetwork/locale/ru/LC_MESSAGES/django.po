@@ -1,20 +1,122 @@
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-04 14:18+0000\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2024-05-09 16:04+0000\n"
+"PO-Revision-Date: 2024-05-09 16:13+0000\n"
+"Last-Translator:   <>\n"
 "Language-Team: Russian <ru@li.org>\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
-"n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || "
-"(n%100>=11 && n%100<=14)? 2 : 3);\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);\n"
+"X-Translated-Using: django-rosetta 0.10.0\n"
+
+#: gameblog/templates/gameblog/index.html:8
+#| msgid "Главная"
+msgid "Главная страница"
+msgstr "Главная страница"
+
+#: gameblog/templates/gameblog/index.html:15
+msgid "Добро пожаловать на сайт!"
+msgstr "Добро пожаловать на сайт!"
+
+#: gameblog/templates/gameblog/index.html:21
+msgid "Hi dear gamer"
+msgstr "Приветствуем дорогой геймер"
+
+#: gameblog/templates/gameblog/index.html:31
+msgid "Недавние действия пользователей"
+msgstr "Недавние действия пользователей"
+
+#: gameblog/templates/gameblog/index.html:45
+#| msgid "Дата обновления"
+msgid "Важные обьявления"
+msgstr "Важные обьявления"
+
+#: gameblog/templates/gameblog/index.html:53
+msgid "Прикрепленный файл"
+msgstr "Прикрепленный файл"
+
+#: gameblog/templates/gameblog/index.html:58
+#| msgid "Комментариев пока нет"
+msgid "Обьявлений пока нет"
+msgstr "Обьявлений пока нет"
+
+#: gameblog/templates/gameblog/index.html:65
+msgid "NEWS"
+msgstr "Новости"
+
+#: gameblog/templates/gameblog/index.html:67
+msgid "Ad content"
+msgstr "Обьявление"
+
+#: gameblog/templates/gameblog/index.html:71
+msgid "News About Gaming"
+msgstr "Новости про гейминг"
+
+#: gameblog/templates/gameblog/index.html:77
+msgid "Promotion content"
+msgstr "Реклама"
+
+#: gameblog/templates/gameblog/index.html:84
+msgid "Любимые игры сообщества"
+msgstr "Любимые игры сообщества"
+
+#: gameblog/templates/gameblog/index.html:106
+#| msgid "Дата публикации"
+msgid "Рекомендуемые публикации"
+msgstr "Рекомендуемые публикации"
+
+#: gameblog/templates/gameblog/index.html:128
+#: posts/templates/posts/detail.html:121
+msgid "Создано"
+msgstr "Создано"
+
+#: gameblog/templates/gameblog/index.html:132
+msgid "Нет рекомендованных публикаций"
+msgstr "Нет рекомендованных публикаций"
+
+#: gameblog/utils.py:3
+msgid "Моя лента"
+msgstr "Моя лента"
+
+#: gameblog/utils.py:4
+msgid "Игровые события"
+msgstr "Игровые события"
+
+#: gameblog/utils.py:5
+msgid "Поиск команды"
+msgstr "Поиск команды"
+
+#: gameblog/utils.py:6
+msgid "Магазин 🛒"
+msgstr "Магазин 🛒"
+
+#: gameblog/utils.py:7
+msgid "Настройки ⚙"
+msgstr "Настройки ⚙"
+
+#: gameblog/utils.py:11
+msgid "Главная"
+msgstr "Главная"
+
+#: gameblog/utils.py:13
+msgid "Cooбщения"
+msgstr "Cooбщения"
+
+#: gameblog/utils.py:14
+msgid "Поддержка"
+msgstr "Поддержка"
+
+#: gameblog/utils.py:15
+msgid "Профиль"
+msgstr "Профиль"
+
 #: posts/forms.py:13
-msgid "Email адрес получателя"
+msgid "Email адресс получателя"
 msgstr "Email адрес получателя"
 
 #: posts/forms.py:17
@@ -142,7 +244,7 @@ msgstr "Родительский комментарий"
 msgid "Комментарий"
 msgstr "Комментарий"
 
-#: posts/models.py:135
+#: posts/models.py:135 posts/templates/posts/includes/comment.html:8
 msgid "Комментарии"
 msgstr "Комментарии"
 
@@ -182,7 +284,9 @@ msgstr "Repost"
 msgid "Share"
 msgstr "Share"
 
-#: posts/templates/posts/detail.html:90 posts/templates/posts/list.html:81
+#: posts/templates/posts/detail.html:90
+#: posts/templates/posts/includes/comment.html:48
+#: posts/templates/posts/list.html:81
 msgid "Изменено"
 msgstr "Изменено"
 
@@ -190,9 +294,38 @@ msgstr "Изменено"
 msgid "Вам так же может понравиться"
 msgstr "Вам так же может понравиться"
 
-#: posts/templates/posts/detail.html:121
-msgid "Создано"
-msgstr "Создано"
+#: posts/templates/posts/includes/comment.html:15
+msgid "Хотите добавить комментарий?"
+msgstr "Хотите добавить комментарий?"
+
+#: posts/templates/posts/includes/comment.html:17
+msgid "Войти"
+msgstr "Войти"
+
+#: posts/templates/posts/includes/comment.html:18
+msgid "Зарегестрироваться"
+msgstr "Зарегестрироваться"
+
+#: posts/templates/posts/includes/comment.html:22
+#: posts/templates/posts/includes/comment.html:33
+msgid "Добавить комментарий"
+msgstr "Добавить комментарий"
+
+#: posts/templates/posts/includes/comment.html:49
+msgid "Понравилось"
+msgstr "Понравилось"
+
+#: posts/templates/posts/includes/comment.html:57
+msgid "Показать ответы"
+msgstr "Зарегестрироваться"
+
+#: posts/templates/posts/includes/comment.html:58
+msgid "Скрыть"
+msgstr "Скрыть"
+
+#: posts/templates/posts/includes/comment.html:72
+msgid "Комментариев пока нет"
+msgstr "Комментариев пока нет"
 
 #: posts/templates/posts/list.html:18
 msgid "Все потоки"
@@ -246,14 +379,22 @@ msgstr "Закрыть"
 msgid "Отправить"
 msgstr "Отправить"
 
-#: socialnetwork/settings.py:180
+#: socialnetwork/settings.py:182
 msgid "English"
 msgstr "Английский"
 
-#: socialnetwork/settings.py:181
+#: socialnetwork/settings.py:183
 msgid "Ukrainian"
 msgstr "Украинский"
 
-#: socialnetwork/settings.py:182
+#: socialnetwork/settings.py:184
 msgid "Russian"
 msgstr "Русский"
+
+#: templates/base.html:30
+msgid "Админ панель"
+msgstr "Админ панель"
+
+#: templates/base.html:46
+msgid "Выйти"
+msgstr "Выйти"

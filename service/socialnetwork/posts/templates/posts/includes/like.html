@@ -1,4 +1,4 @@
-{% load static %}
+{% load static %} {% load i18n %}
 <input type="hidden" id="like-url" value="{% url 'api:posts:like-post' %}">
 <div class="like-container">
     {% if request.user in post.liked.all %}

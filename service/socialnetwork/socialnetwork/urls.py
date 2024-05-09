@@ -2,10 +2,13 @@ from django.contrib import admin
 from django.urls import path, include
 from . import settings
 from django.conf.urls.static import static
+from django.conf.urls.i18n import i18n_patterns
+from payment import webhooks
 
-urlpatterns = [
+urlpatterns = i18n_patterns(
     path("admin/", admin.site.urls),
     path('__debug__/', include('debug_toolbar.urls')),
+    path('rosetta/', include('rosetta.urls')),
     path("accounts/", include("allauth.urls")),
     path("", include("gameblog.urls", namespace="gameblog")),
     path("cart/", include("cart.urls", namespace="cart")),
@@ -19,8 +22,12 @@ urlpatterns = [
     path("posts/", include("posts.urls", namespace="posts")),
     # path('searchteam/', include('searchteam.urls', namespace='searchteam')),
     path("users/", include("users.urls", namespace="users")),
+)
+
+urlpatterns += [
+    path('stripe/webhook/', webhooks.stripe_webhook, name='stripe_webhook'),
     path("api/", include("api.urls", namespace="api")),
-]
+    ]
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

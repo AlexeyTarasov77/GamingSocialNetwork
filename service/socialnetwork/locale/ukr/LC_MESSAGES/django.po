@@ -1,15 +1,118 @@
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-04 14:18+0000\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2024-05-09 16:04+0000\n"
+"PO-Revision-Date: 2024-05-09 16:12+0000\n"
+"Last-Translator:   <>\n"
 "Language-Team: Ukrainian <uk@li.org>\n"
 "Language: uk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Translated-Using: django-rosetta 0.10.0\n"
+
+#: gameblog/templates/gameblog/index.html:8
+#| msgid "Главная"
+msgid "Главная страница"
+msgstr "Головна сторiнка"
+
+#: gameblog/templates/gameblog/index.html:15
+msgid "Добро пожаловать на сайт!"
+msgstr "Ласкаво просимо на сайт!"
+
+#: gameblog/templates/gameblog/index.html:21
+msgid "Hi dear gamer"
+msgstr "Привіт, шановний геймер"
+
+#: gameblog/templates/gameblog/index.html:31
+msgid "Недавние действия пользователей"
+msgstr "Нещодавні дії користувачів"
+
+#: gameblog/templates/gameblog/index.html:45
+#| msgid "Дата обновления"
+msgid "Важные обьявления"
+msgstr "Важливi оголошення"
+
+#: gameblog/templates/gameblog/index.html:53
+msgid "Прикрепленный файл"
+msgstr "Прикрiплений файл"
+
+#: gameblog/templates/gameblog/index.html:58
+#| msgid "Комментариев пока нет"
+msgid "Обьявлений пока нет"
+msgstr "Оголошень поки нема"
+
+#: gameblog/templates/gameblog/index.html:65
+msgid "NEWS"
+msgstr "Новини"
+
+#: gameblog/templates/gameblog/index.html:67
+msgid "Ad content"
+msgstr "Оголошення"
+
+#: gameblog/templates/gameblog/index.html:71
+msgid "News About Gaming"
+msgstr "Новини про геймiнг"
+
+#: gameblog/templates/gameblog/index.html:77
+msgid "Promotion content"
+msgstr "Реклама"
+
+#: gameblog/templates/gameblog/index.html:84
+msgid "Любимые игры сообщества"
+msgstr "Улюблені ігри спільноти"
+
+#: gameblog/templates/gameblog/index.html:106
+#| msgid "Дата публикации"
+msgid "Рекомендуемые публикации"
+msgstr "Рекомендованi публiкацii"
+
+#: gameblog/templates/gameblog/index.html:128
+#: posts/templates/posts/detail.html:121
+msgid "Создано"
+msgstr "Створено"
+
+#: gameblog/templates/gameblog/index.html:132
+msgid "Нет рекомендованных публикаций"
+msgstr "Нема рекомендованных публiкацiй"
+
+#: gameblog/utils.py:3
+msgid "Моя лента"
+msgstr "Моя стрічка"
+
+#: gameblog/utils.py:4
+msgid "Игровые события"
+msgstr "Ігрові події"
+
+#: gameblog/utils.py:5
+msgid "Поиск команды"
+msgstr "Пошук команди"
+
+#: gameblog/utils.py:6
+msgid "Магазин 🛒"
+msgstr "Магазин 🛒"
+
+#: gameblog/utils.py:7
+msgid "Настройки ⚙"
+msgstr "Налаштування ⚙"
+
+#: gameblog/utils.py:11
+msgid "Главная"
+msgstr "Головна"
+
+#: gameblog/utils.py:13
+msgid "Cooбщения"
+msgstr "Повідомлення"
+
+#: gameblog/utils.py:14
+msgid "Поддержка"
+msgstr "Підтримка"
+
+#: gameblog/utils.py:15
+msgid "Профиль"
+msgstr "Профіль"
 
 #: posts/forms.py:13
 msgid "Email адресс получателя"
@@ -140,7 +243,7 @@ msgstr "Батьківський коментар"
 msgid "Комментарий"
 msgstr "Коментар"
 
-#: posts/models.py:135
+#: posts/models.py:135 posts/templates/posts/includes/comment.html:8
 msgid "Комментарии"
 msgstr "Коментарі"
 
@@ -180,7 +283,9 @@ msgstr "Репост"
 msgid "Share"
 msgstr "Поділитися"
 
-#: posts/templates/posts/detail.html:90 posts/templates/posts/list.html:81
+#: posts/templates/posts/detail.html:90
+#: posts/templates/posts/includes/comment.html:48
+#: posts/templates/posts/list.html:81
 msgid "Изменено"
 msgstr "Змінено"
 
@@ -188,9 +293,38 @@ msgstr "Змінено"
 msgid "Вам так же может понравиться"
 msgstr "Вам також може сподобатися"
 
-#: posts/templates/posts/detail.html:121
-msgid "Создано"
-msgstr "Створено"
+#: posts/templates/posts/includes/comment.html:15
+msgid "Хотите добавить комментарий?"
+msgstr "Хочете додати коментар?"
+
+#: posts/templates/posts/includes/comment.html:17
+msgid "Войти"
+msgstr "Увiйти"
+
+#: posts/templates/posts/includes/comment.html:18
+msgid "Зарегестрироваться"
+msgstr "Зарееструватись"
+
+#: posts/templates/posts/includes/comment.html:22
+#: posts/templates/posts/includes/comment.html:33
+msgid "Добавить комментарий"
+msgstr "Додати коментар"
+
+#: posts/templates/posts/includes/comment.html:49
+msgid "Понравилось"
+msgstr "Сподобалось"
+
+#: posts/templates/posts/includes/comment.html:57
+msgid "Показать ответы"
+msgstr "Показати вiдповiдi"
+
+#: posts/templates/posts/includes/comment.html:58
+msgid "Скрыть"
+msgstr "Скрити"
+
+#: posts/templates/posts/includes/comment.html:72
+msgid "Комментариев пока нет"
+msgstr "Коментарiв поки нема"
 
 #: posts/templates/posts/list.html:18
 msgid "Все потоки"
@@ -244,14 +378,22 @@ msgstr "Закрити"
 msgid "Отправить"
 msgstr "Відправити"
 
-#: socialnetwork/settings.py:180
+#: socialnetwork/settings.py:182
 msgid "English"
 msgstr "Англійська"
 
-#: socialnetwork/settings.py:181
+#: socialnetwork/settings.py:183
 msgid "Ukrainian"
 msgstr "Українська"
 
-#: socialnetwork/settings.py:182
+#: socialnetwork/settings.py:184
 msgid "Russian"
 msgstr "Російська"
+
+#: templates/base.html:30
+msgid "Админ панель"
+msgstr "Адмiн панель"
+
+#: templates/base.html:46
+msgid "Выйти"
+msgstr "Вийти"
