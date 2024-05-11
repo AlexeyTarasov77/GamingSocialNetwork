@@ -2,7 +2,7 @@ from .utils import menu, sidebar
 from api.search_api.client import get_list_indices
 
 def menu_links(request):
-    return {'headermenu':menu}
+    return {'headermenu': menu}
 
 def sidebar_links(request):
     return {

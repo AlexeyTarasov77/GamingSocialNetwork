@@ -16,7 +16,7 @@ class Ad(models.Model):
     title = models.CharField(_("Заголовок"), max_length = 200, db_index = True)
     description = models.TextField(_("Описание"), blank = True)
     game = models.CharField(_("Игра"), max_length = 100, db_index = True)
-    author = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name=_("Автор"), related_name = 'search_ads')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name=_("Автор"), related_name = 'search_ads')
     team = models.ForeignKey("Team", verbose_name=_("Команда"), on_delete=models.CASCADE)
     type = models.BooleanField(_("Тип обьявления"), choices = TYPE_CHOICES, db_index = True, default=TYPE_CHOICES["SEARCHING"])
     time_create = models.DateTimeField(_("Дата создания"), auto_now_add=True)
@@ -40,6 +40,7 @@ class Team(SaveSlugMixin, models.Model):
     logo = models.ImageField(_("Логотип"), upload_to='photos/gameteams/', blank=True, null=True)
     slug = models.SlugField(_("URL"), max_length = 200, db_index = True, unique=True)
     description = models.TextField(_("Про команду"), blank = True, null=True)
+    rating = models.PositiveIntegerField(_("Рейтинг"), default = 0) # что то вроде репутации команды
     game = models.CharField(_("Игра"), max_length = 50, db_index = True)
     founder = models.OneToOneField(User, verbose_name=_("Основатель"), on_delete=models.SET_NULL, related_name = 'team_founder', null=True)
     leader = models.OneToOneField(User, verbose_name=_("Руководитель"), on_delete=models.CASCADE, related_name = 'team_leader', null=True)

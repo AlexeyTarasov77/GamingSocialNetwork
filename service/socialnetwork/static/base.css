@@ -76,3 +76,11 @@ header {
 .ais-RefinementList-item {
     font-size: 1.25em;
 }
+
+.search {
+    background-color: #ffffff;
+}
+
+.search-container {
+    padding: 1rem;
+}

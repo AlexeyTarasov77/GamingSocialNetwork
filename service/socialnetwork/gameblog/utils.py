@@ -2,7 +2,7 @@ from django.utils.translation import gettext as _
 
 menu = [{'title': _("Моя лента"), 'url_name': 'posts:list-posts', 'id': 'menu-item-1'},
         {'title': _("Игровые события"), 'url_name': '#', 'id': 'menu-item-3'},
-        {'title': _("Поиск команды"), 'url_name': '#', 'id': 'menu-item-4'},
+        {'title': _("Команды"), 'url_name': 'teams:index', 'id': 'menu-item-4'},
         {'title': _("Магазин 🛒"), 'url_name': 'shop:products-list', 'id': 'menu-item-5'},
         {'title': _("Настройки ⚙"), 'url_name': '#', 'id': 'menu-item-6'},
         ]

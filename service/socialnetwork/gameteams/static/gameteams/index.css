@@ -1,0 +1,72 @@
+body{
+    background-color: #710000;
+    background-image: url('https://assets-global.website-files.com/60358955e12a8a2413b99edc/6035aa3bd811e11ae79d2a4d_bg-home-hero-esports-template.jpg');
+    background-position: center center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.buttons .btn-container a:hover {
+    transform: scale(1.05);
+}
+
+.l-navbar {
+    background: #a30000;
+}
+
+.bg-body-tertiary {
+    background: #dc0000 !important;
+}
+
+.navbar-light .navbar-nav .nav-link {
+    color: #fff !important;
+}
+
+.navbar-brand {
+    color: #fff !important;
+}
+
+.main-section {
+    color: #fff;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.main-section .title h1{
+    font-size: 5rem;
+    font-family: 'Akaya Kanadaka';
+    font-weight: bold;
+}
+.main-section .about {
+    padding: 10px 20px;
+    font-size: 1.5rem;
+    font-family: "Ubuntu Sans", sans-serif;
+}
+
+.main-section .about, .title{
+    box-shadow: #dc0000 10px 5px 5px;
+}
+
+.main-section .buttons {
+    display: flex;
+    gap: 50px;
+}
+
+.main-section .buttons a{
+    font-size: 1.5rem;
+    font-family: 'Akaya Kanadaka';
+    padding: 10px 20px;
+    transition: all 0.4s ease;
+}
+
+.main-section .buttons .btn-outline-danger {
+    border: 2.5px solid #fff ;
+}
+
+.main-section .buttons .btn-outline-danger:hover {
+    border: none;
+}

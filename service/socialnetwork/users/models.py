@@ -2,7 +2,7 @@ import os
 
 from django.contrib.auth import get_user_model
 from django.db import models
-from django.db.models.signals import post_save
+from gameblog.mixins import SaveSlugMixin
 from django.urls import reverse
 from django.utils.text import slugify
 from django.utils.translation import gettext as _
@@ -12,7 +12,7 @@ def get_avatar_path(instance, filename):
     return os.path.join("photos", "users", instance.user.username, filename)
 
 
-class Profile(models.Model):
+class Profile(SaveSlugMixin, models.Model):
     user = models.OneToOneField(
         get_user_model(), related_name="profile", on_delete=models.CASCADE
     )
@@ -44,10 +44,13 @@ class Profile(models.Model):
 
     def __str__(self) -> str:
         return f"Профиль пользователя - {self.user}. Слаг - {self.user_slug}"
+    
+    @property
+    def is_leader(self):
+        return self.team.leader == self.user
 
     def save(self, *args, **kwargs):
-        self.user_slug = slugify(self.user.username)
-        super(Profile, self).save(*args, **kwargs)
+        return super().save(*args, slug_field="user_slug", slugify_field="user.username", **kwargs)
 
     def get_profile_image(self):
         return self.image.url if self.image else "/static/users/images/profile.jpeg"
