@@ -1,9 +1,12 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 from django.urls import reverse
+from django.conf import settings
 from django.utils.translation import gettext as _
 from gameblog.mixins import SaveSlugMixin
 from django_countries.fields import CountryField
+from django.core.validators import MaxValueValidator
+from django.utils import timezone
 
 User = get_user_model()
 
@@ -39,13 +42,24 @@ class Ad(models.Model):
 class Team(SaveSlugMixin, models.Model):
     name = models.CharField(_("Имя"), max_length = 200, db_index = True)
     logo = models.ImageField(_("Логотип"), upload_to='photos/gameteams/', blank=True, null=True)
-    slug = models.SlugField(_("URL"), max_length = 200, db_index = True, unique=True)
+    slug = models.SlugField(_("URL"), max_length = 200, db_index = True, unique=True, blank=True)
     description = models.TextField(_("Про команду"), blank = True, null=True)
     country = CountryField(_("Страна"), blank = True, null=True)
-    rating = models.PositiveIntegerField(_("Рейтинг"), default = 0, blank=True) # что то вроде репутации команды
+    rating = models.PositiveIntegerField(_("Рейтинг"), default = 0,
+        blank=True,
+        validators=[MaxValueValidator(10)]) # что то вроде репутации команды
     game = models.CharField(_("Игра"), max_length = 50, db_index = True)
-    founder = models.OneToOneField(User, verbose_name=_("Основатель"), on_delete=models.SET_NULL, related_name = 'team_founder', null=True)
-    leader = models.OneToOneField(User, verbose_name=_("Руководитель"), on_delete=models.CASCADE, related_name = 'team_leader', null=True)
+    time_create = models.DateTimeField(_("Дата создания"), auto_now_add=True)
+    time_update = models.DateTimeField(_("Дата обновления"), auto_now=True)
+    founder = models.OneToOneField(User, verbose_name=_("Основатель"),
+        on_delete=models.SET_NULL,
+        related_name = 'team_founder', null=True)
+    leader = models.OneToOneField(User, verbose_name=_("Руководитель"),
+        on_delete=models.CASCADE,
+        related_name = 'team_leader', null=True)
+    
+    class Meta:
+        ordering = ['-rating']
     
     @property
     def members(self):
@@ -54,8 +68,14 @@ class Team(SaveSlugMixin, models.Model):
     def __str__(self):
         return self.name
     
+    def get_logo(self):
+        if not self.logo:
+            return settings.DEFAULT_IMAGE_URL
+        return self.logo.url
+    
     def get_absolute_url(self):
-        return reverse("model_detail", kwargs={"slug": self.slug})
+        return "#"
+        # return reverse("model_detail", kwargs={"slug": self.slug})
     
     def save(self, *args, **kwargs):
         super().save(*args, slug_field="slug", slugify_field="name", **kwargs)

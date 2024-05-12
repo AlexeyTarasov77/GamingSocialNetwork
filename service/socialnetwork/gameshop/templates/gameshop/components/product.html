@@ -7,7 +7,8 @@
         {% endthumbnail %}
         <div class="caption">
             <h4 class="group inner list-group-item-heading">
-                <a href="{{product.get_absolute_url}}">{{product.title|capfirst}}</a> {{product.image}}</h4>
+                <a href="{{product.get_absolute_url}}">{{product.title|capfirst}}</a>
+            </h4>
             <h5 class="group inner list-group-item-text">Категория: <a href="{% url "shop:category-list" product.category.slug %}">{{product.get_category}}</a></h5>
             <p class="group inner list-group-item-text">
                 {{product.description|truncatewords:"25"}}</p>

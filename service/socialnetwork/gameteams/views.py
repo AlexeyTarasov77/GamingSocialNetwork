@@ -1,12 +1,18 @@
 from django.shortcuts import redirect, render
 from django.views import generic
-from . import forms
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from . import forms
+from .models import Ad, Team
 
 # Create your views here.
 def index_view(request):
     return render(request, "gameteams/index.html")
+
+class TeamListView(generic.ListView):
+    template_name = "gameteams/team_list.html"
+    queryset = Team.objects.only("name", "slug", "rating", "logo", "game", "country")
+    context_object_name = "teams"
 
 class AdCreateView(generic.CreateView, LoginRequiredMixin):
     template_name ="gameteams/ad_create.html"

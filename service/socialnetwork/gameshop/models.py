@@ -67,7 +67,7 @@ class Product(SaveSlugMixin, models.Model):
     
     def get_image(self):
         if not self.image:
-            return os.path.join(settings.MEDIA_ROOT, 'photos/default.jpeg')
+            return settings.DEFAULT_IMAGE_URL 
         return self.image.url
     
     def _category(self):

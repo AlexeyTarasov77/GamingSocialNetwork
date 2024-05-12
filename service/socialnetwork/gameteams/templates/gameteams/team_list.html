@@ -1,0 +1,33 @@
+{% extends "gameteams/base.html" %}
+{% load static %}
+{% block gameteams_links %}
+<link rel="stylesheet" href="{% static "gameteams/css/team_list.css" %}">
+{% endblock gameteams_links %}
+
+{% block title %}Список команд{% endblock title %}
+
+{% block content %}
+<div class="teams-list height-100 d-flex flex-column text-light" style="gap: 1rem">
+    {% for team in teams %}
+    <div class="team d-flex p-4 justify-content-between align-items-center" >
+        <div class="team-logo me-5">
+            <a href="{{team.get_absolute_url}}">
+                <span class="team-country-flag">
+                    <img src="{{team.country.flag}}" alt="" width="25" height="25">
+                </span>
+                <img src="{{team.get_logo}}" alt="" width="70" height="70">
+            </a>
+        </div>
+        <div class="team-name">
+            <h4><a href="{{team.get_absolute_url}}" class="text-light">{{team.name}}</a></h4>
+        </div>
+        <div class="team-game">
+            <h4>{{team.game|upper}}</h4>
+        </div>
+        <div class="team-rating">
+            {{team.rating}}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock content %}
