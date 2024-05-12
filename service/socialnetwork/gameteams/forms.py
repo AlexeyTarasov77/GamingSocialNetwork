@@ -13,9 +13,15 @@ class AdCreateForm(forms.ModelForm):
         model = Ad
         fields = ["title", "description", "game", "photo", "type"]
         
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop("user")
+        super().__init__(*args, **kwargs)
+        self.user = user
+        
     def clean(self):
-        cleaned_data = super().clean()
-        type = cleaned_data["type"]
-        profile = cleaned_data["user"].profile
-        if type == Ad.TYPE_CHOICES["RECRUITING"] and not profile.is_leader: 
+        cd = super().clean()
+        print(cd)
+        type = cd["type"]
+        profile = self.user.profile
+        if type == "RECRUITING" and not profile.is_leader: 
             raise forms.ValidationError("Для создания рекрутингового объявления необходимо быть лидером команды, но вы им не являетесь.")

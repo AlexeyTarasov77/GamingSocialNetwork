@@ -1,0 +1,23 @@
+body{
+    background-color: #710000;
+    background-image: url('https://assets-global.website-files.com/60358955e12a8a2413b99edc/6035aa3bd811e11ae79d2a4d_bg-home-hero-esports-template.jpg');
+    background-position: center center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.l-navbar {
+    background: #a30000;
+}
+
+.bg-body-tertiary {
+    background: #dc0000 !important;
+}
+
+.navbar-light .navbar-nav .nav-link {
+    color: #fff !important;
+}
+
+.navbar-brand {
+    color: #fff !important;
+}

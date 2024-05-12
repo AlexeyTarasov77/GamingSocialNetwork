@@ -47,7 +47,9 @@ class Profile(SaveSlugMixin, models.Model):
     
     @property
     def is_leader(self):
-        return self.team.leader == self.user
+        if self.team:
+            return self.team.leader == self.user
+        return False
 
     def save(self, *args, **kwargs):
         return super().save(*args, slug_field="user_slug", slugify_field="user.username", **kwargs)

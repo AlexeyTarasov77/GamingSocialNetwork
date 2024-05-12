@@ -47,7 +47,7 @@ class ProfileView(LoginRequiredMixin, generic.DetailView):
             if profile.requests.filter(from_user=self.request.user).exists()
             else False
         )
-        context["is_online"] = (int(r.get(f"user:{profile.user.id}:status")) > 0)
+        context["is_online"] = (int(r.get(f"user:{profile.user.id}:status") or 0) > 0)
 
         return context
 

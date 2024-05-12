@@ -1,9 +1,9 @@
 {% extends "gameteams/base.html" %}
 {% load i18n %} {% load static %}
 
-{% block links %}
-<link rel="stylesheet" href="{% static "gameteams/index.css" %}">
-{% endblock links %}
+{% block gameteams_links %}
+<link rel="stylesheet" href="{% static "gameteams/css/index.css" %}">
+{% endblock gameteams_links %}
 
 {% block title %}{% trans "Главная страница" %}{% endblock title %}
 
@@ -19,7 +19,7 @@
         </div>
         <div class="buttons my-4">
             <div class="btn-container">
-                <a href="#" class="btn btn-danger text-light">{% trans "Создать команду" %}</a>
+                <a href="{% url "teams:team_create" %}" class="btn btn-danger text-light">{% trans "Создать команду" %}</a>
             </div>
             <div class="btn-container">
                 <a href="#" class="btn btn-outline-danger text-light">{% trans "Cмотреть обьявления" %}</a>
