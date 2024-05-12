@@ -3,6 +3,7 @@ from django.contrib.auth import get_user_model
 from django.urls import reverse
 from django.utils.translation import gettext as _
 from gameblog.mixins import SaveSlugMixin
+from django_countries.fields import CountryField
 
 User = get_user_model()
 
@@ -40,6 +41,7 @@ class Team(SaveSlugMixin, models.Model):
     logo = models.ImageField(_("Логотип"), upload_to='photos/gameteams/', blank=True, null=True)
     slug = models.SlugField(_("URL"), max_length = 200, db_index = True, unique=True)
     description = models.TextField(_("Про команду"), blank = True, null=True)
+    country = CountryField(_("Страна"), blank = True, null=True)
     rating = models.PositiveIntegerField(_("Рейтинг"), default = 0, blank=True) # что то вроде репутации команды
     game = models.CharField(_("Игра"), max_length = 50, db_index = True)
     founder = models.OneToOneField(User, verbose_name=_("Основатель"), on_delete=models.SET_NULL, related_name = 'team_founder', null=True)

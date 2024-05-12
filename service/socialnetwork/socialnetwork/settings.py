@@ -69,6 +69,7 @@ THIRD_PARTY_APPS = [
     "channels",
     "django_celery_results",
     "django_celery_beat",
+    "django_countries",
     "sorl.thumbnail",
     "debug_toolbar",
     "algoliasearch_django",

@@ -42,6 +42,7 @@ django-timezone-field==6.1.0
 django-widget-tweaks==1.5.0
 djangorestframework==3.14.0
 django-rosetta==0.10.0
+django-countries==7.6.1
 fonttools==4.51.0
 html5lib==1.1
 hyperlink==21.0.0

@@ -5,7 +5,7 @@ from .models import Team, Ad
 class TeamCreateForm(forms.ModelForm):
     class Meta:
         model = Team
-        fields = ["name", "description", "logo", "game"]
+        fields = ["name", "description", "logo", "game", "country"]
         
         
 class AdCreateForm(forms.ModelForm):
