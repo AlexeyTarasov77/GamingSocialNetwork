@@ -25,15 +25,7 @@ class SaveSlugMixin:
             if not slug:
                 new_slug = slugify(slugify_value)
                 setattr(self, slug_field, new_slug)
-                while self.__class__.objects.filter(slug_field__iexact=new_slug).exists():
-                    setattr(
-                        self,
-                        slug_field,
-                        new_slug
-                        + str(
-                            random.randint(
-                                0, (self.__class__.objects.count() + 1) * 100
-                            )
-                        ),
-                    )
+                while self.__class__.objects.filter(**{slug_field + '__iexact': new_slug}).exists():
+                    new_slug += str(random.randint(0, (self.__class__.objects.count() + 1) * 100))
+                    setattr(self, slug_field, new_slug)
         super().save(*args, **kwargs)
