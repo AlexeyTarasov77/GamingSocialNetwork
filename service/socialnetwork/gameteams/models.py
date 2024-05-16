@@ -14,7 +14,7 @@ User = get_user_model()
 class Ad(models.Model):
     TYPE_CHOICES = {"SEARCHING": "Поиск команды", "RECRUITING": "Набор в команду"}
     title = models.CharField(_("Заголовок"), max_length=200, db_index=True)
-    description = models.TextField(_("Описание"), blank=True)
+    content = models.TextField(_("Содержимое"), blank=True)
     game = models.CharField(_("Игра"), max_length=100, db_index=True)
     user = models.ForeignKey(
         User,

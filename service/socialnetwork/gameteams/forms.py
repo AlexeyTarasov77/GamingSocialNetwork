@@ -11,7 +11,7 @@ class TeamCreateForm(forms.ModelForm):
 class AdCreateForm(forms.ModelForm):
     class Meta:
         model = Ad
-        fields = ["title", "description", "game", "photo", "type"]
+        fields = ["title", "content", "game", "photo", "type"]
         
     def __init__(self, *args, **kwargs):
         user = kwargs.pop("user")

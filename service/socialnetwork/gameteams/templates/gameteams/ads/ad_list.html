@@ -1,7 +1,54 @@
 {% extends "gameteams/base.html" %}
 
 {% block content %}
-<div class="h-screen">
-
+<div class="flex px-20 py-5 gap-14">
+    <div class="p-2.5 min-w-72 flex flex-col gap-1">
+        <p class="text-2xl">
+            <a href="{{ request.path }}" 
+              class="
+              {% if not request.GET.type %}text-slate-400{% else %}text-white{% endif %}
+              ">
+                Все
+            </a>
+        </p>
+        <p class="text-2xl">
+            <a href="{{ request.path }}?type={{ search_type }}" 
+              class="
+              {% if request.GET.type == search_type %}text-slate-400{% else %}text-white{% endif %}
+              ">
+                Поиск команды
+            </a>
+        </p>
+        <p class="text-2xl">
+            <a href="{{ request.path }}?type={{ recruitment_type }}" 
+              class="
+              {% if request.GET.type == recruitment_type %}text-slate-400{% else %}text-white{% endif %}
+              ">
+                Набор в команду
+            </a>
+        </p>
+    </div>
+    
+    <div class="grid grid-cols-3 gap-5">
+        {% for ad in ads %}
+            <div class="flex flex-col gap-2.5">
+                <div class="text-3xl text-white">
+                    {{ad.title}}
+                </div>
+                <div class="text-slate-500 text-lg">
+                    {{ad.content}}
+                </div>
+                <div>
+                    <a
+                     href="#"
+                     class="border-2 border-orange-600 text-orange-600 text-xl rounded-lg 
+                     p-2.5 max-w-40 max-h-10 flex items-center justify-center transition-colors
+                     hover:bg-orange-600 hover:text-white">
+                        Подробнее
+                    </a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
 </div>
 {% endblock content %}

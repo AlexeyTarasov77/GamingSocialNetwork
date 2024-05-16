@@ -1,10 +1,12 @@
-body{
+body {
     background-color: #710000;
     background-image: url('https://assets-global.website-files.com/60358955e12a8a2413b99edc/6035aa3bd811e11ae79d2a4d_bg-home-hero-esports-template.jpg');
     background-position: center center;
     background-size: cover;
     background-repeat: no-repeat;
+    background-attachment: fixed; /* Зафиксируем фон */
 }
+
 
 .l-navbar {
     background: #a30000;
