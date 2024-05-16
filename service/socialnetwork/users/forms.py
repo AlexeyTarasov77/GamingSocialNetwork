@@ -1,13 +1,15 @@
 from django import forms
-from .models import Profile
 from django.contrib.auth import get_user_model
+
+from .models import Profile
+
 
 class ProfileUpdateForm(forms.ModelForm):
     username = forms.CharField(max_length=50, required=False, label="Имя пользователя", widget=forms.TextInput(attrs={'class': 'form-control'})) # поле для изменения username для связанного юзера
     email = forms.EmailField(label="Электронная почта", widget=forms.EmailInput(attrs={'class': 'form-control'}))
     class Meta:
         model = Profile
-        fields = ['image', 'bg_image', 'bio', 'date_of_birth']
+        fields = ['image', 'bg_image', 'bio', 'date_of_birth', 'country']
         widgets = {
             'image': forms.FileInput(attrs={'class': 'form-control'}),
             'bg_image': forms.FileInput(attrs={'class': 'form-control'}),
@@ -16,7 +18,7 @@ class ProfileUpdateForm(forms.ModelForm):
         }
     def __init__(self, *args, **kwargs):
             super().__init__(*args, **kwargs)
-            self.order_fields(['username', 'email', 'bio', 'image', 'bg_image', 'date_of_birth'])
+            self.order_fields(['username', 'email', 'bio', 'image', 'bg_image', 'country', 'date_of_birth'])
             self.fields['username'].initial = self.instance.user.username  
             self.fields['email'].initial = self.instance.user.email
 

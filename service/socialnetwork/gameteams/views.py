@@ -10,12 +10,12 @@ def index_view(request):
     return render(request, "gameteams/index.html")
 
 class TeamListView(generic.ListView):
-    template_name = "gameteams/team_list.html"
+    template_name = "gameteams/teams/team_list.html"
     queryset = Team.objects.only("name", "slug", "rating", "logo", "game", "country")
     context_object_name = "teams"
 
 class AdCreateView(generic.CreateView, LoginRequiredMixin):
-    template_name ="gameteams/ad_create.html"
+    template_name ="gameteams/ads/ad_create.html"
     form_class = forms.AdCreateForm
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
@@ -35,7 +35,7 @@ class AdCreateView(generic.CreateView, LoginRequiredMixin):
         return redirect(ad.get_absolute_url())
     
 class TeamCreateView(generic.CreateView):
-    template_name = "gameteams/team_create.html"
+    template_name = "gameteams/teams/team_create.html"
     form_class = forms.TeamCreateForm
     
     def form_valid(self, form):
@@ -45,6 +45,12 @@ class TeamCreateView(generic.CreateView):
         team.save()
         messages.success(self.request, "Команда успешно создана")
         return redirect(team.get_absolute_url())
+    
+class TeamDetailView(generic.DetailView):
+    template_name = "gameteams/teams/team_detail.html"
+    queryset = Team.objects.prefetch_related("members")
+    context_object_name = "team"
+    
         
         
         
