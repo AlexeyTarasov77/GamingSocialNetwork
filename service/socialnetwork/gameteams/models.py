@@ -44,7 +44,7 @@ class Ad(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return reverse("_detail", kwargs={"pk": self.pk})
+        return reverse("teams:ad_detail", kwargs={"pk": self.pk})
 
 
 class Team(SaveSlugMixin, models.Model):

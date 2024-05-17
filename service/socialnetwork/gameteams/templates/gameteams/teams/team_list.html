@@ -24,10 +24,14 @@
         <div class="team-game">
             <h4>{{team.game|upper}}</h4>
         </div>
-        <div class="team-rating">
-            {{team.rating}}
+        <div class="team-rating flex">
+            <span class="hidden" id="num-rating">{{team.rating}}</span>
         </div>
     </div>
     {% endfor %}
 </div>
 {% endblock content %}
+
+{% block js %}
+<script src="{% static "gameteams/js/teams_rating.js" %}"></script>
+{% endblock js %}

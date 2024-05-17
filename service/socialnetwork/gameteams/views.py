@@ -58,6 +58,11 @@ class AdListView(generic.ListView):
         return context
     
     
+class AdDetailView(generic.DetailView):
+    template_name = "gameteams/ads/ad_detail.html"
+    queryset = Ad.objects.select_related("user")
+    
+    
 class AdCreateView(LoginRequiredMixin, generic.CreateView):
     template_name ="gameteams/ads/ad_create.html"
     form_class = forms.AdCreateForm
