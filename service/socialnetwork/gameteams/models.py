@@ -98,3 +98,15 @@ class Team(SaveSlugMixin, models.Model):
 
     def save(self, *args, **kwargs):
         super().save(*args, slug_field="slug", slugify_value=self.name, **kwargs)
+
+
+class TeamJoinRequest(models.Model):
+    to_team = models.ForeignKey("Team", verbose_name=_("Команда"), on_delete=models.CASCADE)
+    from_user = models.ForeignKey(
+        User, verbose_name=_("Пользователь"), on_delete=models.CASCADE
+    )
+    time_create = models.DateTimeField(_("Дата создания"), auto_now_add=True)
+    time_update = models.DateTimeField(_("Дата обновления"), auto_now=True)
+    
+    def __str__(self):
+        return f"{self.from_user} wants to join {self.to_team}"
