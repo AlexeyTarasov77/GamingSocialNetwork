@@ -1,7 +1,5 @@
 from typing import Any
 
-import redis
-from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
@@ -15,16 +13,10 @@ from django.core.cache import cache
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views import generic
-from .mixins import ListPostsQuerySetMixin, posts_feed_version_cache_key
+from .mixins import ListPostsQuerySetMixin, posts_feed_version_cache_key, ObjectViewsMixin
 from . import forms, tasks
 from .models import Post
-
-r = redis.Redis(
-    host=settings.REDIS_HOST,
-    port=settings.REDIS_PORT,
-    db=settings.REDIS_DB,
-    decode_responses=True,
-)
+from gameblog.redis_connection import r
 
 User = get_user_model()
 
@@ -37,9 +29,10 @@ class ListPosts(ListPostsQuerySetMixin, generic.ListView):
     
 
 
-class DetailPost(generic.DetailView):
+class DetailPost(ObjectViewsMixin, generic.DetailView):
     template_name = "posts/detail.html"
     context_object_name = "post"
+    redis_key_prefix = "posts"
 
     def get_object(self, queryset: QuerySet[Any] | None = ...) -> Model:
         return get_object_or_404(
@@ -59,16 +52,6 @@ class DetailPost(generic.DetailView):
         )
         return similar_posts
 
-    def __incr_views(self):
-        post = self.object
-        user_id = str(self.request.user.id)
-        viewed_users_ids = r.smembers("post:%s:viewers" % post.id) or []
-        if not user_id in viewed_users_ids:
-            r.sadd("post:%s:viewers" % post.id, user_id)
-            total_views = r.incr("post:%s:views" % post.id)
-        else:
-            total_views = r.get("post:%s:views" % post.id)
-        return total_views
 
     def get_context_data(self, **kwargs) -> dict[str, Any]:
         post = self.get_object()
@@ -77,8 +60,6 @@ class DetailPost(generic.DetailView):
         context["form"] = forms.CommentForm
         context["filtered_comments"] = post.comments.filter(is_active=True)
         context["recommended_posts"] = self.__get_simillar_posts()
-        total_views = self.__incr_views()
-        context["views_count"] = total_views
         return context
 
 

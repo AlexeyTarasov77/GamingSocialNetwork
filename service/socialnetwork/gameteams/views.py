@@ -6,6 +6,7 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from . import forms
 from .models import Ad, Team
+from posts.mixins import ObjectViewsMixin
 
 # Create your views here.
 def index_view(request):
@@ -58,9 +59,10 @@ class AdListView(generic.ListView):
         return context
     
     
-class AdDetailView(generic.DetailView):
+class AdDetailView(ObjectViewsMixin, generic.DetailView):
     template_name = "gameteams/ads/ad_detail.html"
     queryset = Ad.objects.select_related("user")
+    redis_key_prefix = "ads"
     
     
 class AdCreateView(LoginRequiredMixin, generic.CreateView):

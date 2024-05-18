@@ -1,3 +1,4 @@
+from typing import Any
 from django.db.models import Case, Count, Q, Value, When
 from .models import Post
 from django.contrib.auth import get_user_model
@@ -5,6 +6,7 @@ from django.db import models
 from django.shortcuts import get_object_or_404
 from django.core.cache import cache
 from taggit.models import Tag
+from gameblog.redis_connection import r
 
 posts_feed_version_cache_key = "posts_feed_version"
 
@@ -13,7 +15,6 @@ User = get_user_model()
 class ListPostsQuerySetMixin:
     def __suggest_posts_for_user(self, user, queryset):
         profile = user.profile
-        from .views import r
         for post in queryset:
             if r.sismember("post:%s:viewers" % post.id, user.id): 
                 queryset = queryset.exclude(id=post.id)
@@ -60,3 +61,21 @@ class ListPostsQuerySetMixin:
         queryset = queryset.prefetch_related("tags", "liked", "saved", "comments")
         cache.set(cache_key, queryset, 360)
         return queryset
+    
+
+class ObjectViewsMixin:
+    redis_key_prefix = None
+    def get_or_update_object_views(self, viewers_key, views_key):
+        user_id = str(self.request.user.id)
+        viewed_users_ids = r.smembers(viewers_key) or []
+        if not user_id in viewed_users_ids:
+            r.sadd(viewers_key, user_id)
+            total_views = r.incr(views_key)
+        else:
+            total_views = r.get(views_key)
+        return total_views
+    
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        context["views_count"] = self.get_or_update_object_views(f"{self.redis_key_prefix}:{self.object.id}:viewers", f"{self.redis_key_prefix}:{self.object.id}:views")
+        return context
