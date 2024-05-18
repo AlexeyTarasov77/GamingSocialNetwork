@@ -1,6 +1,6 @@
 {% extends "gameteams/base.html" %}
 
-{% load humanize %}
+{% load humanize %} {% load static %}
 
 {% block content %}
 <style>
@@ -61,26 +61,59 @@
         </div>
     </div>
     <div class="p-2.5 flex flex-col gap-2.5 bg-red-700 w-80 max-h-80">
+        {% if ad.type == "SEARCHING" %}
         <div class="text-red-400 font-semibold text-lg">Пользователь</div>
         <div class="p-2.5 flex flex-col gap-2.5">
+            {% with user=ad.user %}
             <div class="flex gap-2.5">
-                <div><img class="rounded-full" src="{{ad.user.profile.get_profile_image}}" alt="Фото профиля" width="50" height="50"></div>
-                <p class="font-semibold font-mono text-lg text-slate-400">{{ ad.user.get_full_name|default:ad.user.username }}</p>
+                <div><img class="rounded-full" src="{{user.profile.get_profile_image}}" alt="Фото профиля" width="50" height="50"></div>
+                <p class="font-semibold font-mono text-lg text-slate-400">{{ user.get_full_name|default:user.username }}</p>
             </div>
             <div class="text-lg font-serif text-slate-400">
-                На платформе с {{ad.user.date_joined|naturalday}} <br>
+                На платформе с {{user.date_joined|naturalday}} <br>
                 Онлайн 2 часа назад
             </div>
             <div class="pt-4">
                 <a
-                 href="{{ad.get_absolute_url}}"
+                 href="{{user.profile.get_absolute_url}}"
                  class="border-4 border-red-400 text-red-400 text-xl rounded-lg 
-                 p-2.5 max-w-40 max-h-10 flex items-center justify-center transition-colors font-semibold
+                 p-2.5 flex items-center justify-center transition-colors font-semibold
                  hover:bg-red-400 hover:text-white">
-                    Связаться
+                    Связатся
                 </a>
             </div>
+            {% endwith %}
         </div>
+        {% else %}
+        <div class="text-red-400 font-semibold text-lg">Команда</div>
+        <div class="p-2.5 flex flex-col gap-2.5">
+            {% with team=ad.team %}
+            <div class="flex gap-2.5">
+                <div><img class="rounded-full" src="{{team.get_logo}}" alt="Фото команды" width="50" height="50"></div>
+                <p class="font-semibold font-mono text-lg text-slate-400">{{ team.name }}</p>
+            </div>
+            <div class="text-lg font-serif text-slate-400">
+                Команда создана {{team.time_create|naturalday}}
+                <div class="team-rating flex">
+                    <span class="hidden" id="num-rating">{{team.rating}}</span>
+                </div>
+            </div>
+            <div class="pt-4">
+                <a
+                 href="{% url "teams:team_join" team.slug %}"
+                 class="border-4 border-red-400 text-red-400 text-xl rounded-lg 
+                 p-2.5 flex items-center justify-center transition-colors font-semibold
+                 hover:bg-red-400 hover:text-white">
+                    Отправить заявку
+                </a>
+            </div>
+            {% endwith %}
+        </div>
+        {% endif %}
     </div>
 </div>
 {% endblock content %}
+
+{% block js %}
+<script src="{% static "gameteams/js/teams_rating.js" %}"></script>
+{% endblock js %}

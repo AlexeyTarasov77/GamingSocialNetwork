@@ -2,11 +2,13 @@ from typing import Any
 from django.db.models.query import QuerySet
 from django.shortcuts import redirect, render
 from django.views import generic
+from django.http import JsonResponse
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from . import forms
 from .models import Ad, Team
 from posts.mixins import ObjectViewsMixin
+from .utils import TeamHandle
 
 # Create your views here.
 def index_view(request):
@@ -34,6 +36,17 @@ class TeamDetailView(generic.DetailView):
     template_name = "gameteams/teams/team_detail.html"
     queryset = Team.objects.prefetch_related("members")
     context_object_name = "team"
+    
+def team_join_view(request, slug):
+    print("TEAM JOIN VIEW")
+    team = Team.objects.get(slug=slug)
+    user = request.user
+    if user.profile.team:
+        messages.error(request, "Вы уже состоите в команде")
+        return JsonResponse({"msg": "Вы уже состоите в команде"}, status=400)
+    handle = TeamHandle(team)
+    handle.create_join_request(user)
+    return JsonResponse({"msg": "Заявка на вступление отправлена"}, status=200)
     
 class AdListView(generic.ListView):
     paginate_by = 9
