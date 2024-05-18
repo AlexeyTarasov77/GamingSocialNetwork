@@ -7,54 +7,54 @@ document.addEventListener('DOMContentLoaded', function () {
     
   showNotification()
 
-  const navbarLinks = document.querySelectorAll('.navbar-light .navbar-nav .nav-link')
-  const sidebarLinks = document.querySelectorAll('a.nav_link');
+  // const navbarLinks = document.querySelectorAll('.navbar-light .navbar-nav .nav-link')
+  // const sidebarLinks = document.querySelectorAll('a.nav_link');
 
   if (userID) {
     const socket = new WebSocket(`ws://${window.location.host}/ws/status/`)
   }
 
-  setClick()
+//   setClick()
 
-  function initial() {
-    localStorage.clear();
-    navbarLinks.forEach(nl=> {nl.classList.remove('nav-active')});
-    sidebarLinks.forEach(sl=> {sl.classList.remove('active')})
-  }
+//   function initial() {
+//     localStorage.clear();
+//     navbarLinks.forEach(nl=> {nl.classList.remove('nav-active')});
+//     sidebarLinks.forEach(sl=> {sl.classList.remove('active')})
+//   }
 
-  function setLinkActive(e, linkType) {
-    initial();
-    item = e.target
-    if (linkType === 'navbarActive') {
-      item.classList.add('nav-active');
-      localStorage.setItem(linkType, item.id)
-    } else {
-      item = item.parentElement
-      item.classList.add('active');
-      localStorage.setItem(linkType, item.id)
-    }
-  }
+//   function setLinkActive(e, linkType) {
+//     initial();
+//     item = e.target
+//     if (linkType === 'navbarActive') {
+//       item.classList.add('nav-active');
+//       localStorage.setItem(linkType, item.id)
+//     } else {
+//       item = item.parentElement
+//       item.classList.add('active');
+//       localStorage.setItem(linkType, item.id)
+//     }
+//   }
 
-  function setClick() {
-    navbarLinks.forEach(nl=> {nl.onclick = (event) => setLinkActive(event, 'navbarActive')});
-    sidebarLinks.forEach(sl=> {sl.onclick = (event) => setLinkActive(event, 'sidebarActive')})
-  }
+//   function setClick() {
+//     navbarLinks.forEach(nl=> {nl.onclick = (event) => setLinkActive(event, 'navbarActive')});
+//     sidebarLinks.forEach(sl=> {sl.onclick = (event) => setLinkActive(event, 'sidebarActive')})
+//   }
 
-  function setInitialActive(links, key, className) {
-    links.forEach(l => {
-      if (l.id === localStorage.getItem(key)) {
-        l.classList.add(className)
-      }
-    })
-  }
+//   function setInitialActive(links, key, className) {
+//     links.forEach(l => {
+//       if (l.id === localStorage.getItem(key)) {
+//         l.classList.add(className)
+//       }
+//     })
+//   }
 
-  window.onload = function () {
-    if (localStorage.getItem('navbarActive')) {
-      setInitialActive(navbarLinks, 'navbarActive', 'nav-active')
-    } else {
-      setInitialActive(sidebarLinks, 'sidebarActive', 'active')
-    }
-  }
+//   window.onload = function () {
+//     if (localStorage.getItem('navbarActive')) {
+//       setInitialActive(navbarLinks, 'navbarActive', 'nav-active')
+//     } else {
+//       setInitialActive(sidebarLinks, 'sidebarActive', 'active')
+//     }
+//   }
 
 });
 

@@ -25,7 +25,12 @@
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           {% for m in headermenu %}
           <li class="nav-item">
-            <a class="nav-link" id="{{forloop.counter}}" href="{% if m.url_name != '#' %}{% url m.url_name %}{% else %}#{% endif %}">{% trans m.title %}</a>
+            {% url m.url_name as url %}
+            <a class="nav-link {% if request.path == url %} nav-active {% endif %}" 
+              id="{{forloop.counter}}" 
+              href="{% if m.url_name != '#' %} {{url}} {% else %} # {% endif %}">
+              {% trans m.title %}
+            </a>
           </li>
           {% endfor %}
           {% if user.is_superuser %}<li class="nav-item"><a class="nav-link text-success" href="/admin/">{% trans "Админ панель" %}</a></li>{% endif %}
@@ -40,7 +45,17 @@
       <div> <a href="#" class="nav_logo"> <i class='bx bx-layer nav_logo-icon'></i> <span class="nav_logo-name">BBBootstrap</span> </a>
           <div class="nav_list"> 
             {% for sld in sidebar_links_default %}
-              <a href="{% if sld.url_name != '#' %}{% url sld.url_name %}{% else %}#{% endif %}" class="nav_link" id="{{forloop.counter}}" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="{% trans sld.tooltip %}"> <i class="{{sld.icon}} nav_icon"></i></a> 
+              {% url sld.url_name as url %}
+              <a 
+                href="{% if sld.url_name != '#' %} {{url}} {% else %} # {% endif %}" 
+                class="nav_link {% if request.path == url %} sidebar_active {% endif %}" 
+                id="{{forloop.counter}}" 
+                data-bs-toggle="tooltip" 
+                data-bs-placement="right" 
+                data-bs-title="{% trans sld.tooltip %}"> 
+
+                <i class="{{sld.icon}} nav_icon"></i>
+              </a> 
             {% endfor %}
             {% block sidebar_links_extra %}{% endblock sidebar_links_extra %}
           </div>
