@@ -12,4 +12,5 @@ urlpatterns = [
     path('ads/create/', views.AdCreateView.as_view(), name='ad_create'),
     path('ads/list/', views.AdListView.as_view(), name='ad_list'),
     path('ads/<int:pk>/', views.AdDetailView.as_view(), name='ad_detail'),
+    path('ads/<int:pk>/bookmark/', views.ad_bookmark_view, name='ad_bookmark'),
 ]

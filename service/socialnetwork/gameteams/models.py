@@ -15,6 +15,7 @@ class Ad(models.Model):
     TYPE_CHOICES = {"SEARCHING": "Поиск команды", "RECRUITING": "Набор в команду"}
     title = models.CharField(_("Заголовок"), max_length=200, db_index=True)
     content = models.TextField(_("Содержимое"), blank=True)
+    favorites = models.ManyToManyField(User, related_name="favorite_ads", blank=True, verbose_name=_("Избранное"))
     game = models.CharField(_("Игра"), max_length=100, db_index=True)
     user = models.ForeignKey(
         User,

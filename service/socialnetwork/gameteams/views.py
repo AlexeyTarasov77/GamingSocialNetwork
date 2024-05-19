@@ -96,6 +96,16 @@ class AdCreateView(LoginRequiredMixin, generic.CreateView):
         messages.success(self.request, "Объявление успешно создано")
         return redirect(ad.get_absolute_url())
     
-        
+    
+def ad_bookmark_view(request, pk):
+    ad = Ad.objects.get(pk=pk)
+    user = request.user
+    is_added = False
+    if ad.favorites.filter(pk=user.pk).exists():
+        ad.favorites.remove(user)
+    else:
+        ad.favorites.add(user)
+        is_added = True
+    return JsonResponse({"is_added": is_added}, status=200)
         
         
