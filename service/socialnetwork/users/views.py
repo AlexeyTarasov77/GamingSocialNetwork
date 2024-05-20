@@ -15,7 +15,7 @@ from rest_framework.response import Response
 from .decorators import owner_required
 from .forms import ProfileUpdateForm
 from .models import FriendRequest, Profile
-from posts.views import r
+from gameblog.redis_connection import r
 
 # Create your views here.
 class ProfileView(LoginRequiredMixin, generic.DetailView):

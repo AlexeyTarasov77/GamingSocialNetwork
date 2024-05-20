@@ -13,10 +13,14 @@ from django.core.cache import cache
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views import generic
-from .mixins import ListPostsQuerySetMixin, posts_feed_version_cache_key, ObjectViewsMixin
+from .mixins import (
+    ListPostsQuerySetMixin,
+    posts_feed_version_cache_key,
+    ObjectViewsMixin,
+)
 from . import forms, tasks
 from .models import Post
-from gameblog.redis_connection import r
+from .utils import check_cache
 
 User = get_user_model()
 
@@ -26,7 +30,6 @@ class ListPosts(ListPostsQuerySetMixin, generic.ListView):
     template_name = "posts/list.html"
     context_object_name = "posts_list"
     paginate_by = 10
-    
 
 
 class DetailPost(ObjectViewsMixin, generic.DetailView):
@@ -34,10 +37,19 @@ class DetailPost(ObjectViewsMixin, generic.DetailView):
     context_object_name = "post"
     redis_key_prefix = "posts"
 
-    def get_object(self, queryset: QuerySet[Any] | None = ...) -> Model:
-        return get_object_or_404(
-            Post.objects.select_related("author").prefetch_related("tags", "liked", "saved", "comments"),
+    def _get_object(self):
+        obj = get_object_or_404(
+            Post.objects.select_related("author").prefetch_related(
+                "tags", "liked", "saved", "comments"
+            ),
             pk=self.kwargs.get("post_id"),
+        )
+        cache.set(f"posts_detail_{self.kwargs.get('post_id')}", obj, 60 * 15)
+        return obj
+
+    def get_object(self, queryset: QuerySet[Any] | None = ...) -> Model:
+        return check_cache(
+            f"posts_detail_{self.kwargs.get('post_id')}", lambda: self._get_object()
         )
 
     def __get_simillar_posts(self):
@@ -47,18 +59,22 @@ class DetailPost(ObjectViewsMixin, generic.DetailView):
             Post.published.filter(tags__in=post_tags_ids)
             .exclude(id=post.id)
             .annotate(same_tags=Count("tags"))
-            .select_related("author").prefetch_related("tags", "liked", "saved", "comments")
+            .select_related("author")
+            .prefetch_related("tags", "liked", "saved", "comments")
             .order_by("-same_tags", "-time_publish")[:4]
         )
         return similar_posts
-
 
     def get_context_data(self, **kwargs) -> dict[str, Any]:
         post = self.get_object()
         context = super().get_context_data(**kwargs)
         context["is_owner"] = True if self.request.user == post.author else False
         context["form"] = forms.CommentForm
-        context["filtered_comments"] = post.comments.filter(is_active=True)
+        context["filtered_comments"] = (
+            post.comments.filter(is_active=True)
+            .select_related("author__profile")
+            .prefetch_related("liked")
+        )
         context["recommended_posts"] = self.__get_simillar_posts()
         return context
 
@@ -102,8 +118,11 @@ class AddPost(LoginRequiredMixin, generic.CreateView):
             self.request.build_absolute_uri(post.get_absolute_url()),
             True,
         )
-        cache.set(posts_feed_version_cache_key, cache.get(posts_feed_version_cache_key, 0) + 1)
+        cache.set(
+            posts_feed_version_cache_key, cache.get(posts_feed_version_cache_key, 0) + 1
+        )
         return redirect(post.get_absolute_url())
+
 
 # Share post by email address
 @login_required

@@ -151,10 +151,12 @@ DATABASES = {
 
 CACHES = {
     "default": {
-        "BACKEND": "django.core.cache.backends.redis.RedisCache",
-        "LOCATION": "redis://redis:6379/1",
+        "BACKEND": "django.core.cache.backends.memcached.PyMemcacheCache",
+        "LOCATION": "memcached:11211",
     }
 }
+
+CACHE_KEY_PREFIX = "socialnetwork"
 
 
 # Password validation
