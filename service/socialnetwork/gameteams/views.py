@@ -1,14 +1,17 @@
 from typing import Any
 from django.db.models.query import QuerySet
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_object_or_404
 from django.views import generic
 from django.http import JsonResponse
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, AccessMixin
+from django.contrib.auth import get_user_model
 from . import forms
 from .models import Ad, Team
 from posts.mixins import ObjectViewsMixin
 from .utils import TeamHandle
+from users.models import Profile
+User = get_user_model()
 
 # Create your views here.
 def index_view(request):
@@ -38,15 +41,49 @@ class TeamDetailView(generic.DetailView):
     context_object_name = "team"
     
 def team_join_view(request, slug):
-    print("TEAM JOIN VIEW")
     team = Team.objects.get(slug=slug)
     user = request.user
     if user.profile.team:
         messages.error(request, "Вы уже состоите в команде")
         return JsonResponse({"msg": "Вы уже состоите в команде"}, status=400)
     handle = TeamHandle(team)
-    handle.create_join_request(user)
+    req = handle.create_join_request(user)
+    print(req)
     return JsonResponse({"msg": "Заявка на вступление отправлена"}, status=200)
+
+class TeamJoinRequestsView(AccessMixin, generic.ListView):
+    template_name = "gameteams/teams/team_join_requests.html"
+    def get_queryset(self):
+        tm = TeamHandle(self.team)
+        return tm.get_all_join_requests()
+    
+    def dispatch(self, request, *args, **kwargs):
+        user = request.user
+        if not request.user.is_authenticated or not user.profile.is_team_leader:
+            return self.handle_no_permission()
+        self.team = user.profile.team
+        return super().dispatch(request, *args, **kwargs)
+    
+    def post(self, request, *args, **kwargs):
+        data = request.POST
+        print(data)
+        from_user_profile = get_object_or_404(Profile, user_id=data.get("from_user_id"))
+        print(from_user_profile, from_user_profile.user_id)
+        tm = TeamHandle(self.team)
+        accepted = False
+        if data.get("action") == "accept":
+            tm.accept_join_request(from_user_profile)
+            accepted = True
+        elif data.get("action") == "decline":
+            tm.remove_join_request(from_user_profile)
+        return JsonResponse({"accepted": accepted})
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["team"] = self.team
+        return context
+
+# ------- ADS -------
     
 class AdListView(generic.ListView):
     paginate_by = 9

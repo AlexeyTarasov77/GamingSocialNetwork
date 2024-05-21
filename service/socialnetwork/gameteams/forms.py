@@ -23,5 +23,5 @@ class AdCreateForm(forms.ModelForm):
         print(cd)
         type = cd["type"]
         profile = self.user.profile
-        if type == "RECRUITING" and not profile.is_leader: 
+        if type == "RECRUITING" and not profile.is_team_leader: 
             raise forms.ValidationError("Для создания рекрутингового объявления необходимо быть лидером команды, но вы им не являетесь.")

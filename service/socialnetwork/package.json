@@ -1,6 +1,6 @@
 { 
   "scripts": {
-    "dev": "tailwindcss -i socialnetwork/static/tw/tailwind-input.css -o socialnetwork/static/tw/tailwind-output.css --watch"
+    "dev": "tailwindcss -i static/tw/tailwind-input.css -o static/tw/tailwind-output.css --watch"
   },
   "devDependencies": {
     "tailwindcss": "^3.4.3"

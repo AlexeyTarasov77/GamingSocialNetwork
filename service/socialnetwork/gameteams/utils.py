@@ -4,32 +4,34 @@ class TeamHandle:
     def __init__(self, team):
         self.team = team
         
-    def get_join_request(self, user):
+    def get_join_request(self, user_id):
         join_request = TeamJoinRequest.objects.get(
-            to_team=self.team, from_user=user
+            to_team=self.team, from_user=user_id
         )
         return join_request
     
     def get_all_join_requests(self):
         return TeamJoinRequest.objects.filter(to_team=self.team)
 
-    def create_join_request(self, user):
+    def create_join_request(self, user_id):
         join_request = TeamJoinRequest.objects.get_or_create(
-            to_team=self.team, from_user=user
+            to_team=self.team, from_user=user_id
         )
         return join_request
     
-    def accept_join_request(self, user):
-        join_request = self.get_join_request(user)
+    def accept_join_request(self, user_profile):
+        join_request = self.get_join_request(user_profile.user_id)
         join_request.delete()
-        self.team.members.add(user)
+        user_profile.team = self.team
+        user_profile.save()
         return self.team.members
     
-    def remove_join_request(self, user):
-        join_request = self.get_join_request(user)
+    def remove_join_request(self, user_profile):
+        join_request = self.get_join_request(user_profile.user_id)
         join_request.delete()
         return self.team
     
-    def remove_member(self, user):
-        self.team.members.remove(user)
+    def remove_member(self, user_profile):
+        user_profile.team = None
+        user_profile.save()
         return self.team

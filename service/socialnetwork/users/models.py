@@ -70,7 +70,7 @@ class Profile(SaveSlugMixin, models.Model):
         return f"Профиль пользователя - {self.user}."
 
     @property
-    def is_leader(self):
+    def is_team_leader(self):
         if self.team:
             return self.team.leader == self.user
         return False

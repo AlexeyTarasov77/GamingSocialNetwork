@@ -1,0 +1,13 @@
+<form>
+    <input type="hidden" name="from_user_id" value="{{join_request.from_user.pk}}">
+    <input type="hidden" name="action" value="{{action}}">
+    <button
+        class="btn btn-{{variant}}"
+        hx-post="{% url "teams:team_join_requests" team.slug %}"
+        hx-headers='{"X-CSRFToken": "{{csrf_token}}"}'
+        hx-swap="none"
+        data-success-msg="{{msg}}">
+        {{text}}
+    </button>
+</form>
+</div>

@@ -9,6 +9,7 @@ urlpatterns = [
     path('create/', views.TeamCreateView.as_view(), name='team_create'),
     path('detail/<slug:slug>/', views.TeamDetailView.as_view(), name='team_detail'),
     path('join/<slug:slug>/', views.team_join_view, name='team_join'),
+    path('join-requests/<slug:slug>/', views.TeamJoinRequestsView.as_view(), name='team_join_requests'),
     path('ads/create/', views.AdCreateView.as_view(), name='ad_create'),
     path('ads/list/', views.AdListView.as_view(), name='ad_list'),
     path('ads/<int:pk>/', views.AdDetailView.as_view(), name='ad_detail'),

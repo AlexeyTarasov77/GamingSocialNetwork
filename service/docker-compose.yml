@@ -18,7 +18,7 @@ services:
   socialnetwork:
     build: ./socialnetwork
     ports:
-      - 8000:8000
+      - 8001:8001
     volumes:
       - ./socialnetwork:/service
     env_file: ./socialnetwork/socialnetwork/.env
@@ -31,11 +31,15 @@ services:
     container_name: sc-service
     command: sh -c "python3 manage.py makemigrations --no-input &&
                     python3 manage.py migrate &&
-                    python3 manage.py runserver 0.0.0.0:8000"
+                    python3 manage.py runserver 0.0.0.0:8001"
 
   redis:
     image: redis:7.2.3-alpine
     container_name: sc-redis
+
+  memcached:
+    image: memcached
+    container_name: sc-memcached
 
   rabbitmq:
     image: rabbitmq:3.9.20-management-alpine
@@ -72,7 +76,7 @@ services:
   stripe:
     image: stripe/stripe-cli:latest
     container_name: sc-stripe
-    command: listen --forward-to localhost:8000/payment/stripe/webhook/
+    command: listen --forward-to localhost:8001/payment/stripe/webhook/
     depends_on:
       - socialnetwork
 
