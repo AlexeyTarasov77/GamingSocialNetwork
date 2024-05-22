@@ -1,6 +1,7 @@
 from .models import TeamJoinRequest, Team
 from users.models import Profile
 from django.db.models.query import QuerySet
+from typing import Tuple
 
 class TeamHandle:
     def __init__(self, team: Team) -> None:
@@ -15,7 +16,7 @@ class TeamHandle:
     def get_all_join_requests(self) -> QuerySet[TeamJoinRequest]:
         return TeamJoinRequest.objects.filter(to_team=self.team)
 
-    def create_join_request(self, user_id: int) -> tuple[TeamJoinRequest, bool]:
+    def create_join_request(self, user_id: int) -> Tuple[TeamJoinRequest, bool]:
         join_request, created = TeamJoinRequest.objects.get_or_create(
             to_team=self.team, from_user=user_id
         )

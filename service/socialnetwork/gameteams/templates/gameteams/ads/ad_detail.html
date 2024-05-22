@@ -30,6 +30,7 @@
                     hx-post="{% url "teams:ad_bookmark" ad.pk %}" 
                     hx-headers='{"X-CSRFToken": "{{csrf_token}}"}'
                     hx-swap="none"
+                    id="bookmark"
                 >
                     <svg width="35" height="35" id="bookmark-icon" class="{% if user in ad.favorites.all %} text-amber-500 {% else %} text-black {% endif %} transition-colors hover:text-orange-600" viewBox="0 0 243 223" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                         <path d="M0.25 76.0209C0.25 138.833 48.9856 172.306 84.661 202.266C97.25 212.838 109.375 222.792 121.5 222.792C133.625 222.792 145.75 212.838 158.339 202.266C194.015 172.306 242.75 138.833 242.75 76.0209C242.75 13.2079 176.06 -31.3377 121.5 29.0498C66.9394 -31.3377 0.25 13.2079 0.25 76.0209Z" fill="currentColor" />
@@ -104,6 +105,10 @@
             </div>
             <div class="pt-4">
                 <a
+                 hx-post="{% url "teams:team_join" team.slug %}"
+                 hx-headers='{"X-CSRFToken": "{{csrf_token}}"}'
+                 data-success-msg="Заявка в команду {{team.name}} была отправлена."
+                 hx-swap="none"
                  href="{% url "teams:team_join" team.slug %}"
                  class="border-4 border-red-400 text-red-400 text-xl rounded-lg 
                  p-2.5 flex items-center justify-center transition-colors font-semibold

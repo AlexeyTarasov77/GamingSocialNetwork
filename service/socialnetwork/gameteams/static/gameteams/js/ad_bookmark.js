@@ -3,14 +3,17 @@ import { handleHtmxRequest } from "/static/gameblog/js/htmx_events.js";
 handleHtmxRequest((e) => {
     console.log(e);
     const dispatchEl = e.detail.elt
-    const xhr = e.detail.xhr
-    const response = JSON.parse(xhr.responseText)
-    const bookMarkIcon = dispatchEl.querySelector('#bookmark-icon')
-    if (response.is_added) {
-      markActive(bookMarkIcon)
-    } else {
-      markInactive(bookMarkIcon)
+    if (dispatchEl.id === 'bookmark') {
+      const xhr = e.detail.xhr
+      const response = JSON.parse(xhr.responseText)
+      const bookMarkIcon = dispatchEl.querySelector('#bookmark-icon')
+      if (response.is_added) {
+        markActive(bookMarkIcon)
+      } else {
+        markInactive(bookMarkIcon)
+      }
     }
+
 })
 
 const markActive = (el) => {
