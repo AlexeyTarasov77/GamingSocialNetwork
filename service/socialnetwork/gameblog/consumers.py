@@ -1,9 +1,5 @@
 from channels.generic.websocket import AsyncWebsocketConsumer
-from users.models import Profile
-from django.db.models import F
-import redis.asyncio as redis
-from django.conf import settings
-from posts.views import r
+from gameblog.redis_connection import r
 
 class UserStatusConsumer(AsyncWebsocketConsumer):        
     async def update_user_status(self, user_id, status: int): # 1 - online, 0 - offline

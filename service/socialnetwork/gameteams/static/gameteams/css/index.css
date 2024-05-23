@@ -1,0 +1,48 @@
+.main-section {
+    color: #fff;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.main-section .title h1{
+    font-size: 5rem;
+    font-family: 'Akaya Kanadaka', sans-serif;
+    font-weight: bold;
+}
+.main-section .about {
+    padding: 10px 20px;
+    font-size: 1.5rem;
+    font-family: "Ubuntu Sans", sans-serif;
+}
+
+.main-section .about, .title{
+    box-shadow: #dc0000 10px 5px 5px;
+}
+
+.main-section .buttons {
+    display: flex;
+    gap: 50px;
+}
+
+.main-section .buttons a{
+    font-size: 1.5rem;
+    font-family: 'Akaya Kanadaka';
+    padding: 10px 20px;
+    transition: all 0.4s ease;
+}
+
+.main-section .buttons a:hover {
+    transform: scale(1.05);
+}
+
+.main-section .buttons .btn-outline-danger {
+    border: 2.5px solid #fff ;
+}
+
+.main-section .buttons .btn-outline-danger:hover {
+    border: none;
+}

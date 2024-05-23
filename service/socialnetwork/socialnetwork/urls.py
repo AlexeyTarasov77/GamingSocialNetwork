@@ -20,7 +20,7 @@ urlpatterns = i18n_patterns(
     # path('chat/', include('chat.urls', namespace='chat')),
     # path('events/', include('events.urls', namespace='events')),
     path("posts/", include("posts.urls", namespace="posts")),
-    # path('searchteam/', include('searchteam.urls', namespace='searchteam')),
+    path('teams/', include('gameteams.urls', namespace='teams')),
     path("users/", include("users.urls", namespace="users")),
 )
 

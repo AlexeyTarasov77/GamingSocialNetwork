@@ -1,7 +1,5 @@
 from typing import Any
 
-import redis
-from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
@@ -15,16 +13,14 @@ from django.core.cache import cache
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views import generic
-from .mixins import ListPostsQuerySetMixin, posts_feed_version_cache_key
+from .mixins import (
+    ListPostsQuerySetMixin,
+    posts_feed_version_cache_key,
+    ObjectViewsMixin,
+)
 from . import forms, tasks
 from .models import Post
-
-r = redis.Redis(
-    host=settings.REDIS_HOST,
-    port=settings.REDIS_PORT,
-    db=settings.REDIS_DB,
-    decode_responses=True,
-)
+from .utils import check_cache
 
 User = get_user_model()
 
@@ -34,17 +30,26 @@ class ListPosts(ListPostsQuerySetMixin, generic.ListView):
     template_name = "posts/list.html"
     context_object_name = "posts_list"
     paginate_by = 10
-    
 
 
-class DetailPost(generic.DetailView):
+class DetailPost(ObjectViewsMixin, generic.DetailView):
     template_name = "posts/detail.html"
     context_object_name = "post"
+    redis_key_prefix = "posts"
+
+    def _get_object(self):
+        obj = get_object_or_404(
+            Post.objects.select_related("author").prefetch_related(
+                "tags", "liked", "saved", "comments"
+            ),
+            pk=self.kwargs.get("post_id"),
+        )
+        cache.set(f"posts_detail_{self.kwargs.get('post_id')}", obj, 60 * 15)
+        return obj
 
     def get_object(self, queryset: QuerySet[Any] | None = ...) -> Model:
-        return get_object_or_404(
-            Post.objects.select_related("author").prefetch_related("tags", "liked", "saved", "comments"),
-            pk=self.kwargs.get("post_id"),
+        return check_cache(
+            f"posts_detail_{self.kwargs.get('post_id')}", lambda: self._get_object()
         )
 
     def __get_simillar_posts(self):
@@ -54,31 +59,23 @@ class DetailPost(generic.DetailView):
             Post.published.filter(tags__in=post_tags_ids)
             .exclude(id=post.id)
             .annotate(same_tags=Count("tags"))
-            .select_related("author").prefetch_related("tags", "liked", "saved", "comments")
+            .select_related("author")
+            .prefetch_related("tags", "liked", "saved", "comments")
             .order_by("-same_tags", "-time_publish")[:4]
         )
         return similar_posts
-
-    def __incr_views(self):
-        post = self.object
-        user_id = str(self.request.user.id)
-        viewed_users_ids = r.smembers("post:%s:viewers" % post.id) or []
-        if not user_id in viewed_users_ids:
-            r.sadd("post:%s:viewers" % post.id, user_id)
-            total_views = r.incr("post:%s:views" % post.id)
-        else:
-            total_views = r.get("post:%s:views" % post.id)
-        return total_views
 
     def get_context_data(self, **kwargs) -> dict[str, Any]:
         post = self.get_object()
         context = super().get_context_data(**kwargs)
         context["is_owner"] = True if self.request.user == post.author else False
         context["form"] = forms.CommentForm
-        context["filtered_comments"] = post.comments.filter(is_active=True)
+        context["filtered_comments"] = (
+            post.comments.filter(is_active=True)
+            .select_related("author__profile")
+            .prefetch_related("liked")
+        )
         context["recommended_posts"] = self.__get_simillar_posts()
-        total_views = self.__incr_views()
-        context["views_count"] = total_views
         return context
 
 
@@ -121,8 +118,11 @@ class AddPost(LoginRequiredMixin, generic.CreateView):
             self.request.build_absolute_uri(post.get_absolute_url()),
             True,
         )
-        cache.set(posts_feed_version_cache_key, cache.get(posts_feed_version_cache_key, 0) + 1)
+        cache.set(
+            posts_feed_version_cache_key, cache.get(posts_feed_version_cache_key, 0) + 1
+        )
         return redirect(post.get_absolute_url())
+
 
 # Share post by email address
 @login_required

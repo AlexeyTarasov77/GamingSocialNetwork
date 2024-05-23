@@ -1,0 +1,23 @@
+{% extends "gameteams/base.html" %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="text-light h-screen">
+    <div class="text-center py-5">
+        <div class="title">
+            <h1>{% block form_title %}{% endblock form_title %}</h1>
+        </div>
+        <div class="subtitle">
+            <h3>{% block form_subtitle %}{% endblock form_subtitle %}</h3>
+        </div>
+    </div>
+    <div class="create-form d-flex flex-column align-items-center pb-5">
+        <form method="post">
+            {% csrf_token %}
+            {% block form_content %}{% endblock form_content %}
+            <button class="btn btn-danger px-5" style="margin-left: 25%;">{% trans "Создать" %}</button>
+        </form>
+    </div>
+</div>
+{% endblock content %}

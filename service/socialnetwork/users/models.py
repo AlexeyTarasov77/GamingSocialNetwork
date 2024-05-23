@@ -2,9 +2,11 @@ import os
 
 from django.contrib.auth import get_user_model
 from django.db import models
-from django.db.models.signals import post_save
 from django.urls import reverse
-from django.utils.text import slugify
+from django.utils import timezone
+from django.utils.translation import gettext as _
+from django_countries.fields import CountryField
+from gameblog.mixins import SaveSlugMixin
 
 
 # Create your models here.
@@ -12,41 +14,76 @@ def get_avatar_path(instance, filename):
     return os.path.join("photos", "users", instance.user.username, filename)
 
 
-class Profile(models.Model):
+class Profile(SaveSlugMixin, models.Model):
     user = models.OneToOneField(
-        get_user_model(), related_name="profile", on_delete=models.CASCADE
+        get_user_model(),
+        related_name="profile",
+        on_delete=models.CASCADE,
+        verbose_name=_("Пользователь"),
     )
     user_slug = models.SlugField(
         verbose_name="URL профиля", unique=True, null=True, blank=True
     )
-    online = models.PositiveIntegerField(default=0)
     image = models.ImageField(
-        upload_to=get_avatar_path, blank=True, null=True, verbose_name="Фото профиля"
+        upload_to=get_avatar_path, blank=True, null=True, verbose_name=_("Фото профиля")
     )
     bg_image = models.ImageField(
-        upload_to=get_avatar_path, blank=True, null=True, verbose_name="Шапка профиля"
+        upload_to=get_avatar_path,
+        blank=True,
+        null=True,
+        verbose_name=_("Шапка профиля"),
     )
     following = models.ManyToManyField(
-        get_user_model(), related_name="profile_following", blank=True
+        get_user_model(),
+        related_name="profile_following",
+        blank=True,
+        verbose_name=_("Подписки"),
     )
     followers = models.ManyToManyField(
-        get_user_model(), related_name="profile_followers", blank=True
+        get_user_model(),
+        related_name="profile_followers",
+        blank=True,
+        verbose_name=_("Подписчики"),
     )
     friends = models.ManyToManyField(
-        get_user_model(), related_name="profile_friends", blank=True
+        get_user_model(),
+        related_name="profile_friends",
+        blank=True,
+        verbose_name=_("Друзья"),
     )
-    bio = models.TextField(blank=True, null=True, verbose_name="Биография")
+    bio = models.TextField(blank=True, null=True, verbose_name=_("Биография"))
     date_of_birth = models.DateTimeField(
-        null=True, blank=True, verbose_name="Дата рождения"
+        null=True, blank=True, verbose_name=_("Дата рождения")
     )
-    time_update = models.DateTimeField(auto_now=True)
+    country = CountryField(blank=True, null=True, verbose_name=_("Страна"))
+    team = models.ForeignKey(
+        "gameteams.Team",
+        verbose_name=_("Команда"),
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="members",
+    )
+    time_update = models.DateTimeField(auto_now=True, verbose_name=_("Дата обновления"))
 
     def __str__(self) -> str:
-        return f"Профиль пользователя - {self.user}. Слаг - {self.user_slug}"
+        return f"Профиль пользователя - {self.user}."
+
+    @property
+    def is_team_leader(self):
+        if self.team:
+            return self.team.leader == self.user
+        return False
+
+    @property
+    def age(self):
+        if self.date_of_birth:
+            return (timezone.now() - self.date_of_birth).days // 365
 
     def save(self, *args, **kwargs):
-        self.user_slug = slugify(self.user.username)
-        super(Profile, self).save(*args, **kwargs)
+        return super().save(
+            *args, slug_field="user_slug", slugify_value=self.user.username, **kwargs
+        )
 
     def get_profile_image(self):
         return self.image.url if self.image else "/static/users/images/profile.jpeg"

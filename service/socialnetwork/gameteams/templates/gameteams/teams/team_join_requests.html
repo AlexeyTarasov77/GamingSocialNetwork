@@ -1,0 +1,59 @@
+{% extends "gameteams/base.html" %}
+{% load static %}
+{% block content %}
+<div class="wrapper p-5">
+    <div>
+        <div class="text-red-100"><h2>Заявки в друзья. Всего {{object_list.count}} заяв{{object_list.count|pluralize:"ки,ок"}}</h2></div>
+        <div class="flex flex-col gap-5">
+            {% for join_request in object_list %}
+            <div class="join-request shadow-md bg-red-900 shadow-red-300 p-7 flex flex-col justify-between min-h-36">
+                <div class="text-red-400 text-xl">
+                    Заявка в друзья от пользователя 
+                    <a href="{{join_request.from_user.profile.get_absolute_url}}">
+                        {{join_request.from_user}}
+                    </a>
+                </div>
+                <div class="self-end">
+                    <div class="flex gap-3">
+                        {% comment %} <div>{% include "gameteams/teams/components/req_handle_btn.html" with action="decline" variant="danger" msg="Заявка отклонена" text="Отклонить" %}</div> {% endcomment %}
+                        {% comment %} <div>{% include "gameteams/teams/components/req_handle_btn.html" with action="accept" variant="success" msg="Заявка одобрена" text="Принять" %}</div> {% endcomment %}
+                        <div>
+                            <form>
+                                <input type="hidden" name="from_user_id" value="{{join_request.from_user.pk}}">
+                                <input type="hidden" name="action" value="decline">
+                                <button
+                                    class="btn btn-danger"
+                                    hx-post="{% url "teams:team_join_requests" team.slug %}"
+                                    hx-headers='{"X-CSRFToken": "{{csrf_token}}"}'
+                                    data-success-msg="Заявка Отклонена">
+                                    Отклонить
+                                </button>
+                            </form>
+                        </div>
+                        <div>
+                            <form>
+                                <input type="hidden" name="from_user_id" value="{{join_request.from_user.pk}}">
+                                <input type="hidden" name="action" value="accept">
+                                <button
+                                    class="btn btn-success"
+                                    hx-post="{% url "teams:team_join_requests" team.slug %}"
+                                    hx-headers='{"X-CSRFToken": "{{csrf_token}}"}'
+                                    data-success-msg="Заявка одобрена">
+                                    Принять
+                                </button>
+                            </form>
+                        </div> 
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+{% block js %}
+<script src="https://unpkg.com/htmx.org@1.9.10" integrity="sha384-D1Kt99CQMDuVetoL1lrYwg5t+9QdHe7NLX/SoJYkXDFfX37iInKRy5xLSi8nO7UC" crossorigin="anonymous"></script>
+<script type="module" src="{% static "gameteams/js/team_join_handle.js" %}"></script>
+{% endblock js %}
+

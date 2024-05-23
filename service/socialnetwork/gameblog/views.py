@@ -48,7 +48,9 @@ class MainView(generic.ListView):
         context['recommended_posts'] = Post.published.annotate(
             total_likes = Count('liked'),
             total_comments=Count('comments')
-        ).filter(Q(total_likes__gte=TOTAL_LIKES_REQUIRED) | Q(total_comments__gte=TOTAL_COMMENTS_REQUIRED))[:10]
+        ) \
+        .filter(Q(total_likes__gte=TOTAL_LIKES_REQUIRED) | Q(total_comments__gte=TOTAL_COMMENTS_REQUIRED))[:10] \
+        .select_related('author')
         try:
             context['video_url'] = BackgroundVideo.objects.latest('pk')
         except ObjectDoesNotExist:

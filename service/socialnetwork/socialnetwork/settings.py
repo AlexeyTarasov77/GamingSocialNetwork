@@ -69,6 +69,7 @@ THIRD_PARTY_APPS = [
     "channels",
     "django_celery_results",
     "django_celery_beat",
+    "django_countries",
     "sorl.thumbnail",
     "debug_toolbar",
     "algoliasearch_django",
@@ -81,6 +82,7 @@ LOCAL_APPS = [
     "events.apps.EventsConfig",
     "gameblog.apps.GameblogConfig",
     "posts.apps.PostsConfig",
+    "gameteams.apps.GameteamsConfig",
     "cart.apps.CartConfig",
     "gameshop.apps.GameshopConfig",
     "actions.apps.ActionsConfig",
@@ -149,10 +151,12 @@ DATABASES = {
 
 CACHES = {
     "default": {
-        "BACKEND": "django.core.cache.backends.redis.RedisCache",
-        "LOCATION": "redis://redis:6379/1",
+        "BACKEND": "django.core.cache.backends.memcached.PyMemcacheCache",
+        "LOCATION": "memcached:11211",
     }
 }
+
+CACHE_KEY_PREFIX = "socialnetwork"
 
 
 # Password validation
@@ -232,6 +236,7 @@ TAGGIT_CASE_INSENSITIVE = True
 # MEDIA FILES CONFIG
 MEDIA_ROOT = BASE_DIR / "media"
 MEDIA_URL = "/media/"
+DEFAULT_IMAGE_URL = os.path.join(MEDIA_URL, 'photos/default.jpeg')
 
 # EMAIL SMTP SERVER CONFIG
 EMAIL_HOST = config("EMAIL_HOST")

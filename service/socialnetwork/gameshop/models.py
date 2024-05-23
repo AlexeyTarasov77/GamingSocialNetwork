@@ -1,9 +1,9 @@
+import os
+
+from django.conf import settings
 from django.core.validators import MaxValueValidator
 from django.db import models
 from django.urls import reverse
-from django.conf import settings
-import os
-
 from gameblog.mixins import SaveSlugMixin
 
 
@@ -45,7 +45,7 @@ class Product(SaveSlugMixin, models.Model):
         ordering = ("-created_at",)
 
     def save(self, *args, **kwargs):
-        super().save(*args, slug_field="slug", slugify_field="title", **kwargs)
+        super().save(*args, slug_field="slug", slugify_value=self.title, **kwargs)
 
     def get_absolute_url(self):
         return reverse("shop:products-detail", kwargs={"slug": self.slug})
@@ -67,7 +67,7 @@ class Product(SaveSlugMixin, models.Model):
     
     def get_image(self):
         if not self.image:
-            return os.path.join(settings.MEDIA_ROOT, 'photos/default.jpeg')
+            return settings.DEFAULT_IMAGE_URL 
         return self.image.url
     
     def _category(self):
@@ -106,7 +106,7 @@ class Category(SaveSlugMixin, models.Model):
         verbose_name_plural = "Категории"
 
     def save(self, *args, **kwargs):
-        super().save(*args, slug_field="slug", slugify_field="name", **kwargs)
+        super().save(*args, slug_field="slug", slugify_value="name", **kwargs)
 
     def __str__(self) -> str:
         full_path = [self.name]

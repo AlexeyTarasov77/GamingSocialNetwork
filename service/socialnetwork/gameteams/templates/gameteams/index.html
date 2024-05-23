@@ -1,0 +1,30 @@
+{% extends "gameteams/base.html" %}
+{% load i18n %} {% load static %}
+
+{% block gameteams_links %}
+<link rel="stylesheet" href="{% static "gameteams/css/index.css" %}">
+{% endblock gameteams_links %}
+
+{% block title %}{% trans "Главная страница" %}{% endblock title %}
+
+{% block content %}
+<div class="home height-100 width-100">
+    <div class="main-section">
+        <div class="title"><h1>{% trans "NEXT-GENERATION ESPORTS TEAMS" %}</h1></div>
+        <div class="about">
+            {% blocktrans %}
+            Здесь вы можете создавать команды, набирать участников. <br>
+            А так же найти свое место в команде и принимать участие в киберспортивных событиях.
+            {% endblocktrans %}
+        </div>
+        <div class="buttons my-4">
+            <div class="btn-container">
+                <a href="{% url "teams:team_create" %}" class="btn btn-danger text-light">{% trans "Создать команду" %}</a>
+            </div>
+            <div class="btn-container">
+                <a href="{% url "teams:ad_list" %}" class="btn btn-outline-danger text-light h-[61px]">{% trans "Cмотреть обьявления" %}</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

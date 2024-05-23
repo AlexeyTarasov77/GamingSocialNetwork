@@ -1,0 +1,130 @@
+{% extends "gameteams/base.html" %}
+
+{% load humanize %} {% load static %}
+
+{% block content %}
+<style>
+    main {
+        padding: 1.5rem
+    }
+</style>
+
+<div class="flex p-7 gap-7">
+    <div class="p-2.5 w-full h-screen bg-red-700 gap-7">
+        <div class="flex flex-col p-2.5 gap-2">
+            <div class="py-px w-full flex items-center justify-between">
+                <div class="font-sans text-lg text-slate-400">Опубликовано {{ad.time_create}}</div>
+                <div>
+                    <a
+                     href="{% url "teams:ad_list" %}"
+                     class="text-sm rounded-xl font-mono bg-red-400 text-white
+                     p-2.5 max-w-48 max-h-10 flex items-center justify-center transition-colors
+                     hover:bg-red-500">
+                        Вернуться назад
+                    </a>
+                </div>
+            </div>
+            <div class="w-full flex items-center gap-28">
+                <div class="italic font-semibold text-3xl text-red-400">{{ad.title}}</div>
+                <div 
+                    hx-post="{% url "teams:ad_bookmark" ad.pk %}" 
+                    hx-headers='{"X-CSRFToken": "{{csrf_token}}"}'
+                    hx-swap="none"
+                    id="bookmark"
+                >
+                    <svg width="35" height="35" id="bookmark-icon" class="{% if user in ad.favorites.all %} text-amber-500 {% else %} text-black {% endif %} transition-colors hover:text-orange-600" viewBox="0 0 243 223" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M0.25 76.0209C0.25 138.833 48.9856 172.306 84.661 202.266C97.25 212.838 109.375 222.792 121.5 222.792C133.625 222.792 145.75 212.838 158.339 202.266C194.015 172.306 242.75 138.833 242.75 76.0209C242.75 13.2079 176.06 -31.3377 121.5 29.0498C66.9394 -31.3377 0.25 13.2079 0.25 76.0209Z" fill="currentColor" />
+                    </svg>                    
+                </div>
+            </div>
+        </div>
+        <div class="border-y p-2.5 w-full italic font-light font-sans flex flex-col gap-2.5">
+            <div class="flex p-2.5 w-full gap-24 items-center justify-center">
+                <div class="p-1 flex flex-col">
+                    <p class="text-slate-400 text-lg">Тип: </p>
+                    <p class="text-red-50 text-sm">{{ad.get_type_display}}</p>
+                </div>
+                <div class="p-1 flex flex-col">
+                    <p class="text-slate-400 text-lg">Игра: </p>
+                    <p class="text-red-50 text-sm">{{ad.game}}</p>
+                </div>
+            </div>
+            <div class="flex p-2.5 w-full gap-24 items-center justify-center">
+                <div class="p-1 flex flex-col">
+                    <p class="text-slate-400 text-lg">Дата обновления: </p>
+                    <p class="text-red-50 text-sm">{{ad.time_update|naturaltime}}</p>
+                </div>
+                <div class="p-1 flex flex-col">
+                    <p class="text-slate-400 text-lg">Просмотров: </p>
+                    <p class="text-red-50 text-sm">{{views_count|default:"0"}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="p-2.5 w-full flex flex-col gap-3">
+            <div class="text-red-400 text-3xl font-semibold">Описание:</div>
+            <div class="text-slate-400 text-sm font-semibold">{{ad.content}}</div>
+        </div>
+    </div>
+    <div class="p-2.5 flex flex-col gap-2.5 bg-red-700 w-80 max-h-80">
+        {% if ad.type == "SEARCHING" %}
+        <div class="text-red-400 font-semibold text-lg">Пользователь</div>
+        <div class="p-2.5 flex flex-col gap-2.5">
+            {% with user=ad.user %}
+            <div class="flex gap-2.5">
+                <div><img class="rounded-full" src="{{user.profile.get_profile_image}}" alt="Фото профиля" width="50" height="50"></div>
+                <p class="font-semibold font-mono text-lg text-slate-400">{{ user.get_full_name|default:user.username }}</p>
+            </div>
+            <div class="text-lg font-serif text-slate-400">
+                На платформе с {{user.date_joined|naturalday}} <br>
+                Онлайн 2 часа назад
+            </div>
+            <div class="pt-4">
+                <a
+                 href="{{user.profile.get_absolute_url}}"
+                 class="border-4 border-red-400 text-red-400 text-xl rounded-lg 
+                 p-2.5 flex items-center justify-center transition-colors font-semibold
+                 hover:bg-red-400 hover:text-white">
+                    Связатся
+                </a>
+            </div>
+            {% endwith %}
+        </div>
+        {% else %}
+        <div class="text-red-400 font-semibold text-lg">Команда</div>
+        <div class="p-2.5 flex flex-col gap-2.5">
+            {% with team=ad.team %}
+            <div class="flex gap-2.5">
+                <div><img class="rounded-full" src="{{team.get_logo}}" alt="Фото команды" width="50" height="50"></div>
+                <p class="font-semibold font-mono text-lg text-slate-400">{{ team.name }}</p>
+            </div>
+            <div class="text-lg font-serif text-slate-400">
+                Команда создана {{team.time_create|naturalday}}
+                <div class="team-rating flex">
+                    <span class="hidden" id="num-rating">{{team.rating}}</span>
+                </div>
+            </div>
+            <div class="pt-4">
+                <a
+                 hx-post="{% url "teams:team_join" team.slug %}"
+                 hx-headers='{"X-CSRFToken": "{{csrf_token}}"}'
+                 data-success-msg="Заявка в команду {{team.name}} была отправлена."
+                 hx-swap="none"
+                 href="{% url "teams:team_join" team.slug %}"
+                 class="border-4 border-red-400 text-red-400 text-xl rounded-lg 
+                 p-2.5 flex items-center justify-center transition-colors font-semibold
+                 hover:bg-red-400 hover:text-white">
+                    Отправить заявку
+                </a>
+            </div>
+            {% endwith %}
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock content %}
+
+{% block js %}
+<script src="https://unpkg.com/htmx.org@1.9.10" integrity="sha384-D1Kt99CQMDuVetoL1lrYwg5t+9QdHe7NLX/SoJYkXDFfX37iInKRy5xLSi8nO7UC" crossorigin="anonymous"></script>
+<script src="{% static "gameteams/js/teams_rating.js" %}"></script>
+<script type="module" src="{% static "gameteams/js/ad_bookmark.js" %}"></script>
+{% endblock js %}

@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from posts.models import Post, Comment
 from django.contrib.auth import get_user_model
-from posts.views import r
+from gameblog.redis_connection import r
 from api.users_api.serializers import UserPublicSerializer
 from rest_framework import serializers
 from posts.models import Comment
