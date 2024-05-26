@@ -1,0 +1,19 @@
+name: Running tests
+on: 
+  push:
+    branches:
+      - main
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: build and run project with docker-compose
+        run: |
+          cd service/
+          docker compose up --build -d
+
+      - name: Run tests
+        run: docker compose exec sc-service python3 manage.py test
