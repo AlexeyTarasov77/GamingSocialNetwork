@@ -13,6 +13,7 @@ class PublishedManager(models.Manager):
 
 # Create your models here.
 class Post(models.Model):
+    like_field = "liked"
     class Status(models.TextChoices):
         DRAFT = "DF", _("Черновик")
         PUBLISHED = "PB", _("Опубликовано")
@@ -95,6 +96,7 @@ class Post(models.Model):
 
 
 class Comment(MPTTModel):
+    like_field = "liked"
     class CommentManager(models.Manager):
         def get_queryset(self):
             return super().get_queryset().filter(is_active=True)
