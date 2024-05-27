@@ -9,7 +9,7 @@ from django.contrib.auth import get_user_model
 from . import forms
 from .models import Ad, Team
 from posts.mixins import ObjectViewsMixin
-from .utils import TeamHandle
+from .team_handle import TeamHandle
 from users.models import Profile
 User = get_user_model()
 
@@ -91,21 +91,23 @@ class AdListView(generic.ListView):
     template_name = "gameteams/ads/ad_list.html"
     queryset = Ad.objects.only("title", "content", "game", "type", "user")
     
-    @staticmethod
-    def __get_ad_type(ad_type):
-        types = Ad.TYPE_CHOICES
-        return list(types.keys())[list(types.values()).index(ad_type)]
+    def get_template_names(self) -> list[str]:
+        if self.request.headers.get("HX-Request") == "true":
+            return ["gameteams/ads/ad_list_hx.html"]
+        return super().get_template_names()
+    
     
     def get_queryset(self) -> QuerySet[Any]:
         queryset = super().get_queryset()
-        if self.request.method == "GET" and "type" in self.request.GET:
-            queryset = queryset.filter(type=self.request.GET.get("type"))
+        if self.request.method == "GET" and (ad_type := self.request.GET.get("type")):
+            queryset = queryset.filter(type=ad_type)
         return queryset
     
     def get_context_data(self, **kwargs) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
-        context["search_type"] = self.__get_ad_type(Ad.TYPE_CHOICES["SEARCHING"])
-        context["recruitment_type"] = self.__get_ad_type(Ad.TYPE_CHOICES["RECRUITING"])
+        # passing to context names of get param's value for ads filtering (?type=RECRUITING)
+        context["search_type"] = "SEARCHING" 
+        context["recruitment_type"] = "RECRUITING"
         return context
     
     
