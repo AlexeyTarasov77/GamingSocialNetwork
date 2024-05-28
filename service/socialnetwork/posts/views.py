@@ -1,6 +1,7 @@
 from typing import Any
 
-from . import services
+from .services.PostService import PostService 
+from core.HandleCache import HandleCacheService
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
@@ -13,12 +14,11 @@ from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views import generic
-
+from .services.constants import CACHE_KEYS
 from . import forms, tasks
 from .mixins import (
     ListPostsQuerySetMixin,
     ObjectViewsMixin,
-    posts_feed_version_cache_key,
 )
 from .models import Post
 
@@ -38,27 +38,23 @@ class DetailPost(ObjectViewsMixin, generic.DetailView):
     redis_key_prefix = "posts"
 
     def get_object(self, queryset: QuerySet[Any] | None = ...) -> Model:
-        return services.PostDetailService(
+        return PostService.post_detail(
             self.request.user, self.kwargs.get("post_id")
-        ).execute()
-
-    def _get_simillar_posts(self):
-        post = self.object
-        return services.SimillarPostsByTagService(post).execute()
+        )
 
     def get_context_data(self, **kwargs) -> dict[str, Any]:
         post = self.get_object()
         context = super().get_context_data(**kwargs)
-        context["is_owner"] = services.CheckIsAuthorService(
-            post, self.request.user, "author"
-        ).execute()
+        context["is_owner"] = PostService.is_post_author(
+            post, self.request.user
+        )
         context["form"] = forms.CommentForm
         context["filtered_comments"] = (
             post.comments.filter(is_active=True)
             .select_related("author__profile")
             .prefetch_related("liked")
         )
-        context["recommended_posts"] = self._get_simillar_posts()
+        context["recommended_posts"] = PostService.simillar_posts_by_tag(post)
         return context
 
 
@@ -80,6 +76,7 @@ class UpdatePost(generic.UpdateView):
 
     def form_valid(self, form: BaseModelForm) -> HttpResponse:
         messages.warning(self.request, "Пост успешно обновлен")
+        HandleCacheService().invalidate_cache_version(CACHE_KEYS["POST_DETAIL_VERSION"])
         return super().form_valid(form)
 
 
@@ -101,9 +98,7 @@ class CreatePost(LoginRequiredMixin, generic.CreateView):
             self.request.build_absolute_uri(post.get_absolute_url()),
             True,
         )
-        cache.set(
-            posts_feed_version_cache_key, cache.get(posts_feed_version_cache_key, 0) + 1
-        )
+        HandleCacheService().invalidate_cache_version(CACHE_KEYS["POSTS_LIST_VERSION"])
         return redirect(post.get_absolute_url())
 
 

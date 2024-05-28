@@ -1,8 +1,7 @@
 from django.contrib.auth.models import User
 from django.db.models import Model
 
-
-class ToggleM2MAbstractService:
+class ToggleM2MBaseService:
     print("ToggleM2MAbstractService")
     def __init__(self, obj: Model, m2m_field_name: str, user: User) -> None:
         self.obj = obj
@@ -34,12 +33,11 @@ class ToggleM2MAbstractService:
         print("ToggleM2MAbstractService.execute")
         return self._toggle_m2m_relationship()
 
-class ToggleLikeService(ToggleM2MAbstractService):
-    print("ToggleLikeService")
+class ToggleLikeService(ToggleM2MBaseService):
     def __init__(self, obj: Model, user: User) -> None:
         super().__init__(obj, "liked", user)
         
-class ToggleSaveService(ToggleM2MAbstractService):
+class ToggleSaveService(ToggleM2MBaseService):
     def __init__(self, obj: Model, user: User) -> None:
         super().__init__(obj, "saved", user)
         

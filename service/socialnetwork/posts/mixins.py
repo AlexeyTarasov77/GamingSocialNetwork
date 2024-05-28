@@ -9,7 +9,7 @@ from gameblog.redis_connection import r
 from taggit.models import Tag
 
 from .models import Post
-from .services import PostListService
+from .services.PostService import PostService
 
 posts_feed_version_cache_key = "posts_feed_version"
 
@@ -39,7 +39,8 @@ class ListPostsQuerySetMixin:
         post_type = self.request.GET.get("type") or Post.Type.POST
         user = self.request.user
         tag_slug = self.kwargs.get("tag_slug")
-        queryset = PostListService(user, post_type, tag_slug).execute()
+        print(user)
+        queryset = PostService.list_posts(user=user, ct=post_type, tag_slug=tag_slug)
         return queryset
         # request = self.request
         # user = request.user

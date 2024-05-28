@@ -4,7 +4,7 @@ from posts.models import Post, Comment
 from rest_framework import viewsets, status, permissions
 from rest_framework.response import Response
 from posts.mixins import ListPostsQuerySetMixin
-from posts import services
+from posts.services.PostService import PostService
 from django.shortcuts import get_object_or_404
 
 class PostsViewSet(ListPostsQuerySetMixin, viewsets.ModelViewSet):
@@ -23,7 +23,7 @@ class LikeAPIView(views.APIView):
 
     def post(self, request, *args, **kwargs):
         obj = self.get_object(request.POST.get("object_id")) # получить id текущего поста из запроса
-        is_liked = services.ToggleLikeService(obj, request.user).execute()
+        is_liked = PostService.like(obj, request.user)
         data = {"is_liked": is_liked, "likes_count": obj.liked.count()}
         serializer = s.LikeSerializer(data)  # сериализовать данные в json формат
         return Response(serializer.data)  # вернуть на клиент сериализованные данные
@@ -52,7 +52,7 @@ class SavePostAPIView(generics.GenericAPIView):
 
     def patch(self, request, post_id):
         post = self.get_object()
-        is_saved = services.ToggleSaveService(post, request.user).execute()
+        is_saved = PostService.save(post, request.user)
         data = {"is_saved": is_saved}
         return Response(data)
 
