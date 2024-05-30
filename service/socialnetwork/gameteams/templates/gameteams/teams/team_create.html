@@ -2,6 +2,9 @@
 {% load i18n %}
 {% load crispy_forms_tags %}
 
+{% block backlink %}
+<a href="{% url "teams:team_list" %}" class="text-light">Все команды</a>
+{% endblock backlink %}
 {% block form_title %}{% trans "Создание команды" %}{% endblock form_title %}
 {% block form_subtitle %}{% trans "Для создания команды заполните форму ниже" %}{% endblock form_subtitle %}
 {% block form_content %}

@@ -1,5 +1,5 @@
 {% extends "gameteams/base.html" %}
-{% load static %}
+{% load static %} {% load countries %} {% load i18n %}
 {% block gameteams_links %}
 <link rel="stylesheet" href="{% static "gameteams/css/team_list.css" %}">
 {% endblock gameteams_links %}
@@ -7,22 +7,52 @@
 {% block title %}Список команд{% endblock title %}
 
 {% block content %}
+<div class="flex flex-col gap-2 my-4">
+    <div class="bg-red-800 p-3">
+        <div class="text-xl text-slate-400">
+            {% if current_game %}
+            Teams {{current_game|upper}}
+            {% else %}
+            {% trans "All esports teams" %}
+            {% endif %}
+        </div>
+        <div class="flex gap-2 items-center">
+            {% for game in games %}
+                <a href="{{request.path}}?game={{game.slug}}">
+                    <img src="{{game.logo.url}}" alt="" width="45" height="45" class="rounded-full">
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="bg-red-800 p-2 pb-4">
+        <div class="flex gap-2 items-center">
+            {% for country in countries %}
+                {% get_country country as country %}
+                <div class="team-country-flag mb-auto">
+                    <a href="{{request.path}}?country={{country.code}}">
+                        <img src="{{country.flag}}" alt="" width="45" height="45" class="rounded-full">
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
 <div class="teams-list d-flex flex-column text-light" style="gap: 1rem">
     {% for team in teams %}
-    <div class="team d-flex p-4 justify-content-between align-items-center" >
-        <div class="team-logo me-5">
+    <div class="team d-flex p-4 justify-content-between align-items-center">
+        <div class="team-logo me-5 mb-auto">
             <a href="{{team.get_absolute_url}}">
                 <span class="team-country-flag">
                     <img src="{{team.country.flag}}" alt="" width="25" height="25">
                 </span>
-                <img src="{{team.get_logo}}" alt="" width="70" height="70">
+                <img src="{{team.get_logo}}" alt="" width="85" height="85">
             </a>
         </div>
         <div class="team-name">
             <h4><a href="{{team.get_absolute_url}}" class="text-light">{{team.name}}</a></h4>
         </div>
         <div class="team-game">
-            <h4>{{team.game|upper}}</h4>
+            <img src="{{team.game.logo.url}}" alt="" width="100" height="100">
         </div>
         <div class="team-rating flex">
             <span class="hidden" id="num-rating">{{team.rating}}</span>

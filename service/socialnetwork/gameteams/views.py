@@ -7,7 +7,7 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin, AccessMixin
 from django.contrib.auth import get_user_model
 from . import forms
-from .models import Ad, Team
+from .models import Ad, Team, Game
 from posts.mixins import ObjectViewsMixin
 from .team_handle import TeamHandle
 from users.models import Profile
@@ -19,8 +19,38 @@ def index_view(request):
 
 class TeamListView(generic.ListView):
     template_name = "gameteams/teams/team_list.html"
-    queryset = Team.objects.only("name", "slug", "rating", "logo", "game", "country")
+    queryset = Team.objects.only("name", "slug", "rating", "logo", "game", "country").select_related("game")
     context_object_name = "teams"
+    current_game = None
+    
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        country_code = self.request.GET.get("country") # filtering by country
+        game = self.request.GET.get("game") # filtering by game
+        query = {}
+        if country_code:
+            query["country"] = country_code
+        if game:
+            self.current_game = game
+            query["game__slug"] = game
+        return queryset.filter(**query)
+        
+    def _get_teams_countries(self):
+        countries = []
+        for team in self.queryset:
+            if team.country not in countries:
+                countries.append(team.country)
+        return countries
+    
+    def _get_teams_games(self):
+        return Game.objects.all()
+    
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        context["games"] = self._get_teams_games()
+        context["countries"] = self._get_teams_countries()
+        context["current_game"] = self.current_game
+        return context
 
     
 class TeamCreateView(LoginRequiredMixin, generic.CreateView):
