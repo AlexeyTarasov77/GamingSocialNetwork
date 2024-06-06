@@ -57,9 +57,16 @@
         {% endfor %}
     </div>
 </div>
+<div class="absolute right-16" style="bottom: -150%;">
+    <a href="{% url "teams:ad_create" %}">
+        <svg class="text-orange-600 transition-colors hover:text-red-500" xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
+            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z"/>
+        </svg>
+    </a>
+</div>
 {% endblock content %}
 
 {% block js %}
 <script src="https://unpkg.com/htmx.org@1.9.10" integrity="sha384-D1Kt99CQMDuVetoL1lrYwg5t+9QdHe7NLX/SoJYkXDFfX37iInKRy5xLSi8nO7UC" crossorigin="anonymous" defer></script>
-<script type="module" src="{% static "gameteams/js/ad_mark_active_tab.js" %}"></script>
+<script type="module" src="{% static "gameteams/js/ads/ad_mark_active_tab.js" %}"></script>
 {% endblock js %}

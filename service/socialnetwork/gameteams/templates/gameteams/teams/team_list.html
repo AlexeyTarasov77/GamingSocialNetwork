@@ -54,9 +54,7 @@
         <div class="team-game">
             <img src="{{team.game.logo.url}}" alt="" width="100" height="100">
         </div>
-        <div class="team-rating flex">
-            <span class="hidden" id="num-rating">{{team.rating}}</span>
-        </div>
+        {% include "gameteams/teams/components/rating.html" %}
     </div>
     {% endfor %}
 </div>
