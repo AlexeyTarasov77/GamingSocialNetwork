@@ -18,7 +18,11 @@ class Ad(models.Model):
     favorites = models.ManyToManyField(
         User, related_name="favorite_ads", blank=True, verbose_name=_("Избранное")
     )
-    game = models.CharField(_("Игра"), max_length=100, db_index=True)
+    game = models.ForeignKey(
+        "Game",
+        on_delete=models.CASCADE,
+        verbose_name=_("Игра"),
+    )
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
@@ -70,7 +74,7 @@ class Team(SaveSlugMixin, models.Model):
     )
     time_create = models.DateTimeField(_("Дата создания"), auto_now_add=True)
     time_update = models.DateTimeField(_("Дата обновления"), auto_now=True)
-    founder = models.OneToOneField(
+    founder = models.ForeignKey(
         User,
         verbose_name=_("Основатель"),
         on_delete=models.SET_NULL,
@@ -87,10 +91,6 @@ class Team(SaveSlugMixin, models.Model):
 
     class Meta:
         ordering = ["-rating"]
-
-    @property
-    def members(self):
-        return self.members.all()
 
     def __str__(self):
         return self.name
