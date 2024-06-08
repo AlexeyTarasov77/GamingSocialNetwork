@@ -61,7 +61,6 @@ class AddPostTestCase(TestCase):
             content_type='application/json'
         )
         self.assertEqual(response.status_code, 200)
-        print(Post.objects.all())
         self.assertTrue(Post.objects.filter(title=data["title"], content=data["content"]).exists())
     def test_view(self):
         response = self.client.get(reverse('posts:add-post'))
