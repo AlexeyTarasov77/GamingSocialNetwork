@@ -41,14 +41,13 @@ class DetailPostTestCase(TestCase):
         self.assertTemplateUsed(response, 'posts/detail.html')
         self.assertFalse(response.context['is_owner'])
         
-        
+
 class AddPostTestCase(TestCase):
     def setUp(self):
         activate('en')
         self.client = Client()
         self.user = UserFactory.create()
-        is_logged_in = self.client.login(username=self.user.username, password='password123')
-        print(is_logged_in)
+        self.client.login(username=self.user.username, password='password123')
     def test_create(self):
         data = {
             'title': 'Testing Add Post',
@@ -57,8 +56,7 @@ class AddPostTestCase(TestCase):
         }
         response = self.client.post(
             reverse('posts:add-post'),
-            json.dumps(data),
-            content_type='application/json'
+            data,
         )
         self.assertEqual(response.status_code, 200)
         self.assertTrue(Post.objects.filter(title=data["title"], content=data["content"]).exists())

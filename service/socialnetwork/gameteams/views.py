@@ -93,19 +93,19 @@ class TeamJoinView(LoginRequiredMixin, generic.View):
             msg = "Вы уже отправляли заявку на вступление"
         return JsonResponse({"msg": msg}, status=200)
 
-def team_join_view(request, slug):
-    if request.method == "POST":
-        team = Team.objects.get(slug=slug)
-        user = request.user
-        handler = TeamService(team)
-        if handler.check_is_member(user.profile):
-            return JsonResponse({"msg": "Вы уже состоите в команде"}, status=400)
-        obj, created = handler.create_join_request(user)
-        msg = "Заявка на вступление отправлена"
-        # if join req already existed - indicate that user already sent request
-        if not created: 
-            msg = "Вы уже отправляли заявку на вступление"
-        return JsonResponse({"msg": msg}, status=200)
+# def team_join_view(request, slug):
+#     if request.method == "POST":
+#         team = Team.objects.get(slug=slug)
+#         user = request.user
+#         handler = TeamService(team)
+#         if handler.check_is_member(user.profile):
+#             return JsonResponse({"msg": "Вы уже состоите в команде"}, status=400)
+#         obj, created = handler.create_join_request(user)
+#         msg = "Заявка на вступление отправлена"
+#         # if join req already existed - indicate that user already sent request
+#         if not created: 
+#             msg = "Вы уже отправляли заявку на вступление"
+#         return JsonResponse({"msg": msg}, status=200)
 
 @login_required
 def leave_team_view(request, slug):
@@ -116,14 +116,14 @@ def leave_team_view(request, slug):
         handler.remove_member(leaving_member)
         return JsonResponse({"success": True}, status=200)
     else:
-        return JsonResponse({"success": False, "error_msg": "Вы не состоите в этой команде"}, status=406)
+        return JsonResponse({"success": False, "error_msg": "Вы не состоите в этой команде"}, status=404)
 
 @login_required
 def remove_team_member_view(request, pk):
     member = get_object_or_404(Profile, pk=pk)
     team = request.user.profile.team
-    if not request.user == team.leader:
-        print(request.user, team.leader)
+    print(team, request.user)
+    if not team or not request.user == team.leader:
         return JsonResponse({"success": False, "error_msg": "Недостаточно прав"}, status=403)
     if not member in team.members.all():
         return JsonResponse({"success": False, "error_msg": "Участник не состоит в вашей команде"}, status=404)

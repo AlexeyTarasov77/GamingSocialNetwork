@@ -23,6 +23,7 @@ def cart_add_or_update(request, product_id):
     cart = Cart(request)
     product = get_object_or_404(ProductProxy, id=product_id) 
     quantity = int(request.POST.get("qty", 1))
+    print(quantity, request.POST.get("qty"))
     cart.add_or_update(product, quantity)
     # data = {"total_price": cart.get_total_price(), "total_items": len(cart)}
     return HttpResponse(len(cart))

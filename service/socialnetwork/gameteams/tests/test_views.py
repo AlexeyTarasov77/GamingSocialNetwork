@@ -20,7 +20,7 @@ class TeamDetailTestCase(TestCase):
     def test_team_leave_not_allowed(self):
         """In case that user arent in team"""
         response = self.client.get(self.url)
-        self.assertEqual(response.status_code, 406)
+        self.assertEqual(response.status_code, 404)
         
     def test_team_leave_allowed(self):
         """Positive test case"""
@@ -32,25 +32,31 @@ class TeamDetailTestCase(TestCase):
 class TeamHandleTestCase(TestCase):
     def setUp(self):
         self.client = Client()   
-        self.user1, self.user2 = UserFactory.create_batch(2)
+        self.user1, self.user2, self.user3 = UserFactory.create_batch(3)
         self.team = TeamFactory.create(leader=self.user1, founder=self.user1)
-        self.response = self.client.get(reverse('teams:remove_team_member', kwargs={'pk': self.user2.profile.pk}))
+        self.user1.profile.team = self.team
+        self.user1.profile.save()
+        self.url = reverse('teams:remove_team_member', kwargs={'pk': self.user3.profile.pk})
         
     def test_kick_member_not_allowed(self):
         """In case the user is not the team leader"""
         self.client.login(username=self.user2.username, password="password123")
-        self.assertEqual(self.response.status_code, 403)
+        response = self.client.post(self.url)
+        self.assertEqual(response.status_code, 403)
         
     def test_kick_member_not_found(self):
         """In case the user is not found in team"""
         self.client.login(username=self.user1.username, password="password123") 
-        self.assertEqual(self.response.status_code, 404)
+        response = self.client.post(self.url)
+        self.assertEqual(response.status_code, 404)
         
     def test_kick_member_found(self):
         """Positive test case"""
         self.client.login(username=self.user1.username, password="password123")
-        self.user2.profile.team = self.team
-        self.assertEqual(self.response.status_code, 200)
+        self.user3.profile.team = self.team
+        self.user3.profile.save()
+        response = self.client.post(self.url)
+        self.assertEqual(response.status_code, 200)
         
         
         
