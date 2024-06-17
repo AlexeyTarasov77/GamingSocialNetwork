@@ -20,7 +20,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         pass
 
     # Receive message from WebSocket
-    async def receive_json(self, content):
+    async def receive(self, content):
         match content.get('type'):
             case 'disconnect':
                 self.channel_layer.group_send(
