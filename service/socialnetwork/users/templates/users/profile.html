@@ -48,7 +48,7 @@
             </div>
         </div>
         <div class="profile__photo">
-            <img src="{{profile.get_profile_image}}" alt="" width="200" height="200">
+            <img src="{{profile.get_image}}" alt="" width="200" height="200">
             {% if is_online %}
             <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-circle-fill text-success" viewBox="0 0 16 16" id="online-icon">
                 <circle cx="8" cy="8" r="8"/>
@@ -117,7 +117,7 @@
                     <ul class="list-group">
                         {% for f in profile.following.all %}
                             <li class="list-group-item follower">
-                                <div class="follower__photo"><img src="{{f.profile.get_profile_image}}" alt=""></div>
+                                <div class="follower__photo"><img src="{{f.profile.get_image}}" alt=""></div>
                                 <div class="follower__name"><h4><a class="text-info" href="{{f.profile.get_absolute_url}}">{{f.username}}</a></h4></div>
                             </li>
                         {% endfor %}
@@ -131,7 +131,7 @@
                     <ul class="list-group">
                         {% for f in profile.friends.all %}
                             <li class="list-group-item friend">
-                                <div class="friend__photo"><img src="{{f.profile.get_profile_image}}" alt=""></div>
+                                <div class="friend__photo"><img src="{{f.profile.get_image}}" alt=""></div>
                                 <div class="friend__name"><h4><a class="text-info" href="{{f.profile.get_absolute_url}}">{{f.username}}</a></h4></div>
                             </li>
                         {% endfor %}
@@ -145,7 +145,7 @@
                     <ul class="list-group">
                         {% for f in profile.followers.all %}
                             <li class="list-group-item subscriber">
-                                <div class="subscriber__photo"><img src="{{f.profile.get_profile_image}}" alt=""></div>
+                                <div class="subscriber__photo"><img src="{{f.profile.get_image}}" alt=""></div>
                                 <div class="subscriber__name"><h4><a class="text-info" href="{{f.profile.get_absolute_url}}">{{f.username}}</a></h4></div>
                             </li>
                         {% endfor %}

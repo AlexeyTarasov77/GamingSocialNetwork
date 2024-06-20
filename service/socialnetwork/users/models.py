@@ -85,7 +85,7 @@ class Profile(SaveSlugMixin, models.Model):
             *args, slug_field="user_slug", slugify_value=self.user.username, **kwargs
         )
 
-    def get_profile_image(self):
+    def get_image(self):
         return self.image.url if self.image else "/static/users/images/profile.jpeg"
 
     def get_background_image(self):

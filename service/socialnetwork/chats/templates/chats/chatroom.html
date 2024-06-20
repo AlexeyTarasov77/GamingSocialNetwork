@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block links %}
+<script src="https://unpkg.com/htmx.org@2.0.0"></script>
+<script src="https://unpkg.com/htmx.org/dist/ext/ws.js"></script>
+{% endblock links %}
+
+{% block content %}
+<style>
+    #sidebar {
+        display: none;
+    }
+    @media screen and (min-width: 768px) {
+        body {
+            padding-left: calc(var(--nav-width) + 0rem);
+        }
+    }
+</style>
+<div class="chatroom bg-blue-950 w-full h-screen">
+    {% include "chats/includes/list_chats.html" %}
+    {% comment %} <div class="head flex justify-between w-11/12 bg-purple-700 h-1/6 p-5 items-center fixed">
+        {% include "chats/includes/chat_item.html" with content="Онлайн 2ч назад" %}
+        <div>
+            <button class="text-slate-300">
+                <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                    <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
+                </svg>
+            </button>
+        </div>
+    </div> {% endcomment %}
+    <div class="body flex flex-col h-full">
+        <div id='chat_container' class="overflow-y-auto grow">
+            <ul id="chat_messages" class="flex flex-col justify-end gap-2 p-4">
+                {% for message in chat.messages.all reversed %}
+                {% include 'chats/includes/chat_message.html' %}
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="sticky bottom-0 z-10 p-2 bg-gray-800">
+            <div class="flex flex-col gap-4 items-center rounded-xl px-2 py-2">
+                <form id="chat_message_form" class="w-full"
+                    hx-trigger="submit"
+                    hx-ext="ws"
+                    ws-connect="/ws/chats/{{ chat.id }}/"
+                    ws-send
+                    _="on htmx:wsAfterSend reset() me">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                    <button class="btn btn-primary">Send</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+{% block js %}
+<script>
+    function scrollToBottom() {
+        const container = document.getElementById('chat_container');
+        container.scrollTop = container.scrollHeight;
+    }
+    scrollToBottom()
+    document.addEventListener("DOMContentLoaded", function(event) {
+        const form = document.getElementById('chat_message_form');
+        const inputField = form.querySelector('textarea');
+    
+        inputField.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault(); 
+                form.submit(); 
+            }
+        });
+   
+        const showNavbar = (toggleId, navId, bodyId, headerId) => {
+        const toggle = document.getElementById(toggleId),
+        nav = document.getElementById(navId),
+        bodypd = document.getElementById(bodyId),
+        headerpd = document.getElementById(headerId)
+        
+        // Validate that all variables exist
+        if(toggle && nav && bodypd && headerpd){
+        toggle.addEventListener('click', ()=>{
+        // show navbar
+        nav.classList.toggle('show')
+        // change icon
+        toggle.classList.toggle('bx-x')
+        // add padding to body
+        bodypd.classList.toggle('body-pd')
+        // add padding to header
+        headerpd.classList.toggle('body-pd')
+        })
+        }
+        }
+        
+        showNavbar('header-toggle','nav-bar','body-pd','header')
+        
+        /*===== LINK ACTIVE =====*/
+        const linkColor = document.querySelectorAll('.nav_link')
+        
+        function colorLink(){
+        if(linkColor){
+        linkColor.forEach(l=> l.classList.remove('active'))
+        this.classList.add('active')
+        }
+        }
+        linkColor.forEach(l=> l.addEventListener('click', colorLink))
+        
+         // Your code to run since DOM is loaded and ready
+        });
+</script>
+{% endblock js %}

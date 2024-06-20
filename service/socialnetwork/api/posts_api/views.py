@@ -1,17 +1,19 @@
-from . import serializers as s
-from rest_framework import generics, views
-from posts.models import Post, Comment
-from rest_framework import viewsets, status, permissions
-from rest_framework.response import Response
-from posts.mixins import ListPostsQuerySetMixin
-from django.urls import reverse_lazy
 from django.shortcuts import get_object_or_404
+from django.urls import reverse_lazy
+from posts.mixins import ListPostsQuerySetMixin
+from posts.models import Comment, Post
+from rest_framework import generics, permissions, status, views, viewsets
+from rest_framework.response import Response
+
+from . import serializers as s
+
 
 class PostsViewSet(ListPostsQuerySetMixin, viewsets.ModelViewSet):
     serializer_class = s.PostSerializer
-    
+
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
+
 
 class LikeAPIView(views.APIView):
     permission_classes = [
@@ -83,11 +85,7 @@ class CreateCommentAPIView(generics.CreateAPIView):
         comment_data["author"] = obj.author.username
         comment_data["is_child"] = obj.is_child_node()
         comment_data["by_author"] = (
-            obj.is_root_node()
-            or obj.get_root().author.username
-            == obj.author.username
+            obj.is_root_node() or obj.get_root().author.username == obj.author.username
         )
-        comment_data["author_image"] = obj.author.profile.get_profile_image()
+        comment_data["author_image"] = obj.author.profile.get_image()
         return Response(comment_data, status=status.HTTP_201_CREATED)
-
-

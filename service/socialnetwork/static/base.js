@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function () {
   // const sidebarLinks = document.querySelectorAll('a.nav_link');
 
   if (userID) {
-    const socket = new WebSocket(`ws://${window.location.host}/ws/status/`)
+    const socket = new WebSocket(`ws://${window.location.host}/ws/gameblog/online-status/`)
   }
 
 //   setClick()

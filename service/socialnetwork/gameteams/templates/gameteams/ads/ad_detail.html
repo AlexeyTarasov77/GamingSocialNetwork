@@ -71,7 +71,7 @@
         <div class="p-2.5 flex flex-col gap-2.5">
             {% with user=ad.user %}
             <div class="flex gap-2.5">
-                <div><img class="rounded-full" src="{{user.profile.get_profile_image}}" alt="Фото профиля" width="50" height="50"></div>
+                <div><img class="rounded-full" src="{{user.profile.get_image}}" alt="Фото профиля" width="50" height="50"></div>
                 <p class="font-semibold font-mono text-lg text-slate-400">{{ user.get_full_name|default:user.username }}</p>
             </div>
             <div class="text-lg font-serif text-slate-400">

@@ -6,11 +6,8 @@ from actions.models import Action
 from decouple import config
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ObjectDoesNotExist
-from django.core.paginator import Paginator
 from django.db.models import Count, Q
 from django.db.models.query import QuerySet
-from django.http import HttpRequest, HttpResponse, JsonResponse
-from django.shortcuts import render
 from django.utils import timezone
 from django.views import generic
 from posts.models import Post

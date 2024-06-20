@@ -16,8 +16,7 @@ urlpatterns = i18n_patterns(
     path("payment/", include("payment.urls", namespace="payment")),
     path("coupons/", include("coupons.urls", namespace="coupons")),
     path("shop/", include("gameshop.urls", namespace="shop")),
-    # path('articles/', include('articles.urls', namespace='articles')),
-    # path('chat/', include('chat.urls', namespace='chat')),
+    path('chats/', include('chats.urls', namespace='chats')),
     # path('events/', include('events.urls', namespace='events')),
     path("posts/", include("posts.urls", namespace="posts")),
     path('teams/', include('gameteams.urls', namespace='teams')),
@@ -27,7 +26,7 @@ urlpatterns = i18n_patterns(
 urlpatterns += [
     path('stripe/webhook/', webhooks.stripe_webhook, name='stripe_webhook'),
     path("api/", include("api.urls", namespace="api")),
-    ]
+]
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

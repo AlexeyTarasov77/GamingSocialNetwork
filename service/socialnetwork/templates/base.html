@@ -27,7 +27,7 @@
           <li class="nav-item">
             {% url m.url_name as url %}
             <a class="nav-link {% if request.path == url %} nav-active {% endif %}" 
-              id="{{forloop.counter}}" 
+              id="menu-item-{{forloop.counter}}" 
               href="{% if m.url_name != '#' %} {{url}} {% else %} # {% endif %}">
               {% trans m.title %}
             </a>
@@ -40,7 +40,7 @@
     </div>
   </nav>
 </header>
-<div class="l-navbar" id="nav-bar">
+<div class="l-navbar" id="sidebar">
   <nav class="nav">
       <div> <a href="#" class="nav_logo"> <i class='bx bx-layer nav_logo-icon'></i> <span class="nav_logo-name">BBBootstrap</span> </a>
           <div class="nav_list"> 
@@ -49,7 +49,7 @@
               <a 
                 href="{% if sld.url_name != '#' %} {{url}} {% else %} # {% endif %}" 
                 class="nav_link {% if request.path == url %} sidebar_active {% endif %}" 
-                id="{{forloop.counter}}" 
+                id="sidebar-item-{{forloop.counter}}" 
                 data-bs-toggle="tooltip" 
                 data-bs-placement="right" 
                 data-bs-title="{% trans sld.tooltip %}"> 
