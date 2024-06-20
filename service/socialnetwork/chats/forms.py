@@ -8,7 +8,7 @@ class MessageCreateForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['body'].widget.attrs.update({'rows': 3, 'placeholder': 'Введите сообщение...'})
+        self.fields['body'].widget.attrs.update({'placeholder': 'Введите сообщение...'})
         self.fields['body'].label = ''
 
 

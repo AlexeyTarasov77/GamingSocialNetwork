@@ -41,7 +41,7 @@ class Message(models.Model):
     )
     chat = models.ForeignKey(ChatRoom, on_delete=models.CASCADE, related_name='messages')
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='chat_messages')
-    body = models.TextField(max_length=300)
+    body = models.CharField(max_length=300)
     status = models.CharField(max_length=10, default=STATUS_CHOICES[1][0])
     created_at = models.DateTimeField(auto_now_add=True)
 
