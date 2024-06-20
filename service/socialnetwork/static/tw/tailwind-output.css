@@ -734,6 +734,10 @@ video {
   margin-top: 2.5rem;
 }
 
+.mb-10 {
+  margin-bottom: 2.5rem;
+}
+
 .block {
   display: block;
 }
@@ -792,6 +796,18 @@ video {
 
 .h-5 {
   height: 1.25rem;
+}
+
+.h-1\/2 {
+  height: 50%;
+}
+
+.h-\[20\%\] {
+  height: 20%;
+}
+
+.h-\[10\%\] {
+  height: 10%;
 }
 
 .max-h-10 {
@@ -860,6 +876,10 @@ video {
 
 .w-\[1306px\] {
   width: 1306px;
+}
+
+.w-\[1206\] {
+  width: 1206;
 }
 
 .min-w-72 {

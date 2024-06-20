@@ -12,9 +12,9 @@
                 <i class='bx bx-menu' id="header-toggle"></i> 
             </a>
             <div class="nav_list">
-                {% for chat, image in zipped_chats %}
-                <a href="#" class="nav_link">
-                    <img src="{{image}}" alt="" width="20" height="20" class="nav_icon">
+                {% for chat in chats %}
+                <a href="{{chat.get_absolute_url}}" class="nav_link">
+                    <img src="{{chat.get_image}}" alt="" width="20" height="20" class="nav_icon">
                     <span class="nav_name">{{chat.name}}</span>
                 </a>
                 {% endfor %}

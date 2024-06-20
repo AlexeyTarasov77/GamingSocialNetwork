@@ -3,6 +3,8 @@ from django.contrib.auth import get_user_model
 from django.conf import settings
 import uuid
 
+from django.urls import reverse
+
 User = get_user_model()
 
 # Create your models here.
@@ -26,6 +28,9 @@ class ChatRoom(models.Model):
     
     def get_image(self):
         return self.image.url if self.image else settings.DEFAULT_IMAGE_URL
+    
+    def get_absolute_url(self):
+        return reverse('chats:detail', args=[self.id])
     
     
 class Message(models.Model):

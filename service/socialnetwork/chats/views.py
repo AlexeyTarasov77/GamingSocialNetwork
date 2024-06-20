@@ -45,8 +45,11 @@ class ChatRoomView(generic.DetailView, generic.FormView, ChatsMixin):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         chat = self.object
+        # raise Exception(self.get_chat_image(chat), self.get_other_user(chat), chat.is_group)
+        print(self.get_chat_image(chat), self.get_other_user(chat), chat.is_group)
         context["chat_image"] = self.get_chat_image(chat)
         context["other_user"] = self.get_other_user(chat)
+        context["chats"] = ChatRoom.objects.filter(members = self.request.user)
         return context
     
     def form_valid(self, form):

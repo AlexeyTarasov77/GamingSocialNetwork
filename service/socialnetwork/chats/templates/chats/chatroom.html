@@ -20,8 +20,9 @@
 </style>
 <div class="chatroom bg-blue-950 w-full h-screen">
     {% include "chats/includes/list_chats.html" %}
-    {% comment %} <div class="head flex justify-between w-11/12 bg-purple-700 h-1/6 p-5 items-center fixed">
-        {% include "chats/includes/chat_item.html" with content="Онлайн 2ч назад" %}
+        
+    <div class="head flex justify-between w-10/12 bg-purple-700 h-[10%] p-5 items-center fixed mb-10">
+        {% include "chats/includes/chat_item.html" with content="Онлайн 2ч назад" image=chat_image %}
         <div>
             <button class="text-slate-300">
                 <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
@@ -30,7 +31,7 @@
                 </svg>
             </button>
         </div>
-    </div> {% endcomment %}
+    </div>
     <div class="body flex flex-col h-full">
         <div id='chat_container' class="overflow-y-auto grow">
             <ul id="chat_messages" class="flex flex-col justify-end gap-2 p-4">
