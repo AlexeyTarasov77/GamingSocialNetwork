@@ -1,13 +1,16 @@
 {% load static %} {% load i18n %}
 <input type="hidden" id="like-url" value="{% url 'api:posts:like-post' %}">
 <div class="like-container">
-    {% if request.user in post.liked.all %}
-    <div class="heart is-active" data-post-id="{{ post.id }}"></div>
-    {% else %}
-    <div class="heart" data-post-id="{{ post.id }}"></div>
-    {% endif %}
+    <div 
+        class="heart {% if request.user in post.liked.all %}is-active{% endif %}" 
+        id="like"
+        data-post-id="{{ post.id }}"
+        hx-post="{% url 'api:posts:like-post' %}"
+        hx-vals='{"object_id": "{{ post.id }}"}'
+        hx-headers='{"X-CSRFToken": "{{csrf_token}}"}'
+        hx-swap="none"
+        >
+
+    </div>
 </div>
 {% csrf_token %}
-{% block js %}
-<script type="module" src="{% static "posts/js/like.js" %}"></script>
-{% endblock js %}
