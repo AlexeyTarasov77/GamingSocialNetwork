@@ -1,7 +1,9 @@
 from django.db.models import Prefetch
 from django.views import generic
+from django.views.generic.edit import FormMixin
 from .models import ChatRoom, Message
 from . import forms
+generic.FormView
 
 # Create your views here.
 
@@ -30,7 +32,7 @@ class ListChatsView(generic.ListView, ChatsMixin):
         return context
 
 
-class ChatRoomView(generic.DetailView, generic.FormView, ChatsMixin):
+class ChatRoomView(generic.DetailView, FormMixin, ChatsMixin):
     template_name = "chats/chatroom.html"
     context_object_name = "chat"
     queryset = (
@@ -49,12 +51,4 @@ class ChatRoomView(generic.DetailView, generic.FormView, ChatsMixin):
         print(self.get_chat_image(chat), self.get_other_user(chat), chat.is_group)
         context["chat_image"] = self.get_chat_image(chat)
         context["other_user"] = self.get_other_user(chat)
-        context["chats"] = ChatRoom.objects.filter(members = self.request.user)
         return context
-    
-    def form_valid(self, form):
-        msg = form.save(commit=False)
-        msg.chat = self.object
-        msg.author = self.request.user
-        msg.save()
-        return super().form_valid(form)

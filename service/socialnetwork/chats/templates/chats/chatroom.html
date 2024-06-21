@@ -1,169 +1,44 @@
 {% extends "base.html" %}
 
-{% load crispy_forms_tags %}
+{% load crispy_forms_tags %} {% load static %}
 
 {% block links %}
+<link rel="stylesheet" href="{% static "chats/css/sidebar.css" %}">
 <script src="https://unpkg.com/htmx.org@2.0.0"></script>
 <script src="https://unpkg.com/htmx.org/dist/ext/ws.js"></script>
 {% endblock links %}
 
 {% block content %}
 <style>
-    #sidebar {
-        display: none;
-    }
-    @media screen and (min-width: 768px) {
-        body {
-            padding-left: calc(var(--nav-width) + 0rem);
-        }
-    }
-    @import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap");
-
-:root {
-    --header-height: 3rem;
-    --nav-width: 68px;
-    --first-color: rgb(126 34 206);;
-    --first-color-light: #AFA5D9;
-    --white-color: #F7F6FB;
-    --body-font: 'Nunito', sans-serif;
-    --normal-font-size: 1rem;
-    --z-fixed: 100;
-}
-
-*, ::before, ::after {
-    box-sizing: border-box;
-}
-
-body {
-    position: relative;
-    margin: var(--header-height) 0 0 0;
-    padding: 0 1rem;
-    font-family: var(--body-font);
-    font-size: var(--normal-font-size);
-    transition: .5s;
-}
-
-a {
-    text-decoration: none;
-}
-
-
-.header_toggle {
-    color: var(--white-color);
-    font-size: 2rem;
-    cursor: pointer;
-}
-
-
-.nav {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    overflow: hidden;
-}
-
-.nav_logo, .nav_link {
-    display: grid;
-    grid-template-columns: max-content max-content;
-    align-items: center;
-    column-gap: 1rem;
-    padding: .5rem 0 .5rem 1.5rem;
-}
-
-.nav_logo {
-    margin-bottom: 2rem;
-}
-
-.nav_logo-icon {
-    font-size: 1.25rem;
-    color: var(--white-color);
-}
-
-.nav_logo-name {
-    color: var(--white-color);
-    font-weight: 700;
-}
-
-.nav_link {
-    position: relative;
-    color: var(--first-color-light);
-    margin-bottom: 1.5rem;
-    transition: .3s;
-}
-
-.nav_link:hover {
-    color: var(--white-color);
-}
-
-.nav_icon {
-    font-size: 1.25rem;
-}
-
-.show {
-    left: 0;
-}
-
-.body-pd {
-    padding-left: calc(var(--nav-width) + 0rem);
-}
-
-.active {
-    color: var(--white-color);
-}
-
-.active::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    width: 2px;
-    height: 32px;
-    background-color: var(--white-color);
-}
-
-.height-100 {
-    height: 100vh;
-}
-
-@media screen and (min-width: 768px) {
     body {
-        margin: calc(var(--header-height) + 1rem) 0 0 0;
-        padding-left: calc(var(--nav-width) + 0rem);
+        background: rgb(23, 37, 84)
     }
-
-    .header {
-        height: calc(var(--header-height) + 1rem);
-        padding: 0 2rem 0 calc(var(--nav-width) + 2rem);
-    }
-
-    .l-navbar {
-        left: 0;
-        padding: 1rem 1rem 0 0;
-    }
-
-    .show {
-        width: calc(var(--nav-width) + 156px);
-    }
-
-    .body-pd {
-        padding-left: calc(var(--nav-width) + 188px);
-    }
-}
 </style>
-<div class="chatroom bg-blue-950 w-full h-screen">
-    {% include "chats/includes/list_chats.html" %}
-        
-    {% comment %} <div class="head flex justify-between w-10/12 bg-purple-700 h-[10%] p-5 items-center fixed mb-10">
-        {% include "chats/includes/chat_item.html" with content="Онлайн 2ч назад" image=chat_image %}
-        <div>
-            <button class="text-slate-300">
-                <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
-                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
-                    <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
+<div class="chatroom bg-blue-950 w-full h-screen flex flex-col">
+    <!-- Chat Header -->
+    <header class="bg-blue-700 text-white py-4 px-6 flex justify-between items-center shadow-md">
+        <div class="flex items-center">
+            <div class="mr-10 text-xl flex items-center gap-2 transition-colors hover:text-purple-500">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-arrow-left " viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"/>
                 </svg>
+                <a href="{% url "gameblog:main" %}" class="text-white">На главную</a>
+            </div>
+            <img src="{{chat_image}}" alt="Logo" class="w-8 h-8 mr-2">
+            <h1 class="text-2xl font-bold">{{chat.name}}</h1>
+        </div>
+        <div>
+            <button class="bg-blue-600 hover:bg-blue-500 text-white font-semibold py-2 px-4 rounded">
+                Информация
+            </button>
+            <button class="bg-red-600 hover:bg-red-500 text-white font-semibold py-2 px-4 rounded ml-2">
+                Покинуть
             </button>
         </div>
-    </div> {% endcomment %}
+    </header>
+
+    <div id="chat_list" hx-get="{% url "chats:list" %}" hx-target="this" hx-trigger="load"></div>
+
     <div class="body flex flex-col h-full">
         <div id='chat_container' class="overflow-y-auto grow">
             <ul id="chat_messages" class="flex flex-col justify-end gap-2 p-4">
@@ -194,34 +69,9 @@ a {
         const container = document.getElementById('chat_container');
         container.scrollTop = container.scrollHeight;
     }
-    scrollToBottom()
-    document.addEventListener("DOMContentLoaded", function(event) {
-        const showNavbar = (toggleId, navId, bodyId, headerId) => {
-            const toggle = document.getElementById(toggleId),
-                  nav = document.getElementById(navId),
-                  bodypd = document.getElementById(bodyId),
-                  headerpd = document.getElementById(headerId);
-                
-            // Проверяем, что все переменные существуют
-            if (toggle && nav && bodypd && headerpd) {
-                toggle.addEventListener('click', () => {
-                    // Показываем или скрываем навигационное меню (добавляем/удаляем класс 'show')
-                    nav.classList.toggle('show');
-                    
-                    // Изменяем иконку переключателя (добавляем/удаляем класс 'bx-x')
-                    toggle.classList.toggle('bx-x');
-                    
-                    // Добавляем или удаляем отступ для основного контента (добавляем/удаляем класс 'body-pd')
-                    bodypd.classList.toggle('body-pd');
-                    
-                    // Добавляем или удаляем отступ для заголовка (добавляем/удаляем класс 'body-pd')
-                    headerpd.classList.toggle('body-pd');
-                });
-            }
-        }
-        
-        // Вызов функции с указанными идентификаторами элементов
-        showNavbar('header-toggle', 'nav-bar', 'body', 'header');
+    document.addEventListener("DOMContentLoaded", () => {
+        scrollToBottom();
     });
 </script>
+<script src="{% static "chats/js/sidebar.js" %}"></script>
 {% endblock js %}
