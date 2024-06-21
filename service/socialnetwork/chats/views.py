@@ -43,11 +43,16 @@ class ChatRoomView(generic.DetailView, FormMixin, ChatsMixin):
     )
     pk_url_kwarg = "chat_id"
     form_class = forms.MessageCreateForm
+    
+    def get_template_names(self) -> list[str]:
+        print("HEADERS", self.request.headers)
+        if self.request.headers.get('Hx-Request') == 'true':
+            return ["chats/partials/chatroom_p.html"]
+        return super().get_template_names()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         chat = self.object
-        # raise Exception(self.get_chat_image(chat), self.get_other_user(chat), chat.is_group)
         print(self.get_chat_image(chat), self.get_other_user(chat), chat.is_group)
         context["chat_image"] = self.get_chat_image(chat)
         context["other_user"] = self.get_other_user(chat)
