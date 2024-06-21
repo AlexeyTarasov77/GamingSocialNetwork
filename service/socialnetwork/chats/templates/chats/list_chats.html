@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    body {
+        background: rgb(23, 37, 84)
+    }
+</style>
+
+<div class="container flex-col">
+    {% for chat, image in zipped_chats %}
+    <div class="flex flex-col w-full bg-purple-700 rounded">
+        <a href="{{chat.get_absolute_url}}" class="chat p-2.5 flex gap-2.5 text-white transition-colors hover:bg-purple-800">
+            {% include "chats/includes/chat_item.html" with content=chat.messages.last %}
+        </a>
+        <div class="w-full h-px border border-b"></div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock content %}
