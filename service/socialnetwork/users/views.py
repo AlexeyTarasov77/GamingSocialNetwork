@@ -11,11 +11,12 @@ from django.views import generic
 from posts.models import Post
 from rest_framework import generics, status
 from rest_framework.response import Response
-
+from chats.forms import PersonalChatRoomCreateForm
 from .decorators import owner_required
 from .forms import ProfileUpdateForm
 from .models import FriendRequest, Profile
 from gameblog.redis_connection import r
+
 
 # Create your views here.
 class ProfileView(LoginRequiredMixin, generic.DetailView):
@@ -40,16 +41,21 @@ class ProfileView(LoginRequiredMixin, generic.DetailView):
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
         profile = self.object
-        context["is_owner"] = True if profile.user == self.request.user else False
+        user = self.request.user
+        context["is_owner"] = profile.user == user
+        if not context["is_owner"]:
+            context["chat_form"] = PersonalChatRoomCreateForm(
+                initial={"members": [profile.user, user]}
+            )
+        print(context.get("chat_form"))
         # отправлял ли текущий пользователь запрос в друзья
         context["request_exist"] = (
-            True
-            if profile.requests.filter(from_user=self.request.user).exists()
-            else False
+            profile.requests.filter(from_user=user).exists()
         )
-        context["is_online"] = (int(r.get(f"user:{profile.user.id}:status") or 0) > 0)
+        context["is_online"] = int(r.get(f"user:{profile.user.id}:status") or 0) > 0
 
         return context
+
 
 @owner_required("users")
 def my_posts_view(request, username):

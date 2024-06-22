@@ -1,8 +1,11 @@
+from typing import Any
 from django.db.models import Prefetch
-from django.http import HttpResponse
+from django.http import HttpRequest, HttpResponse
+from django.shortcuts import redirect
 from django.views import generic
-from django.views.generic.edit import FormMixin
-
+from django.views.generic.edit import FormMixin, BaseFormView
+from django.db.models import Q
+from posts.services.PostList import PostSuggestionService
 from . import forms
 from .models import ChatRoom, Message
 
@@ -58,7 +61,8 @@ class ListChatsView(generic.ListView, ChatsMixin):
 
     Attributes:
         template_name (str): The name of the template to use for rendering.
-        context_object_name (str): The name of the context variable to use for the chat rooms list.
+        context_object_name (str): The name of the context variable to use
+        for the chat rooms list.
         queryset (QuerySet): The queryset of chat rooms to retrieve.
         chat_images (List[str]): The list of images for each chat room.
 
@@ -77,7 +81,7 @@ class ListChatsView(generic.ListView, ChatsMixin):
         qs = ChatRoom.objects.filter(members=self.request.user)
         self.chat_images = [self.get_chat_image(chat) for chat in qs]
         return qs
-    
+
     def get_template_names(self) -> list[str]:
         if self.request.headers.get("Hx-Request") == "true":
             return super().get_template_names()
@@ -86,7 +90,8 @@ class ListChatsView(generic.ListView, ChatsMixin):
     def get_context_data(self, **kwargs):
         """
         Get the context data for rendering the template.
-        Adding `zipped_chats` to the context for iterating over the chat rooms and their images.
+        Adding `zipped_chats` to the context for iterating over the chat rooms
+        and their images.
         """
         context = super().get_context_data(**kwargs)
         context["zipped_chats"] = zip(self.get_queryset(), self.chat_images)
@@ -99,7 +104,8 @@ class ChatRoomView(generic.DetailView, FormMixin, ChatsMixin):
 
     Attributes:
         template_name (str): The name of the template to use for rendering.
-        context_object_name (str): The name of the context variable to use for the chat room object.
+        context_object_name (str): The name of the context variable to use
+        for the chat room object.
         queryset (QuerySet): The queryset of chat rooms to retrieve.
         pk_url_kwarg (str): The URL kwarg to use for the chat room ID.
         form_class (type): The form class to use for creating messages.
@@ -157,3 +163,58 @@ class ChatRoomView(generic.DetailView, FormMixin, ChatsMixin):
         msg.chat = self.object
         msg.save()
         return super().form_valid(form)
+
+
+class GroupChatRoomCreateView(generic.CreateView):
+    """
+    View for creating a new chat room.
+
+    Attributes:
+        template_name (str): The name of the template to use for rendering.
+        form_class (type): The form class to use for creating chat rooms.
+    """
+
+    template_name = "chats/chatroom_create.html"
+    form_class = forms.GroupChatRoomCreateForm
+
+    def get_form_kwargs(self) -> dict[str, Any]:
+        kwargs = super().get_form_kwargs()
+        suggestion_service = PostSuggestionService()
+        kwargs.update(members_queryset=suggestion_service.get_suggested_users(self.request.user))
+
+    def form_valid(self, form: forms.GroupChatRoomCreateForm) -> HttpResponse:
+        """
+        Save the form data and associate it with the current user.
+        """
+        chat = form.save(commit=False)
+        chat.admin = self.request.user
+        chat.save()
+        chat.members.add(self.request.user)
+        form.save_m2m()
+        return redirect(chat.get_absolute_url())
+
+
+class PersonalChatRoomCreateView(BaseFormView):
+    form_class = forms.PersonalChatRoomCreateForm
+
+    def get(self, request: HttpRequest, *args: str, **kwargs: Any) -> HttpResponse:
+        return HttpResponse(status=402)  # not allowed
+
+    def form_invalid(self, form):
+        print(form.errors)
+        return HttpResponse(form.errors, status=400)
+
+    def form_valid(self, form: forms.PersonalChatRoomCreateForm) -> HttpResponse:
+        chat = form.save(commit=False)
+        chat_members = form.cleaned_data["members"]
+        chat.name = "&".join(
+            [member.username for member in chat_members]
+        )  # joe&alex
+        if not ChatRoom.objects.filter(
+            Q(name=chat.name) | Q(name="&".join(list(reversed("joe&alex".split("&")))))
+        ).exists():  # joe&alex or alex&joe
+            chat.admin = self.request.user
+            chat.type = ChatRoom.TYPE_CHOICES[1][0]  # personal
+            chat.save()
+            form.save_m2m()
+        return redirect(chat.get_absolute_url())

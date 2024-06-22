@@ -1,13 +1,12 @@
 from typing import Any
 
-from .services.PostService import PostService 
+from .services.PostService import PostService
 from core.HandleCache import HandleCacheService
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.core.cache import cache
-from django.db.models.base import Model 
+from django.db.models.base import Model
 from django.db.models.query import QuerySet
 from django.forms import BaseModelForm
 from django.http import HttpResponse
@@ -38,16 +37,12 @@ class DetailPost(ObjectViewsMixin, generic.DetailView):
     redis_key_prefix = "posts"
 
     def get_object(self, queryset: QuerySet[Any] | None = ...) -> Model:
-        return PostService.post_detail(
-            self.request.user, self.kwargs.get("post_id")
-        )
+        return PostService.post_detail(self.request.user, self.kwargs.get("post_id"))
 
     def get_context_data(self, **kwargs) -> dict[str, Any]:
         post = self.get_object()
         context = super().get_context_data(**kwargs)
-        context["is_owner"] = PostService.is_post_author(
-            post, self.request.user
-        )
+        context["is_owner"] = PostService.is_post_author(post, self.request.user)
         context["form"] = forms.CommentForm
         context["filtered_comments"] = (
             post.comments.filter(is_active=True)

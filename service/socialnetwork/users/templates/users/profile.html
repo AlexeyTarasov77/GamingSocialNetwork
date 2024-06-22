@@ -3,6 +3,7 @@
 {% load static %} {% load orders_tags %}
 {% block links %}
 <link rel="stylesheet" href="{% static "users/css/profile.css" %}">
+<script src="https://unpkg.com/htmx.org@2.0.0"></script>
 {% endblock links %}
 
 
@@ -38,17 +39,27 @@
                 </div>
             </div>
             <div class="background__message">
-                <div class="message__icon">
-                    <a href="#" class="icon__link" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-title="Написать сообщение">
+                {% if chat_form %}
+                <form action="{% url "chats:create-personal" %}" method="post">
+                    {% csrf_token %}
+                    {{chat_form}}
+                    <button class="text-orange-600" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-title="Написать сообщение">
                         <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" class="bi bi-chat-left-dots-fill" viewBox="0 0 16 16">
                             <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4.414a1 1 0 0 0-.707.293L.854 15.146A.5.5 0 0 1 0 14.793zm5 4a1 1 0 1 0-2 0 1 1 0 0 0 2 0m4 0a1 1 0 1 0-2 0 1 1 0 0 0 2 0m3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2"/>
                         </svg>
-                    </a>
-                </div>
+                    </button>
+                </form>
+                {% else %}
+                <a href="{% url "chats:list" %}" class="text-orange-600" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-title="Мои чаты">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" class="bi bi-chat-left-dots-fill" viewBox="0 0 16 16">
+                        <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4.414a1 1 0 0 0-.707.293L.854 15.146A.5.5 0 0 1 0 14.793zm5 4a1 1 0 1 0-2 0 1 1 0 0 0 2 0m4 0a1 1 0 1 0-2 0 1 1 0 0 0 2 0m3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2"/>
+                    </svg>
+                </a>
+                {% endif %}
             </div>
         </div>
         <div class="profile__photo flex items-center">
-            <img src="{{profile.get_profile_image}}" alt="" width="200" height="200">
+            <img src="{{profile.get_image}}" alt="" width="200" height="200">
             {% if is_online %}
             <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-circle-fill text-success" viewBox="0 0 16 16" id="online-icon">
                 <circle cx="8" cy="8" r="8"/>

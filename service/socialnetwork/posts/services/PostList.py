@@ -8,26 +8,26 @@ from gameblog.redis_connection import r
 from taggit.models import Tag
 from .constants import CACHE_KEYS
 from posts.models import Post
-from core.HandleCache import use_cache
 
 
 class PostListService:
-    def __init__(self, user: User,
-                content_type: Post.Type = Post.Type.POST,
-                tag_slug: str = None) -> None:
+    def __init__(
+        self, user: User, content_type: Post.Type = Post.Type.POST, tag_slug: str = None
+    ) -> None:
         self.user = user
         self.content_type = content_type
         self.tag_slug = tag_slug
         self.queryset: QuerySet[Post] = None
-        self.cache_key = CACHE_KEYS["POSTS_LIST"] \
-            .format(user_id=user.id, version=cache.get(CACHE_KEYS["POSTS_LIST_VERSION"], 0))
+        self.cache_key = CACHE_KEYS["POSTS_LIST"].format(
+            user_id=user.id, version=cache.get(CACHE_KEYS["POSTS_LIST_VERSION"], 0)
+        )
         self.suggester = PostSuggestionService()
-    
+
     def _filter_by_tag(self):
         tag = get_object_or_404(Tag, slug=self.tag_slug)
         self.queryset = self.queryset.filter(tags__in=[tag])
-        
-    @use_cache(5*60)
+
+    @use_cache(5 * 60)
     def _fetch_posts(self):
         tag_slug = self.tag_slug
         content_type = self.content_type
@@ -45,25 +45,27 @@ class PostListService:
             self.suggester.suggest_per_user(self.user, self.queryset)
         if tag_slug is not None:
             self._filter_by_tag(tag_slug)
-        self.queryset = self.queryset.prefetch_related("tags", "liked", "saved", "comments")
+        self.queryset = self.queryset.prefetch_related(
+            "tags", "liked", "saved", "comments"
+        )
         return self.queryset
-        
+
     def execute(self) -> QuerySet[Post]:
         return self._fetch_posts()
+
 
 class PostSuggestionService:
     def __init__(self) -> None:
         self.queryset: QuerySet[Post] = None
-    
-    def get_suggested_authors_per_user(self, user):
+
+    def get_suggested_users(self, user):
         profile = user.profile
         suggested_authors = User.objects.filter(
-            Q(id__in=profile.following.all())
-            | Q(id__in=profile.friends.all())
+            Q(id__in=profile.following.all()) | Q(id__in=profile.friends.all())
         )
         self.suggested_authors = suggested_authors
         return suggested_authors
-    
+
     def _order_by_suggested_authors(self):
         suggested_authors_ids = [author.id for author in self.suggested_authors]
         return self.queryset.annotate(
@@ -73,23 +75,23 @@ class PostSuggestionService:
                 output_field=models.IntegerField(),
             )
         ).order_by("-is_suggested_author")
-    
+
     def _suggest_content(self, user):
         ids_to_exclude = set()
         for post in self.queryset:
-            if r.sismember("post:%s:viewers" % post.id, user.id): 
+            if r.sismember("post:%s:viewers" % post.id, user.id):
                 ids_to_exclude.add(post.id)
         self.queryset = self.queryset.exclude(id__in=ids_to_exclude)
-        suggested_authors = self.get_suggested_authors_per_user(user)
+        suggested_authors = self.get_suggested_users(user)
         if suggested_authors:
             self._order_by_suggested_authors()
-            
+
     def suggest_per_user(self, user, queryset):
         self.queryset = queryset
         self.queryset = self.queryset.exclude(author=user)
         if suggested := self._suggest_content(user):
             return suggested
-            
+
     @staticmethod
     def suggest_by_tags(post, max_count=4):
         post_tags_ids = post.tags.values_list("id", flat=True)

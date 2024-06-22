@@ -11,22 +11,25 @@ from .models import Ad, Team
 from posts.mixins import ObjectViewsMixin
 from .utils import TeamHandle
 from users.models import Profile
+
 User = get_user_model()
+
 
 # Create your views here.
 def index_view(request):
     return render(request, "gameteams/index.html")
+
 
 class TeamListView(generic.ListView):
     template_name = "gameteams/teams/team_list.html"
     queryset = Team.objects.only("name", "slug", "rating", "logo", "game", "country")
     context_object_name = "teams"
 
-    
+
 class TeamCreateView(LoginRequiredMixin, generic.CreateView):
     template_name = "gameteams/teams/team_create.html"
     form_class = forms.TeamCreateForm
-    
+
     def form_valid(self, form):
         team = form.save(commit=False)
         user = self.request.user
@@ -34,12 +37,14 @@ class TeamCreateView(LoginRequiredMixin, generic.CreateView):
         team.save()
         messages.success(self.request, "Команда успешно создана")
         return redirect(team.get_absolute_url())
-    
+
+
 class TeamDetailView(generic.DetailView):
     template_name = "gameteams/teams/team_detail.html"
     queryset = Team.objects.prefetch_related("members")
     context_object_name = "team"
-    
+
+
 def team_join_view(request, slug):
     team = Team.objects.get(slug=slug)
     user = request.user
@@ -51,19 +56,21 @@ def team_join_view(request, slug):
     print(req)
     return JsonResponse({"msg": "Заявка на вступление отправлена"}, status=200)
 
+
 class TeamJoinRequestsView(AccessMixin, generic.ListView):
     template_name = "gameteams/teams/team_join_requests.html"
+
     def get_queryset(self):
         tm = TeamHandle(self.team)
         return tm.get_all_join_requests()
-    
+
     def dispatch(self, request, *args, **kwargs):
         user = request.user
         if not request.user.is_authenticated or not user.profile.is_team_leader:
             return self.handle_no_permission()
         self.team = user.profile.team
         return super().dispatch(request, *args, **kwargs)
-    
+
     def post(self, request, *args, **kwargs):
         data = request.POST
         print(data)
@@ -77,51 +84,55 @@ class TeamJoinRequestsView(AccessMixin, generic.ListView):
         elif data.get("action") == "decline":
             tm.remove_join_request(from_user_profile)
         return JsonResponse({"accepted": accepted})
-    
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["team"] = self.team
         return context
 
+
 # ------- ADS -------
-    
+
+
 class AdListView(generic.ListView):
     paginate_by = 9
     context_object_name = "ads"
     template_name = "gameteams/ads/ad_list.html"
     queryset = Ad.objects.only("title", "content", "game", "type", "user")
-    
+
     @staticmethod
     def __get_ad_type(ad_type):
         types = Ad.TYPE_CHOICES
         return list(types.keys())[list(types.values()).index(ad_type)]
-    
+
     def get_queryset(self) -> QuerySet[Any]:
         queryset = super().get_queryset()
         if self.request.method == "GET" and "type" in self.request.GET:
             queryset = queryset.filter(type=self.request.GET.get("type"))
         return queryset
-    
+
     def get_context_data(self, **kwargs) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
         context["search_type"] = self.__get_ad_type(Ad.TYPE_CHOICES["SEARCHING"])
         context["recruitment_type"] = self.__get_ad_type(Ad.TYPE_CHOICES["RECRUITING"])
         return context
-    
-    
+
+
 class AdDetailView(ObjectViewsMixin, generic.DetailView):
     template_name = "gameteams/ads/ad_detail.html"
     queryset = Ad.objects.select_related("user")
     redis_key_prefix = "ads"
-    
-    
+
+
 class AdCreateView(LoginRequiredMixin, generic.CreateView):
-    template_name ="gameteams/ads/ad_create.html"
+    template_name = "gameteams/ads/ad_create.html"
     form_class = forms.AdCreateForm
+
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
-        kwargs['user'] = self.request.user
+        kwargs["user"] = self.request.user
         return kwargs
+
     def form_valid(self, form):
         ad = form.save(commit=False)
         cd = form.cleaned_data
@@ -132,8 +143,8 @@ class AdCreateView(LoginRequiredMixin, generic.CreateView):
         ad.save()
         messages.success(self.request, "Объявление успешно создано")
         return redirect(ad.get_absolute_url())
-    
-    
+
+
 def ad_bookmark_view(request, pk):
     ad = Ad.objects.get(pk=pk)
     user = request.user
@@ -144,5 +155,3 @@ def ad_bookmark_view(request, pk):
         ad.favorites.add(user)
         is_added = True
     return JsonResponse({"is_added": is_added}, status=200)
-        
-        
