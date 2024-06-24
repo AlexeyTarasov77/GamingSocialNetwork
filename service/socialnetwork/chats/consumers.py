@@ -37,7 +37,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
     async def message_handler(self, event):
         message = await sync_to_async(Message.objects.get)(id=event["msg_id"])
         html = await sync_to_async(render_to_string)(
-            "chats/includes/chat_message_p.html",
+            "chats/partials/chat_message_p.html",
             {"message": message, "user": self.user},
         )
         await self.send(text_data=html)

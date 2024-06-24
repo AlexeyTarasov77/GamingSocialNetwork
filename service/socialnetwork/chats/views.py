@@ -4,9 +4,10 @@ from django.http import HttpRequest, HttpResponse
 from django.shortcuts import redirect
 from django.views import generic
 from django.views.generic.edit import FormMixin, BaseFormView
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from posts.services.PostList import PostSuggestionService
-from . import forms
+from chats import forms
 from .models import ChatRoom, Message
 
 # Create your views here.
@@ -55,7 +56,7 @@ class ChatsMixin:
             return chat.members.exclude(id=self.request.user.id).first()
 
 
-class ListChatsView(generic.ListView, ChatsMixin):
+class ListChatsView(LoginRequiredMixin, generic.ListView, ChatsMixin):
     """
     View for displaying a list of chat rooms.
 
@@ -98,7 +99,7 @@ class ListChatsView(generic.ListView, ChatsMixin):
         return context
 
 
-class ChatRoomView(generic.DetailView, FormMixin, ChatsMixin):
+class ChatRoomView(LoginRequiredMixin, generic.DetailView, FormMixin, ChatsMixin):
     """
     View for displaying a chat room and handling form submissions.
 
@@ -165,7 +166,7 @@ class ChatRoomView(generic.DetailView, FormMixin, ChatsMixin):
         return super().form_valid(form)
 
 
-class GroupChatRoomCreateView(generic.CreateView):
+class GroupChatRoomCreateView(LoginRequiredMixin, generic.CreateView):
     """
     View for creating a new chat room.
 
@@ -180,7 +181,10 @@ class GroupChatRoomCreateView(generic.CreateView):
     def get_form_kwargs(self) -> dict[str, Any]:
         kwargs = super().get_form_kwargs()
         suggestion_service = PostSuggestionService()
-        kwargs.update(members_queryset=suggestion_service.get_suggested_users(self.request.user))
+        kwargs.update(
+            members_queryset=suggestion_service.get_suggested_users(self.request.user),
+        )
+        return kwargs
 
     def form_valid(self, form: forms.GroupChatRoomCreateForm) -> HttpResponse:
         """
@@ -189,12 +193,13 @@ class GroupChatRoomCreateView(generic.CreateView):
         chat = form.save(commit=False)
         chat.admin = self.request.user
         chat.save()
-        chat.members.add(self.request.user)
-        form.save_m2m()
-        return redirect(chat.get_absolute_url())
+        print(form.cleaned_data["members"])
+        chat.members.add(self.request.user, *form.cleaned_data["members"])
+        chat.save()
+        return HttpResponse(chat.get_absolute_url())
 
 
-class PersonalChatRoomCreateView(BaseFormView):
+class PersonalChatRoomCreateView(LoginRequiredMixin, BaseFormView):
     form_class = forms.PersonalChatRoomCreateForm
 
     def get(self, request: HttpRequest, *args: str, **kwargs: Any) -> HttpResponse:
@@ -207,9 +212,7 @@ class PersonalChatRoomCreateView(BaseFormView):
     def form_valid(self, form: forms.PersonalChatRoomCreateForm) -> HttpResponse:
         chat = form.save(commit=False)
         chat_members = form.cleaned_data["members"]
-        chat.name = "&".join(
-            [member.username for member in chat_members]
-        )  # joe&alex
+        chat.name = "&".join([member.username for member in chat_members])  # joe&alex
         if not ChatRoom.objects.filter(
             Q(name=chat.name) | Q(name="&".join(list(reversed("joe&alex".split("&")))))
         ).exists():  # joe&alex or alex&joe

@@ -1,5 +1,12 @@
 {% load crispy_forms_tags %}
 
+<style>
+    .offcanvas.offcanvas-end.show {
+        left: unset !important;
+        right: 0 !important;
+    }
+</style>
+
 <header class="bg-blue-700 text-white py-4 px-6 flex justify-between items-center shadow-md">
     <div class="flex items-center">
         <div class="mr-10 text-xl flex items-center gap-2 transition-colors hover:text-purple-500">
@@ -11,13 +18,40 @@
         <img src="{{chat_image}}" alt="Logo" class="w-8 h-8 mr-2">
         <h1 class="text-2xl font-bold">{{chat.name}}</h1>
     </div>
-    <div>
-        <button class="bg-blue-600 hover:bg-blue-500 text-white font-semibold py-2 px-4 rounded">
-            Информация
-        </button>
-        <button class="bg-red-600 hover:bg-red-500 text-white font-semibold py-2 px-4 rounded ml-2">
-            Покинуть
-        </button>
+    <div class="flex">
+        <div>
+            <button 
+                class="bg-blue-600 hover:bg-blue-500 text-white font-semibold py-2 px-4 rounded"
+                type="button" data-bs-toggle="offcanvas" 
+                data-bs-target="#offcanvasScrolling" aria-controls="offcanvasScrolling"
+            >
+                Информация
+            </button>
+            <div class="offcanvas offcanvas-end" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
+                <div class="offcanvas-header">
+                  <h5 class="offcanvas-title" id="offcanvasScrollingLabel">Информация о чате</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body">
+                  <div>
+                    <h3>Участники</h3>
+                    <div class="chat-members flex flex-col gap-3">
+                        {% for member in chat.members.all %}
+                        <div class="member flex items-center gap-3">
+                            <div class=""><img src="{{member.profile.get_image}}" alt="" class="img-fluid rounded-full" width='50' height='50'></div>
+                            <div class="text-xl">{{member.username}}</div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                  </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <button class="bg-red-600 hover:bg-red-500 text-white font-semibold py-2 px-4 rounded ml-2">
+                Покинуть
+            </button>
+        </div>
     </div>
 </header>
 <div class="body flex flex-col h-full">
