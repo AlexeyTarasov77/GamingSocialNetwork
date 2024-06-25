@@ -56,7 +56,6 @@ class ChatAccessMixin(AccessMixin):
     def dispatch(self, request, *args, **kwargs):
         """Checks if the user has access to the chat room."""
         print('calling dispatch')
-        print(self.test_user_func())
         if not self.request.user.is_authenticated or not self.test_user_func():
             return self.handle_no_permission()
         return super().dispatch(request, *args, **kwargs)
@@ -65,7 +64,6 @@ class ChatAccessMixin(AccessMixin):
 class MemberRequiredMixin(ChatAccessMixin):
     """Check if current user is a member of accessing chat room."""
     def test_user_func(self):
-        print(self.get_object().members.filter(id=self.request.user.id).exists())
         user_id = self.request.user.id
         return self.get_object().members.filter(id=user_id).exists()
 
@@ -169,6 +167,7 @@ class GroupChatRoomCreateView(LoginRequiredMixin, generic.CreateView):
     form_class = forms.GroupChatRoomCreateForm
 
     def get_form_kwargs(self) -> dict[str, Any]:
+        """Puts suggested users for choosing to add in group to the form kwargs."""
         kwargs = super().get_form_kwargs()
         suggestion_service = PostSuggestionService()
         kwargs.update(

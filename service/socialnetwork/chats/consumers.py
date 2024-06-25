@@ -7,6 +7,7 @@ from asgiref.sync import sync_to_async
 
 
 class ChatConsumer(AsyncWebsocketConsumer):
+    """Consumer for exchanging messages between users in chat."""
     async def connect(self):
         self.chat_id = self.scope["url_route"]["kwargs"]["chat_id"]  # using as group name for consumers
         self.user = self.scope["user"]  # gettting current user

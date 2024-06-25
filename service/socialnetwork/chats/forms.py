@@ -53,6 +53,7 @@ class GroupChatRoomCreateForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         members_queryset = kwargs.pop("members_queryset", None)
         super().__init__(*args, **kwargs)
+        # specifying queryset of members to choose from (gonna be curr user's friends, followers etc.)
         self.fields["members"].queryset = members_queryset or User.objects.all()
 
     def clean_members(self):

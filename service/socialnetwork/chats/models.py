@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.utils.translation import gettext as _
 from django.conf import settings
 import uuid
 
@@ -25,19 +26,36 @@ class ChatRoom(models.Model):
     Meta:
         ordering: The ordering of the chat rooms.
     """
+
     TYPE_CHOICES = (
         ("group", "Group"),
         ("personal", "Personal"),
     )
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    name = models.CharField(max_length=255, unique=True)
-    image = models.ImageField(upload_to="photos/chat", null=True, blank=True)
-    members = models.ManyToManyField(User, related_name="chats")
-    admin = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="leading_chats"
+    id = models.UUIDField(
+        primary_key=True, default=uuid.uuid4, editable=False, verbose_name=_("ID")
     )
-    created_at = models.DateTimeField(auto_now_add=True)
-    type = models.CharField(max_length=8, choices=TYPE_CHOICES, default=TYPE_CHOICES[0][0])
+    name = models.CharField(max_length=255, unique=True, verbose_name=_("name"))
+    image = models.ImageField(
+        upload_to="photos/chat", null=True, blank=True, verbose_name=_("image")
+    )
+    members = models.ManyToManyField(
+        User, related_name="chats", verbose_name=_("members")
+    )
+    admin = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="leading_chats",
+        verbose_name=_("admin"),
+    )
+    created_at = models.DateTimeField(
+        auto_now_add=True, db_index=True, verbose_name=_("created at")
+    )
+    type = models.CharField(
+        max_length=8,
+        choices=TYPE_CHOICES,
+        default=TYPE_CHOICES[0][0],
+        verbose_name=_("type"),
+    )
 
     class Meta:
         ordering = ["-created_at"]
@@ -76,20 +94,32 @@ class Message(models.Model):
         status (CharField): Status of the message.
         created_at (DateTimeField): Time when the message was created.
     """
+
     STATUS_CHOICES = (
         ("read", "Read"),
         ("unread", "Unread"),
         ("deleted", "Deleted"),
     )
     chat = models.ForeignKey(
-        ChatRoom, on_delete=models.CASCADE, related_name="messages"
+        ChatRoom,
+        on_delete=models.CASCADE,
+        related_name="messages",
+        verbose_name=_("chat"),
     )
     author = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="chat_messages"
+        User,
+        on_delete=models.CASCADE,
+        related_name="chat_messages",
+        verbose_name=_("author"),
     )
-    body = models.CharField(max_length=300)
-    status = models.CharField(max_length=10, default=STATUS_CHOICES[1][0])
-    created_at = models.DateTimeField(auto_now_add=True)
+    body = models.CharField(max_length=300, verbose_name=_("body"))
+    status = models.CharField(
+        max_length=10,
+        default=STATUS_CHOICES[1][0],
+        choices=STATUS_CHOICES,
+        verbose_name=_("status"),
+    )
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("created at"))
 
     def __str__(self) -> str:
         return self.body
