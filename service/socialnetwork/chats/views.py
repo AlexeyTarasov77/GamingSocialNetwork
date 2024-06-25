@@ -4,7 +4,8 @@ from django.http import HttpRequest, HttpResponse
 from django.shortcuts import redirect
 from django.views import generic
 from django.views.generic.edit import FormMixin, BaseFormView
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import AccessMixin, LoginRequiredMixin
+from django.contrib import messages
 from django.db.models import Q
 from posts.services.PostList import PostSuggestionService
 from chats import forms
@@ -16,10 +17,6 @@ from .models import ChatRoom, Message
 class ChatsMixin:
     """
     Mixin for views that interact with chat rooms.
-
-    Attributes:
-        None
-
     Methods:
         get_chat_image(chat)
             Returns the URL of the image for the given chat room.
@@ -30,13 +27,8 @@ class ChatsMixin:
 
     def get_chat_image(self, chat):
         """
-        Returns the URL of the image for the given chat room.
-
-        Args:
-            chat (ChatRoom): The chat room object.
-
-        Returns:
-            str: The URL of the image for the chat room.
+        Returns the computed URL of the image for the given chat room.
+        For example to set chat image as avatar of other participant.
         """
         if chat.is_group:
             return chat.get_image()
@@ -46,27 +38,48 @@ class ChatsMixin:
         """
         Returns the user object of the other member in the chat room.
 
-        Args:
-            chat (ChatRoom): The chat room object.
-
-        Returns:
-            User: The user object of the other member in the chat room.
         """
         if not chat.is_group:
             return chat.members.exclude(id=self.request.user.id).first()
 
 
+class ChatAccessMixin(AccessMixin):
+    """
+    Mixin for views that require access to chat rooms.
+    """
+
+    permission_denied_message = "You do not have permission to access this chat room."
+
+    def test_user_func(self):
+        raise NotImplementedError
+
+    def dispatch(self, request, *args, **kwargs):
+        """Checks if the user has access to the chat room."""
+        print('calling dispatch')
+        print(self.test_user_func())
+        if not self.request.user.is_authenticated or not self.test_user_func():
+            return self.handle_no_permission()
+        return super().dispatch(request, *args, **kwargs)
+
+
+class MemberRequiredMixin(ChatAccessMixin):
+    """Check if current user is a member of accessing chat room."""
+    def test_user_func(self):
+        print(self.get_object().members.filter(id=self.request.user.id).exists())
+        user_id = self.request.user.id
+        return self.get_object().members.filter(id=user_id).exists()
+
+
+class AdminRequiredMixin(ChatAccessMixin):
+    """Check if current user is an admin of accessing chat room."""
+    def test_user_func(self):
+        user_id = self.request.user.id
+        return self.get_object().admin_id == user_id
+
+
 class ListChatsView(LoginRequiredMixin, generic.ListView, ChatsMixin):
     """
     View for displaying a list of chat rooms.
-
-    Attributes:
-        template_name (str): The name of the template to use for rendering.
-        context_object_name (str): The name of the context variable to use
-        for the chat rooms list.
-        queryset (QuerySet): The queryset of chat rooms to retrieve.
-        chat_images (List[str]): The list of images for each chat room.
-
     """
 
     template_name = "chats/includes/list_chats_sidebar.html"
@@ -90,27 +103,15 @@ class ListChatsView(LoginRequiredMixin, generic.ListView, ChatsMixin):
 
     def get_context_data(self, **kwargs):
         """
-        Get the context data for rendering the template.
-        Adding `zipped_chats` to the context for iterating over the chat rooms
-        and their images.
+        Adds to context chats zipped with their computed images.
         """
         context = super().get_context_data(**kwargs)
         context["zipped_chats"] = zip(self.get_queryset(), self.chat_images)
         return context
 
 
-class ChatRoomView(LoginRequiredMixin, generic.DetailView, FormMixin, ChatsMixin):
-    """
-    View for displaying a chat room and handling form submissions.
-
-    Attributes:
-        template_name (str): The name of the template to use for rendering.
-        context_object_name (str): The name of the context variable to use
-        for the chat room object.
-        queryset (QuerySet): The queryset of chat rooms to retrieve.
-        pk_url_kwarg (str): The URL kwarg to use for the chat room ID.
-        form_class (type): The form class to use for creating messages.
-    """
+class ChatRoomView(ChatsMixin, MemberRequiredMixin, generic.DetailView, FormMixin):
+    """View for displaying a chat room and handling form submissions."""
 
     template_name = "chats/chatroom.html"
     context_object_name = "chat"
@@ -151,13 +152,6 @@ class ChatRoomView(LoginRequiredMixin, generic.DetailView, FormMixin, ChatsMixin
         """
         Saving messages is done in the websockets.
         This method uses in case when websockets not supported or not available right now.
-        Save the form data and associate it with the current user and chat.
-
-        Args:
-            form (forms.MessageCreateForm): The form containing the message data.
-
-        Returns:
-            HttpResponse: The response after the form is successfully saved.
         """
         msg = form.save(commit=False)
         msg.author = self.request.user
@@ -168,11 +162,7 @@ class ChatRoomView(LoginRequiredMixin, generic.DetailView, FormMixin, ChatsMixin
 
 class GroupChatRoomCreateView(LoginRequiredMixin, generic.CreateView):
     """
-    View for creating a new chat room.
-
-    Attributes:
-        template_name (str): The name of the template to use for rendering.
-        form_class (type): The form class to use for creating chat rooms.
+    View for creating a new group chat room.
     """
 
     template_name = "chats/chatroom_create.html"
@@ -188,18 +178,22 @@ class GroupChatRoomCreateView(LoginRequiredMixin, generic.CreateView):
 
     def form_valid(self, form: forms.GroupChatRoomCreateForm) -> HttpResponse:
         """
-        Save the form data and associate it with the current user.
+        Save the form data and add additional data.
         """
         chat = form.save(commit=False)
-        chat.admin = self.request.user
+        user = self.request.user
+        chat.admin = user
         chat.save()
-        print(form.cleaned_data["members"])
-        chat.members.add(self.request.user, *form.cleaned_data["members"])
+        chat.members.add(user, *form.cleaned_data["members"])
         chat.save()
         return HttpResponse(chat.get_absolute_url())
 
 
 class PersonalChatRoomCreateView(LoginRequiredMixin, BaseFormView):
+    """
+    View for creating a new personal chat room.
+    """
+
     form_class = forms.PersonalChatRoomCreateForm
 
     def get(self, request: HttpRequest, *args: str, **kwargs: Any) -> HttpResponse:
@@ -221,3 +215,39 @@ class PersonalChatRoomCreateView(LoginRequiredMixin, BaseFormView):
             chat.save()
             form.save_m2m()
         return redirect(chat.get_absolute_url())
+
+
+class ChatRoomMemberRemoveView(
+    generic.detail.SingleObjectMixin,
+    generic.View,
+    MemberRequiredMixin
+):
+    """
+    View for removing member from chat room.
+    Member can leave chat his self or chat's admin can remove him.
+    """
+    pk_url_kwarg = "chat_id"
+    model = ChatRoom
+
+    def get_success_msg(self, target_user_id, curr_user_id) -> str:
+        """Determines the success message for removing member from chat room."""
+        msg = ''
+        if target_user_id == curr_user_id:
+            print('left')
+            msg = "Вы покинули чат"
+        else:
+            msg = "Пользователь удален из чата"
+        return msg
+
+    def post(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
+        chat = self.get_object()
+        target_user_id = int(request.POST.get("target_user_id"))  # user that we want to remove
+        curr_user = request.user
+        if not target_user_id or curr_user not in chat.members.all():
+            return HttpResponse(status=400)
+        # if user want to remove another user and isn't chat's admin - forbidden
+        if target_user_id != curr_user.id and curr_user != chat.admin:
+            return HttpResponse(status=403)
+        chat.members.remove(target_user_id)
+        messages.success(request, self.get_success_msg(target_user_id, curr_user.id))
+        return redirect("chats:list")

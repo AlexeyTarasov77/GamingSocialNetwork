@@ -10,6 +10,21 @@ User = get_user_model()
 
 # Create your models here.
 class ChatRoom(models.Model):
+    """
+    Model representing a chat room.
+
+    Attributes:
+        id (UUIDField): The unique identifier of the chat room.
+        name (CharField): The name of the chat room.
+        image (ImageField): The image of the chat room.
+        members (ManyToManyField): The members of the chat room.
+        admin (ForeignKey): The admin of the chat room.
+        created_at (DateTimeField): The creation date of the chat room.
+        type (CharField): The type of the chat room.
+
+    Meta:
+        ordering: The ordering of the chat rooms.
+    """
     TYPE_CHOICES = (
         ("group", "Group"),
         ("personal", "Personal"),
@@ -28,20 +43,39 @@ class ChatRoom(models.Model):
         ordering = ["-created_at"]
 
     @property
-    def is_group(self):
+    def is_group(self) -> bool:
+        """
+        Check if the chat room is a group chat by comparing chatroom type with group type.
+        """
         return self.type == self.TYPE_CHOICES[0][0]
 
     def __str__(self) -> str:
         return self.name
 
-    def get_image(self):
+    def get_image(self) -> str:
+        """
+        Get the URL of the chat room image.
+        """
         return self.image.url if self.image else settings.DEFAULT_IMAGE_URL
 
-    def get_absolute_url(self):
+    def get_absolute_url(self) -> str:
+        """
+        Get the absolute URL for the chat room detail page.
+        """
         return reverse("chats:detail", args=[self.id])
 
 
 class Message(models.Model):
+    """
+    Model class for storing messages in chat rooms.
+
+    Attributes:
+        chat (ForeignKey): Foreign key to ChatRoom model.
+        author (ForeignKey): Foreign key to User model.
+        body (CharField): Text content of the message.
+        status (CharField): Status of the message.
+        created_at (DateTimeField): Time when the message was created.
+    """
     STATUS_CHOICES = (
         ("read", "Read"),
         ("unread", "Unread"),
@@ -57,7 +91,7 @@ class Message(models.Model):
     status = models.CharField(max_length=10, default=STATUS_CHOICES[1][0])
     created_at = models.DateTimeField(auto_now_add=True)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.body
 
     class Meta:

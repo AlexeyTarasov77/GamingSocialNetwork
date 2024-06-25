@@ -6,17 +6,24 @@ User = get_user_model()
 
 
 class MessageCreateForm(forms.ModelForm):
+    """Form for creating a new message."""
     class Meta:
         model = Message
         fields = ("body",)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        # changing field's params
         self.fields["body"].widget.attrs.update({"placeholder": "Введите сообщение..."})
         self.fields["body"].label = ""
 
 
 class PersonalChatRoomCreateForm(forms.ModelForm):
+    """
+    Form for creating a new personal chat room.
+    Don't dedicated for displaying on page (just validating data).
+    Should be prepopulated with members in a view.
+    """
     class Meta:
         model = ChatRoom
         fields = ("members",)
@@ -34,6 +41,11 @@ class PersonalChatRoomCreateForm(forms.ModelForm):
 
 
 class GroupChatRoomCreateForm(forms.ModelForm):
+    """
+    Form for creating a new group.
+    Takes members queryset as an argument to pass in available users to choose from for adding to group.
+    Current user also adding to members in a view after processing form.
+    """
     class Meta:
         model = ChatRoom
         fields = ("name", "members")
