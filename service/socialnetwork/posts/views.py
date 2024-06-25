@@ -1,13 +1,12 @@
 from typing import Any
 
-from .services.PostService import PostService 
+from .services.PostService import PostService
 from core.HandleCache import HandleCacheService
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.core.cache import cache
-from django.db.models.base import Model 
+from django.db.models.base import Model
 from django.db.models.query import QuerySet
 from django.forms import BaseModelForm
 from django.http import HttpResponse

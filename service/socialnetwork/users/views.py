@@ -3,8 +3,6 @@ from typing import Any
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
-from django.db.models.base import Model as Model
-from django.db.models.query import QuerySet
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views import generic
@@ -17,20 +15,21 @@ from .forms import ProfileUpdateForm
 from .models import FriendRequest, Profile
 from gameblog.redis_connection import r
 
+
 # Create your views here.
 class ProfileView(LoginRequiredMixin, generic.DetailView):
+    """View for user's profile page"""
+
     template_name = "users/profile.html"
     context_object_name = "profile"
-
-    def get_object(self, queryset: QuerySet[Any] | None = ...) -> Model:
-        return get_object_or_404(
-            Profile.objects.select_related("user").prefetch_related(
-                "following", "followers", "friends"
-            ),
-            user_slug=self.kwargs.get("username", None),
-        )
+    queryset = Profile.objects.select_related("user").prefetch_related(
+        "following", "followers", "friends"
+    )
+    slug_url_kwarg = "username"
+    slug_field = "user_slug"
 
     def post(self, request, *args, **kwargs):
+        """Updating profile image."""
         if request.FILES["image"]:
             instance = self.object
             instance.image = request.FILES["image"]
@@ -38,6 +37,12 @@ class ProfileView(LoginRequiredMixin, generic.DetailView):
             return JsonResponse({"path": instance.image.url})
 
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        """
+        Passing to context additional params:
+            is_owner: is current user a profile owner or he've just visited it as guest.
+            request_exist: did current user send a friend request to this profile.
+            is_online: is profile's owner online or not.
+        """
         context = super().get_context_data(**kwargs)
         profile = self.object
         context["is_owner"] = True if profile.user == self.request.user else False
@@ -47,12 +52,14 @@ class ProfileView(LoginRequiredMixin, generic.DetailView):
             if profile.requests.filter(from_user=self.request.user).exists()
             else False
         )
-        context["is_online"] = (int(r.get(f"user:{profile.user.id}:status") or 0) > 0)
+        context["is_online"] = int(r.get(f"user:{profile.user.id}:status") or 0) > 0
 
         return context
 
+
 @owner_required("users")
 def my_posts_view(request, username):
+    """View posts of current user"""
     user = get_object_or_404(
         User,
         profile__user_slug=username,
@@ -69,6 +76,7 @@ def my_posts_view(request, username):
 
 @owner_required("users")
 def my_orders_view(request, username):
+    """View orders of current user"""
     user = get_object_or_404(
         User.objects.select_related("profile").prefetch_related("orders"),
         profile__user_slug=username,
@@ -85,6 +93,7 @@ def profile_middleware(request):
 
 
 class ProfileUpdateView(generic.UpdateView):
+    """View for updating profile."""
     slug_url_kwarg = "username"
     slug_field = "user_slug"
     template_name = "users/profile_update.html"
@@ -97,6 +106,7 @@ class ProfileUpdateView(generic.UpdateView):
 
 
 def friend_requests_view(request, username):
+    """View all incoming friend requests to current user."""
     user = get_object_or_404(User, profile_user__user_slug=username)
     friend_requests = FriendRequest.objects.filter(to_user=user)
     print(friend_requests)
@@ -106,27 +116,28 @@ def friend_requests_view(request, username):
 
 
 class SubscribeAPIView(generics.GenericAPIView):
+    """Api view for subscribe/unsubscribe to user"""
     queryset = Profile.objects.all()
     lookup_field = "user_slug"
     lookup_url_kwarg = "username"
 
     def patch(self, request, username):
-        user_profile = (
+        target_user_profile = (
             self.get_object()
         )  # получение профиля пользователя на которого подписываются
-        user = (
+        acting_user = (
             request.user
         )  # получение текущего пользователя который хочеть подписаться/отписаться
-        if user in user_profile.followers.all():  # если пользователь уже подписан
-            user_profile.followers.remove(user)  # отписаться
-            user.profile.following.remove(
-                user_profile.user
+        if acting_user in target_user_profile.followers.all():  # если пользователь уже подписан
+            target_user_profile.followers.remove(acting_user)  # отписаться
+            acting_user.profile.following.remove(
+                target_user_profile.user
             )  # удалить из подписок пользователя от которого отписываемся
             return Response({"is_subscribed": False})
         else:  # если пользователь еще не подписан
-            user_profile.followers.add(request.user)  # подписаться
-            user.profile.following.add(
-                user_profile.user
+            target_user_profile.followers.add(request.user)  # подписаться
+            acting_user.profile.following.add(
+                target_user_profile.user
             )  # добавить в подписки пользователя на которого подписываемся
             return Response({"is_subscribed": True})
 
@@ -137,6 +148,7 @@ def friend_request_remove(from_user: User, to_user: User) -> None:
 
 
 class FriendRequestAPIView(generics.GenericAPIView):
+    """View for managing friend requests based on request method."""
     queryset = Profile.objects.all()
     lookup_field = "user_slug"
     lookup_url_kwarg = "username"
@@ -182,6 +194,7 @@ class FriendRequestAPIView(generics.GenericAPIView):
 
 
 class FriendRequestHandlerAPIView(generics.GenericAPIView):
+    """View for declining/accepting friend request"""
     queryset = Profile.objects.all()
     lookup_field = "user_slug"
     lookup_url_kwarg = "username"

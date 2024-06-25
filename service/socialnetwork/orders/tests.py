@@ -3,9 +3,6 @@ from django.test import Client, TestCase, RequestFactory
 from django.contrib.sessions.middleware import SessionMiddleware
 from django.urls import reverse
 from gameshop.models import ProductProxy
-import json
-
-from . import forms
 from .models import Order
 
 User = get_user_model()
@@ -17,10 +14,15 @@ class OrderCreateTestCase(TestCase):
         self.client = Client()
         self.user = User.objects.create_user(username="testuser", password="12345")
         self.client.login(username="testuser", password="12345")
-        self.product = ProductProxy.objects.create(title='Example Product', price=10.0, brand='Example Brand')
-        self.factory = RequestFactory().post(reverse('cart:add', kwargs={'product_id': self.product.id}), {
-            'product_qty': 2,
-        })
+        self.product = ProductProxy.objects.create(
+            title="Example Product", price=10.0, brand="Example Brand"
+        )
+        self.factory = RequestFactory().post(
+            reverse("cart:add", kwargs={"product_id": self.product.id}),
+            {
+                "product_qty": 2,
+            },
+        )
         self.middleware = SessionMiddleware(self.factory)
         self.middleware.process_request(self.factory)
         self.factory.session.save()

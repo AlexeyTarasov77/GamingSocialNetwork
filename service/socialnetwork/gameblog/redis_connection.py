@@ -1,3 +1,5 @@
+""" Keep redis connection object to use it in other modules. """
+
 import redis
 from django.conf import settings
 

@@ -15,20 +15,24 @@ def cart_view(request):
     cart = Cart(request)
     context = {"coupon_form": coupon_form}
     if len(cart) > 0:
-        context["recommended_products"] = rec.suggest_products_for([item["product"] for item in cart])
+        context["recommended_products"] = rec.suggest_products_for(
+            [item["product"] for item in cart]
+        )
     return render(request, "cart/cart.html", context)
+
 
 @require_POST
 def cart_add_or_update(request, product_id):
     cart = Cart(request)
-    product = get_object_or_404(ProductProxy, id=product_id) 
+    product = get_object_or_404(ProductProxy, id=product_id)
     quantity = int(request.POST.get("qty", 1))
     cart.add_or_update(product, quantity)
     # data = {"total_price": cart.get_total_price(), "total_items": len(cart)}
     return HttpResponse(len(cart))
 
+
 @require_POST
-def cart_remove(request, product_id): 
+def cart_remove(request, product_id):
     cart = Cart(request)
     cart.delete(product_id)
     # data = {'total_price': cart.get_total_price(), 'total_items': len(cart)}

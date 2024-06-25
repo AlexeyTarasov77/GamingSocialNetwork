@@ -12,10 +12,27 @@ User = get_user_model()
 
 # Create your models here.
 class Ad(models.Model):
-    TYPE_CHOICES = {"SEARCHING": "Поиск команды", "RECRUITING": "Набор в команду"}
+    """
+    Model for ads (searching and recruiting).
+
+    Attributes:
+        title (CharField): Title of the ad.
+        content (TextField): Content of the ad.
+        favorites (ManyToManyField): Users who favorited the ad.
+        game (CharField): Game of the ad.
+        user (ForeignKey): User who created the ad.
+        team (ForeignKey): Team associated with the ad.
+        type (CharField): Type of the ad.
+        time_create (DateTimeField): Time when the ad was created.
+        time_update (DateTimeField): Time when the ad was last updated.
+        photo (ImageField): Photo associated with the ad.
+    """
+    TYPE_CHOICES = {"SEARCHING": _("Поиск команды"), "RECRUITING": _("Набор в команду")}
     title = models.CharField(_("Заголовок"), max_length=200, db_index=True)
     content = models.TextField(_("Содержимое"), blank=True)
-    favorites = models.ManyToManyField(User, related_name="favorite_ads", blank=True, verbose_name=_("Избранное"))
+    favorites = models.ManyToManyField(
+        User, related_name="favorite_ads", blank=True, verbose_name=_("Избранное")
+    )
     game = models.CharField(_("Игра"), max_length=100, db_index=True)
     user = models.ForeignKey(
         User,
@@ -42,13 +59,31 @@ class Ad(models.Model):
         ordering = ["-time_create"]
 
     def __str__(self):
+        """Return string representation of the model."""
         return self.title
 
     def get_absolute_url(self):
+        """Return absolute URL for the ad."""
         return reverse("teams:ad_detail", kwargs={"pk": self.pk})
 
 
 class Team(SaveSlugMixin, models.Model):
+    """
+    Model for game teams.
+
+    Attributes:
+        name (CharField): Name of the team.
+        logo (ImageField): Logo of the team.
+        slug (SlugField): URL of the team.
+        description (TextField): Description of the team.
+        country (CountryField): Country of the team.
+        rating (PositiveIntegerField): Rating of the team.
+        game (CharField): Game of the team.
+        time_create (DateTimeField): Time when the team was created.
+        time_update (DateTimeField): Time when the team was last updated.
+        founder (OneToOneField): User who founded the team.
+        leader (OneToOneField): User who is the leader of the team.
+    """
     name = models.CharField(_("Имя"), max_length=200, db_index=True)
     logo = models.ImageField(
         _("Логотип"), upload_to="photos/gameteams/", blank=True, null=True
@@ -102,12 +137,14 @@ class Team(SaveSlugMixin, models.Model):
 
 
 class TeamJoinRequest(models.Model):
-    to_team = models.ForeignKey("Team", verbose_name=_("Команда"), on_delete=models.CASCADE)
+    to_team = models.ForeignKey(
+        "Team", verbose_name=_("Команда"), on_delete=models.CASCADE
+    )
     from_user = models.ForeignKey(
         User, verbose_name=_("Пользователь"), on_delete=models.CASCADE
     )
     time_create = models.DateTimeField(_("Дата создания"), auto_now_add=True)
     time_update = models.DateTimeField(_("Дата обновления"), auto_now=True)
-    
+
     def __str__(self):
         return f"{self.from_user} wants to join {self.to_team}"

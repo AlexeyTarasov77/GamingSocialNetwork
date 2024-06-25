@@ -2,13 +2,16 @@ from django.core.cache import cache
 from functools import wraps
 from typing import Callable, Any
 
+
 class HandleCacheService:
     """
     Class that handles caching operations.
     """
 
     @staticmethod
-    def get_from_cache_or_compute(cache_key: str, callback: Callable, cache_timeout: int | None = None) -> Any:
+    def get_from_cache_or_compute(
+        cache_key: str, callback: Callable, cache_timeout: int | None = None
+    ) -> Any:
         """
         Retrieves data from cache if it exists, otherwise computes and stores it.
 
@@ -25,7 +28,7 @@ class HandleCacheService:
         computed_data = callback()
         cache.set(cache_key, computed_data, cache_timeout)
         return computed_data
-    
+
     @staticmethod
     def invalidate_cache_version(cache_version_key: str) -> int:
         """
@@ -42,17 +45,15 @@ class HandleCacheService:
         print(cache_version_key, new_version)
         cache.set(cache_version_key, new_version)
         return new_version
-    
-    
-def use_cache(cache_timeout: int | None = None):
+
+
+def use_cache(cache_timeout: int | None = None) -> Callable:
     """
     Decorator function that caches the result of a function call using the provided cache key.
 
-    Parameters:
-        cache_key (str): The key used to store the cached result in the cache.
-
     Returns:
-        decorator (function): The decorator function that wraps the original function and caches its result.
+        decorator (function): The decorator function that wraps the original function
+        and caches its result.
 
     Example:
         @use_cache("my_function_result")
@@ -63,16 +64,18 @@ def use_cache(cache_timeout: int | None = None):
         # Call the function with arguments
         result = my_function(arg1, arg2)
 
-        # The result will be retrieved from the cache if it exists, otherwise it will be computed and stored in the cache.
+        The result will be retrieved from the cache if it exists,
+        otherwise it will be computed and stored in the cache.
     """
+
     def decorator(func):
         @wraps(func)
         def wrapper(self, *args, **kwargs):
             cache_key = self.cache_key
             return HandleCacheService.get_from_cache_or_compute(
-                cache_key,
-                lambda: func(self, *args, **kwargs),
-                cache_timeout
-                )
+                cache_key, lambda: func(self, *args, **kwargs), cache_timeout
+            )
+
         return wrapper
+
     return decorator
