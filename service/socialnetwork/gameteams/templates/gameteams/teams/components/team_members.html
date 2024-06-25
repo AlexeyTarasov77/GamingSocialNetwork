@@ -1,0 +1,60 @@
+<div class="px-7 py-8 container gap-24 bg-red-700 {{classname}}" id="members-container">
+    <div class="row">
+        {% if members %}
+            {% for member in members %}
+                <div class="col-3">
+                    <div class="flex flex-col p-2.5 gap-2.5 bg-red-600 justify-center items-center rounded-sm">
+                        <div>
+                            <img src="{{member.get_profile_image}}" alt="" class="img-fluid rounded-full" width="150" height="150">
+                        </div>
+                        <div class="text-2xl text-white">
+                            {{member.user.username}} 
+                            {% if member.user == user %}
+                            (Вы)
+                            {% if member.user == leader %}
+                            (Лидер)
+                            {% endif %}
+                        </div>
+                        <div class="text-lg text-slate-400">
+                            {{member.user.get_full_name|default:"Настоящее имя неизвестно"}}
+                        </div>
+                        <div class="text-lg text-slate-400">
+                            {{member.age|default:"Возвраст не указан"}}
+                        </div>
+                        {% if with_handling_btns %}
+                            <div class="flex flex-col gap-2.5">
+                                <div>
+                                    <button
+                                        class=
+                                        "bg-red-500 p-2.5 rounded-2xl
+                                        text-xl text-white transition-colors hover:bg-red-400"
+                                        hx-post="{% url "teams:remove_team_member" member.id %}"
+                                        hx-swap="none"
+                                        hx-headers='{"X-CSRFToken": "{{csrf_token}}"}'
+                                        id="remove-member"
+                                    >
+                                        Выгнать участника
+                                    </button>
+                                </div>
+                                <div>
+                                    <form action="{% url "teams:make_team_leader" member.id %}" method="post">
+                                        {% csrf_token %}
+                                        <button
+                                            class=
+                                            "bg-red-500 p-2.5 rounded-2xl
+                                            text-xl text-white transition-colors hover:bg-red-400"
+                                        >
+                                            Сделать лидером
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <h1 class="text-white">В команде нет участников</h1>
+        {% endif %}
+    </div>
+</div>

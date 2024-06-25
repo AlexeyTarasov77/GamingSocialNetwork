@@ -33,7 +33,11 @@ class Ad(models.Model):
     favorites = models.ManyToManyField(
         User, related_name="favorite_ads", blank=True, verbose_name=_("Избранное")
     )
-    game = models.CharField(_("Игра"), max_length=100, db_index=True)
+    game = models.ForeignKey(
+        "Game",
+        on_delete=models.CASCADE,
+        verbose_name=_("Игра"),
+    )
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
@@ -96,10 +100,14 @@ class Team(SaveSlugMixin, models.Model):
     rating = models.PositiveIntegerField(
         _("Рейтинг"), default=0, blank=True, validators=[MaxValueValidator(10)]
     )  # что то вроде репутации команды
-    game = models.CharField(_("Игра"), max_length=50, db_index=True)
+    game = models.ForeignKey(
+        "Game",
+        on_delete=models.CASCADE,
+        verbose_name=_("Игра"),
+    )
     time_create = models.DateTimeField(_("Дата создания"), auto_now_add=True)
     time_update = models.DateTimeField(_("Дата обновления"), auto_now=True)
-    founder = models.OneToOneField(
+    founder = models.ForeignKey(
         User,
         verbose_name=_("Основатель"),
         on_delete=models.SET_NULL,
@@ -116,10 +124,6 @@ class Team(SaveSlugMixin, models.Model):
 
     class Meta:
         ordering = ["-rating"]
-
-    @property
-    def members(self):
-        return self.members.all()
 
     def __str__(self):
         return self.name
@@ -148,3 +152,21 @@ class TeamJoinRequest(models.Model):
 
     def __str__(self):
         return f"{self.from_user} wants to join {self.to_team}"
+
+
+class Game(SaveSlugMixin, models.Model):
+    name = models.CharField(_("Игра"), max_length=200, db_index=True)
+    slug = models.SlugField(
+        _("URL"), max_length=200, db_index=True, unique=True, blank=True
+    )
+    logo = models.ImageField(_("Логотип"), upload_to="photos/gameteams/games/")
+
+    @property
+    def popularity(self):
+        return self.bounded_teams.count()
+
+    def save(self, *args, **kwargs):
+        super().save(*args, slug_field="slug", slugify_value=self.name, **kwargs)
+
+    def __str__(self):
+        return self.name

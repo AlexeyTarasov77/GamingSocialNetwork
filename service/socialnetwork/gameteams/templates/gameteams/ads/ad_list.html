@@ -1,35 +1,41 @@
 {% extends "gameteams/base.html" %}
-
+{% load static %}
 {% block content %}
 <div class="flex px-20 py-5 gap-14">
     <div class="p-2.5 min-w-72 flex flex-col gap-1">
         <p class="text-2xl">
-            <a href="{{ request.path }}" 
-              class="
-              {% if not request.GET.type %}text-slate-400{% else %}text-white{% endif %}
-              ">
+            <a 
+              hx-get="{{ request.path }}" 
+              hx-target=".ads-list"  
+              class=" text-slate-400 filter-tab"
+              data-id="tab"
+              >
                 Все
             </a>
         </p>
         <p class="text-2xl">
-            <a href="{{ request.path }}?type={{ search_type }}" 
-              class="
-              {% if request.GET.type == search_type %}text-slate-400{% else %}text-white{% endif %}
-              ">
+            <a 
+              hx-get="{{ request.path }}?type={{ search_type }}" 
+              hx-target=".ads-list"  
+              class="text-white filter-tab"
+              data-id="tab"
+              >
                 Поиск команды
             </a>
         </p>
         <p class="text-2xl">
-            <a href="{{ request.path }}?type={{ recruitment_type }}" 
-              class="
-              {% if request.GET.type == recruitment_type %}text-slate-400{% else %}text-white{% endif %}
-              ">
+            <a 
+              hx-get="{{ request.path }}?type={{ recruitment_type }}" 
+              hx-target=".ads-list"  
+              class="text-white filter-tab"
+              data-id="tab"
+              >
                 Набор в команду
             </a>
         </p>
     </div>
     
-    <div class="grid grid-cols-3 gap-5">
+    <div class="grid grid-cols-3 gap-5 ads-list">
         {% for ad in ads %}
             <div class="flex flex-col gap-2.5">
                 <div class="text-3xl text-white">
@@ -51,4 +57,16 @@
         {% endfor %}
     </div>
 </div>
+<div class="absolute right-16" style="bottom: -150%;">
+    <a href="{% url "teams:ad_create" %}">
+        <svg class="text-orange-600 transition-colors hover:text-red-500" xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
+            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z"/>
+        </svg>
+    </a>
+</div>
 {% endblock content %}
+
+{% block js %}
+<script src="https://unpkg.com/htmx.org@1.9.10" integrity="sha384-D1Kt99CQMDuVetoL1lrYwg5t+9QdHe7NLX/SoJYkXDFfX37iInKRy5xLSi8nO7UC" crossorigin="anonymous" defer></script>
+<script type="module" src="{% static "gameteams/js/ads/ad_mark_active_tab.js" %}"></script>
+{% endblock js %}

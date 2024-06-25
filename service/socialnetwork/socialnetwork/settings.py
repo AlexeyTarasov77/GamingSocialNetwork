@@ -53,7 +53,7 @@ DJANGO_APPS = [
 THIRD_PARTY_APPS = [
     "taggit",
     "rest_framework",
-    'rest_framework_simplejwt',
+    "rest_framework_simplejwt",
     "mptt",
     "allauth_ui",
     "allauth",
@@ -99,7 +99,7 @@ MIDDLEWARE = [
     "debug_toolbar.middleware.DebugToolbarMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
-    'django.middleware.locale.LocaleMiddleware',
+    "django.middleware.locale.LocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -182,13 +182,13 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
 LANGUAGES = [
-    ('en', _('English')),
-    ('ukr', _('Ukrainian')),
-    ('ru', _('Russian')),
+    ("en", _("English")),
+    ("ukr", _("Ukrainian")),
+    ("ru", _("Russian")),
 ]
 
-LOCALE_PATHS = [ 
-    BASE_DIR / 'locale',
+LOCALE_PATHS = [
+    BASE_DIR / "locale",
 ]
 
 LANGUAGE_CODE = "ru-RU"
@@ -236,7 +236,7 @@ TAGGIT_CASE_INSENSITIVE = True
 # MEDIA FILES CONFIG
 MEDIA_ROOT = BASE_DIR / "media"
 MEDIA_URL = "/media/"
-DEFAULT_IMAGE_URL = os.path.join(MEDIA_URL, 'photos/default.jpeg')
+DEFAULT_IMAGE_URL = os.path.join(MEDIA_URL, "photos/default.jpeg")
 
 # EMAIL SMTP SERVER CONFIG
 EMAIL_HOST = config("EMAIL_HOST")
@@ -254,12 +254,12 @@ REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.IsAuthenticatedOrReadOnly",
     ],
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+        "rest_framework.authentication.SessionAuthentication",
     ],
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 10
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
+    "PAGE_SIZE": 10,
 }
 
 # ALL_AUTH
@@ -308,7 +308,6 @@ STRIPE_WEBHOOK_SECRET = config("STRIPE_WEBHOOK_SECRET")
 # ALGOLIA SEARCH ENGINE
 
 ALGOLIA = {
-    'APPLICATION_ID': config('APPLICATION_ID'),
-    'API_KEY': config('API_KEY'),
+    "APPLICATION_ID": config("APPLICATION_ID"),
+    "API_KEY": config("API_KEY"),
 }
-

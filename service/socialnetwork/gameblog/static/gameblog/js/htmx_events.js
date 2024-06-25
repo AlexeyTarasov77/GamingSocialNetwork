@@ -13,10 +13,18 @@ export function handleHtmxRequest(callback=null) {
     
         else if (xhr.status >= 400 && xhr.status < 600) {
           console.log(xhr.status, xhr.responseText);
-          let msg = 'Упс! Что-то пошло не так... Попробуйте повторить попытку позже'
-          if (xhr.status === 401) {
-            msg = `Для выполнения этого действия необходимо авторизоваться. Для этого перейдите по ссылке ниже\n<a href='${window.location.origin}/accounts/login/?next=${window.location.pathname}' class="btn btn-dark">Авторизация</a>`
-          } 
+          let msg = ''
+          switch (xhr.status) {
+            case 401:
+              msg = `Для выполнения этого действия необходимо авторизоваться. Для этого перейдите по ссылке ниже\n<a href='${window.location.origin}/accounts/login/?next=${window.location.pathname}' class="btn btn-dark">Авторизация</a>`
+              break;
+            case 403:
+              msg = 'У вас нет прав для выполнения этого действия'
+              break;
+            default:
+              msg = 'Упс! Что-то пошло не так... Попробуйте повторить попытку позже'
+              break;
+          }
             showToast(msg, 'danger', 'Ошибка');
         }
     })

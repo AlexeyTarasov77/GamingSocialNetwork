@@ -1,4 +1,3 @@
-from datetime import datetime
 from django.utils import timezone
 from django.contrib.contenttypes.models import ContentType
 from .models import Action
