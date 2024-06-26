@@ -90,10 +90,10 @@ class TeamJoinView(LoginRequiredMixin, generic.View):
         team_slug = self.kwargs.get("slug")
         team = Team.objects.get(slug=team_slug)
         user = request.user
-        handler = TeamService(team)
-        if handler.check_is_member(user.profile):
+        service = TeamService(team)
+        if service.check_is_member(user.profile):
             return JsonResponse({"msg": "Вы уже состоите в команде"}, status=400)
-        obj, created = handler.create_join_request(user)
+        obj, created = service.create_join_request(user)
         msg = "Заявка на вступление отправлена"
         # if join req already existed - indicate that user already sent request
         if not created:
@@ -106,8 +106,8 @@ def leave_team_view(request, slug):
     team = get_object_or_404(Team, slug=slug)
     leaving_member = request.user.profile
     if leaving_member in team.members.all():
-        handler = TeamService(team)
-        handler.remove_member(leaving_member)
+        service = TeamService(team)
+        service.remove_member(leaving_member)
         return JsonResponse({"success": True}, status=200)
     else:
         return JsonResponse(
@@ -129,8 +129,8 @@ def remove_team_member_view(request, pk):
             {"success": False, "error_msg": "Участник не состоит в вашей команде"},
             status=404,
         )
-    handler = TeamService(team)
-    handler.remove_member(member)
+    service = TeamService(team)
+    service.remove_member(member)
     return JsonResponse({"success": True}, status=200)
 
 
@@ -140,8 +140,8 @@ def make_team_leader_view(request, pk):
     team = member.team
     if not request.user == team.leader:
         return JsonResponse({"success": False}, status=403)
-    handler = TeamService(team)
-    handler.make_leader(member.user)
+    service = TeamService(team)
+    service.make_leader(member.user)
     messages.success(
         request, f"Участник {member.user.username} стал лидером команды {team.name}"
     )
@@ -168,8 +168,8 @@ class TeamJoinRequestsView(AccessMixin, generic.ListView):
     template_name = "gameteams/teams/team_join_requests.html"
 
     def get_queryset(self):
-        handler = TeamService(self.team)
-        return handler.get_all_join_requests()
+        service = TeamService(self.team)
+        return service.get_all_join_requests()
 
     def dispatch(self, request, *args, **kwargs):
         """Checks that user is authenticated and is a team leader"""
@@ -184,13 +184,13 @@ class TeamJoinRequestsView(AccessMixin, generic.ListView):
         data = request.POST
         from_user_profile = get_object_or_404(Profile, user_id=data.get("from_user_id"))
         print(from_user_profile, from_user_profile.user_id)
-        handler = TeamService(self.team)
+        service = TeamService(self.team)
         accepted = False
         if data.get("action") == "accept":
-            handler.accept_join_request(from_user_profile)
+            service.accept_join_request(from_user_profile)
             accepted = True
         elif data.get("action") == "decline":
-            handler.remove_join_request(from_user_profile)
+            service.remove_join_request(from_user_profile)
         return JsonResponse({"accepted": accepted})
 
     def get_context_data(self, **kwargs):
