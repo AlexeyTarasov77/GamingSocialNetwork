@@ -95,6 +95,74 @@ LOCAL_APPS = [
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
+LOG_SQL = False
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "verbose": {
+            "format": "{levelname}|{asctime}|{module}:{lineno}|{name}>> {message}",
+            "style": "{",
+        },
+    },
+    "handlers": {
+        "file_general": {
+            "level": "WARNING",
+            "class": "logging.FileHandler",
+            "filename": os.path.join(BASE_DIR, "general_log.log"),
+            "formatter": "verbose",
+        },
+        "console": {
+            "class": "logging.StreamHandler",
+            "level": "DEBUG",
+            "formatter": "verbose",
+        },
+    },
+    "root": {
+        "handlers": ["console", "file_general"],
+        "level": "ERROR",
+    },
+    "loggers": {
+        # "django": {
+        #     "handlers": ["console", "file"],
+        #     "level": "INFO",
+        #     "propagate": True,
+        # },
+        # "gameblog": {
+        #     "handlers": ["console", "file"],
+        #     "level": "INFO",
+        #     "propagate": True,
+        # },
+    },
+}
+
+
+def create_app_loger(app_name):
+    app_name = app_name.split(".")[0]  # remove .apps.AppConfig
+    if app_name not in LOGGING["loggers"]:
+        app_handler = {
+            **LOGGING["handlers"]["file_general"],
+            "filename": os.path.join(BASE_DIR, ".logs", f"{app_name}_log.log"),
+        }
+        LOGGING["handlers"][app_name + "_handler"] = app_handler
+        LOGGING["loggers"][app_name] = {
+            "handlers": [app_name + "_handler"],
+            "level": "DEBUG",
+            "propagate": False,
+        }
+
+
+for app_name in LOCAL_APPS:
+    create_app_loger(app_name)
+
+if LOG_SQL:
+    LOGGING["loggers"]["django.db.backends"] = {
+        "handlers": ["console"],
+        "level": "DEBUG",
+    }
+
+
 MIDDLEWARE = [
     "debug_toolbar.middleware.DebugToolbarMiddleware",
     "django.middleware.security.SecurityMiddleware",

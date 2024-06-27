@@ -39,6 +39,7 @@
 - Celery
 - Ajax
 - JavaScript
+- HTMX
 - Docker
 - TailWind CSS
 - PostgresQL
