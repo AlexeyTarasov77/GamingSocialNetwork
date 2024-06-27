@@ -1,7 +1,7 @@
 from typing import Any
 
 from .services.PostService import PostService
-from core.HandleCache import HandleCacheService
+from core.handle_cache import HandleCacheService
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
@@ -13,6 +13,7 @@ from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views import generic
+from core import base
 from .services.constants import CACHE_KEYS
 from . import forms, tasks
 from .mixins import (
@@ -20,12 +21,16 @@ from .mixins import (
     ObjectViewsMixin,
 )
 from .models import Post
+import logging
+
+logger = logging.getLogger(__name__)
 
 User = get_user_model()
 
+base.set_logger(logger)
 
-# Create your views here.
-class ListPosts(ListPostsQuerySetMixin, generic.ListView):
+
+class ListPosts(base.BaseView, ListPostsQuerySetMixin, generic.ListView):
     template_name = "posts/list.html"
     context_object_name = "posts_list"
     paginate_by = 10
