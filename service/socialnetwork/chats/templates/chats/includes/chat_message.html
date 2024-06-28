@@ -1,12 +1,19 @@
+{% load humanize %}
+
 {% if message.author == user %}
-<li class="flex justify-end mb-4">
-    <div class="bg-green-200 rounded-l-lg rounded-tr-lg p-4 max-w-[75%]">
-        <span>{{ message.body }}</span>
+<li>
+    <div class="flex justify-end mt-4">
+        <div class="bg-green-200 rounded-l-lg rounded-tr-lg p-4 max-w-[75%]">
+            <span>{{ message.body }}</span>
+        </div>
+        <div class="flex items-end">
+            <svg height="13" width="8" >
+                <path fill="#bbf7d0" d="M6.3,10.4C1.5,8.7,0.9,5.5,0,0.2L0,13l5.2,0C7,13,9.6,11.5,6.3,10.4z"/>
+            </svg>
+        </div>
     </div>
-    <div class="flex items-end">
-        <svg height="13" width="8" >
-            <path fill="#bbf7d0" d="M6.3,10.4C1.5,8.7,0.9,5.5,0,0.2L0,13l5.2,0C7,13,9.6,11.5,6.3,10.4z"/>
-        </svg>
+    <div class="text-sm font-light flex justify-end">
+        <span class="text-white">{{ message.created_at|naturaltime }}</span>
     </div>
 </li>
 {% else %}
@@ -30,6 +37,7 @@
         </div>
     </div>
     <div class="text-sm font-light py-1 ml-10">
+        <div class="text-white">{{message.created_at|naturaltime}}</div>
         <span class="text-white">{{ message.author.get_full_name }}</span>
         <span class="text-gray-400">
             <a href="{{message.author.profile.get_absolute_url}}">

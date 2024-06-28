@@ -1,6 +1,6 @@
 from typing import Any
 from django.db.models import Prefetch
-from django.http import HttpRequest, HttpResponse
+from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.shortcuts import redirect
 from django.views import generic
 from django.views.generic.edit import FormMixin, BaseFormView
@@ -8,8 +8,10 @@ from django.contrib.auth.mixins import AccessMixin, LoginRequiredMixin
 from django.contrib import messages
 from django.db.models import Q
 from users.services.users_service import UsersService
+from .services.chats_service import ChatsService
 from chats import forms
 from .models import ChatRoom, Message
+from core.utils import is_ajax
 
 # Create your views here.
 
@@ -17,30 +19,13 @@ from .models import ChatRoom, Message
 class ChatsMixin:
     """
     Mixin for views that interact with chat rooms.
-    Methods:
-        get_chat_image(chat)
-            Returns the URL of the image for the given chat room.
-
-        get_other_user(chat)
-            Returns the user object of the other member in the chat room.
     """
 
     def get_chat_image(self, chat):
-        """
-        Returns the computed URL of the image for the given chat room.
-        For example to set chat image as avatar of other participant.
-        """
-        if chat.is_group:
-            return chat.get_image()
-        return self.get_other_user(chat).profile.get_image()
+        return ChatsService.get_chat_image(chat)
 
     def get_other_user(self, chat):
-        """
-        Returns the user object of the other member in the chat room.
-
-        """
-        if not chat.is_group:
-            return chat.members.exclude(id=self.request.user.id).first()
+        return ChatsService.get_other_user(chat, self.request.user.id)
 
 
 class ChatAccessMixin(AccessMixin):
@@ -64,15 +49,13 @@ class ChatAccessMixin(AccessMixin):
 class MemberRequiredMixin(ChatAccessMixin):
     """Check if current user is a member of accessing chat room."""
     def test_user_func(self):
-        user_id = self.request.user.id
-        return self.get_object().members.filter(id=user_id).exists()
+        return ChatsService.is_chat_member(self.request.user.id, self.get_object())
 
 
 class AdminRequiredMixin(ChatAccessMixin):
     """Check if current user is an admin of accessing chat room."""
     def test_user_func(self):
-        user_id = self.request.user.id
-        return self.get_object().admin_id == user_id
+        return ChatsService.is_chat_admin(self.request.user.id, self.get_object())
 
 
 class ListChatsView(LoginRequiredMixin, generic.ListView, ChatsMixin):
@@ -95,7 +78,7 @@ class ListChatsView(LoginRequiredMixin, generic.ListView, ChatsMixin):
         return qs
 
     def get_template_names(self) -> list[str]:
-        if self.request.headers.get("Hx-Request") == "true":
+        if is_ajax(self.request):
             return super().get_template_names()
         return ["chats/list_chats.html"]
 
@@ -129,8 +112,7 @@ class ChatRoomView(ChatsMixin, MemberRequiredMixin, generic.DetailView, FormMixi
         Returns:
             list[str]: The names of the templates to use.
         """
-        print("HEADERS", self.request.headers)
-        if self.request.headers.get("Hx-Request") == "true":
+        if is_ajax(self.request):
             return ["chats/partials/chatroom_p.html"]
         return super().get_template_names()
 
@@ -205,10 +187,8 @@ class PersonalChatRoomCreateView(LoginRequiredMixin, BaseFormView):
     def form_valid(self, form: forms.PersonalChatRoomCreateForm) -> HttpResponse:
         chat = form.save(commit=False)
         chat_members = form.cleaned_data["members"]
-        chat.name = "&".join([member.username for member in chat_members])  # joe&alex
-        if not ChatRoom.objects.filter(
-            Q(name=chat.name) | Q(name="&".join(list(reversed("joe&alex".split("&")))))
-        ).exists():  # joe&alex or alex&joe
+        chat.name = ChatsService.generate_chat_name_by_members(chat_members)
+        if ChatsService.is_unique_by_name(chat.name):
             chat.admin = self.request.user
             chat.type = ChatRoom.TYPE_CHOICES[1][0]  # personal
             chat.save()
@@ -232,23 +212,37 @@ class ChatRoomMemberRemoveView(
         """Determines the success message for removing member from chat room."""
         msg = ''
         if target_user_id == curr_user_id:
-            print('left')
             msg = "Вы покинули чат"
         else:
             msg = "Пользователь удален из чата"
         return msg
 
     def post(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
+        response = redirect("chats:list")
         chat = self.get_object()
         target_user_id = int(request.POST.get("target_user_id"))  # user that we want to remove
-        curr_user = request.user
-        if not target_user_id or curr_user not in chat.members.all():
+        curr_user_id = request.user.id
+        #  alias for func
+        is_admin = lambda user_id: ChatsService.is_chat_admin(user_id, chat)  # noqa
+        print(target_user_id, (target_user_id not in chat.members.all()))
+        if not target_user_id or not ChatsService.is_chat_member(target_user_id, chat):
             return HttpResponse(status=400)
-        # if user want to remove another user and isn't chat's admin - forbidden
-        if target_user_id != curr_user.id and curr_user != chat.admin:
-            return HttpResponse(status=403)
-        chat.members.remove(curr_user)
-        if chat.members.count() == 0 or target_user_id == chat.admin_id:
+        #  user leaves team
+        if target_user_id == curr_user_id:
+            chat.members.remove(target_user_id)
+        #  user wants to remove another user
+        else:
+            # if user want to remove another user and isn't chat's admin - forbidden
+            if not is_admin(curr_user_id):
+                return HttpResponse(status=403)
+            #  admin kick another user
+            chat.members.remove(target_user_id)
+            response = JsonResponse({"success": True, "data": {"removed_user_id": target_user_id}})
+        # if after removing memeber nobody left or removed member was admin - delete chat
+        if chat.members.count() == 0 or is_admin(target_user_id):
             chat.delete()
-        messages.success(request, self.get_success_msg(target_user_id, curr_user.id))
-        return redirect("chats:list")
+            response = redirect("chats:list")
+        #  add msg only in case that response is http (not json)
+        if type(response) is HttpResponse:
+            messages.success(request, self.get_success_msg(target_user_id, curr_user_id))
+        return response

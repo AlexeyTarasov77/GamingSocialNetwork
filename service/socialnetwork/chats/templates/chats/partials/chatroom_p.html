@@ -39,7 +39,15 @@
                         {% for member in chat.members.all %}
                         <div class="member flex items-center gap-3">
                             <div class=""><img src="{{member.profile.get_image}}" alt="" class="img-fluid rounded-full" width='50' height='50'></div>
-                            <div class="text-xl">{{member.username}} {% if member == user %}(Вы){% endif %}</div>
+                            <div class="text-xl">
+                                {{member.username}} 
+                                {% if member == chat.admin %}<span class="text-primary text-lg">Админ</span>{% endif %} 
+                                {% if member == user %}(Вы){% endif %}</div>
+                            {% if user == chat.admin and member != user %}
+                            <div id="kick-{{member.id}}" class="kick-member">
+                                {% include "chats/includes/remove_member_form.html" with target_user_id=member.id btn_text="Выгнать" %}
+                            </div>
+                            {% endif %}
                         </div>
                         {% endfor %}
                     </div>
@@ -48,13 +56,7 @@
             </div>
         </div>
         <div>
-            <form action="{% url "chats:remove-member" chat.id %}" method="post">
-                {% csrf_token %}
-                <input type="hidden" name="target_user_id" value="{{user.id}}">
-                <button class="bg-red-600 hover:bg-red-500 text-white font-semibold py-2 px-4 rounded ml-2">
-                    Покинуть
-                </button>
-            </form>
+            {% include "chats/includes/remove_member_form.html" with target_user_id=user.id btn_text="Покинуть" %}
         </div>
     </div>
 </header>
@@ -79,3 +81,31 @@
         </div>
     </div>
 </div>
+
+{% block js %}
+<script type="module">
+    import showToast from '/static/notifications.js'
+    document.addEventListener("DOMContentLoaded", () => {
+        const kickForms = document.querySelectorAll('.kick-member form')
+        console.log(kickForms)
+        kickForms.forEach(form => {
+            form.addEventListener('submit', (e) => {
+                e.preventDefault()
+                fetch(e.target.action, {
+                    method: 'POST',
+                    body: new FormData(e.target)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        e.target.closest(".member").remove()
+                    }
+                })
+                .catch(error => {
+                    showToast('Упс. Что то пошло не так попробуйте еще раз', 'error');
+                });
+            })
+        })
+    })
+</script>
+{% endblock js %}
