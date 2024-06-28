@@ -3,7 +3,6 @@ from django.db.models import Model
 
 
 class ToggleM2MBaseService:
-
     def __init__(self, obj: Model, m2m_field_name: str, user: User) -> None:
         self.obj = obj
         self.m2m_field = getattr(obj, m2m_field_name)
@@ -22,7 +21,6 @@ class ToggleM2MBaseService:
         Returns:
             bool: False if the user is already in the M2M field, True otherwise.
         """
-        print(self.m2m_field.all(), self.user)
         if self.m2m_field.filter(id=self.user.id).exists():
             self.m2m_field.remove(self.user)
             return False

@@ -97,6 +97,19 @@ class Profile(SaveSlugMixin, models.Model):
 
     def get_absolute_url(self):
         return reverse("users:profile", kwargs={"username": self.user_slug})
+    
+class ProfileTeamsHistory(models.Model):
+    profile = models.ForeignKey(
+        "Profile", verbose_name=_("Пользователь"), on_delete=models.CASCADE
+    )
+    team = models.ForeignKey(
+        "gameteams.Team", verbose_name=_("Команда"), on_delete=models.CASCADE
+    )
+    date_joined = models.DateTimeField(_("Дата присоединения"), auto_now_add=True)
+    date_left = models.DateTimeField(_("Дата выхода"), null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.profile.user} joined {self.team}"
 
 
 class FriendRequest(models.Model):

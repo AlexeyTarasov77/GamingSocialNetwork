@@ -5,6 +5,7 @@ from django.conf.urls.static import static
 from django.conf.urls.i18n import i18n_patterns
 from payment import webhooks
 
+# url patterns with language prefix
 urlpatterns = i18n_patterns(
     path("admin/", admin.site.urls),
     path('__debug__/', include('debug_toolbar.urls')),
@@ -23,6 +24,7 @@ urlpatterns = i18n_patterns(
     path("users/", include("users.urls", namespace="users")),
 )
 
+# url patterns which should'nt have any language prefix
 urlpatterns += [
     path('stripe/webhook/', webhooks.stripe_webhook, name='stripe_webhook'),
     path("api/", include("api.urls", namespace="api")),

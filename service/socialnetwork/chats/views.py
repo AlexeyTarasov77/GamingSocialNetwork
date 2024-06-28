@@ -7,7 +7,7 @@ from django.views.generic.edit import FormMixin, BaseFormView
 from django.contrib.auth.mixins import AccessMixin, LoginRequiredMixin
 from django.contrib import messages
 from django.db.models import Q
-from posts.services.PostList import PostSuggestionService
+from users.services.users_service import UsersService
 from chats import forms
 from .models import ChatRoom, Message
 
@@ -169,9 +169,9 @@ class GroupChatRoomCreateView(LoginRequiredMixin, generic.CreateView):
     def get_form_kwargs(self) -> dict[str, Any]:
         """Puts suggested users for choosing to add in group to the form kwargs."""
         kwargs = super().get_form_kwargs()
-        suggestion_service = PostSuggestionService()
+        suggested_users = UsersService.get_suggested_users_per_user(self.request.user)
         kwargs.update(
-            members_queryset=suggestion_service.get_suggested_users(self.request.user),
+            members_queryset=suggested_users,
         )
         return kwargs
 

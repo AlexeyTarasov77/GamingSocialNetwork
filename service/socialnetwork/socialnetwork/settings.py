@@ -53,7 +53,7 @@ DJANGO_APPS = [
 THIRD_PARTY_APPS = [
     "taggit",
     "rest_framework",
-    'rest_framework_simplejwt',
+    "rest_framework_simplejwt",
     "mptt",
     "allauth_ui",
     "allauth",
@@ -95,11 +95,79 @@ LOCAL_APPS = [
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
+LOG_SQL = False
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "verbose": {
+            "format": "{levelname}|{asctime}|{module}:{lineno}|{name}>> {message}",
+            "style": "{",
+        },
+    },
+    "handlers": {
+        "file_general": {
+            "level": "WARNING",
+            "class": "logging.FileHandler",
+            "filename": os.path.join(BASE_DIR, "general_log.log"),
+            "formatter": "verbose",
+        },
+        "console": {
+            "class": "logging.StreamHandler",
+            "level": "DEBUG",
+            "formatter": "verbose",
+        },
+    },
+    "root": {
+        "handlers": ["console", "file_general"],
+        "level": "ERROR",
+    },
+    "loggers": {
+        # "django": {
+        #     "handlers": ["console", "file"],
+        #     "level": "INFO",
+        #     "propagate": True,
+        # },
+        # "gameblog": {
+        #     "handlers": ["console", "file"],
+        #     "level": "INFO",
+        #     "propagate": True,
+        # },
+    },
+}
+
+
+def create_app_loger(app_name):
+    app_name = app_name.split(".")[0]  # remove .apps.AppConfig
+    if app_name not in LOGGING["loggers"]:
+        app_handler = {
+            **LOGGING["handlers"]["file_general"],
+            "filename": os.path.join(BASE_DIR, ".logs", f"{app_name}_log.log"),
+        }
+        LOGGING["handlers"][app_name + "_handler"] = app_handler
+        LOGGING["loggers"][app_name] = {
+            "handlers": [app_name + "_handler"],
+            "level": "DEBUG",
+            "propagate": False,
+        }
+
+
+for app_name in LOCAL_APPS:
+    create_app_loger(app_name)
+
+if LOG_SQL:
+    LOGGING["loggers"]["django.db.backends"] = {
+        "handlers": ["console"],
+        "level": "DEBUG",
+    }
+
+
 MIDDLEWARE = [
     "debug_toolbar.middleware.DebugToolbarMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
-    'django.middleware.locale.LocaleMiddleware',
+    "django.middleware.locale.LocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -182,13 +250,13 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
 LANGUAGES = [
-    ('en', _('English')),
-    ('ukr', _('Ukrainian')),
-    ('ru', _('Russian')),
+    ("en", _("English")),
+    ("ukr", _("Ukrainian")),
+    ("ru", _("Russian")),
 ]
 
-LOCALE_PATHS = [ 
-    BASE_DIR / 'locale',
+LOCALE_PATHS = [
+    BASE_DIR / "locale",
 ]
 
 LANGUAGE_CODE = "ru-RU"
@@ -236,7 +304,7 @@ TAGGIT_CASE_INSENSITIVE = True
 # MEDIA FILES CONFIG
 MEDIA_ROOT = BASE_DIR / "media"
 MEDIA_URL = "/media/"
-DEFAULT_IMAGE_URL = os.path.join(MEDIA_URL, 'photos/default.jpeg')
+DEFAULT_IMAGE_URL = os.path.join(MEDIA_URL, "photos/default.jpeg")
 
 # EMAIL SMTP SERVER CONFIG
 EMAIL_HOST = config("EMAIL_HOST")
@@ -254,12 +322,12 @@ REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.IsAuthenticatedOrReadOnly",
     ],
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+        "rest_framework.authentication.SessionAuthentication",
     ],
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 10
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
+    "PAGE_SIZE": 10,
 }
 
 # ALL_AUTH
@@ -308,7 +376,6 @@ STRIPE_WEBHOOK_SECRET = config("STRIPE_WEBHOOK_SECRET")
 # ALGOLIA SEARCH ENGINE
 
 ALGOLIA = {
-    'APPLICATION_ID': config('APPLICATION_ID'),
-    'API_KEY': config('API_KEY'),
+    "APPLICATION_ID": config("APPLICATION_ID"),
+    "API_KEY": config("API_KEY"),
 }
-

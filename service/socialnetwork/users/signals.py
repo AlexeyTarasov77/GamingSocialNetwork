@@ -1,8 +1,10 @@
 from django.dispatch import receiver
-from allauth.account.signals import user_signed_up
+from django.db.models.signals import post_save
 from django.contrib.auth import get_user_model
 from .models import Profile
 
-@receiver(user_signed_up, sender=get_user_model())
-def create_user_profile(request, user, **kwargs):
-    return Profile.objects.create(user=user)
+
+@receiver(post_save, sender=get_user_model())
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        Profile.objects.create(user=instance)

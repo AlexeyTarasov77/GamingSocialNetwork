@@ -12,14 +12,15 @@ stripe.api_version = settings.STRIPE_API_VERSION
 
 
 def payment_process(request):
+    """Create a stripe session and redirect it to the Stripe payment page."""
     order_id = request.session.get("order_id", None)
     order = get_object_or_404(Order, id=order_id)
     if request.method == "POST":
         """
         line_items в session_data - массив обьектов с информацией о приобретаемых позициях в заказе:
             • price_data: информация, связанная с ценой;
-            • unit_amount: сумма в центах, которую необходимо получить при оплате. Это положительное целое число, показывающее, сколько взимать в наименьшей денежной единице без десятичных знаков. Например, 10 долларов будет равно 1000 (то есть 1000 центам). Цена товара, item. price, умножается на Decimal('100'), чтобы получить значение в центах, а затем конвертируется в целое число;
-            • currency: используемая валюта в трехбуквенном формате ISO. Значение usd используется для долларов США. Список поддерживаемых валют можно увидеть на странице https://stripe.com/docs/currencies;
+            • unit_amount: сумма в центах, которую необходимо получить при оплате.
+            • currency: используемая валюта в трехбуквенном формате ISO.
             • product_data: информация, связанная с товаром:
             • name: название товара;
             • quantity: число приобретаемых единиц товара.
@@ -50,7 +51,7 @@ def payment_process(request):
                 name=order.coupon.code,
                 percent_off=order.discount,
                 duration="once",
-                )
+            )
             session_data["discounts"] = [{"coupon": stripe_coupon.id}]
 
         session = stripe.checkout.Session.create(**session_data)
@@ -61,10 +62,12 @@ def payment_process(request):
 
 
 def payment_completed(request):
+    """View successfull payment"""
     order_id = request.session.get("order_id", None)
     order = get_object_or_404(Order, id=order_id)
     return render(request, "payment/completed.html", {"order": order})
 
 
 def payment_canceled(request):
+    """View canceled payment"""
     return render(request, "payment/canceled.html")

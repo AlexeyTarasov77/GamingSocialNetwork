@@ -10,16 +10,19 @@ from gameshop.recommender import Recommender
 
 @csrf_exempt
 def stripe_webhook(request):
+    """Webhook that is triggered after stripe payment.
+    If payment was successful, the order is marked as paid.
+    """
     payload = request.body
     sig_header = request.META["HTTP_STRIPE_SIGNATURE"]
     webhook_secret = settings.STRIPE_WEBHOOK_SECRET
     event = None
     try:
         event = stripe.Webhook.construct_event(payload, sig_header, webhook_secret)
-    except ValueError as e:
+    except ValueError:
         # Invalid payload
         return HttpResponse(status=400)
-    except stripe.error.SignatureVerificationError as e:
+    except stripe.error.SignatureVerificationError:
         # Invalid signature
         return HttpResponse(status=400)
 

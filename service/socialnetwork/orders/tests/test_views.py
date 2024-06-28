@@ -1,33 +1,31 @@
-from django.contrib.auth import get_user_model
 from django.test import Client, TestCase, RequestFactory
 from django.contrib.sessions.middleware import SessionMiddleware
+from users.tests.factories import UserFactory
+from gameshop.tests.factories import ProductProxyFactory
+
 from django.urls import reverse
-from gameshop.models import ProductProxy
 import json
 
-from . import forms
-from .models import Order
-
-User = get_user_model()
+from orders.models import Order
 
 
 # Create your tests here.
 class OrderCreateTestCase(TestCase):
     def setUp(self):
         self.client = Client()
-        self.user = User.objects.create_user(username="testuser", password="12345")
-        self.client.login(username="testuser", password="12345")
-        self.product = ProductProxy.objects.create(title='Example Product', price=10.0, brand='Example Brand')
-        self.factory = RequestFactory().post(reverse('cart:add', kwargs={'product_id': self.product.id}), {
-            'product_qty': 2,
-        })
+        self.user = UserFactory.create()
+        self.client.login(username=self.user.username, password="password123")
+        self.product = ProductProxyFactory.create()
+        self.factory = RequestFactory().post(
+            reverse("cart:add", kwargs={"product_id": self.product.id}),
+            {"product_qty": 2},
+        )
         self.middleware = SessionMiddleware(self.factory)
         self.middleware.process_request(self.factory)
         self.factory.session.save()
 
     def test_order_create(self):
-        response = self.client.post(
-            reverse("orders:order_create"),
+        data = (
             {
                 "first_name": "TestName",
                 "last_name": "TestSurname",
@@ -36,6 +34,11 @@ class OrderCreateTestCase(TestCase):
                 "postal_code": "Test PostalCode",
                 "city": "Test City",
             },
+        )
+        response = self.client.post(
+            reverse("orders:order_create"),
+            json.dumps(data),
+            content_type="application/json",
         )
         self.assertEqual(response.status_code, 200)
         self.assertTrue(Order.objects.filter(first_name="TestName", id=1).exists())

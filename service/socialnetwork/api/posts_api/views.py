@@ -1,9 +1,9 @@
 from django.shortcuts import get_object_or_404
 from posts.mixins import ListPostsQuerySetMixin
-from posts.services.PostService import PostService
-from rest_framework import viewsets, permissions, views, generics, status
-from posts.models import Post, Comment
+from posts.services.posts_service import PostsService
+from rest_framework import permissions, viewsets, views, generics, status
 from rest_framework.response import Response
+from posts.models import Post, Comment
 from . import serializers as s
 
 
@@ -27,7 +27,7 @@ class LikeAPIView(views.APIView):
         obj = self.get_object(
             request.POST.get("object_id")
         )  # получить id текущего поста из запроса
-        is_liked = PostService.like(obj, request.user)
+        is_liked = PostsService.like_post(obj, request.user)
         data = {"is_liked": is_liked, "likes_count": obj.liked.count()}
         serializer = s.LikeSerializer(data)  # сериализовать данные в json формат
         return Response(serializer.data)  # вернуть на клиент сериализованные данные
@@ -57,7 +57,7 @@ class SavePostAPIView(generics.GenericAPIView):
 
     def patch(self, request, post_id):
         post = self.get_object()
-        is_saved = PostService.save(post, request.user)
+        is_saved = PostsService.save_post(post, request.user)
         data = {"is_saved": is_saved}
         return Response(data)
 
@@ -69,7 +69,7 @@ class CreateCommentAPIView(generics.CreateAPIView):
     def perform_create(self, serializer):
         serializer.save(
             post_id=self.kwargs.get("post_id", None),
-            parent_id=self.request.data.get("parent", None),
+            parent_id=self.request.data.get("parent", None) or None,
             author=self.request.user,
         )
 
