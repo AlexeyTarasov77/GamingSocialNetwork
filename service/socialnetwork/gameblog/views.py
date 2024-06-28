@@ -1,7 +1,6 @@
 from datetime import timedelta
 from typing import Any, Final
 import logging
-from django.http import HttpResponse
 import requests
 from actions.models import Action
 from decouple import config
@@ -12,7 +11,7 @@ from django.db.models.query import QuerySet
 from django.utils import timezone
 from django.views import generic
 from posts.models import Post
-from core.base import BaseView, set_logger
+from core.views import BaseView, set_logger
 
 from .models import Ad, BackgroundVideo
 

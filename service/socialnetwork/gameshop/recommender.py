@@ -1,9 +1,10 @@
+from core.redis_connection import r
 from gameshop.models import ProductProxy
-from gameblog.redis_connection import r
 
 
 class Recommender:
     """Recommender system based on product purchase history."""
+
     def get_product_key(self, id):
         return f"product:{id}:purchased_with"
 

@@ -1,5 +1,6 @@
 from typing import Any
 
+from core.redis_connection import r
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
@@ -13,7 +14,6 @@ from rest_framework.response import Response
 from .decorators import owner_required
 from .forms import ProfileUpdateForm
 from .models import FriendRequest, Profile
-from gameblog.redis_connection import r
 
 
 # Create your views here.
@@ -94,6 +94,7 @@ def profile_middleware(request):
 
 class ProfileUpdateView(generic.UpdateView):
     """View for updating profile."""
+
     slug_url_kwarg = "username"
     slug_field = "user_slug"
     template_name = "users/profile_update.html"
@@ -117,6 +118,7 @@ def friend_requests_view(request, username):
 
 class SubscribeAPIView(generics.GenericAPIView):
     """Api view for subscribe/unsubscribe to user"""
+
     queryset = Profile.objects.all()
     lookup_field = "user_slug"
     lookup_url_kwarg = "username"
@@ -128,7 +130,9 @@ class SubscribeAPIView(generics.GenericAPIView):
         acting_user = (
             request.user
         )  # получение текущего пользователя который хочеть подписаться/отписаться
-        if acting_user in target_user_profile.followers.all():  # если пользователь уже подписан
+        if (
+            acting_user in target_user_profile.followers.all()
+        ):  # если пользователь уже подписан
             target_user_profile.followers.remove(acting_user)  # отписаться
             acting_user.profile.following.remove(
                 target_user_profile.user
@@ -149,6 +153,7 @@ def friend_request_remove(from_user: User, to_user: User) -> None:
 
 class FriendRequestAPIView(generics.GenericAPIView):
     """View for managing friend requests based on request method."""
+
     queryset = Profile.objects.all()
     lookup_field = "user_slug"
     lookup_url_kwarg = "username"
@@ -195,6 +200,7 @@ class FriendRequestAPIView(generics.GenericAPIView):
 
 class FriendRequestHandlerAPIView(generics.GenericAPIView):
     """View for declining/accepting friend request"""
+
     queryset = Profile.objects.all()
     lookup_field = "user_slug"
     lookup_url_kwarg = "username"

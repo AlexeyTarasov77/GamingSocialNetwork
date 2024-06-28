@@ -8,7 +8,7 @@ from django.db.models.query import QuerySet
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views import generic
-from posts.mixins import ObjectViewsMixin
+from core.mixins import ObjectViewsMixin
 from users.models import Profile
 
 from . import forms

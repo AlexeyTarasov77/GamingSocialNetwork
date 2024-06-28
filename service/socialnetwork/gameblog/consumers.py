@@ -1,9 +1,10 @@
 from channels.generic.websocket import AsyncWebsocketConsumer
-from gameblog.redis_connection import r
+from core.redis_connection import r
 
 
 class UserStatusConsumer(AsyncWebsocketConsumer):
-    """ Consumer to track users status (online/offline). """
+    """Consumer to track users status (online/offline)."""
+
     async def update_user_status(self, user_id, status: int):  # 1 - online, 0 - offline
         """Updating status for current user in redis"""
         client = r
