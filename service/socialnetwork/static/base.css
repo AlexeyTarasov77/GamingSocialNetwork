@@ -83,3 +83,7 @@ header {
 .search-container {
     padding: 1rem;
 }
+
+.collapse {
+    visibility: unset !important;
+}
