@@ -1,0 +1,2824 @@
+WARNING|2024-06-28 10:36:48,598|log:241|django.request>> Not Found: /favicon.ico
+WARNING|2024-06-28 10:36:48,599|runserver:176|django.channels.server>> HTTP GET /favicon.ico 404 [0.23, 192.168.65.1:22730]
+ERROR|2024-06-28 10:36:48,739|server:297|daphne.server>> Exception inside application: No route found for path 'ws/status/'.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/django/contrib/staticfiles/handlers.py", line 101, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 62, in __call__
+    return await application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/security/websocket.py", line 37, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 47, in __call__
+    return await self.inner(dict(scope, cookies=cookies), receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 263, in __call__
+    return await self.inner(wrapper.scope, receive, wrapper.send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/auth.py", line 185, in __call__
+    return await super().__call__(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/middleware.py", line 24, in __call__
+    return await self.inner(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 134, in __call__
+    raise ValueError("No route found for path %r." % path)
+ValueError: No route found for path 'ws/status/'.
+ERROR|2024-06-28 10:36:49,652|log:241|django.request>> Internal Server Error: /en/posts/list-posts/
+ERROR|2024-06-28 10:36:49,653|runserver:181|django.channels.server>> HTTP GET /en/posts/list-posts/ 500 [0.10, 192.168.65.1:22730]
+ERROR|2024-06-28 10:36:51,180|log:241|django.request>> Internal Server Error: /en/posts/list-posts/
+ERROR|2024-06-28 10:36:51,181|runserver:181|django.channels.server>> HTTP GET /en/posts/list-posts/ 500 [0.10, 192.168.65.1:22735]
+ERROR|2024-06-28 10:36:51,488|log:241|django.request>> Internal Server Error: /en/posts/list-posts/
+ERROR|2024-06-28 10:36:51,489|runserver:181|django.channels.server>> HTTP GET /en/posts/list-posts/ 500 [0.07, 192.168.65.1:22735]
+ERROR|2024-06-28 10:36:51,990|log:241|django.request>> Internal Server Error: /en/posts/list-posts/
+ERROR|2024-06-28 10:36:51,990|runserver:181|django.channels.server>> HTTP GET /en/posts/list-posts/ 500 [0.07, 192.168.65.1:22735]
+ERROR|2024-06-28 10:36:53,525|log:241|django.request>> Internal Server Error: /en/posts/list-posts/
+ERROR|2024-06-28 10:36:53,526|runserver:181|django.channels.server>> HTTP GET /en/posts/list-posts/ 500 [0.07, 192.168.65.1:22735]
+ERROR|2024-06-28 10:36:54,063|log:241|django.request>> Internal Server Error: /en/posts/list-posts/
+ERROR|2024-06-28 10:36:54,063|runserver:181|django.channels.server>> HTTP GET /en/posts/list-posts/ 500 [0.07, 192.168.65.1:22735]
+ERROR|2024-06-28 10:36:54,582|log:241|django.request>> Internal Server Error: /en/posts/list-posts/
+ERROR|2024-06-28 10:36:54,583|runserver:181|django.channels.server>> HTTP GET /en/posts/list-posts/ 500 [0.07, 192.168.65.1:22735]
+ERROR|2024-06-28 10:36:55,297|log:241|django.request>> Internal Server Error: /en/posts/list-posts/
+ERROR|2024-06-28 10:36:55,299|runserver:181|django.channels.server>> HTTP GET /en/posts/list-posts/ 500 [0.11, 192.168.65.1:22735]
+ERROR|2024-06-28 10:39:18,937|log:241|django.request>> Internal Server Error: /en/posts/list-posts/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/exception.py", line 42, in inner
+    response = await get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/service/core/views.py", line 33, in dispatch
+    handle_exception(e)
+  File "/service/core/views.py", line 22, in handle_exception
+    raise exc
+  File "/service/core/views.py", line 31, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/generic/base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/generic/list.py", line 154, in get
+    self.object_list = self.get_queryset()
+                       ^^^^^^^^^^^^^^^^^^^
+  File "/service/posts/mixins.py", line 28, in get_queryset
+    author.id for author in UsersService.get_suggested_users_per_user(user)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/service/users/services/users_service.py", line 36, in get_suggested_users_per_user
+    profile = user.profile
+              ^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/utils/functional.py", line 253, in inner
+    return func(_wrapped, *args)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/db/models/fields/related_descriptors.py", line 525, in __get__
+    raise self.RelatedObjectDoesNotExist(
+django.contrib.auth.models.User.profile.RelatedObjectDoesNotExist: User has no profile.
+ERROR|2024-06-28 10:39:19,001|runserver:181|django.channels.server>> HTTP GET /en/posts/list-posts/ 500 [0.41, 192.168.65.1:23447]
+WARNING|2024-06-28 10:39:41,962|log:241|django.request>> Not Found: /en/users/accounts/profile/r2/
+WARNING|2024-06-28 10:39:41,964|runserver:176|django.channels.server>> HTTP GET /en/users/accounts/profile/r2/ 404 [0.14, 192.168.65.1:23542]
+WARNING|2024-06-28 10:39:47,329|log:241|django.request>> Not Found: /en/users/accounts/profile/r/
+WARNING|2024-06-28 10:39:47,331|runserver:176|django.channels.server>> HTTP GET /en/users/accounts/profile/r/ 404 [0.12, 192.168.65.1:23590]
+ERROR|2024-06-28 10:41:45,334|log:241|django.request>> Internal Server Error: /en/posts/list-posts/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/exception.py", line 42, in inner
+    response = await get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/service/core/views.py", line 33, in dispatch
+    handle_exception(e)
+  File "/service/core/views.py", line 22, in handle_exception
+    raise exc
+  File "/service/core/views.py", line 31, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/generic/base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/generic/list.py", line 154, in get
+    self.object_list = self.get_queryset()
+                       ^^^^^^^^^^^^^^^^^^^
+  File "/service/posts/mixins.py", line 26, in get_queryset
+    ]
+      
+  File "/service/users/services/users_service.py", line 37, in get_suggested_users_per_user
+    profile = user.profile
+              ^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/utils/functional.py", line 253, in inner
+    return func(_wrapped, *args)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/db/models/fields/related_descriptors.py", line 525, in __get__
+    raise self.RelatedObjectDoesNotExist(
+django.contrib.auth.models.User.profile.RelatedObjectDoesNotExist: User has no profile.
+ERROR|2024-06-28 10:41:45,455|runserver:181|django.channels.server>> HTTP GET /en/posts/list-posts/ 500 [0.55, 192.168.65.1:24146]
+ERROR|2024-06-28 10:45:24,055|server:297|daphne.server>> Exception inside application: No route found for path 'ws/status/'.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/django/contrib/staticfiles/handlers.py", line 101, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 62, in __call__
+    return await application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/security/websocket.py", line 37, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 47, in __call__
+    return await self.inner(dict(scope, cookies=cookies), receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 263, in __call__
+    return await self.inner(wrapper.scope, receive, wrapper.send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/auth.py", line 185, in __call__
+    return await super().__call__(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/middleware.py", line 24, in __call__
+    return await self.inner(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 134, in __call__
+    raise ValueError("No route found for path %r." % path)
+ValueError: No route found for path 'ws/status/'.
+ERROR|2024-06-28 10:45:26,069|server:297|daphne.server>> Exception inside application: No route found for path 'ws/status/'.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/django/contrib/staticfiles/handlers.py", line 101, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 62, in __call__
+    return await application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/security/websocket.py", line 37, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 47, in __call__
+    return await self.inner(dict(scope, cookies=cookies), receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 263, in __call__
+    return await self.inner(wrapper.scope, receive, wrapper.send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/auth.py", line 185, in __call__
+    return await super().__call__(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/middleware.py", line 24, in __call__
+    return await self.inner(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 134, in __call__
+    raise ValueError("No route found for path %r." % path)
+ValueError: No route found for path 'ws/status/'.
+ERROR|2024-06-28 10:46:38,803|log:241|django.request>> Internal Server Error: /en/posts/detail-post/3/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/exception.py", line 42, in inner
+    response = await get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/generic/base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/generic/detail.py", line 108, in get
+    self.object = self.get_object()
+                  ^^^^^^^^^^^^^^^^^
+  File "/service/posts/views.py", line 46, in get_object
+    post_id=post_id, version=cache.get(CACHE_KEYS["POSTS_DETAIL_VERSION"], 0)
+                             ^^^^^^^^^
+AttributeError: module 'django.core.cache' has no attribute 'get'
+ERROR|2024-06-28 10:46:38,855|runserver:181|django.channels.server>> HTTP GET /en/posts/detail-post/3/ 500 [0.18, 192.168.65.1:25516]
+ERROR|2024-06-28 10:46:41,033|log:241|django.request>> Internal Server Error: /en/posts/detail-post/3/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/exception.py", line 42, in inner
+    response = await get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/generic/base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/generic/detail.py", line 108, in get
+    self.object = self.get_object()
+                  ^^^^^^^^^^^^^^^^^
+  File "/service/posts/views.py", line 46, in get_object
+    post_id=post_id, version=cache.get(CACHE_KEYS["POSTS_DETAIL_VERSION"], 0)
+                             ^^^^^^^^^
+AttributeError: module 'django.core.cache' has no attribute 'get'
+ERROR|2024-06-28 10:46:41,084|runserver:181|django.channels.server>> HTTP GET /en/posts/detail-post/3/ 500 [0.13, 192.168.65.1:25516]
+ERROR|2024-06-28 10:47:20,048|log:241|django.request>> Internal Server Error: /en/posts/detail-post/3/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/exception.py", line 42, in inner
+    response = await get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/generic/base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/generic/detail.py", line 109, in get
+    context = self.get_context_data(object=self.object)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/service/posts/views.py", line 63, in get_context_data
+    context["recommended_posts"] = PostsService.simillar_posts_by_tag(post)
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: type object 'PostsService' has no attribute 'simillar_posts_by_tag'
+ERROR|2024-06-28 10:47:20,137|runserver:181|django.channels.server>> HTTP GET /en/posts/detail-post/3/ 500 [0.23, 192.168.65.1:25704]
+ERROR|2024-06-28 10:47:20,470|log:241|django.request>> Internal Server Error: /en/posts/detail-post/3/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/exception.py", line 42, in inner
+    response = await get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/generic/base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/generic/detail.py", line 109, in get
+    context = self.get_context_data(object=self.object)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/service/posts/views.py", line 63, in get_context_data
+    context["recommended_posts"] = PostsService.simillar_posts_by_tag(post)
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: type object 'PostsService' has no attribute 'simillar_posts_by_tag'
+ERROR|2024-06-28 10:47:20,508|runserver:181|django.channels.server>> HTTP GET /en/posts/detail-post/3/ 500 [0.12, 192.168.65.1:25704]
+ERROR|2024-06-28 10:47:21,268|log:241|django.request>> Internal Server Error: /en/posts/detail-post/3/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/exception.py", line 42, in inner
+    response = await get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/generic/base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/generic/detail.py", line 109, in get
+    context = self.get_context_data(object=self.object)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/service/posts/views.py", line 63, in get_context_data
+    context["recommended_posts"] = PostsService.simillar_posts_by_tag(post)
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: type object 'PostsService' has no attribute 'simillar_posts_by_tag'
+ERROR|2024-06-28 10:47:21,322|runserver:181|django.channels.server>> HTTP GET /en/posts/detail-post/3/ 500 [0.12, 192.168.65.1:25704]
+ERROR|2024-06-28 10:47:21,804|log:241|django.request>> Internal Server Error: /en/posts/detail-post/3/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/exception.py", line 42, in inner
+    response = await get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/generic/base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/generic/detail.py", line 109, in get
+    context = self.get_context_data(object=self.object)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/service/posts/views.py", line 63, in get_context_data
+    context["recommended_posts"] = PostsService.simillar_posts_by_tag(post)
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: type object 'PostsService' has no attribute 'simillar_posts_by_tag'
+ERROR|2024-06-28 10:47:21,839|runserver:181|django.channels.server>> HTTP GET /en/posts/detail-post/3/ 500 [0.11, 192.168.65.1:25704]
+ERROR|2024-06-28 10:47:36,757|log:241|django.request>> Internal Server Error: /en/posts/detail-post/3/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/exception.py", line 42, in inner
+    response = await get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/generic/base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/generic/detail.py", line 109, in get
+    context = self.get_context_data(object=self.object)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/service/posts/views.py", line 63, in get_context_data
+    context["recommended_posts"] = PostsService.filter_by_tag(post)
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: PostsService.filter_by_tag() missing 1 required positional argument: 'tag_slug'
+ERROR|2024-06-28 10:47:36,826|runserver:181|django.channels.server>> HTTP GET /en/posts/detail-post/3/ 500 [0.27, 192.168.65.1:25799]
+ERROR|2024-06-28 10:47:37,016|log:241|django.request>> Internal Server Error: /en/posts/detail-post/3/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/exception.py", line 42, in inner
+    response = await get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/generic/base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/generic/detail.py", line 109, in get
+    context = self.get_context_data(object=self.object)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/service/posts/views.py", line 63, in get_context_data
+    context["recommended_posts"] = PostsService.filter_by_tag(post)
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: PostsService.filter_by_tag() missing 1 required positional argument: 'tag_slug'
+ERROR|2024-06-28 10:47:37,052|runserver:181|django.channels.server>> HTTP GET /en/posts/detail-post/3/ 500 [0.07, 192.168.65.1:25799]
+ERROR|2024-06-28 10:47:53,891|log:241|django.request>> Internal Server Error: /en/posts/detail-post/3/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/exception.py", line 42, in inner
+    response = await get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/generic/base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/generic/detail.py", line 109, in get
+    context = self.get_context_data(object=self.object)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/service/posts/views.py", line 63, in get_context_data
+    context["recommended_posts"] = PostsService.filter_by_tag(post)
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: PostsService.filter_by_tag() missing 1 required positional argument: 'tag_slug'
+ERROR|2024-06-28 10:47:53,928|runserver:181|django.channels.server>> HTTP GET /en/posts/detail-post/3/ 500 [0.13, 192.168.65.1:25892]
+ERROR|2024-06-28 10:47:54,356|log:241|django.request>> Internal Server Error: /en/posts/detail-post/3/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/exception.py", line 42, in inner
+    response = await get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/generic/base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/generic/detail.py", line 109, in get
+    context = self.get_context_data(object=self.object)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/service/posts/views.py", line 63, in get_context_data
+    context["recommended_posts"] = PostsService.suggest_by_tags(post)
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: PostsService.filter_by_tag() missing 1 required positional argument: 'tag_slug'
+ERROR|2024-06-28 10:47:54,397|runserver:181|django.channels.server>> HTTP GET /en/posts/detail-post/3/ 500 [0.13, 192.168.65.1:25892]
+ERROR|2024-06-28 10:47:54,994|log:241|django.request>> Internal Server Error: /en/posts/detail-post/3/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/exception.py", line 42, in inner
+    response = await get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/generic/base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/generic/detail.py", line 109, in get
+    context = self.get_context_data(object=self.object)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/service/posts/views.py", line 63, in get_context_data
+    context["recommended_posts"] = PostsService.suggest_by_tags(post)
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: PostsService.filter_by_tag() missing 1 required positional argument: 'tag_slug'
+ERROR|2024-06-28 10:47:57,988|server:297|daphne.server>> Exception inside application: No route found for path 'ws/status/'.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/django/contrib/staticfiles/handlers.py", line 101, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 62, in __call__
+    return await application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/security/websocket.py", line 37, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 47, in __call__
+    return await self.inner(dict(scope, cookies=cookies), receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 263, in __call__
+    return await self.inner(wrapper.scope, receive, wrapper.send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/auth.py", line 185, in __call__
+    return await super().__call__(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/middleware.py", line 24, in __call__
+    return await self.inner(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 134, in __call__
+    raise ValueError("No route found for path %r." % path)
+ValueError: No route found for path 'ws/status/'.
+ERROR|2024-06-28 10:47:57,992|server:297|daphne.server>> Exception inside application: No route found for path 'ws/status/'.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/django/contrib/staticfiles/handlers.py", line 101, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 62, in __call__
+    return await application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/security/websocket.py", line 37, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 47, in __call__
+    return await self.inner(dict(scope, cookies=cookies), receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 263, in __call__
+    return await self.inner(wrapper.scope, receive, wrapper.send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/auth.py", line 185, in __call__
+    return await super().__call__(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/middleware.py", line 24, in __call__
+    return await self.inner(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 134, in __call__
+    raise ValueError("No route found for path %r." % path)
+ValueError: No route found for path 'ws/status/'.
+ERROR|2024-06-28 10:48:02,040|server:297|daphne.server>> Exception inside application: No route found for path 'ws/status/'.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/django/contrib/staticfiles/handlers.py", line 101, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 62, in __call__
+    return await application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/security/websocket.py", line 37, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 47, in __call__
+    return await self.inner(dict(scope, cookies=cookies), receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 263, in __call__
+    return await self.inner(wrapper.scope, receive, wrapper.send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/auth.py", line 185, in __call__
+    return await super().__call__(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/middleware.py", line 24, in __call__
+    return await self.inner(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 134, in __call__
+    raise ValueError("No route found for path %r." % path)
+ValueError: No route found for path 'ws/status/'.
+ERROR|2024-06-28 10:48:03,050|server:297|daphne.server>> Exception inside application: No route found for path 'ws/status/'.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/django/contrib/staticfiles/handlers.py", line 101, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 62, in __call__
+    return await application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/security/websocket.py", line 37, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 47, in __call__
+    return await self.inner(dict(scope, cookies=cookies), receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 263, in __call__
+    return await self.inner(wrapper.scope, receive, wrapper.send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/auth.py", line 185, in __call__
+    return await super().__call__(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/middleware.py", line 24, in __call__
+    return await self.inner(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 134, in __call__
+    raise ValueError("No route found for path %r." % path)
+ValueError: No route found for path 'ws/status/'.
+ERROR|2024-06-28 10:49:19,377|server:297|daphne.server>> Exception inside application: No route found for path 'ws/status/'.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/django/contrib/staticfiles/handlers.py", line 101, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 62, in __call__
+    return await application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/security/websocket.py", line 37, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 47, in __call__
+    return await self.inner(dict(scope, cookies=cookies), receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 263, in __call__
+    return await self.inner(wrapper.scope, receive, wrapper.send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/auth.py", line 185, in __call__
+    return await super().__call__(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/middleware.py", line 24, in __call__
+    return await self.inner(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 134, in __call__
+    raise ValueError("No route found for path %r." % path)
+ValueError: No route found for path 'ws/status/'.
+ERROR|2024-06-28 10:50:24,799|server:297|daphne.server>> Exception inside application: No route found for path 'ws/status/'.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/django/contrib/staticfiles/handlers.py", line 101, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 62, in __call__
+    return await application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/security/websocket.py", line 37, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 47, in __call__
+    return await self.inner(dict(scope, cookies=cookies), receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 263, in __call__
+    return await self.inner(wrapper.scope, receive, wrapper.send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/auth.py", line 185, in __call__
+    return await super().__call__(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/middleware.py", line 24, in __call__
+    return await self.inner(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 134, in __call__
+    raise ValueError("No route found for path %r." % path)
+ValueError: No route found for path 'ws/status/'.
+ERROR|2024-06-28 10:50:25,808|server:297|daphne.server>> Exception inside application: No route found for path 'ws/status/'.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/django/contrib/staticfiles/handlers.py", line 101, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 62, in __call__
+    return await application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/security/websocket.py", line 37, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 47, in __call__
+    return await self.inner(dict(scope, cookies=cookies), receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 263, in __call__
+    return await self.inner(wrapper.scope, receive, wrapper.send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/auth.py", line 185, in __call__
+    return await super().__call__(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/middleware.py", line 24, in __call__
+    return await self.inner(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 134, in __call__
+    raise ValueError("No route found for path %r." % path)
+ValueError: No route found for path 'ws/status/'.
+ERROR|2024-06-28 10:50:44,889|server:297|daphne.server>> Exception inside application: No route found for path 'ws/status/'.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/django/contrib/staticfiles/handlers.py", line 101, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 62, in __call__
+    return await application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/security/websocket.py", line 37, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 47, in __call__
+    return await self.inner(dict(scope, cookies=cookies), receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 263, in __call__
+    return await self.inner(wrapper.scope, receive, wrapper.send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/auth.py", line 185, in __call__
+    return await super().__call__(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/middleware.py", line 24, in __call__
+    return await self.inner(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 134, in __call__
+    raise ValueError("No route found for path %r." % path)
+ValueError: No route found for path 'ws/status/'.
+ERROR|2024-06-28 10:50:50,623|server:297|daphne.server>> Exception inside application: No route found for path 'ws/status/'.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/django/contrib/staticfiles/handlers.py", line 101, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 62, in __call__
+    return await application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/security/websocket.py", line 37, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 47, in __call__
+    return await self.inner(dict(scope, cookies=cookies), receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 263, in __call__
+    return await self.inner(wrapper.scope, receive, wrapper.send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/auth.py", line 185, in __call__
+    return await super().__call__(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/middleware.py", line 24, in __call__
+    return await self.inner(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 134, in __call__
+    raise ValueError("No route found for path %r." % path)
+ValueError: No route found for path 'ws/status/'.
+ERROR|2024-06-28 10:51:48,098|server:297|daphne.server>> Exception inside application: No route found for path 'ws/status/'.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/django/contrib/staticfiles/handlers.py", line 101, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 62, in __call__
+    return await application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/security/websocket.py", line 37, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 47, in __call__
+    return await self.inner(dict(scope, cookies=cookies), receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 263, in __call__
+    return await self.inner(wrapper.scope, receive, wrapper.send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/auth.py", line 185, in __call__
+    return await super().__call__(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/middleware.py", line 24, in __call__
+    return await self.inner(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 134, in __call__
+    raise ValueError("No route found for path %r." % path)
+ValueError: No route found for path 'ws/status/'.
+ERROR|2024-06-28 10:53:13,660|server:297|daphne.server>> Exception inside application: No route found for path 'ws/status/'.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/django/contrib/staticfiles/handlers.py", line 101, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 62, in __call__
+    return await application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/security/websocket.py", line 37, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 47, in __call__
+    return await self.inner(dict(scope, cookies=cookies), receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 263, in __call__
+    return await self.inner(wrapper.scope, receive, wrapper.send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/auth.py", line 185, in __call__
+    return await super().__call__(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/middleware.py", line 24, in __call__
+    return await self.inner(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 134, in __call__
+    raise ValueError("No route found for path %r." % path)
+ValueError: No route found for path 'ws/status/'.
+ERROR|2024-06-28 10:53:14,673|server:297|daphne.server>> Exception inside application: No route found for path 'ws/status/'.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/django/contrib/staticfiles/handlers.py", line 101, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 62, in __call__
+    return await application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/security/websocket.py", line 37, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 47, in __call__
+    return await self.inner(dict(scope, cookies=cookies), receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 263, in __call__
+    return await self.inner(wrapper.scope, receive, wrapper.send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/auth.py", line 185, in __call__
+    return await super().__call__(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/middleware.py", line 24, in __call__
+    return await self.inner(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 134, in __call__
+    raise ValueError("No route found for path %r." % path)
+ValueError: No route found for path 'ws/status/'.
+ERROR|2024-06-28 10:54:28,949|log:241|django.request>> Internal Server Error: /en/posts/detail-post/3/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/exception.py", line 42, in inner
+    response = await get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/generic/base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/generic/detail.py", line 109, in get
+    context = self.get_context_data(object=self.object)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/service/posts/views.py", line 55, in get_context_data
+    context = super().get_context_data(**kwargs)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/service/core/mixins.py", line 20, in get_context_data
+    base_key = f"{self.redis_key_prefix}:{self.object.id}"
+                                          ^^^^^^^^^^^^^^
+AttributeError: 'function' object has no attribute 'id'
+ERROR|2024-06-28 10:54:28,994|runserver:181|django.channels.server>> HTTP GET /en/posts/detail-post/3/ 500 [0.18, 192.168.65.1:27747]
+ERROR|2024-06-28 10:54:29,784|log:241|django.request>> Internal Server Error: /en/posts/detail-post/3/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/exception.py", line 42, in inner
+    response = await get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/generic/base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/generic/detail.py", line 109, in get
+    context = self.get_context_data(object=self.object)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/service/posts/views.py", line 55, in get_context_data
+    context = super().get_context_data(**kwargs)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/service/core/mixins.py", line 20, in get_context_data
+    base_key = f"{self.redis_key_prefix}:{self.object.id}"
+                                          ^^^^^^^^^^^^^^
+AttributeError: 'function' object has no attribute 'id'
+ERROR|2024-06-28 10:54:29,887|runserver:181|django.channels.server>> HTTP GET /en/posts/detail-post/3/ 500 [0.17, 192.168.65.1:27747]
+ERROR|2024-06-28 10:54:30,585|log:241|django.request>> Internal Server Error: /en/posts/detail-post/3/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/exception.py", line 42, in inner
+    response = await get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/generic/base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/generic/detail.py", line 109, in get
+    context = self.get_context_data(object=self.object)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/service/posts/views.py", line 55, in get_context_data
+    context = super().get_context_data(**kwargs)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/service/core/mixins.py", line 20, in get_context_data
+    base_key = f"{self.redis_key_prefix}:{self.object.id}"
+                                          ^^^^^^^^^^^^^^
+AttributeError: 'function' object has no attribute 'id'
+ERROR|2024-06-28 10:54:30,619|runserver:181|django.channels.server>> HTTP GET /en/posts/detail-post/3/ 500 [0.09, 192.168.65.1:27747]
+ERROR|2024-06-28 11:27:46,811|server:297|daphne.server>> Exception inside application: No route found for path 'ws/status/'.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/django/contrib/staticfiles/handlers.py", line 101, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 62, in __call__
+    return await application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/security/websocket.py", line 37, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 47, in __call__
+    return await self.inner(dict(scope, cookies=cookies), receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 263, in __call__
+    return await self.inner(wrapper.scope, receive, wrapper.send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/auth.py", line 185, in __call__
+    return await super().__call__(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/middleware.py", line 24, in __call__
+    return await self.inner(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 134, in __call__
+    raise ValueError("No route found for path %r." % path)
+ValueError: No route found for path 'ws/status/'.
+ERROR|2024-06-28 11:27:47,825|server:297|daphne.server>> Exception inside application: No route found for path 'ws/status/'.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/django/contrib/staticfiles/handlers.py", line 101, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 62, in __call__
+    return await application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/security/websocket.py", line 37, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 47, in __call__
+    return await self.inner(dict(scope, cookies=cookies), receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 263, in __call__
+    return await self.inner(wrapper.scope, receive, wrapper.send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/auth.py", line 185, in __call__
+    return await super().__call__(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/middleware.py", line 24, in __call__
+    return await self.inner(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 134, in __call__
+    raise ValueError("No route found for path %r." % path)
+ValueError: No route found for path 'ws/status/'.
+ERROR|2024-06-28 11:27:48,831|server:297|daphne.server>> Exception inside application: No route found for path 'ws/status/'.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/django/contrib/staticfiles/handlers.py", line 101, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 62, in __call__
+    return await application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/security/websocket.py", line 37, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 47, in __call__
+    return await self.inner(dict(scope, cookies=cookies), receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 263, in __call__
+    return await self.inner(wrapper.scope, receive, wrapper.send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/auth.py", line 185, in __call__
+    return await super().__call__(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/middleware.py", line 24, in __call__
+    return await self.inner(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 134, in __call__
+    raise ValueError("No route found for path %r." % path)
+ValueError: No route found for path 'ws/status/'.
+ERROR|2024-06-28 11:27:49,842|server:297|daphne.server>> Exception inside application: No route found for path 'ws/status/'.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/django/contrib/staticfiles/handlers.py", line 101, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 62, in __call__
+    return await application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/security/websocket.py", line 37, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 47, in __call__
+    return await self.inner(dict(scope, cookies=cookies), receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 263, in __call__
+    return await self.inner(wrapper.scope, receive, wrapper.send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/auth.py", line 185, in __call__
+    return await super().__call__(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/middleware.py", line 24, in __call__
+    return await self.inner(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 134, in __call__
+    raise ValueError("No route found for path %r." % path)
+ValueError: No route found for path 'ws/status/'.
+ERROR|2024-06-28 11:27:49,847|server:297|daphne.server>> Exception inside application: No route found for path 'ws/status/'.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/django/contrib/staticfiles/handlers.py", line 101, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 62, in __call__
+    return await application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/security/websocket.py", line 37, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 47, in __call__
+    return await self.inner(dict(scope, cookies=cookies), receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 263, in __call__
+    return await self.inner(wrapper.scope, receive, wrapper.send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/auth.py", line 185, in __call__
+    return await super().__call__(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/middleware.py", line 24, in __call__
+    return await self.inner(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 134, in __call__
+    raise ValueError("No route found for path %r." % path)
+ValueError: No route found for path 'ws/status/'.
+ERROR|2024-06-28 11:27:49,852|server:297|daphne.server>> Exception inside application: No route found for path 'ws/status/'.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/django/contrib/staticfiles/handlers.py", line 101, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 62, in __call__
+    return await application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/security/websocket.py", line 37, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 47, in __call__
+    return await self.inner(dict(scope, cookies=cookies), receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 263, in __call__
+    return await self.inner(wrapper.scope, receive, wrapper.send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/auth.py", line 185, in __call__
+    return await super().__call__(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/middleware.py", line 24, in __call__
+    return await self.inner(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 134, in __call__
+    raise ValueError("No route found for path %r." % path)
+ValueError: No route found for path 'ws/status/'.
+ERROR|2024-06-28 11:27:50,857|server:297|daphne.server>> Exception inside application: No route found for path 'ws/status/'.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/django/contrib/staticfiles/handlers.py", line 101, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 62, in __call__
+    return await application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/security/websocket.py", line 37, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 47, in __call__
+    return await self.inner(dict(scope, cookies=cookies), receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 263, in __call__
+    return await self.inner(wrapper.scope, receive, wrapper.send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/auth.py", line 185, in __call__
+    return await super().__call__(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/middleware.py", line 24, in __call__
+    return await self.inner(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 134, in __call__
+    raise ValueError("No route found for path %r." % path)
+ValueError: No route found for path 'ws/status/'.
+ERROR|2024-06-28 11:28:11,772|server:297|daphne.server>> Exception inside application: No route found for path 'ws/status/'.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/django/contrib/staticfiles/handlers.py", line 101, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 62, in __call__
+    return await application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/security/websocket.py", line 37, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 47, in __call__
+    return await self.inner(dict(scope, cookies=cookies), receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 263, in __call__
+    return await self.inner(wrapper.scope, receive, wrapper.send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/auth.py", line 185, in __call__
+    return await super().__call__(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/middleware.py", line 24, in __call__
+    return await self.inner(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 134, in __call__
+    raise ValueError("No route found for path %r." % path)
+ValueError: No route found for path 'ws/status/'.
+ERROR|2024-06-28 11:32:07,249|server:297|daphne.server>> Exception inside application: No route found for path 'ws/status/'.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/django/contrib/staticfiles/handlers.py", line 101, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 62, in __call__
+    return await application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/security/websocket.py", line 37, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 47, in __call__
+    return await self.inner(dict(scope, cookies=cookies), receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 263, in __call__
+    return await self.inner(wrapper.scope, receive, wrapper.send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/auth.py", line 185, in __call__
+    return await super().__call__(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/middleware.py", line 24, in __call__
+    return await self.inner(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 134, in __call__
+    raise ValueError("No route found for path %r." % path)
+ValueError: No route found for path 'ws/status/'.
+ERROR|2024-06-28 11:33:06,392|server:297|daphne.server>> Exception inside application: No route found for path 'ws/status/'.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/django/contrib/staticfiles/handlers.py", line 101, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 62, in __call__
+    return await application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/security/websocket.py", line 37, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 47, in __call__
+    return await self.inner(dict(scope, cookies=cookies), receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 263, in __call__
+    return await self.inner(wrapper.scope, receive, wrapper.send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/auth.py", line 185, in __call__
+    return await super().__call__(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/middleware.py", line 24, in __call__
+    return await self.inner(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 134, in __call__
+    raise ValueError("No route found for path %r." % path)
+ValueError: No route found for path 'ws/status/'.
+ERROR|2024-06-28 11:34:05,167|server:297|daphne.server>> Exception inside application: No route found for path 'ws/status/'.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/django/contrib/staticfiles/handlers.py", line 101, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 62, in __call__
+    return await application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/security/websocket.py", line 37, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 47, in __call__
+    return await self.inner(dict(scope, cookies=cookies), receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 263, in __call__
+    return await self.inner(wrapper.scope, receive, wrapper.send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/auth.py", line 185, in __call__
+    return await super().__call__(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/middleware.py", line 24, in __call__
+    return await self.inner(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 134, in __call__
+    raise ValueError("No route found for path %r." % path)
+ValueError: No route found for path 'ws/status/'.
+ERROR|2024-06-28 11:34:20,218|server:297|daphne.server>> Exception inside application: No route found for path 'ws/status/'.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/django/contrib/staticfiles/handlers.py", line 101, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 62, in __call__
+    return await application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/security/websocket.py", line 37, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 47, in __call__
+    return await self.inner(dict(scope, cookies=cookies), receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 263, in __call__
+    return await self.inner(wrapper.scope, receive, wrapper.send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/auth.py", line 185, in __call__
+    return await super().__call__(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/middleware.py", line 24, in __call__
+    return await self.inner(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 134, in __call__
+    raise ValueError("No route found for path %r." % path)
+ValueError: No route found for path 'ws/status/'.
+ERROR|2024-06-28 11:35:29,546|server:297|daphne.server>> Exception inside application: No route found for path 'ws/status/'.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/django/contrib/staticfiles/handlers.py", line 101, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 62, in __call__
+    return await application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/security/websocket.py", line 37, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 47, in __call__
+    return await self.inner(dict(scope, cookies=cookies), receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 263, in __call__
+    return await self.inner(wrapper.scope, receive, wrapper.send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/auth.py", line 185, in __call__
+    return await super().__call__(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/middleware.py", line 24, in __call__
+    return await self.inner(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 134, in __call__
+    raise ValueError("No route found for path %r." % path)
+ValueError: No route found for path 'ws/status/'.
+ERROR|2024-06-28 11:36:45,941|server:297|daphne.server>> Exception inside application: No route found for path 'ws/status/'.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/django/contrib/staticfiles/handlers.py", line 101, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 62, in __call__
+    return await application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/security/websocket.py", line 37, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 47, in __call__
+    return await self.inner(dict(scope, cookies=cookies), receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 263, in __call__
+    return await self.inner(wrapper.scope, receive, wrapper.send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/auth.py", line 185, in __call__
+    return await super().__call__(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/middleware.py", line 24, in __call__
+    return await self.inner(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 134, in __call__
+    raise ValueError("No route found for path %r." % path)
+ValueError: No route found for path 'ws/status/'.
+ERROR|2024-06-28 11:44:17,406|server:297|daphne.server>> Exception inside application: No route found for path 'ws/status/'.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/django/contrib/staticfiles/handlers.py", line 101, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 62, in __call__
+    return await application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/security/websocket.py", line 37, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 47, in __call__
+    return await self.inner(dict(scope, cookies=cookies), receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 263, in __call__
+    return await self.inner(wrapper.scope, receive, wrapper.send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/auth.py", line 185, in __call__
+    return await super().__call__(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/middleware.py", line 24, in __call__
+    return await self.inner(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 134, in __call__
+    raise ValueError("No route found for path %r." % path)
+ValueError: No route found for path 'ws/status/'.
+ERROR|2024-06-28 11:44:18,424|server:297|daphne.server>> Exception inside application: No route found for path 'ws/status/'.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/django/contrib/staticfiles/handlers.py", line 101, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 62, in __call__
+    return await application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/security/websocket.py", line 37, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 47, in __call__
+    return await self.inner(dict(scope, cookies=cookies), receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 263, in __call__
+    return await self.inner(wrapper.scope, receive, wrapper.send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/auth.py", line 185, in __call__
+    return await super().__call__(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/middleware.py", line 24, in __call__
+    return await self.inner(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 134, in __call__
+    raise ValueError("No route found for path %r." % path)
+ValueError: No route found for path 'ws/status/'.
+ERROR|2024-06-28 11:44:19,428|server:297|daphne.server>> Exception inside application: No route found for path 'ws/status/'.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/django/contrib/staticfiles/handlers.py", line 101, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 62, in __call__
+    return await application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/security/websocket.py", line 37, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 47, in __call__
+    return await self.inner(dict(scope, cookies=cookies), receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 263, in __call__
+    return await self.inner(wrapper.scope, receive, wrapper.send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/auth.py", line 185, in __call__
+    return await super().__call__(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/middleware.py", line 24, in __call__
+    return await self.inner(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 134, in __call__
+    raise ValueError("No route found for path %r." % path)
+ValueError: No route found for path 'ws/status/'.
+ERROR|2024-06-28 11:44:20,441|server:297|daphne.server>> Exception inside application: No route found for path 'ws/status/'.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/django/contrib/staticfiles/handlers.py", line 101, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 62, in __call__
+    return await application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/security/websocket.py", line 37, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 47, in __call__
+    return await self.inner(dict(scope, cookies=cookies), receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 263, in __call__
+    return await self.inner(wrapper.scope, receive, wrapper.send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/auth.py", line 185, in __call__
+    return await super().__call__(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/middleware.py", line 24, in __call__
+    return await self.inner(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 134, in __call__
+    raise ValueError("No route found for path %r." % path)
+ValueError: No route found for path 'ws/status/'.
+ERROR|2024-06-28 11:45:11,043|server:297|daphne.server>> Exception inside application: No route found for path 'ws/status/'.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/django/contrib/staticfiles/handlers.py", line 101, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 62, in __call__
+    return await application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/security/websocket.py", line 37, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 47, in __call__
+    return await self.inner(dict(scope, cookies=cookies), receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 263, in __call__
+    return await self.inner(wrapper.scope, receive, wrapper.send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/auth.py", line 185, in __call__
+    return await super().__call__(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/middleware.py", line 24, in __call__
+    return await self.inner(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 134, in __call__
+    raise ValueError("No route found for path %r." % path)
+ValueError: No route found for path 'ws/status/'.
+ERROR|2024-06-28 11:45:14,093|server:297|daphne.server>> Exception inside application: No route found for path 'ws/status/'.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/django/contrib/staticfiles/handlers.py", line 101, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 62, in __call__
+    return await application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/security/websocket.py", line 37, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 47, in __call__
+    return await self.inner(dict(scope, cookies=cookies), receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 263, in __call__
+    return await self.inner(wrapper.scope, receive, wrapper.send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/auth.py", line 185, in __call__
+    return await super().__call__(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/middleware.py", line 24, in __call__
+    return await self.inner(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 134, in __call__
+    raise ValueError("No route found for path %r." % path)
+ValueError: No route found for path 'ws/status/'.
+ERROR|2024-06-28 11:45:23,149|server:297|daphne.server>> Exception inside application: No route found for path 'ws/status/'.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/django/contrib/staticfiles/handlers.py", line 101, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 62, in __call__
+    return await application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/security/websocket.py", line 37, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 47, in __call__
+    return await self.inner(dict(scope, cookies=cookies), receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 263, in __call__
+    return await self.inner(wrapper.scope, receive, wrapper.send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/auth.py", line 185, in __call__
+    return await super().__call__(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/middleware.py", line 24, in __call__
+    return await self.inner(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 134, in __call__
+    raise ValueError("No route found for path %r." % path)
+ValueError: No route found for path 'ws/status/'.
+ERROR|2024-06-28 11:45:37,216|server:297|daphne.server>> Exception inside application: No route found for path 'ws/status/'.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/django/contrib/staticfiles/handlers.py", line 101, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 62, in __call__
+    return await application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/security/websocket.py", line 37, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 47, in __call__
+    return await self.inner(dict(scope, cookies=cookies), receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 263, in __call__
+    return await self.inner(wrapper.scope, receive, wrapper.send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/auth.py", line 185, in __call__
+    return await super().__call__(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/middleware.py", line 24, in __call__
+    return await self.inner(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 134, in __call__
+    raise ValueError("No route found for path %r." % path)
+ValueError: No route found for path 'ws/status/'.
+ERROR|2024-06-28 11:47:47,072|server:297|daphne.server>> Exception inside application: No route found for path 'ws/status/'.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/django/contrib/staticfiles/handlers.py", line 101, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 62, in __call__
+    return await application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/security/websocket.py", line 37, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 47, in __call__
+    return await self.inner(dict(scope, cookies=cookies), receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 263, in __call__
+    return await self.inner(wrapper.scope, receive, wrapper.send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/auth.py", line 185, in __call__
+    return await super().__call__(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/middleware.py", line 24, in __call__
+    return await self.inner(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 134, in __call__
+    raise ValueError("No route found for path %r." % path)
+ValueError: No route found for path 'ws/status/'.
+ERROR|2024-06-28 11:47:49,118|log:241|django.request>> Internal Server Error: /api/posts/like-post/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/exception.py", line 42, in inner
+    response = await get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/decorators/csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.12/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.12/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/service/api/posts_api/views.py", line 31, in post
+    is_liked = PostsService.like(obj, request.user)
+               ^^^^^^^^^^^^^^^^^
+AttributeError: type object 'PostsService' has no attribute 'like'
+ERROR|2024-06-28 11:47:49,160|runserver:181|django.channels.server>> HTTP POST /api/posts/like-post/ 500 [0.13, 192.168.65.1:34575]
+ERROR|2024-06-28 11:49:47,742|server:297|daphne.server>> Exception inside application: No route found for path 'ws/status/'.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/django/contrib/staticfiles/handlers.py", line 101, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 62, in __call__
+    return await application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/security/websocket.py", line 37, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 47, in __call__
+    return await self.inner(dict(scope, cookies=cookies), receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 263, in __call__
+    return await self.inner(wrapper.scope, receive, wrapper.send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/auth.py", line 185, in __call__
+    return await super().__call__(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/middleware.py", line 24, in __call__
+    return await self.inner(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 134, in __call__
+    raise ValueError("No route found for path %r." % path)
+ValueError: No route found for path 'ws/status/'.
+ERROR|2024-06-28 11:49:50,779|server:297|daphne.server>> Exception inside application: No route found for path 'ws/status/'.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/django/contrib/staticfiles/handlers.py", line 101, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 62, in __call__
+    return await application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/security/websocket.py", line 37, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 47, in __call__
+    return await self.inner(dict(scope, cookies=cookies), receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 263, in __call__
+    return await self.inner(wrapper.scope, receive, wrapper.send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/auth.py", line 185, in __call__
+    return await super().__call__(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/middleware.py", line 24, in __call__
+    return await self.inner(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 134, in __call__
+    raise ValueError("No route found for path %r." % path)
+ValueError: No route found for path 'ws/status/'.
+ERROR|2024-06-28 11:49:53,798|server:297|daphne.server>> Exception inside application: No route found for path 'ws/status/'.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/django/contrib/staticfiles/handlers.py", line 101, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 62, in __call__
+    return await application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/security/websocket.py", line 37, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 47, in __call__
+    return await self.inner(dict(scope, cookies=cookies), receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 263, in __call__
+    return await self.inner(wrapper.scope, receive, wrapper.send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/auth.py", line 185, in __call__
+    return await super().__call__(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/middleware.py", line 24, in __call__
+    return await self.inner(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 134, in __call__
+    raise ValueError("No route found for path %r." % path)
+ValueError: No route found for path 'ws/status/'.
+ERROR|2024-06-28 11:49:57,821|server:297|daphne.server>> Exception inside application: No route found for path 'ws/status/'.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/django/contrib/staticfiles/handlers.py", line 101, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 62, in __call__
+    return await application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/security/websocket.py", line 37, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 47, in __call__
+    return await self.inner(dict(scope, cookies=cookies), receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 263, in __call__
+    return await self.inner(wrapper.scope, receive, wrapper.send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/auth.py", line 185, in __call__
+    return await super().__call__(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/middleware.py", line 24, in __call__
+    return await self.inner(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 134, in __call__
+    raise ValueError("No route found for path %r." % path)
+ValueError: No route found for path 'ws/status/'.
+ERROR|2024-06-28 11:50:02,913|server:297|daphne.server>> Exception inside application: No route found for path 'ws/status/'.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/django/contrib/staticfiles/handlers.py", line 101, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 62, in __call__
+    return await application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/security/websocket.py", line 37, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 47, in __call__
+    return await self.inner(dict(scope, cookies=cookies), receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 263, in __call__
+    return await self.inner(wrapper.scope, receive, wrapper.send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/auth.py", line 185, in __call__
+    return await super().__call__(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/middleware.py", line 24, in __call__
+    return await self.inner(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 134, in __call__
+    raise ValueError("No route found for path %r." % path)
+ValueError: No route found for path 'ws/status/'.
+ERROR|2024-06-28 11:50:20,018|server:297|daphne.server>> Exception inside application: No route found for path 'ws/status/'.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/django/contrib/staticfiles/handlers.py", line 101, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 62, in __call__
+    return await application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/security/websocket.py", line 37, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 47, in __call__
+    return await self.inner(dict(scope, cookies=cookies), receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 263, in __call__
+    return await self.inner(wrapper.scope, receive, wrapper.send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/auth.py", line 185, in __call__
+    return await super().__call__(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/middleware.py", line 24, in __call__
+    return await self.inner(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 134, in __call__
+    raise ValueError("No route found for path %r." % path)
+ValueError: No route found for path 'ws/status/'.
+ERROR|2024-06-28 11:50:25,420|log:241|django.request>> Internal Server Error: /api/posts/comment-post/8/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/django/db/models/fields/related_descriptors.py", line 236, in __get__
+    rel_obj = self.field.get_cached_value(instance)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/db/models/fields/mixins.py", line 15, in get_cached_value
+    return instance._state.fields_cache[cache_name]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'parent'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/django/db/models/fields/__init__.py", line 2117, in get_prep_value
+    return int(value)
+           ^^^^^^^^^^
+ValueError: invalid literal for int() with base 10: ''
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/exception.py", line 42, in inner
+    response = await get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/decorators/csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.12/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.12/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/rest_framework/generics.py", line 190, in post
+    return self.create(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/service/api/posts_api/views.py", line 80, in create
+    self.perform_create(serializer)
+  File "/service/api/posts_api/views.py", line 71, in perform_create
+    serializer.save(
+  File "/usr/local/lib/python3.12/site-packages/rest_framework/serializers.py", line 212, in save
+    self.instance = self.create(validated_data)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/rest_framework/serializers.py", line 962, in create
+    instance = ModelClass._default_manager.create(**validated_data)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/db/models/query.py", line 679, in create
+    obj.save(force_insert=True, using=self.db)
+  File "/usr/local/lib/python3.12/site-packages/mptt/models.py", line 1074, in save
+    parent = getattr(self, opts.parent_attr)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/db/models/fields/related_descriptors.py", line 254, in __get__
+    rel_obj = self.get_object(instance)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/db/models/fields/related_descriptors.py", line 217, in get_object
+    return qs.get(self.field.get_reverse_related_filter(instance))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/db/models/query.py", line 635, in get
+    clone = self._chain() if self.query.combinator else self.filter(*args, **kwargs)
+                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/db/models/query.py", line 1476, in filter
+    return self._filter_or_exclude(False, args, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/db/models/query.py", line 1494, in _filter_or_exclude
+    clone._filter_or_exclude_inplace(negate, args, kwargs)
+  File "/usr/local/lib/python3.12/site-packages/django/db/models/query.py", line 1501, in _filter_or_exclude_inplace
+    self._query.add_q(Q(*args, **kwargs))
+  File "/usr/local/lib/python3.12/site-packages/django/db/models/sql/query.py", line 1613, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/db/models/sql/query.py", line 1645, in _add_q
+    child_clause, needed_inner = self.build_filter(
+                                 ^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/db/models/sql/query.py", line 1472, in build_filter
+    return self._add_q(
+           ^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/db/models/sql/query.py", line 1645, in _add_q
+    child_clause, needed_inner = self.build_filter(
+                                 ^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/db/models/sql/query.py", line 1559, in build_filter
+    condition = self.build_lookup(lookups, col, value)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/db/models/sql/query.py", line 1389, in build_lookup
+    lookup = lookup_class(lhs, rhs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/db/models/lookups.py", line 30, in __init__
+    self.rhs = self.get_prep_lookup()
+               ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/db/models/lookups.py", line 364, in get_prep_lookup
+    return super().get_prep_lookup()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/db/models/lookups.py", line 88, in get_prep_lookup
+    return self.lhs.output_field.get_prep_value(self.rhs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/db/models/fields/__init__.py", line 2119, in get_prep_value
+    raise e.__class__(
+ValueError: Field 'id' expected a number but got ''.
+ERROR|2024-06-28 11:50:25,471|runserver:181|django.channels.server>> HTTP POST /api/posts/comment-post/8/ 500 [0.18, 192.168.65.1:35330]
+ERROR|2024-06-28 11:52:27,897|server:297|daphne.server>> Exception inside application: No route found for path 'ws/status/'.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/django/contrib/staticfiles/handlers.py", line 101, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 62, in __call__
+    return await application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/security/websocket.py", line 37, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 47, in __call__
+    return await self.inner(dict(scope, cookies=cookies), receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 263, in __call__
+    return await self.inner(wrapper.scope, receive, wrapper.send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/auth.py", line 185, in __call__
+    return await super().__call__(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/middleware.py", line 24, in __call__
+    return await self.inner(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 134, in __call__
+    raise ValueError("No route found for path %r." % path)
+ValueError: No route found for path 'ws/status/'.
+ERROR|2024-06-28 11:52:31,594|log:241|django.request>> Internal Server Error: /api/posts/comment-post/8/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/django/db/models/fields/related_descriptors.py", line 236, in __get__
+    rel_obj = self.field.get_cached_value(instance)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/db/models/fields/mixins.py", line 15, in get_cached_value
+    return instance._state.fields_cache[cache_name]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'parent'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/django/db/models/fields/__init__.py", line 2117, in get_prep_value
+    return int(value)
+           ^^^^^^^^^^
+ValueError: invalid literal for int() with base 10: ''
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/exception.py", line 42, in inner
+    response = await get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/decorators/csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.12/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.12/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/rest_framework/generics.py", line 190, in post
+    return self.create(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/service/api/posts_api/views.py", line 81, in create
+    self.perform_create(serializer)
+  File "/service/api/posts_api/views.py", line 71, in perform_create
+    serializer.save(
+  File "/usr/local/lib/python3.12/site-packages/rest_framework/serializers.py", line 212, in save
+    self.instance = self.create(validated_data)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/rest_framework/serializers.py", line 962, in create
+    instance = ModelClass._default_manager.create(**validated_data)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/db/models/query.py", line 679, in create
+    obj.save(force_insert=True, using=self.db)
+  File "/usr/local/lib/python3.12/site-packages/mptt/models.py", line 1074, in save
+    parent = getattr(self, opts.parent_attr)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/db/models/fields/related_descriptors.py", line 254, in __get__
+    rel_obj = self.get_object(instance)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/db/models/fields/related_descriptors.py", line 217, in get_object
+    return qs.get(self.field.get_reverse_related_filter(instance))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/db/models/query.py", line 635, in get
+    clone = self._chain() if self.query.combinator else self.filter(*args, **kwargs)
+                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/db/models/query.py", line 1476, in filter
+    return self._filter_or_exclude(False, args, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/db/models/query.py", line 1494, in _filter_or_exclude
+    clone._filter_or_exclude_inplace(negate, args, kwargs)
+  File "/usr/local/lib/python3.12/site-packages/django/db/models/query.py", line 1501, in _filter_or_exclude_inplace
+    self._query.add_q(Q(*args, **kwargs))
+  File "/usr/local/lib/python3.12/site-packages/django/db/models/sql/query.py", line 1613, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/db/models/sql/query.py", line 1645, in _add_q
+    child_clause, needed_inner = self.build_filter(
+                                 ^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/db/models/sql/query.py", line 1472, in build_filter
+    return self._add_q(
+           ^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/db/models/sql/query.py", line 1645, in _add_q
+    child_clause, needed_inner = self.build_filter(
+                                 ^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/db/models/sql/query.py", line 1559, in build_filter
+    condition = self.build_lookup(lookups, col, value)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/db/models/sql/query.py", line 1389, in build_lookup
+    lookup = lookup_class(lhs, rhs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/db/models/lookups.py", line 30, in __init__
+    self.rhs = self.get_prep_lookup()
+               ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/db/models/lookups.py", line 364, in get_prep_lookup
+    return super().get_prep_lookup()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/db/models/lookups.py", line 88, in get_prep_lookup
+    return self.lhs.output_field.get_prep_value(self.rhs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/db/models/fields/__init__.py", line 2119, in get_prep_value
+    raise e.__class__(
+ValueError: Field 'id' expected a number but got ''.
+ERROR|2024-06-28 11:52:31,674|runserver:181|django.channels.server>> HTTP POST /api/posts/comment-post/8/ 500 [0.23, 192.168.65.1:35936]
+ERROR|2024-06-28 11:53:28,747|server:297|daphne.server>> Exception inside application: No route found for path 'ws/status/'.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/django/contrib/staticfiles/handlers.py", line 101, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 62, in __call__
+    return await application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/security/websocket.py", line 37, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 47, in __call__
+    return await self.inner(dict(scope, cookies=cookies), receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 263, in __call__
+    return await self.inner(wrapper.scope, receive, wrapper.send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/auth.py", line 185, in __call__
+    return await super().__call__(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/middleware.py", line 24, in __call__
+    return await self.inner(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 134, in __call__
+    raise ValueError("No route found for path %r." % path)
+ValueError: No route found for path 'ws/status/'.
+ERROR|2024-06-28 11:53:29,280|log:241|django.request>> Internal Server Error: /api/posts/comment-post/8/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/django/db/models/fields/related_descriptors.py", line 236, in __get__
+    rel_obj = self.field.get_cached_value(instance)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/db/models/fields/mixins.py", line 15, in get_cached_value
+    return instance._state.fields_cache[cache_name]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'parent'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/django/db/models/fields/__init__.py", line 2117, in get_prep_value
+    return int(value)
+           ^^^^^^^^^^
+ValueError: invalid literal for int() with base 10: ''
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/exception.py", line 42, in inner
+    response = await get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/decorators/csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.12/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.12/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/rest_framework/generics.py", line 190, in post
+    return self.create(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/service/api/posts_api/views.py", line 81, in create
+    self.perform_create(serializer)
+  File "/service/api/posts_api/views.py", line 72, in perform_create
+    serializer.save(
+  File "/usr/local/lib/python3.12/site-packages/rest_framework/serializers.py", line 212, in save
+    self.instance = self.create(validated_data)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/rest_framework/serializers.py", line 962, in create
+    instance = ModelClass._default_manager.create(**validated_data)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/db/models/query.py", line 679, in create
+    obj.save(force_insert=True, using=self.db)
+  File "/usr/local/lib/python3.12/site-packages/mptt/models.py", line 1074, in save
+    parent = getattr(self, opts.parent_attr)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/db/models/fields/related_descriptors.py", line 254, in __get__
+    rel_obj = self.get_object(instance)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/db/models/fields/related_descriptors.py", line 217, in get_object
+    return qs.get(self.field.get_reverse_related_filter(instance))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/db/models/query.py", line 635, in get
+    clone = self._chain() if self.query.combinator else self.filter(*args, **kwargs)
+                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/db/models/query.py", line 1476, in filter
+    return self._filter_or_exclude(False, args, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/db/models/query.py", line 1494, in _filter_or_exclude
+    clone._filter_or_exclude_inplace(negate, args, kwargs)
+  File "/usr/local/lib/python3.12/site-packages/django/db/models/query.py", line 1501, in _filter_or_exclude_inplace
+    self._query.add_q(Q(*args, **kwargs))
+  File "/usr/local/lib/python3.12/site-packages/django/db/models/sql/query.py", line 1613, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/db/models/sql/query.py", line 1645, in _add_q
+    child_clause, needed_inner = self.build_filter(
+                                 ^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/db/models/sql/query.py", line 1472, in build_filter
+    return self._add_q(
+           ^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/db/models/sql/query.py", line 1645, in _add_q
+    child_clause, needed_inner = self.build_filter(
+                                 ^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/db/models/sql/query.py", line 1559, in build_filter
+    condition = self.build_lookup(lookups, col, value)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/db/models/sql/query.py", line 1389, in build_lookup
+    lookup = lookup_class(lhs, rhs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/db/models/lookups.py", line 30, in __init__
+    self.rhs = self.get_prep_lookup()
+               ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/db/models/lookups.py", line 364, in get_prep_lookup
+    return super().get_prep_lookup()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/db/models/lookups.py", line 88, in get_prep_lookup
+    return self.lhs.output_field.get_prep_value(self.rhs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/db/models/fields/__init__.py", line 2119, in get_prep_value
+    raise e.__class__(
+ValueError: Field 'id' expected a number but got ''.
+ERROR|2024-06-28 11:53:29,330|runserver:181|django.channels.server>> HTTP POST /api/posts/comment-post/8/ 500 [0.18, 192.168.65.1:36226]
+ERROR|2024-06-28 11:54:29,371|server:297|daphne.server>> Exception inside application: No route found for path 'ws/status/'.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/django/contrib/staticfiles/handlers.py", line 101, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 62, in __call__
+    return await application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/security/websocket.py", line 37, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 47, in __call__
+    return await self.inner(dict(scope, cookies=cookies), receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 263, in __call__
+    return await self.inner(wrapper.scope, receive, wrapper.send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/auth.py", line 185, in __call__
+    return await super().__call__(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/middleware.py", line 24, in __call__
+    return await self.inner(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 134, in __call__
+    raise ValueError("No route found for path %r." % path)
+ValueError: No route found for path 'ws/status/'.
+ERROR|2024-06-28 11:54:30,065|log:241|django.request>> Internal Server Error: /api/posts/comment-post/8/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/django/db/models/fields/related_descriptors.py", line 236, in __get__
+    rel_obj = self.field.get_cached_value(instance)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/db/models/fields/mixins.py", line 15, in get_cached_value
+    return instance._state.fields_cache[cache_name]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'parent'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/django/db/models/fields/__init__.py", line 2117, in get_prep_value
+    return int(value)
+           ^^^^^^^^^^
+ValueError: invalid literal for int() with base 10: ''
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/exception.py", line 42, in inner
+    response = await get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/decorators/csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.12/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.12/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/rest_framework/generics.py", line 190, in post
+    return self.create(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/service/api/posts_api/views.py", line 81, in create
+    self.perform_create(serializer)
+  File "/service/api/posts_api/views.py", line 72, in perform_create
+    serializer.save(
+  File "/usr/local/lib/python3.12/site-packages/rest_framework/serializers.py", line 212, in save
+    self.instance = self.create(validated_data)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/rest_framework/serializers.py", line 962, in create
+    instance = ModelClass._default_manager.create(**validated_data)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/db/models/query.py", line 679, in create
+    obj.save(force_insert=True, using=self.db)
+  File "/usr/local/lib/python3.12/site-packages/mptt/models.py", line 1074, in save
+    parent = getattr(self, opts.parent_attr)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/db/models/fields/related_descriptors.py", line 254, in __get__
+    rel_obj = self.get_object(instance)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/db/models/fields/related_descriptors.py", line 217, in get_object
+    return qs.get(self.field.get_reverse_related_filter(instance))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/db/models/query.py", line 635, in get
+    clone = self._chain() if self.query.combinator else self.filter(*args, **kwargs)
+                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/db/models/query.py", line 1476, in filter
+    return self._filter_or_exclude(False, args, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/db/models/query.py", line 1494, in _filter_or_exclude
+    clone._filter_or_exclude_inplace(negate, args, kwargs)
+  File "/usr/local/lib/python3.12/site-packages/django/db/models/query.py", line 1501, in _filter_or_exclude_inplace
+    self._query.add_q(Q(*args, **kwargs))
+  File "/usr/local/lib/python3.12/site-packages/django/db/models/sql/query.py", line 1613, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/db/models/sql/query.py", line 1645, in _add_q
+    child_clause, needed_inner = self.build_filter(
+                                 ^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/db/models/sql/query.py", line 1472, in build_filter
+    return self._add_q(
+           ^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/db/models/sql/query.py", line 1645, in _add_q
+    child_clause, needed_inner = self.build_filter(
+                                 ^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/db/models/sql/query.py", line 1559, in build_filter
+    condition = self.build_lookup(lookups, col, value)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/db/models/sql/query.py", line 1389, in build_lookup
+    lookup = lookup_class(lhs, rhs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/db/models/lookups.py", line 30, in __init__
+    self.rhs = self.get_prep_lookup()
+               ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/db/models/lookups.py", line 364, in get_prep_lookup
+    return super().get_prep_lookup()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/db/models/lookups.py", line 88, in get_prep_lookup
+    return self.lhs.output_field.get_prep_value(self.rhs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/db/models/fields/__init__.py", line 2119, in get_prep_value
+    raise e.__class__(
+ValueError: Field 'id' expected a number but got ''.
+ERROR|2024-06-28 11:54:30,114|runserver:181|django.channels.server>> HTTP POST /api/posts/comment-post/8/ 500 [0.22, 192.168.65.1:36504]
+ERROR|2024-06-28 11:57:24,018|server:297|daphne.server>> Exception inside application: No route found for path 'ws/status/'.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/django/contrib/staticfiles/handlers.py", line 101, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 62, in __call__
+    return await application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/security/websocket.py", line 37, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 47, in __call__
+    return await self.inner(dict(scope, cookies=cookies), receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 263, in __call__
+    return await self.inner(wrapper.scope, receive, wrapper.send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/auth.py", line 185, in __call__
+    return await super().__call__(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/middleware.py", line 24, in __call__
+    return await self.inner(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 134, in __call__
+    raise ValueError("No route found for path %r." % path)
+ValueError: No route found for path 'ws/status/'.
+ERROR|2024-06-28 11:58:08,274|server:297|daphne.server>> Exception inside application: No route found for path 'ws/status/'.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/django/contrib/staticfiles/handlers.py", line 101, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 62, in __call__
+    return await application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/security/websocket.py", line 37, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 47, in __call__
+    return await self.inner(dict(scope, cookies=cookies), receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 263, in __call__
+    return await self.inner(wrapper.scope, receive, wrapper.send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/auth.py", line 185, in __call__
+    return await super().__call__(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/middleware.py", line 24, in __call__
+    return await self.inner(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 134, in __call__
+    raise ValueError("No route found for path %r." % path)
+ValueError: No route found for path 'ws/status/'.
+ERROR|2024-06-28 11:58:24,337|server:297|daphne.server>> Exception inside application: No route found for path 'ws/status/'.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/django/contrib/staticfiles/handlers.py", line 101, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 62, in __call__
+    return await application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/security/websocket.py", line 37, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 47, in __call__
+    return await self.inner(dict(scope, cookies=cookies), receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 263, in __call__
+    return await self.inner(wrapper.scope, receive, wrapper.send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/auth.py", line 185, in __call__
+    return await super().__call__(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/middleware.py", line 24, in __call__
+    return await self.inner(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 134, in __call__
+    raise ValueError("No route found for path %r." % path)
+ValueError: No route found for path 'ws/status/'.
+ERROR|2024-06-28 11:58:41,414|server:297|daphne.server>> Exception inside application: No route found for path 'ws/status/'.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/django/contrib/staticfiles/handlers.py", line 101, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 62, in __call__
+    return await application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/security/websocket.py", line 37, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 47, in __call__
+    return await self.inner(dict(scope, cookies=cookies), receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 263, in __call__
+    return await self.inner(wrapper.scope, receive, wrapper.send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/auth.py", line 185, in __call__
+    return await super().__call__(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/middleware.py", line 24, in __call__
+    return await self.inner(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 134, in __call__
+    raise ValueError("No route found for path %r." % path)
+ValueError: No route found for path 'ws/status/'.
+ERROR|2024-06-28 12:00:15,904|server:297|daphne.server>> Exception inside application: No route found for path 'ws/status/'.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/django/contrib/staticfiles/handlers.py", line 101, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 62, in __call__
+    return await application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/security/websocket.py", line 37, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 47, in __call__
+    return await self.inner(dict(scope, cookies=cookies), receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 263, in __call__
+    return await self.inner(wrapper.scope, receive, wrapper.send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/auth.py", line 185, in __call__
+    return await super().__call__(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/middleware.py", line 24, in __call__
+    return await self.inner(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 134, in __call__
+    raise ValueError("No route found for path %r." % path)
+ValueError: No route found for path 'ws/status/'.
+ERROR|2024-06-28 12:00:16,951|server:297|daphne.server>> Exception inside application: No route found for path 'ws/status/'.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/django/contrib/staticfiles/handlers.py", line 101, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 62, in __call__
+    return await application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/security/websocket.py", line 37, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 47, in __call__
+    return await self.inner(dict(scope, cookies=cookies), receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 263, in __call__
+    return await self.inner(wrapper.scope, receive, wrapper.send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/auth.py", line 185, in __call__
+    return await super().__call__(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/middleware.py", line 24, in __call__
+    return await self.inner(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 134, in __call__
+    raise ValueError("No route found for path %r." % path)
+ValueError: No route found for path 'ws/status/'.
+ERROR|2024-06-28 12:06:34,529|log:241|django.request>> Internal Server Error: /en/posts/list-posts/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/exception.py", line 42, in inner
+    response = await get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/service/core/views.py", line 33, in dispatch
+    handle_exception(e)
+  File "/service/core/views.py", line 22, in handle_exception
+    raise exc
+  File "/service/core/views.py", line 31, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/generic/base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/generic/list.py", line 154, in get
+    self.object_list = self.get_queryset()
+                       ^^^^^^^^^^^^^^^^^^^
+  File "/service/posts/mixins.py", line 18, in get_queryset
+    cache_key = CACHE_KEYS["POSTS_FEED"].format(
+                ~~~~~~~~~~^^^^^^^^^^^^^^
+KeyError: 'POSTS_FEED'
+ERROR|2024-06-28 12:06:34,697|runserver:181|django.channels.server>> HTTP GET /en/posts/list-posts/ 500 [0.29, 192.168.65.1:39849]
+ERROR|2024-06-28 12:06:52,197|log:241|django.request>> Internal Server Error: /en/posts/list-posts/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/exception.py", line 42, in inner
+    response = await get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/service/core/views.py", line 33, in dispatch
+    handle_exception(e)
+  File "/service/core/views.py", line 22, in handle_exception
+    raise exc
+  File "/service/core/views.py", line 31, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/generic/base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/generic/list.py", line 154, in get
+    self.object_list = self.get_queryset()
+                       ^^^^^^^^^^^^^^^^^^^
+  File "/service/posts/mixins.py", line 20, in get_queryset
+    version=cache.get(CACHE_KEYS["POSTS_FEED_VERSION"], 0)
+                      ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+KeyError: 'POSTS_FEED_VERSION'
+ERROR|2024-06-28 12:06:52,246|runserver:181|django.channels.server>> HTTP GET /en/posts/list-posts/ 500 [0.13, 192.168.65.1:39943]
+ERROR|2024-06-28 12:06:52,932|log:241|django.request>> Internal Server Error: /en/posts/list-posts/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/exception.py", line 42, in inner
+    response = await get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/service/core/views.py", line 33, in dispatch
+    handle_exception(e)
+  File "/service/core/views.py", line 22, in handle_exception
+    raise exc
+  File "/service/core/views.py", line 31, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/generic/base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/generic/list.py", line 154, in get
+    self.object_list = self.get_queryset()
+                       ^^^^^^^^^^^^^^^^^^^
+  File "/service/posts/mixins.py", line 20, in get_queryset
+    version=cache.get(CACHE_KEYS["POSTS_FEED_VERSION"], 0)
+                      ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+KeyError: 'POSTS_FEED_VERSION'
+ERROR|2024-06-28 12:06:53,076|runserver:181|django.channels.server>> HTTP GET /en/posts/list-posts/ 500 [0.24, 192.168.65.1:39943]
+ERROR|2024-06-28 12:06:53,537|log:241|django.request>> Internal Server Error: /en/posts/list-posts/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/exception.py", line 42, in inner
+    response = await get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/service/core/views.py", line 33, in dispatch
+    handle_exception(e)
+  File "/service/core/views.py", line 22, in handle_exception
+    raise exc
+  File "/service/core/views.py", line 31, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/generic/base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/generic/list.py", line 154, in get
+    self.object_list = self.get_queryset()
+                       ^^^^^^^^^^^^^^^^^^^
+  File "/service/posts/mixins.py", line 20, in get_queryset
+    version=cache.get(CACHE_KEYS["POSTS_FEED_VERSION"], 0)
+                      ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+KeyError: 'POSTS_FEED_VERSION'
+ERROR|2024-06-28 12:06:53,569|runserver:181|django.channels.server>> HTTP GET /en/posts/list-posts/ 500 [0.08, 192.168.65.1:39943]
+ERROR|2024-06-28 12:07:03,153|log:241|django.request>> Internal Server Error: /en/posts/list-posts/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/exception.py", line 42, in inner
+    response = await get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/service/core/views.py", line 33, in dispatch
+    handle_exception(e)
+  File "/service/core/views.py", line 22, in handle_exception
+    raise exc
+  File "/service/core/views.py", line 31, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/generic/base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/generic/list.py", line 154, in get
+    self.object_list = self.get_queryset()
+                       ^^^^^^^^^^^^^^^^^^^
+  File "/service/posts/mixins.py", line 18, in get_queryset
+    cache_key = CACHE_KEYS["POSTS_LIST"].format(
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+KeyError: 'user_id'
+ERROR|2024-06-28 12:07:03,223|runserver:181|django.channels.server>> HTTP GET /en/posts/list-posts/ 500 [0.60, 192.168.65.1:39999]
+ERROR|2024-06-28 12:16:48,679|server:297|daphne.server>> Exception inside application: No route found for path 'ws/status/'.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/django/contrib/staticfiles/handlers.py", line 101, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 62, in __call__
+    return await application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/security/websocket.py", line 37, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 47, in __call__
+    return await self.inner(dict(scope, cookies=cookies), receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 263, in __call__
+    return await self.inner(wrapper.scope, receive, wrapper.send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/auth.py", line 185, in __call__
+    return await super().__call__(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/middleware.py", line 24, in __call__
+    return await self.inner(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 134, in __call__
+    raise ValueError("No route found for path %r." % path)
+ValueError: No route found for path 'ws/status/'.
+ERROR|2024-06-28 12:16:56,727|server:297|daphne.server>> Exception inside application: No route found for path 'ws/status/'.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/django/contrib/staticfiles/handlers.py", line 101, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 62, in __call__
+    return await application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/security/websocket.py", line 37, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 47, in __call__
+    return await self.inner(dict(scope, cookies=cookies), receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 263, in __call__
+    return await self.inner(wrapper.scope, receive, wrapper.send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/auth.py", line 185, in __call__
+    return await super().__call__(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/middleware.py", line 24, in __call__
+    return await self.inner(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 134, in __call__
+    raise ValueError("No route found for path %r." % path)
+ValueError: No route found for path 'ws/status/'.
+ERROR|2024-06-28 12:17:06,763|server:297|daphne.server>> Exception inside application: No route found for path 'ws/status/'.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/django/contrib/staticfiles/handlers.py", line 101, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 62, in __call__
+    return await application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/security/websocket.py", line 37, in __call__
+    return await self.application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 47, in __call__
+    return await self.inner(dict(scope, cookies=cookies), receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/sessions.py", line 263, in __call__
+    return await self.inner(wrapper.scope, receive, wrapper.send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/auth.py", line 185, in __call__
+    return await super().__call__(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/middleware.py", line 24, in __call__
+    return await self.inner(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/channels/routing.py", line 134, in __call__
+    raise ValueError("No route found for path %r." % path)
+ValueError: No route found for path 'ws/status/'.

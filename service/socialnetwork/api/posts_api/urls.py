@@ -15,4 +15,3 @@ urlpatterns = [
     path("save-post/<int:post_id>/", views.SavePostAPIView.as_view(), name="save-post"),
     path("", include(router.urls)),
 ]
-

@@ -247,6 +247,8 @@ class ChatRoomMemberRemoveView(
         # if user want to remove another user and isn't chat's admin - forbidden
         if target_user_id != curr_user.id and curr_user != chat.admin:
             return HttpResponse(status=403)
-        chat.members.remove(target_user_id)
+        chat.members.remove(curr_user)
+        if chat.members.count() == 0 or target_user_id == chat.admin_id:
+            chat.delete()
         messages.success(request, self.get_success_msg(target_user_id, curr_user.id))
         return redirect("chats:list")
