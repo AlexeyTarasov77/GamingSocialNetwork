@@ -1,5 +1,22 @@
 # Игровая социальная сеть
 
+![Python Version](https://img.shields.io/badge/python-3.12-blue)
+![Django Version](https://img.shields.io/badge/django-5.0-green)
+![DjangoRestFramework](https://img.shields.io/badge/DjangoRestFramework-3.12-green)
+![Redis](https://img.shields.io/badge/Redis-6.0-red)
+![Celery](https://img.shields.io/badge/Celery-5.1.2-cyan)
+![Ajax](https://img.shields.io/badge/Ajax-technology-orange)
+![JavaScript](https://img.shields.io/badge/JavaScript-ES6-yellow)
+![HTMX](https://img.shields.io/badge/HTMX-2.0-blue)
+![Docker](https://img.shields.io/badge/Docker-20.10.7-blue)
+![TailWind CSS](https://img.shields.io/badge/TailWind_CSS-2.2.19-blue)
+![Postgresql](https://img.shields.io/badge/Postgresql-15.0-blue)
+![Contributions Welcome](https://img.shields.io/badge/contributions-welcome-orange)
+![Tests](https://img.shields.io/badge/tests-passing-brightgreen)
+![Coverage](https://img.shields.io/badge/coverage-100%25-brightgreen)
+![Open Source](https://img.shields.io/badge/Open%20Source-❤️-blue)
+![Made by](https://img.shields.io/badge/Made%20by-AlexeyTarasov77-brightgreen)
+
 Добро пожаловать в проект "Игровая социальная сеть"! Этот проект представляет собой платформу для геймеров, которая включает в себя разнообразные функциональные возможности, такие как корзина покупок, чаты, публикации, игровые команды и многое другое.
 
 ## Содержание
@@ -28,7 +45,8 @@
 - **orders**: Заказы (покупка продуктов в приложении).
 - **payment**: Взаимодействие с платежной системой.
 - **posts**: Публикации (посты, новости, статьи).
-- **users**: Профиль пользователя, авторизация, регистрация.
+- **users**: Профиль пользователя, авторизация, регистрация, 
+    взаимодействия пользователей (подписки, друзья ...).
 
 ### Стек технологий
 
@@ -147,3 +165,20 @@ docker compose up
 7. **Создайте Pull Request**: Перейдите в оригинальный репозиторий и нажмите на кнопку "New Pull Request". Опишите ваши изменения и отправьте запрос на слияние.
 
 Спасибо за ваш вклад! Ваши изменения помогут сделать наш проект лучше.
+
+
+## Прогон тестов
+
+1. Запустите проект пользуясь инструкциями в секции [Использование](#использование).
+
+2. Войдите в оболочку терминала внутри контейнера с приложением.
+
+```bash
+docker exec -it sc-service sh
+```
+
+3. Для запуска тестов выполните команду:
+
+```bash
+python3 manage.py test
+```

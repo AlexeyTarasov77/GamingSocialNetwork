@@ -11,7 +11,7 @@ class TeamCreateForm(forms.ModelForm):
 
 
 class AdCreateForm(forms.ModelForm):
-    """Form for creating a new add."""
+    """Form for creating a new ad."""
 
     class Meta:
         model = Ad
