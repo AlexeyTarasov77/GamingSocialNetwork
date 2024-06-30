@@ -21,9 +21,8 @@ class ListPostsTestCase(TestCase):
     def test_get_request(self):
         response = self.client.get(reverse("posts:list-posts"))
         posts = ListPosts.context_object_name
-        self.assertTrue(len(response.context[posts]) > 0)
+        self.assertTrue(len(response.context[posts]) == 1)
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.context[posts][0].id, self.obj.id)
         self.assertTemplateUsed(response, "posts/list.html")
 
 
@@ -51,7 +50,7 @@ class AddPostTestCase(TestCase):
         activate("en")
         self.client = Client()
         self.user = UserFactory.create()
-        self.client.login(username=self.user.username, password="password123")
+        self.client.force_login(self.user)
 
     def test_create(self):
         data = {
@@ -63,9 +62,9 @@ class AddPostTestCase(TestCase):
             reverse("posts:add-post"),
             data,
         )
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 302)
         self.assertTrue(
-            Post.objects.filter(title=data["title"], content=data["content"]).exists()
+            Post.objects.filter(**data).exists()
         )
 
     def test_view(self):

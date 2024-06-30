@@ -43,6 +43,7 @@ class Post(models.Model):
         default=Status.PUBLISHED,
         max_length=2,
         db_index=True,
+        blank=True,
     )
     photo = models.ImageField(
         verbose_name=_("Фото"), blank=True, upload_to="photos/posts/", null=True

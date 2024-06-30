@@ -18,7 +18,6 @@ class PostsService:
 
     @staticmethod
     def fetch_post(**params):
-        print('ATTENTION ---- - -- - - called fetch_post')
         post = get_object_or_404(
             Post.objects.select_related("author").prefetch_related("tags", "liked", "saved"),
             **params

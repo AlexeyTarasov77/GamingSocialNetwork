@@ -3466,3 +3466,425 @@ WARNING|2024-06-30 14:53:54,800|log:241|django.request>> Bad Request: /en/chats/
 WARNING|2024-06-30 14:53:55,835|log:241|django.request>> Bad Request: /en/chats/remove-member-from/f7011804-7c83-40be-b0cd-d1b4440cbbaf/
 WARNING|2024-06-30 14:53:57,925|log:241|django.request>> Forbidden: /en/chats/remove-member-from/db39ca0c-d4b3-4af9-b31e-97e348404469/
 WARNING|2024-06-30 14:54:05,163|log:241|django.request>> Bad Request: /en/chats/create-personal/
+WARNING|2024-06-30 16:57:53,707|log:241|django.request>> Bad Request: /en/chats/remove-member-from/ef35f8f3-c0e3-4277-8006-6b5dbf7ca1e8/
+WARNING|2024-06-30 16:57:55,739|log:241|django.request>> Forbidden: /en/chats/remove-member-from/a86fa8eb-a261-42ea-90f6-f5811ff4f8c7/
+WARNING|2024-06-30 16:58:03,094|log:241|django.request>> Bad Request: /en/chats/create-personal/
+WARNING|2024-06-30 16:58:04,621|log:241|django.request>> Not Found: /en/teams/team-leave/oxqatepdspbl/
+WARNING|2024-06-30 16:58:06,581|log:241|django.request>> Forbidden: /en/teams/remove-team-member/72/
+WARNING|2024-06-30 16:58:07,541|log:241|django.request>> Not Found: /en/teams/remove-team-member/75/
+WARNING|2024-06-30 17:03:28,984|log:241|django.request>> Bad Request: /en/chats/remove-member-from/14915f28-39e2-44b0-8352-1f9f21219324/
+WARNING|2024-06-30 17:03:30,955|log:241|django.request>> Forbidden: /en/chats/remove-member-from/8c0c3052-090f-4ee9-be50-b34418fc8755/
+WARNING|2024-06-30 17:03:38,288|log:241|django.request>> Bad Request: /en/chats/create-personal/
+WARNING|2024-06-30 17:03:39,788|log:241|django.request>> Not Found: /en/teams/team-leave/cpsfqowqmazj/
+WARNING|2024-06-30 17:03:41,745|log:241|django.request>> Forbidden: /en/teams/remove-team-member/72/
+WARNING|2024-06-30 17:03:42,718|log:241|django.request>> Not Found: /en/teams/remove-team-member/75/
+WARNING|2024-06-30 17:10:06,675|log:241|django.request>> Not Found: /ru-ru/orders/create/
+WARNING|2024-06-30 17:10:31,203|log:241|django.request>> Not Found: /ru-ru/orders/create/
+WARNING|2024-06-30 17:11:21,954|log:241|django.request>> Bad Request: /en/chats/remove-member-from/3ac126dd-9816-49eb-9941-4e5c3225e3ec/
+WARNING|2024-06-30 17:11:23,917|log:241|django.request>> Forbidden: /en/chats/remove-member-from/cabf500c-572a-475e-bf0a-324ef84df572/
+WARNING|2024-06-30 17:11:31,389|log:241|django.request>> Bad Request: /en/chats/create-personal/
+WARNING|2024-06-30 17:11:32,895|log:241|django.request>> Not Found: /en/teams/team-leave/lqpjodajopga/
+WARNING|2024-06-30 17:11:35,559|log:241|django.request>> Forbidden: /en/teams/remove-team-member/72/
+WARNING|2024-06-30 17:11:36,541|log:241|django.request>> Not Found: /en/teams/remove-team-member/75/
+WARNING|2024-06-30 17:13:02,603|log:241|django.request>> Not Found: /favicon.ico
+WARNING|2024-06-30 17:13:02,605|runserver:176|django.channels.server>> HTTP GET /favicon.ico 404 [0.11, 192.168.65.1:24170]
+ERROR|2024-06-30 17:14:52,948|signal:280|celery.utils.dispatch.signal>> Signal handler <function setup_periodic_tasks at 0xffff96c8f9c0> raised: Task of kind 'posts.tasks.recommend_posts_by_mail' never registered, please make sure it's imported.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/celery/utils/dispatch/signal.py", line 276, in send
+    response = receiver(signal=self, sender=sender, **named)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/service/socialnetwork/celery.py", line 21, in setup_periodic_tasks
+    sender.add_periodic_task(crontab(minute=0, hour=0), recommend_posts_by_mail.s())
+                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/celery/local.py", line 143, in __getattr__
+    return getattr(self._get_current_object(), name)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/celery/local.py", line 105, in _get_current_object
+    return loc(*self.__args, **self.__kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/celery/app/__init__.py", line 68, in task_by_cons
+    return app.tasks[
+           ^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/celery/app/registry.py", line 18, in __missing__
+    raise self.NotRegistered(key)
+celery.exceptions.NotRegistered: 'posts.tasks.recommend_posts_by_mail'
+ERROR|2024-06-30 17:14:59,243|log:241|django.request>> Internal Server Error: /en/posts/add-post/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/kombu/utils/functional.py", line 32, in __call__
+    return self.__value__
+           ^^^^^^^^^^^^^^
+AttributeError: 'ChannelPromise' object has no attribute '__value__'. Did you mean: '__call__'?
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/kombu/connection.py", line 472, in _reraise_as_library_errors
+    yield
+  File "/usr/local/lib/python3.12/site-packages/kombu/connection.py", line 459, in _ensure_connection
+    return retry_over_time(
+           ^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/kombu/utils/functional.py", line 318, in retry_over_time
+    return fun(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/kombu/connection.py", line 934, in _connection_factory
+    self._connection = self._establish_connection()
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/kombu/connection.py", line 860, in _establish_connection
+    conn = self.transport.establish_connection()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/kombu/transport/pyamqp.py", line 203, in establish_connection
+    conn.connect()
+  File "/usr/local/lib/python3.12/site-packages/amqp/connection.py", line 324, in connect
+    self.transport.connect()
+  File "/usr/local/lib/python3.12/site-packages/amqp/transport.py", line 129, in connect
+    self._connect(self.host, self.port, self.connect_timeout)
+  File "/usr/local/lib/python3.12/site-packages/amqp/transport.py", line 172, in _connect
+    entries = socket.getaddrinfo(
+              ^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/socket.py", line 963, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+socket.gaierror: [Errno -2] Name or service not known
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/exception.py", line 42, in inner
+    response = await get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/contrib/auth/mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/generic/base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/generic/edit.py", line 182, in post
+    return super().post(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/generic/edit.py", line 151, in post
+    return self.form_valid(form)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/service/posts/views.py", line 99, in form_valid
+    tasks.share_post_by_mail.delay(
+  File "/usr/local/lib/python3.12/site-packages/celery/app/task.py", line 444, in delay
+    return self.apply_async(args, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/celery/app/task.py", line 594, in apply_async
+    return app.send_task(
+           ^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/celery/app/base.py", line 799, in send_task
+    amqp.send_task_message(P, name, message, **options)
+  File "/usr/local/lib/python3.12/site-packages/celery/app/amqp.py", line 518, in send_task_message
+    ret = producer.publish(
+          ^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/kombu/messaging.py", line 186, in publish
+    return _publish(
+           ^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/kombu/connection.py", line 556, in _ensured
+    return fun(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/kombu/messaging.py", line 195, in _publish
+    channel = self.channel
+              ^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/kombu/messaging.py", line 218, in _get_channel
+    channel = self._channel = channel()
+                              ^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/kombu/utils/functional.py", line 34, in __call__
+    value = self.__value__ = self.__contract__()
+                             ^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/kombu/messaging.py", line 234, in <lambda>
+    channel = ChannelPromise(lambda: connection.default_channel)
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/kombu/connection.py", line 953, in default_channel
+    self._ensure_connection(**conn_opts)
+  File "/usr/local/lib/python3.12/site-packages/kombu/connection.py", line 458, in _ensure_connection
+    with ctx():
+  File "/usr/local/lib/python3.12/contextlib.py", line 158, in __exit__
+    self.gen.throw(value)
+  File "/usr/local/lib/python3.12/site-packages/kombu/connection.py", line 476, in _reraise_as_library_errors
+    raise ConnectionError(str(exc)) from exc
+kombu.exceptions.OperationalError: [Errno -2] Name or service not known
+ERROR|2024-06-30 17:14:59,335|runserver:181|django.channels.server>> HTTP POST /en/posts/add-post/ 500 [6.72, 192.168.65.1:24692]
+ERROR|2024-06-30 17:15:59,092|signal:280|celery.utils.dispatch.signal>> Signal handler <function setup_periodic_tasks at 0xffff985bf9c0> raised: Task of kind 'posts.tasks.recommend_posts_by_mail' never registered, please make sure it's imported.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/celery/utils/dispatch/signal.py", line 276, in send
+    response = receiver(signal=self, sender=sender, **named)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/service/socialnetwork/celery.py", line 21, in setup_periodic_tasks
+    sender.add_periodic_task(crontab(minute=0, hour=0), recommend_posts_by_mail.s())
+                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/celery/local.py", line 143, in __getattr__
+    return getattr(self._get_current_object(), name)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/celery/local.py", line 105, in _get_current_object
+    return loc(*self.__args, **self.__kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/celery/app/__init__.py", line 68, in task_by_cons
+    return app.tasks[
+           ^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/celery/app/registry.py", line 18, in __missing__
+    raise self.NotRegistered(key)
+celery.exceptions.NotRegistered: 'posts.tasks.recommend_posts_by_mail'
+WARNING|2024-06-30 17:16:28,180|log:241|django.request>> Bad Request: /en/chats/remove-member-from/b356898a-26df-4d15-b017-e5fb59aca674/
+WARNING|2024-06-30 17:16:30,223|log:241|django.request>> Forbidden: /en/chats/remove-member-from/89913be5-eb8a-44bb-8ce1-33eec953876c/
+WARNING|2024-06-30 17:16:38,240|log:241|django.request>> Bad Request: /en/chats/create-personal/
+WARNING|2024-06-30 17:16:39,804|log:241|django.request>> Not Found: /en/teams/team-leave/wuduibrcgasq/
+WARNING|2024-06-30 17:16:41,817|log:241|django.request>> Forbidden: /en/teams/remove-team-member/72/
+WARNING|2024-06-30 17:16:42,797|log:241|django.request>> Not Found: /en/teams/remove-team-member/75/
+ERROR|2024-06-30 17:26:57,291|signal:280|celery.utils.dispatch.signal>> Signal handler <function setup_periodic_tasks at 0xffffad05f9c0> raised: Task of kind 'posts.tasks.recommend_posts_by_mail' never registered, please make sure it's imported.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/celery/utils/dispatch/signal.py", line 276, in send
+    response = receiver(signal=self, sender=sender, **named)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/service/socialnetwork/celery.py", line 21, in setup_periodic_tasks
+    sender.add_periodic_task(crontab(minute=0, hour=0), recommend_posts_by_mail.s())
+                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/celery/local.py", line 143, in __getattr__
+    return getattr(self._get_current_object(), name)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/celery/local.py", line 105, in _get_current_object
+    return loc(*self.__args, **self.__kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/celery/app/__init__.py", line 68, in task_by_cons
+    return app.tasks[
+           ^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/celery/app/registry.py", line 18, in __missing__
+    raise self.NotRegistered(key)
+celery.exceptions.NotRegistered: 'posts.tasks.recommend_posts_by_mail'
+ERROR|2024-06-30 17:28:49,739|signal:280|celery.utils.dispatch.signal>> Signal handler <function setup_periodic_tasks at 0xffff85caf9c0> raised: Task of kind 'posts.tasks.recommend_posts_by_mail' never registered, please make sure it's imported.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/celery/utils/dispatch/signal.py", line 276, in send
+    response = receiver(signal=self, sender=sender, **named)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/service/socialnetwork/celery.py", line 21, in setup_periodic_tasks
+    sender.add_periodic_task(crontab(minute=0, hour=0), recommend_posts_by_mail.s())
+                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/celery/local.py", line 143, in __getattr__
+    return getattr(self._get_current_object(), name)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/celery/local.py", line 105, in _get_current_object
+    return loc(*self.__args, **self.__kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/celery/app/__init__.py", line 68, in task_by_cons
+    return app.tasks[
+           ^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/celery/app/registry.py", line 18, in __missing__
+    raise self.NotRegistered(key)
+celery.exceptions.NotRegistered: 'posts.tasks.recommend_posts_by_mail'
+ERROR|2024-06-30 17:42:41,106|signal:280|celery.utils.dispatch.signal>> Signal handler <function setup_periodic_tasks at 0xffff9762f9c0> raised: Task of kind 'posts.tasks.recommend_posts_by_mail' never registered, please make sure it's imported.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/celery/utils/dispatch/signal.py", line 276, in send
+    response = receiver(signal=self, sender=sender, **named)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/service/socialnetwork/celery.py", line 21, in setup_periodic_tasks
+    sender.add_periodic_task(crontab(minute=0, hour=0), recommend_posts_by_mail.s())
+                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/celery/local.py", line 143, in __getattr__
+    return getattr(self._get_current_object(), name)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/celery/local.py", line 105, in _get_current_object
+    return loc(*self.__args, **self.__kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/celery/app/__init__.py", line 68, in task_by_cons
+    return app.tasks[
+           ^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/celery/app/registry.py", line 18, in __missing__
+    raise self.NotRegistered(key)
+celery.exceptions.NotRegistered: 'posts.tasks.recommend_posts_by_mail'
+WARNING|2024-06-30 17:43:26,305|log:241|django.request>> Bad Request: /en/chats/remove-member-from/4452a20e-ee8d-429c-bd02-5a61eca91821/
+WARNING|2024-06-30 17:43:28,577|log:241|django.request>> Forbidden: /en/chats/remove-member-from/bb10c34b-80fc-4c66-9b61-f472c1723faf/
+WARNING|2024-06-30 17:43:36,366|log:241|django.request>> Bad Request: /en/chats/create-personal/
+WARNING|2024-06-30 17:43:37,921|log:241|django.request>> Not Found: /en/teams/team-leave/dftopyttuzyd/
+WARNING|2024-06-30 17:43:39,939|log:241|django.request>> Forbidden: /en/teams/remove-team-member/72/
+WARNING|2024-06-30 17:43:40,908|log:241|django.request>> Not Found: /en/teams/remove-team-member/75/
+ERROR|2024-06-30 17:43:42,736|signal:280|celery.utils.dispatch.signal>> Signal handler <function setup_periodic_tasks at 0xffffb858f9c0> raised: Task of kind 'posts.tasks.recommend_posts_by_mail' never registered, please make sure it's imported.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/celery/utils/dispatch/signal.py", line 276, in send
+    response = receiver(signal=self, sender=sender, **named)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/service/socialnetwork/celery.py", line 21, in setup_periodic_tasks
+    sender.add_periodic_task(crontab(minute=0, hour=0), recommend_posts_by_mail.s())
+                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/celery/local.py", line 143, in __getattr__
+    return getattr(self._get_current_object(), name)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/celery/local.py", line 105, in _get_current_object
+    return loc(*self.__args, **self.__kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/celery/app/__init__.py", line 68, in task_by_cons
+    return app.tasks[
+           ^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/celery/app/registry.py", line 18, in __missing__
+    raise self.NotRegistered(key)
+celery.exceptions.NotRegistered: 'posts.tasks.recommend_posts_by_mail'
+WARNING|2024-06-30 17:51:35,719|log:241|django.request>> Bad Request: /en/chats/remove-member-from/dcfbe1cb-bbc1-4553-9c9c-3cdf21318aa8/
+WARNING|2024-06-30 17:51:37,760|log:241|django.request>> Forbidden: /en/chats/remove-member-from/848e39b9-6d89-4e92-9662-5eda4b42bed5/
+WARNING|2024-06-30 17:51:45,318|log:241|django.request>> Bad Request: /en/chats/create-personal/
+WARNING|2024-06-30 17:51:46,825|log:241|django.request>> Not Found: /en/teams/team-leave/ldworpkavzyl/
+WARNING|2024-06-30 17:51:49,000|log:241|django.request>> Forbidden: /en/teams/remove-team-member/72/
+WARNING|2024-06-30 17:51:50,094|log:241|django.request>> Not Found: /en/teams/remove-team-member/75/
+ERROR|2024-06-30 17:51:52,048|signal:280|celery.utils.dispatch.signal>> Signal handler <function setup_periodic_tasks at 0xffff82d5f9c0> raised: Task of kind 'posts.tasks.recommend_posts_by_mail' never registered, please make sure it's imported.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/celery/utils/dispatch/signal.py", line 276, in send
+    response = receiver(signal=self, sender=sender, **named)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/service/socialnetwork/celery.py", line 21, in setup_periodic_tasks
+    sender.add_periodic_task(crontab(minute=0, hour=0), recommend_posts_by_mail.s())
+                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/celery/local.py", line 143, in __getattr__
+    return getattr(self._get_current_object(), name)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/celery/local.py", line 105, in _get_current_object
+    return loc(*self.__args, **self.__kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/celery/app/__init__.py", line 68, in task_by_cons
+    return app.tasks[
+           ^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/celery/app/registry.py", line 18, in __missing__
+    raise self.NotRegistered(key)
+celery.exceptions.NotRegistered: 'posts.tasks.recommend_posts_by_mail'
+WARNING|2024-06-30 17:53:13,392|log:241|django.request>> Bad Request: /en/chats/remove-member-from/0c7e663b-2513-4a0b-9d1f-0239a2a30502/
+WARNING|2024-06-30 17:53:15,608|log:241|django.request>> Forbidden: /en/chats/remove-member-from/2c9c3330-f236-4419-bf16-c15f06e7e20d/
+WARNING|2024-06-30 17:53:23,393|log:241|django.request>> Bad Request: /en/chats/create-personal/
+WARNING|2024-06-30 17:53:24,948|log:241|django.request>> Not Found: /en/teams/team-leave/vwjgmcpsaanv/
+WARNING|2024-06-30 17:53:26,984|log:241|django.request>> Forbidden: /en/teams/remove-team-member/72/
+WARNING|2024-06-30 17:53:28,022|log:241|django.request>> Not Found: /en/teams/remove-team-member/75/
+ERROR|2024-06-30 17:53:29,865|signal:280|celery.utils.dispatch.signal>> Signal handler <function setup_periodic_tasks at 0xffff8506f9c0> raised: Task of kind 'posts.tasks.recommend_posts_by_mail' never registered, please make sure it's imported.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/celery/utils/dispatch/signal.py", line 276, in send
+    response = receiver(signal=self, sender=sender, **named)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/service/socialnetwork/celery.py", line 21, in setup_periodic_tasks
+    sender.add_periodic_task(crontab(minute=0, hour=0), recommend_posts_by_mail.s())
+                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/celery/local.py", line 143, in __getattr__
+    return getattr(self._get_current_object(), name)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/celery/local.py", line 105, in _get_current_object
+    return loc(*self.__args, **self.__kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/celery/app/__init__.py", line 68, in task_by_cons
+    return app.tasks[
+           ^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/celery/app/registry.py", line 18, in __missing__
+    raise self.NotRegistered(key)
+celery.exceptions.NotRegistered: 'posts.tasks.recommend_posts_by_mail'
+ERROR|2024-06-30 17:55:52,283|signal:280|celery.utils.dispatch.signal>> Signal handler <function setup_periodic_tasks at 0xffffa770f9c0> raised: Task of kind 'posts.tasks.recommend_posts_by_mail' never registered, please make sure it's imported.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/celery/utils/dispatch/signal.py", line 276, in send
+    response = receiver(signal=self, sender=sender, **named)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/service/socialnetwork/celery.py", line 21, in setup_periodic_tasks
+    sender.add_periodic_task(crontab(minute=0, hour=0), recommend_posts_by_mail.s())
+                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/celery/local.py", line 143, in __getattr__
+    return getattr(self._get_current_object(), name)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/celery/local.py", line 105, in _get_current_object
+    return loc(*self.__args, **self.__kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/celery/app/__init__.py", line 68, in task_by_cons
+    return app.tasks[
+           ^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/celery/app/registry.py", line 18, in __missing__
+    raise self.NotRegistered(key)
+celery.exceptions.NotRegistered: 'posts.tasks.recommend_posts_by_mail'
+ERROR|2024-06-30 17:57:57,825|signal:280|celery.utils.dispatch.signal>> Signal handler <function setup_periodic_tasks at 0xffffb825f9c0> raised: Task of kind 'posts.tasks.recommend_posts_by_mail' never registered, please make sure it's imported.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/celery/utils/dispatch/signal.py", line 276, in send
+    response = receiver(signal=self, sender=sender, **named)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/service/socialnetwork/celery.py", line 21, in setup_periodic_tasks
+    sender.add_periodic_task(crontab(minute=0, hour=0), recommend_posts_by_mail.s())
+                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/celery/local.py", line 143, in __getattr__
+    return getattr(self._get_current_object(), name)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/celery/local.py", line 105, in _get_current_object
+    return loc(*self.__args, **self.__kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/celery/app/__init__.py", line 68, in task_by_cons
+    return app.tasks[
+           ^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/celery/app/registry.py", line 18, in __missing__
+    raise self.NotRegistered(key)
+celery.exceptions.NotRegistered: 'posts.tasks.recommend_posts_by_mail'
+ERROR|2024-06-30 17:59:36,361|signal:280|celery.utils.dispatch.signal>> Signal handler <function setup_periodic_tasks at 0xffffb27cf9c0> raised: Task of kind 'posts.tasks.recommend_posts_by_mail' never registered, please make sure it's imported.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/celery/utils/dispatch/signal.py", line 276, in send
+    response = receiver(signal=self, sender=sender, **named)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/service/socialnetwork/celery.py", line 21, in setup_periodic_tasks
+    sender.add_periodic_task(crontab(minute=0, hour=0), recommend_posts_by_mail.s())
+                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/celery/local.py", line 143, in __getattr__
+    return getattr(self._get_current_object(), name)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/celery/local.py", line 105, in _get_current_object
+    return loc(*self.__args, **self.__kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/celery/app/__init__.py", line 68, in task_by_cons
+    return app.tasks[
+           ^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/celery/app/registry.py", line 18, in __missing__
+    raise self.NotRegistered(key)
+celery.exceptions.NotRegistered: 'posts.tasks.recommend_posts_by_mail'
+ERROR|2024-06-30 18:03:39,809|signal:280|celery.utils.dispatch.signal>> Signal handler <function setup_periodic_tasks at 0xffff9297f9c0> raised: Task of kind 'posts.tasks.recommend_posts_by_mail' never registered, please make sure it's imported.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/celery/utils/dispatch/signal.py", line 276, in send
+    response = receiver(signal=self, sender=sender, **named)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/service/socialnetwork/celery.py", line 21, in setup_periodic_tasks
+    sender.add_periodic_task(crontab(minute=0, hour=0), recommend_posts_by_mail.s())
+                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/celery/local.py", line 143, in __getattr__
+    return getattr(self._get_current_object(), name)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/celery/local.py", line 105, in _get_current_object
+    return loc(*self.__args, **self.__kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/celery/app/__init__.py", line 68, in task_by_cons
+    return app.tasks[
+           ^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/celery/app/registry.py", line 18, in __missing__
+    raise self.NotRegistered(key)
+celery.exceptions.NotRegistered: 'posts.tasks.recommend_posts_by_mail'
+ERROR|2024-06-30 18:05:49,943|signal:280|celery.utils.dispatch.signal>> Signal handler <function setup_periodic_tasks at 0xffff8974f9c0> raised: Task of kind 'posts.tasks.recommend_posts_by_mail' never registered, please make sure it's imported.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/celery/utils/dispatch/signal.py", line 276, in send
+    response = receiver(signal=self, sender=sender, **named)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/service/socialnetwork/celery.py", line 21, in setup_periodic_tasks
+    sender.add_periodic_task(crontab(minute=0, hour=0), recommend_posts_by_mail.s())
+                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/celery/local.py", line 143, in __getattr__
+    return getattr(self._get_current_object(), name)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/celery/local.py", line 105, in _get_current_object
+    return loc(*self.__args, **self.__kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/celery/app/__init__.py", line 68, in task_by_cons
+    return app.tasks[
+           ^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/celery/app/registry.py", line 18, in __missing__
+    raise self.NotRegistered(key)
+celery.exceptions.NotRegistered: 'posts.tasks.recommend_posts_by_mail'
