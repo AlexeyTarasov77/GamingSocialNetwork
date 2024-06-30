@@ -3310,3 +3310,159 @@ WARNING|2024-06-28 20:06:23,777|log:241|django.request>> Not Found: /favicon.ico
 WARNING|2024-06-28 20:06:23,780|runserver:176|django.channels.server>> HTTP GET /favicon.ico 404 [0.11, 192.168.65.1:58713]
 WARNING|2024-06-28 20:06:28,052|log:241|django.request>> Not Found: /favicon.ico
 WARNING|2024-06-28 20:06:28,054|runserver:176|django.channels.server>> HTTP GET /favicon.ico 404 [0.10, 192.168.65.1:58720]
+WARNING|2024-06-29 09:08:14,430|log:241|django.request>> Not Found: /favicon.ico
+WARNING|2024-06-29 09:08:14,431|runserver:176|django.channels.server>> HTTP GET /favicon.ico 404 [0.05, 192.168.65.1:31380]
+WARNING|2024-06-29 10:52:09,111|log:241|django.request>> Not Found: /ru-ru/chats/create-group/
+ERROR|2024-06-29 11:22:04,336|log:241|django.request>> Internal Server Error: /en/chats/create-group/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/contrib/auth/mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/generic/base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/service/chats/views.py", line 162, in post
+    print("DATA FROM POST", request.POST, "DATA FROM BODY", request.body)
+                                                            ^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/http/request.py", line 328, in body
+    raise RawPostDataException(
+django.http.request.RawPostDataException: You cannot access body after reading from request's data stream
+ERROR|2024-06-29 11:24:07,933|log:241|django.request>> Internal Server Error: /en/chats/create-group/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/contrib/auth/mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/generic/base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/service/chats/views.py", line 162, in post
+    print("DATA FROM POST", request.POST, "DATA FROM BODY", request.data)
+                                                            ^^^^^^^^^^^^
+AttributeError: 'WSGIRequest' object has no attribute 'data'
+WARNING|2024-06-29 12:15:44,361|log:241|django.request>> Bad Request: /en/chats/create-personal/
+WARNING|2024-06-29 12:25:27,035|log:241|django.request>> Bad Request: /en/chats/create-personal/
+WARNING|2024-06-29 12:26:15,851|log:241|django.request>> Bad Request: /en/chats/create-personal/
+WARNING|2024-06-29 12:27:28,495|log:241|django.request>> Bad Request: /en/chats/create-personal/
+WARNING|2024-06-29 12:27:45,788|log:241|django.request>> Bad Request: /en/chats/create-personal/
+WARNING|2024-06-29 12:32:03,872|log:241|django.request>> Bad Request: /en/chats/create-personal/
+WARNING|2024-06-29 12:32:54,154|log:241|django.request>> Bad Request: /en/chats/create-personal/
+WARNING|2024-06-29 12:34:30,317|log:241|django.request>> Bad Request: /en/chats/create-personal/
+WARNING|2024-06-29 12:34:57,338|log:241|django.request>> Bad Request: /en/chats/create-personal/
+WARNING|2024-06-29 12:36:21,961|log:241|django.request>> Bad Request: /en/chats/create-personal/
+WARNING|2024-06-29 12:39:41,755|log:241|django.request>> Bad Request: /en/chats/create-personal/
+WARNING|2024-06-29 12:40:51,176|log:241|django.request>> Bad Request: /en/chats/create-personal/
+WARNING|2024-06-29 12:41:59,595|log:241|django.request>> Bad Request: /en/chats/create-personal/
+WARNING|2024-06-29 12:44:56,433|log:241|django.request>> Bad Request: /en/chats/create-personal/
+WARNING|2024-06-29 12:47:05,252|log:241|django.request>> Bad Request: /en/chats/create-personal/
+WARNING|2024-06-29 12:49:04,307|log:241|django.request>> Bad Request: /en/chats/create-personal/
+WARNING|2024-06-29 12:54:23,040|log:241|django.request>> Bad Request: /en/chats/create-personal/
+WARNING|2024-06-29 12:56:56,193|log:241|django.request>> Bad Request: /en/chats/create-personal/
+WARNING|2024-06-29 12:58:02,960|log:241|django.request>> Bad Request: /en/chats/create-personal/
+WARNING|2024-06-30 13:56:19,836|log:241|django.request>> Not Found: /ru-ru/chats/eb2bcea9-55a4-40fe-a7d1-0caded7cb9ba/
+WARNING|2024-06-30 13:56:22,130|log:241|django.request>> Forbidden (Permission denied): /ru/chats/bbe92c99-7e51-498a-a0b4-21ce775278a7/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/service/chats/views.py", line 47, in dispatch
+    return self.handle_no_permission()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/contrib/auth/mixins.py", line 48, in handle_no_permission
+    raise PermissionDenied(self.get_permission_denied_message())
+django.core.exceptions.PermissionDenied: You do not have permission to access this chat room.
+WARNING|2024-06-30 13:56:37,943|log:241|django.request>> Bad Request: /en/chats/create-personal/
+WARNING|2024-06-30 13:58:33,081|log:241|django.request>> Not Found: /ru-ru/chats/42244157-1483-4bab-a2c9-93d4b8289835/
+WARNING|2024-06-30 13:58:49,780|log:241|django.request>> Bad Request: /en/chats/create-personal/
+WARNING|2024-06-30 14:18:06,952|log:241|django.request>> Not Found: /ru-ru/chats/89f7b3f7-b037-4a16-8d5c-9d0e5109867b/
+WARNING|2024-06-30 14:18:24,432|log:241|django.request>> Bad Request: /en/chats/create-personal/
+ERROR|2024-06-30 14:19:49,294|log:241|django.request>> Internal Server Error: /en/chats/remove-member-from/b34ace76-302b-47fa-a08d-8d480466c272/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/generic/base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/service/chats/views.py", line 228, in post
+    target_user_id = int(request.POST.get("target_user_id"))  # user that we want to remove
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: int() argument must be a string, a bytes-like object or a real number, not 'NoneType'
+ERROR|2024-06-30 14:19:53,491|log:241|django.request>> Internal Server Error: /en/chats/remove-member-from/05130137-1a4b-45c6-a88f-d21ac59e69a5/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/generic/base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/service/chats/views.py", line 228, in post
+    target_user_id = int(request.POST.get("target_user_id"))  # user that we want to remove
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: int() argument must be a string, a bytes-like object or a real number, not 'NoneType'
+WARNING|2024-06-30 14:19:55,437|log:241|django.request>> Forbidden: /en/chats/remove-member-from/9bd59e0c-2c1e-41bb-be6a-88138cb2df24/
+WARNING|2024-06-30 14:20:02,753|log:241|django.request>> Bad Request: /en/chats/create-personal/
+WARNING|2024-06-30 14:22:24,736|log:241|django.request>> Bad Request: /en/chats/remove-member-from/30c61e5b-59d3-4b6b-8fca-0651a1bdae34/
+WARNING|2024-06-30 14:22:26,817|log:241|django.request>> Forbidden: /en/chats/remove-member-from/f795bf0b-0bef-4de4-8d77-ef07b1c5dd1c/
+WARNING|2024-06-30 14:22:34,351|log:241|django.request>> Bad Request: /en/chats/create-personal/
+WARNING|2024-06-30 14:25:39,534|log:241|django.request>> Bad Request: /en/chats/remove-member-from/8b20a897-77a4-4da6-bc83-5221a03c1579/
+WARNING|2024-06-30 14:25:41,538|log:241|django.request>> Forbidden: /en/chats/remove-member-from/afc20f36-eee9-455e-a8e5-097d633457eb/
+WARNING|2024-06-30 14:25:42,619|log:241|django.request>> Not Found: /en/chats/remove-member-from/7fedd334-3147-46b7-b99d-5be2501ef121/
+WARNING|2024-06-30 14:25:49,748|log:241|django.request>> Bad Request: /en/chats/create-personal/
+WARNING|2024-06-30 14:43:58,583|log:241|django.request>> Bad Request: /en/chats/remove-member-from/a7fdb44d-6d4f-4ebf-8a6b-d2f612c55668/
+WARNING|2024-06-30 14:43:59,559|log:241|django.request>> Bad Request: /en/chats/remove-member-from/56a13e3d-9b38-44f3-ad82-6c7de41b2e47/
+WARNING|2024-06-30 14:44:01,555|log:241|django.request>> Forbidden: /en/chats/remove-member-from/86ac3a61-cff9-4bb4-a07e-a8337aa84930/
+WARNING|2024-06-30 14:44:02,593|log:241|django.request>> Not Found: /en/chats/remove-member-from/4c9b6eaf-5e7c-4727-ba5f-e0b550349aef/
+WARNING|2024-06-30 14:44:08,954|log:241|django.request>> Bad Request: /en/chats/create-personal/
+WARNING|2024-06-30 14:47:37,662|log:241|django.request>> Bad Request: /en/chats/remove-member-from/4bd1cc72-70c9-4cd8-b1be-35e0528e45ef/
+WARNING|2024-06-30 14:47:38,622|log:241|django.request>> Bad Request: /en/chats/remove-member-from/f35cb60e-1b77-440e-bdcd-ce57303e9991/
+WARNING|2024-06-30 14:47:40,574|log:241|django.request>> Forbidden: /en/chats/remove-member-from/bcc18752-8336-421a-984e-8dbe49f36cb9/
+WARNING|2024-06-30 14:47:41,567|log:241|django.request>> Not Found: /en/chats/remove-member-from/f86fa493-ad89-4358-914f-8438a8dfeadd/
+WARNING|2024-06-30 14:47:48,919|log:241|django.request>> Bad Request: /en/chats/create-personal/
+WARNING|2024-06-30 14:50:05,779|log:241|django.request>> Bad Request: /en/chats/remove-member-from/674cfed4-b4c6-4a7e-886d-465443f68333/
+WARNING|2024-06-30 14:50:06,747|log:241|django.request>> Bad Request: /en/chats/remove-member-from/c96c94b5-8df6-43df-809f-d09cb64f8bf1/
+WARNING|2024-06-30 14:50:08,682|log:241|django.request>> Forbidden: /en/chats/remove-member-from/bd51c270-a497-4516-b646-a300a09d4e27/
+WARNING|2024-06-30 14:50:16,013|log:241|django.request>> Bad Request: /en/chats/create-personal/
+WARNING|2024-06-30 14:51:07,180|log:241|django.request>> Bad Request: /en/chats/remove-member-from/4ba71e39-aac0-4e7f-a397-8865d4505247/
+WARNING|2024-06-30 14:51:08,138|log:241|django.request>> Bad Request: /en/chats/remove-member-from/d6e507f9-73d1-4fc6-ab59-809d598a26a2/
+WARNING|2024-06-30 14:51:10,054|log:241|django.request>> Forbidden: /en/chats/remove-member-from/53d23747-51bf-4301-b5ac-fcb7894826a4/
+WARNING|2024-06-30 14:51:17,348|log:241|django.request>> Bad Request: /en/chats/create-personal/
+WARNING|2024-06-30 14:53:54,800|log:241|django.request>> Bad Request: /en/chats/remove-member-from/ea0881f0-7160-4a8d-a95a-f5c98f41984d/
+WARNING|2024-06-30 14:53:55,835|log:241|django.request>> Bad Request: /en/chats/remove-member-from/f7011804-7c83-40be-b0cd-d1b4440cbbaf/
+WARNING|2024-06-30 14:53:57,925|log:241|django.request>> Forbidden: /en/chats/remove-member-from/db39ca0c-d4b3-4af9-b31e-97e348404469/
+WARNING|2024-06-30 14:54:05,163|log:241|django.request>> Bad Request: /en/chats/create-personal/

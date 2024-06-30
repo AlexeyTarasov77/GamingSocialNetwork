@@ -1,7 +1,4 @@
 from django.test import TestCase, Client
-from gameteams.models import Team, Game
-from django.conf import settings
-from django.contrib.auth.models import User
 from django.urls import reverse
 from .factories import TeamFactory
 from users.tests.factories import UserFactory

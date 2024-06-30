@@ -1,5 +1,5 @@
 from django.http import HttpResponseForbidden, HttpResponseServerError
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import get_object_or_404
 from orders.models import Order
 from users.models import Profile
 

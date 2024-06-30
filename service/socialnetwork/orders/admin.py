@@ -2,7 +2,8 @@ from django.contrib import admin
 from django.utils.safestring import mark_safe
 from django.http import HttpResponse
 from .models import Order, OrderItem
-import datetime, csv
+import datetime
+import csv
 from django.urls import reverse
 
 

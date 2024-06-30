@@ -1,19 +1,21 @@
 from typing import Any
 from django.db.models import Prefetch
-from django.http import HttpRequest, HttpResponse, JsonResponse
+from django.http import HttpRequest, HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import redirect
 from django.views import generic
 from django.views.generic.edit import FormMixin, BaseFormView
 from django.contrib.auth.mixins import AccessMixin, LoginRequiredMixin
 from django.contrib import messages
-from django.db.models import Q
 from users.services.users_service import UsersService
 from .services.chats_service import ChatsService
 from chats import forms
 from .models import ChatRoom, Message
 from core.utils import is_ajax
+from functools import partial
+import logging
 
-# Create your views here.
+
+logger = logging.getLogger(__name__)
 
 
 class ChatsMixin:
@@ -42,6 +44,7 @@ class ChatAccessMixin(AccessMixin):
         """Checks if the user has access to the chat room."""
         print('calling dispatch')
         if not self.request.user.is_authenticated or not self.test_user_func():
+            print("FORBIDDEEEEN")
             return self.handle_no_permission()
         return super().dispatch(request, *args, **kwargs)
 
@@ -181,7 +184,10 @@ class PersonalChatRoomCreateView(LoginRequiredMixin, BaseFormView):
         return HttpResponse(status=402)  # not allowed
 
     def form_invalid(self, form):
-        print(form.errors)
+        logger.warning(
+            "User with id %s tried to create personal chat with invalid data",
+            self.request.user.id
+        )
         return HttpResponse(form.errors, status=400)
 
     def form_valid(self, form: forms.PersonalChatRoomCreateForm) -> HttpResponse:
@@ -220,12 +226,15 @@ class ChatRoomMemberRemoveView(
     def post(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
         response = redirect("chats:list")
         chat = self.get_object()
-        target_user_id = int(request.POST.get("target_user_id"))  # user that we want to remove
+        target_user_id = int(request.POST.get("target_user_id", 0))  # user that we want to remove
         curr_user_id = request.user.id
         #  alias for func
-        is_admin = lambda user_id: ChatsService.is_chat_admin(user_id, chat)  # noqa
-        print(target_user_id, (target_user_id not in chat.members.all()))
+        is_admin = partial(ChatsService.is_chat_admin, chat=chat)
         if not target_user_id or not ChatsService.is_chat_member(target_user_id, chat):
+            logger.warning(
+                "Got invalid user id %s for removing from chat",
+                target_user_id
+            )
             return HttpResponse(status=400)
         #  user leaves team
         if target_user_id == curr_user_id:
@@ -234,6 +243,9 @@ class ChatRoomMemberRemoveView(
         else:
             # if user want to remove another user and isn't chat's admin - forbidden
             if not is_admin(curr_user_id):
+                logger.warning(
+                    f"User with id {curr_user_id} tried to remove user with id {target_user_id} from chat"
+                )
                 return HttpResponse(status=403)
             #  admin kick another user
             chat.members.remove(target_user_id)
@@ -243,6 +255,7 @@ class ChatRoomMemberRemoveView(
             chat.delete()
             response = redirect("chats:list")
         #  add msg only in case that response is http (not json)
-        if type(response) is HttpResponse:
+        if type(response) is HttpResponseRedirect:
             messages.success(request, self.get_success_msg(target_user_id, curr_user_id))
+        print(response, response.status_code)
         return response

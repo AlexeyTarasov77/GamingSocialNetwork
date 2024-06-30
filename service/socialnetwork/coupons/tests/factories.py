@@ -1,6 +1,6 @@
 from factory.django import DjangoModelFactory
-import factory, factory.fuzzy as fuzzy
-from users.tests.factories import UserFactory
+import factory
+import factory.fuzzy as fuzzy
 from django.utils import timezone
 
 class CouponFactory(DjangoModelFactory):

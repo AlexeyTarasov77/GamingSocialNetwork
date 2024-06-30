@@ -2,7 +2,6 @@ from django.test import TestCase, Client, RequestFactory
 from django.contrib.sessions.middleware import SessionMiddleware
 from django.urls import reverse
 from django.utils.translation import activate
-from gameshop.models import ProductProxy
 from cart.views import cart_add_or_update, cart_remove
 from gameshop.tests.factories import ProductProxyFactory
 # Create your tests here.

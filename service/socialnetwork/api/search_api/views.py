@@ -2,7 +2,6 @@ from rest_framework import views, status
 from rest_framework.response import Response
 from . import client
 from decouple import config
-import json
 
 class SearchAPIView(views.APIView):
     def get(self, request, *args, **kwargs):
