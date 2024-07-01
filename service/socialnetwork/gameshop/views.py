@@ -1,13 +1,16 @@
 from typing import Any
-from .recommender import Recommender
+
 from django.shortcuts import get_object_or_404
 from django.views import generic
-from .models import ProductProxy, Category
+
+from .models import Category, ProductProxy
+from .recommender import Recommender
 
 
 # Create your views here.
 class ProductListView(generic.ListView):
     """View for listing all products"""
+
     template_name = "gameshop/products_list.html"
     context_object_name = "products"
     paginate_by = 15
@@ -31,6 +34,7 @@ class ProductListView(generic.ListView):
 
 class ProductDetailView(generic.DetailView):
     """View for product detail page"""
+
     queryset = ProductProxy.objects.select_related("category")
     template_name = "gameshop/products_detail.html"
     context_object_name = "product"

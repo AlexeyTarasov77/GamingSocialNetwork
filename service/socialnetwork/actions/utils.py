@@ -1,7 +1,8 @@
-from django.utils import timezone
-from django.contrib.contenttypes.models import ContentType
-from .models import Action
 from django.contrib.auth.models import User
+from django.contrib.contenttypes.models import ContentType
+from django.utils import timezone
+
+from .models import Action
 
 
 def create_action(user: User, verb: str, target: ContentType = None) -> bool | Action:

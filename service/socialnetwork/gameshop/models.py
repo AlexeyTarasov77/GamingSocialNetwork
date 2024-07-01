@@ -1,4 +1,5 @@
 from decimal import Decimal
+
 from django.conf import settings
 from django.core.validators import MaxValueValidator
 from django.db import models
@@ -99,7 +100,7 @@ class Product(SaveSlugMixin, models.Model):
         Returns:
             str: The category of this product or 'Без категории' if no category is set.
         """
-        return self.category if self.category else 'Без категории'
+        return self.category if self.category else "Без категории"
 
     def get_image(self) -> str:
         """
@@ -133,12 +134,14 @@ class Product(SaveSlugMixin, models.Model):
 
 class ProductManager(models.Manager):
     """Queryset manager for the Product model."""
+
     def get_queryset(self):
         return super(ProductManager, self).get_queryset().filter(available=True)
 
 
 class ProductProxy(Product):
     """Proxy model for Product which uses the ProductManager."""
+
     objects = ProductManager()
 
     class Meta:
@@ -149,6 +152,7 @@ class Category(SaveSlugMixin, models.Model):
     """
     A model representing a category of products.
     """
+
     name = models.CharField(
         max_length=250,
         db_index=True,

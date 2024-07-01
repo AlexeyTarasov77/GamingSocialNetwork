@@ -1,26 +1,27 @@
+import logging
 from typing import Any
 
-from .services.posts_service import PostsService
+from core import views
 from core.handle_cache import HandleCacheService
+from core.mixins import ObjectViewsMixin
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.cache import cache
 from django.db.models.base import Model
 from django.db.models.query import QuerySet
-from django.core.cache import cache
 from django.forms import BaseModelForm
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views import generic
-from core import views
-from .services.constants import CACHE_KEYS
+
 from . import forms, tasks
 from .mixins import ListPostsQuerySetMixin
-from core.mixins import ObjectViewsMixin
 from .models import Post
-import logging
+from .services.constants import CACHE_KEYS
+from .services.posts_service import PostsService
 
 logger = logging.getLogger(__name__)
 
@@ -45,7 +46,9 @@ class DetailPost(ObjectViewsMixin, generic.DetailView):
         cache_key = CACHE_KEYS["POSTS_DETAIL"].format(
             post_id=post_id, version=cache.get(CACHE_KEYS["POSTS_DETAIL_VERSION"], 0)
         )
-        cached_fetch_post = HandleCacheService.use_cache(cache_key, 60 * 15)(PostsService.fetch_post)
+        cached_fetch_post = HandleCacheService.use_cache(cache_key, 60 * 15)(
+            PostsService.fetch_post
+        )
         post = cached_fetch_post(id=post_id)
         return post
 
@@ -109,7 +112,7 @@ class CreatePost(LoginRequiredMixin, generic.CreateView):
 
 # Share post by email address
 @login_required
-def share_post(request, post_id):
+def share_post(request, post_id) -> HttpResponse:
     post = get_object_or_404(Post, id=post_id, status=Post.Status.PUBLISHED)
     form = forms.ShareForm()
     if request.method == "POST":
@@ -122,4 +125,4 @@ def share_post(request, post_id):
                 request.build_absolute_uri(post.get_absolute_url()),
             )
             return HttpResponse()
-    return render(request, "posts/share_post.html", locals())
+    return render(request, "posts/share_post.html", {"form": form, "post": post})

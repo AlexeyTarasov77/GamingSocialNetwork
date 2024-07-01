@@ -1,18 +1,22 @@
+from cart.cart import Cart
 from django import template
 from django.utils.safestring import mark_safe
-from cart.cart import Cart
 
 register = template.Library()
+
 
 @register.filter()
 def mul(value, arg):
     return value * arg
+
+
 @register.filter()
 def format_price(value):
     if value == 0:
         return mark_safe("<span class='text-success'>Бесплатно</span>")
     else:
         return f"$ {value}"
+
 
 @register.simple_tag
 def cart_len(cart: Cart):

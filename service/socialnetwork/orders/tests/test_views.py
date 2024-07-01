@@ -1,10 +1,10 @@
-from django.test import Client, TestCase, RequestFactory
-from django.contrib.sessions.middleware import SessionMiddleware
-from users.tests.factories import UserFactory
-from gameshop.tests.factories import ProductProxyFactory
-
-from django.urls import reverse
 import json
+
+from django.contrib.sessions.middleware import SessionMiddleware
+from django.test import Client, RequestFactory, TestCase
+from django.urls import reverse
+from gameshop.tests.factories import ProductProxyFactory
+from users.tests.factories import UserFactory
 
 from orders.models import Order
 

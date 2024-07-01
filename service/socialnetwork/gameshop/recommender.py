@@ -1,4 +1,5 @@
 from core.redis_connection import r
+
 from gameshop.models import ProductProxy
 
 

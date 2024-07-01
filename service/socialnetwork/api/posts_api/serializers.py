@@ -1,8 +1,9 @@
-from api.users_api.serializers import UserPublicSerializer
 from core.redis_connection import r
 from django.contrib.auth import get_user_model
 from posts.models import Comment, Post
 from rest_framework import serializers
+
+from api.users_api.serializers import UserPublicSerializer
 
 User = get_user_model()
 

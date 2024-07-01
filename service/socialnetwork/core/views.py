@@ -1,10 +1,11 @@
 from functools import wraps
+from logging import Logger
+
+from django.conf import settings
 from django.db import transaction
 from django.http import HttpRequest, JsonResponse
 from django.http.response import HttpResponse as HttpResponse
 from django.views.generic import View
-from django.conf import settings
-from logging import Logger
 
 
 def set_logger(logger: Logger):

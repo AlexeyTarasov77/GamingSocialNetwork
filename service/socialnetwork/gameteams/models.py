@@ -27,6 +27,7 @@ class Ad(models.Model):
         time_update (DateTimeField): Time when the ad was last updated.
         photo (ImageField): Photo associated with the ad.
     """
+
     TYPE_CHOICES = {"SEARCHING": _("Поиск команды"), "RECRUITING": _("Набор в команду")}
     title = models.CharField(_("Заголовок"), max_length=200, db_index=True)
     content = models.TextField(_("Содержимое"), blank=True)
@@ -88,6 +89,7 @@ class Team(SaveSlugMixin, models.Model):
         founder (OneToOneField): User who founded the team.
         leader (OneToOneField): User who is the leader of the team.
     """
+
     name = models.CharField(_("Имя"), max_length=200, db_index=True)
     logo = models.ImageField(
         _("Логотип"), upload_to="photos/gameteams/", blank=True, null=True

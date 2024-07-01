@@ -3,8 +3,9 @@ from core.redis_connection import r
 from django.contrib.auth.models import AbstractBaseUser
 from django.db.models import Case, Count, IntegerField, QuerySet, Value, When
 from django.shortcuts import get_object_or_404
-from posts.models import Post
 from taggit.models import Tag
+
+from posts.models import Post
 
 from .constants import CACHE_KEYS
 from .m2m_toggle import ToggleLikeService, ToggleSaveService
@@ -32,14 +33,13 @@ class PostsService:
             Post.published.select_related("author").prefetch_related(
                 "tags", "liked", "saved"
             ),
-            **params
+            **params,
         )
         return post
 
     @staticmethod
     def is_post_author(obj: Post, user_id: int) -> bool:
-        """
-        Check if a post's author is a user.
+        """Check if a post's author is a user.
 
         :param obj: Post object.
         :param user_id: User ID.

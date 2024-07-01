@@ -1,13 +1,14 @@
 from decimal import Decimal
-from coupons.models import Coupon
 
-from django.http import HttpRequest
-from gameshop.models import ProductProxy, Product
+from coupons.models import Coupon
 from django.conf import settings
+from django.http import HttpRequest
+from gameshop.models import Product, ProductProxy
 
 
 class Cart:
     """Cart class for managing the cart"""
+
     def __init__(self, request: HttpRequest) -> None:
         self.session = request.session
 
@@ -43,9 +44,7 @@ class Cart:
         for product in products:
             cart[str(product.id)]["product"] = product
 
-        for (
-            item
-        ) in (
+        for item in (
             cart.values()
         ):  # {'product': product, 'qty': 2, 'price': 1000, 'total': 2000}
             item["price"] = Decimal(item["price"])

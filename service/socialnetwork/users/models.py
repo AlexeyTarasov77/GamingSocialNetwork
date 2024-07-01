@@ -97,7 +97,8 @@ class Profile(SaveSlugMixin, models.Model):
 
     def get_absolute_url(self):
         return reverse("users:profile", kwargs={"username": self.user_slug})
-    
+
+
 class ProfileTeamsHistory(models.Model):
     profile = models.ForeignKey(
         "Profile", verbose_name=_("Пользователь"), on_delete=models.CASCADE

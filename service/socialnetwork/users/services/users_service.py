@@ -1,13 +1,13 @@
-from django.contrib.auth import get_user_model
-from django.db.models import Q
-from django.contrib.auth.models import AbstractBaseUser
 import abc
+
+from django.contrib.auth import get_user_model
+from django.contrib.auth.models import AbstractBaseUser
+from django.db.models import Q
 
 User = get_user_model()
 
 
 class AbstractUsersService(abc.ABC):
-
     @abc.abstractmethod
     def create_user(self, **data) -> AbstractBaseUser:
         pass

@@ -1,11 +1,11 @@
+from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.urls import reverse
 from django.utils import timezone
+from django.utils.translation import gettext as _
 from mptt.models import MPTTModel, TreeForeignKey
 from taggit.managers import TaggableManager
-from django.utils.translation import gettext as _
-from django.conf import settings
 
 
 class PublishedManager(models.Manager):
@@ -15,6 +15,7 @@ class PublishedManager(models.Manager):
     This manager filters the queryset to only include posts with a status of
     "PUBLISHED".
     """
+
     def get_queryset(self):
         return super().get_queryset().filter(status=Post.Status.PUBLISHED)
 
@@ -31,6 +32,7 @@ class Post(models.Model):
         """
         Represents the status of the post.
         """
+
         DRAFT = "DF", _("Draft")
         PUBLISHED = "PB", _("Published")
 
@@ -38,6 +40,7 @@ class Post(models.Model):
         """
         Represents the type of the post.
         """
+
         NEWS = "NW", _("News")
         ARTICLE = "AR", _("Article")
         POST = "PS", _("Post")
@@ -92,9 +95,7 @@ class Post(models.Model):
         default=Type.POST,
         choices=Type.choices,
     )
-    tags: TaggableManager = TaggableManager(
-        blank=True, verbose_name=_("Post tags")
-    )
+    tags: TaggableManager = TaggableManager(blank=True, verbose_name=_("Post tags"))
     published = PublishedManager()
     objects = models.Manager()
 

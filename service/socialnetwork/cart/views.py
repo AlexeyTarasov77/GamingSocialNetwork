@@ -1,8 +1,8 @@
-from django.shortcuts import get_object_or_404, render
-from gameshop.models import ProductProxy
-from django.http import HttpResponse
-from django.views.decorators.http import require_POST
 from coupons.forms import CouponApplyForm
+from django.http import HttpResponse
+from django.shortcuts import get_object_or_404, render
+from django.views.decorators.http import require_POST
+from gameshop.models import ProductProxy
 from gameshop.recommender import Recommender
 
 from .cart import Cart

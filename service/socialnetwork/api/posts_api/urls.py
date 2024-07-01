@@ -1,18 +1,22 @@
-from django.urls import path, include
-from . import views
+from django.urls import include, path
 from rest_framework.routers import DefaultRouter
 
-router = DefaultRouter()
-router.register('', views.PostsViewSet, basename='posts')
+from . import views
 
-app_name = 'posts'
+router = DefaultRouter()
+router.register("", views.PostsViewSet, basename="posts")
+
+app_name = "posts"
 
 urlpatterns = [
     # path("", include(router.urls)),
     path("like-post/", views.LikePostAPIView.as_view(), name="like-post"),
     path("like-comment/", views.LikeCommentAPIView.as_view(), name="like-comment"),
-    path("comment-post/<int:post_id>/", views.CreateCommentAPIView.as_view(), name="comment-post"),
+    path(
+        "comment-post/<int:post_id>/",
+        views.CreateCommentAPIView.as_view(),
+        name="comment-post",
+    ),
     path("save-post/<int:post_id>/", views.SavePostAPIView.as_view(), name="save-post"),
     path("", include(router.urls)),
 ]
-

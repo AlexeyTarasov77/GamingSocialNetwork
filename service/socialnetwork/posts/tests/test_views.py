@@ -1,12 +1,14 @@
-from django.test import TestCase, Client
-from posts.views import ListPosts, DetailPost
-from .factories import PostFactory
-from users.tests.factories import UserFactory
-from posts.models import Post
-from django.urls import reverse
 from django.contrib.auth import get_user_model
+from django.test import Client, TestCase
+from django.urls import reverse
 from django.utils.translation import activate
+from users.tests.factories import UserFactory
+
 from posts import forms
+from posts.models import Post
+from posts.views import DetailPost, ListPosts
+
+from .factories import PostFactory
 
 # Create your tests here.
 User = get_user_model()

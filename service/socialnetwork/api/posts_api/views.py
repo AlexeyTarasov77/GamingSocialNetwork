@@ -1,11 +1,11 @@
-from . import serializers as s
-from rest_framework import generics, views
-from posts.models import Post, Comment
-from rest_framework import viewsets, status, permissions
-from rest_framework.response import Response
-from posts.mixins import ListPostsQuerySetMixin
-from posts.services.posts_service import PostsService
 from django.shortcuts import get_object_or_404
+from posts.mixins import ListPostsQuerySetMixin
+from posts.models import Comment, Post
+from posts.services.posts_service import PostsService
+from rest_framework import generics, permissions, status, views, viewsets
+from rest_framework.response import Response
+
+from . import serializers as s
 
 
 class PostsViewSet(ListPostsQuerySetMixin, viewsets.ModelViewSet):

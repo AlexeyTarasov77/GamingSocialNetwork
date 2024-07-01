@@ -1,4 +1,5 @@
 from typing import Final
+
 from django.contrib.auth import get_user_model
 
 CACHE_KEYS = {

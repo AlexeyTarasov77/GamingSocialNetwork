@@ -1,3 +1,1 @@
-from django.urls import path, include
-
-app_name = 'events'
+app_name = "events"

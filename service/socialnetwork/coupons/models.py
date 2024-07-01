@@ -1,14 +1,15 @@
+from django.core.validators import MaxValueValidator, MinValueValidator, RegexValidator
 from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext as _
-from django.core.validators import MaxValueValidator, MinValueValidator, RegexValidator
 
 
-# Create your models here.
 class Coupon(models.Model):
-    """ Model for storing coupon data. """
+    """Model for storing coupon data."""
+
     class CouponManager(models.Manager):
         """Manager for managing active coupons."""
+
         def get_queryset(self):
             return (
                 super()
@@ -37,10 +38,31 @@ class Coupon(models.Model):
     active_objects = CouponManager()
     objects = models.Manager()
 
+    class Meta:
+        verbose_name = _("Coupon")
+        verbose_name_plural = _("Coupons")
+        ordering = ("valid_from",)
+        indexes = [
+            models.Index(fields=["valid_from"]),
+            models.Index(fields=["valid_to"]),
+        ]
+        constraints = [
+            models.CheckConstraint(
+                check=models.Q(valid_from__lte=timezone.now())
+                & models.Q(valid_from__lt=models.F("valid_to")),
+                name="%(app_label)s_%(class)s_valid_from_check",
+            ),
+            models.CheckConstraint(
+                check=models.Q(valid_to__gte=timezone.now())
+                & models.Q(valid_to__gt=models.F("valid_from")),
+                name="%(app_label)s_%(class)s_valid_to_check",
+            ),
+        ]
+
     def __str__(self) -> str:
         return self.code
 
     @property
     def is_expired(self) -> bool:
         """Check whether coupon is_expired."""
-        return self.valid_to < timezone.now()
+        return self.valid_to > timezone.now()

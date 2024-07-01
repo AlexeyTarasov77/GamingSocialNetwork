@@ -1,7 +1,8 @@
-from django.test import TestCase, Client
-from .factories import CouponFactory
+from django.test import Client, TestCase
 from django.urls import reverse
 from django.utils.translation import activate
+
+from .factories import CouponFactory
 
 
 # Create your tests here.

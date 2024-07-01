@@ -1,8 +1,9 @@
 from io import BytesIO
-from celery import shared_task
+
 import weasyprint
-from django.template.loader import render_to_string
+from celery import shared_task
 from django.core.mail import EmailMessage
+from django.template.loader import render_to_string
 from orders.models import Order
 
 

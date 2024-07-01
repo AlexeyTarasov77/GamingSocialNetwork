@@ -7,6 +7,7 @@ from .models import Product
 @register(Product)
 class ProductIndex(AlgoliaIndex):
     """Adding specified product fields to algolia index for further search."""
+
     fields = [
         "title",
         "description",

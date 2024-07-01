@@ -1,5 +1,6 @@
-from .utils import menu, sidebar
 from api.search_api.client import get_list_indices
+
+from .utils import menu, sidebar
 
 
 def menu_links(request):

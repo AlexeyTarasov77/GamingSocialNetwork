@@ -1,11 +1,12 @@
-from django.conf import settings
-from django.shortcuts import get_object_or_404
 import stripe
+from django.conf import settings
 from django.http import HttpResponse
+from django.shortcuts import get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
-from .tasks import payment_completed
-from orders.models import Order
 from gameshop.recommender import Recommender
+from orders.models import Order
+
+from .tasks import payment_completed
 
 
 @csrf_exempt

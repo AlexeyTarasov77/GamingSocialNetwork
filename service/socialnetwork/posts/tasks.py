@@ -6,18 +6,13 @@ from django.core.mail import send_mail
 from django.db.models import Count
 from django.http import HttpRequest
 from django.shortcuts import get_object_or_404
-from .services.posts_service import PostsService
 
 from .models import Post
 
 
 @shared_task
 def share_post_by_mail(
-    user_id: int,
-    post_id: int,
-    cd: dict,
-    post_url: str,
-    new_post: bool = False
+    user_id: int, post_id: int, cd: dict, post_url: str, new_post: bool = False
 ) -> None:
     """
     Share a post by email.
@@ -31,9 +26,7 @@ def share_post_by_mail(
     """
     # Get the user and post objects
     user = get_object_or_404(get_user_model(), id=user_id)
-    post = get_object_or_404(
-        Post.published.select_related("author"), id=post_id
-    )
+    post = get_object_or_404(Post.published.select_related("author"), id=post_id)
 
     # If it is a new post, set recipients to all followers
     if new_post:
@@ -42,9 +35,7 @@ def share_post_by_mail(
             f"опубликовал новый пост: {post.title}"
         )
         message = f"Вы можете посмотреть его по ссылке: {post_url}\n\n"
-        recipients = user.profile.followers.all().values_list(
-            "email", flat=True
-        )
+        recipients = user.profile.followers.all().values_list("email", flat=True)
     else:
         recipients = [cd["to"]]
         subject = (
@@ -95,9 +86,7 @@ def recommend_posts_by_mail() -> None:
         """
 
         # Get active users with non-null email addresses
-        users = get_user_model().objects.filter(
-            email__isnull=False, is_active=True
-        )
+        users = get_user_model().objects.filter(email__isnull=False, is_active=True)
 
         # Send email to each user
         send_mail(subject, message, None, [user.email for user in users])

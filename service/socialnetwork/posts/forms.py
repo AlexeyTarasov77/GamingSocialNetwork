@@ -1,7 +1,7 @@
-from django.utils.translation import gettext as _
-
 from django import forms
+from django.utils.translation import gettext as _
 from taggit.models import Tag
+
 from .models import Comment, Post
 
 
@@ -39,10 +39,7 @@ class CommentForm(forms.ModelForm):
 
 
 class CreatePostForm(forms.ModelForm):
-    tags = forms.ModelMultipleChoiceField(
-        queryset=Tag.objects.all(),
-        required=False
-    )
+    tags = forms.ModelMultipleChoiceField(queryset=Tag.objects.all(), required=False)
 
     class Meta:
         model = Post

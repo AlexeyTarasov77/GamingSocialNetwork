@@ -1,9 +1,12 @@
+import csv
+import datetime
+
 from django.contrib import admin
-from django.utils.safestring import mark_safe
 from django.http import HttpResponse
-from .models import Order, OrderItem
-import datetime, csv
 from django.urls import reverse
+from django.utils.safestring import mark_safe
+
+from .models import Order, OrderItem
 
 
 # Register your models here.

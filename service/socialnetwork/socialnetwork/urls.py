@@ -1,15 +1,16 @@
-from django.contrib import admin
-from django.urls import path, include
-from . import settings
-from django.conf.urls.static import static
 from django.conf.urls.i18n import i18n_patterns
+from django.conf.urls.static import static
+from django.contrib import admin
+from django.urls import include, path
 from payment import webhooks
+
+from . import settings
 
 # url patterns with language prefix
 urlpatterns = i18n_patterns(
     path("admin/", admin.site.urls),
-    path('__debug__/', include('debug_toolbar.urls')),
-    path('rosetta/', include('rosetta.urls')),
+    path("__debug__/", include("debug_toolbar.urls")),
+    path("rosetta/", include("rosetta.urls")),
     path("accounts/", include("allauth.urls")),
     path("", include("gameblog.urls", namespace="gameblog")),
     path("cart/", include("cart.urls", namespace="cart")),
@@ -21,13 +22,13 @@ urlpatterns = i18n_patterns(
     # path('chats/', include('chats.urls', namespace='chats')),
     # path('events/', include('events.urls', namespace='events')),
     path("posts/", include("posts.urls", namespace="posts")),
-    path('teams/', include('gameteams.urls', namespace='teams')),
+    path("teams/", include("gameteams.urls", namespace="teams")),
     path("users/", include("users.urls", namespace="users")),
 )
 
 # url patterns which should'nt have any language prefix
 urlpatterns += [
-    path('stripe/webhook/', webhooks.stripe_webhook, name='stripe_webhook'),
+    path("stripe/webhook/", webhooks.stripe_webhook, name="stripe_webhook"),
     path("api/", include("api.urls", namespace="api")),
 ]
 

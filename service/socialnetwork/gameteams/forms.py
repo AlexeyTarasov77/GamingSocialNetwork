@@ -1,5 +1,6 @@
 from django import forms
-from .models import Team, Ad
+
+from .models import Ad, Team
 
 
 class TeamCreateForm(forms.ModelForm):

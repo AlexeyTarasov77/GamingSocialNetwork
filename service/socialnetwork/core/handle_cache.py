@@ -1,8 +1,8 @@
-from django.core.cache import cache
-from functools import wraps
-from typing import Callable, Any
 import logging
+from functools import wraps
+from typing import Any, Callable
 
+from django.core.cache import cache
 
 logger = logging.getLogger(__name__)
 
@@ -52,7 +52,11 @@ class HandleCacheService:
         return new_version
 
     @classmethod
-    def use_cache(cls, cache_key: str, cache_timeout: int | None = None,) -> Callable:
+    def use_cache(
+        cls,
+        cache_key: str,
+        cache_timeout: int | None = None,
+    ) -> Callable:
         """
         Decorator function that caches the result of a function call using the provided cache key.
 

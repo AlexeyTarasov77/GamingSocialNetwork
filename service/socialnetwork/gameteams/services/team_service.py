@@ -1,6 +1,7 @@
-from gameteams.models import TeamJoinRequest, Team
-from users.models import Profile
 from django.db.models.query import QuerySet
+from users.models import Profile
+
+from gameteams.models import Team, TeamJoinRequest
 
 
 class TeamService:

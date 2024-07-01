@@ -1,19 +1,20 @@
 from typing import Any, Set
 
+from core.mixins import ObjectViewsMixin
 from django.contrib import messages
 from django.contrib.auth import get_user_model
-from django.contrib.auth.mixins import AccessMixin, LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import AccessMixin, LoginRequiredMixin
 from django.db.models.query import QuerySet
-from django.http import JsonResponse, HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views import generic
-from core.mixins import ObjectViewsMixin
 from users.models import Profile
+
+from gameteams.services.team_service import TeamService
 
 from . import forms
 from .models import Ad, Game, Team
-from gameteams.services.team_service import TeamService
 
 User = get_user_model()
 
