@@ -1,12 +1,14 @@
-from typing import Any, Set
+import logging
+from typing import Any
 
 from core.mixins import ObjectViewsMixin
+from core.views import CatchExceptionMixin, catch_exception, set_logger
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import AccessMixin, LoginRequiredMixin
 from django.db.models.query import QuerySet
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views import generic
 from users.models import Profile
@@ -18,19 +20,22 @@ from .models import Ad, Game, Team
 
 User = get_user_model()
 
+logger = logging.getLogger(__name__)
+set_logger(logger)
 
-# Create your views here.
+
+@catch_exception
 def index_view(request):
     return render(request, "gameteams/index.html")
 
 
-class TeamListView(generic.ListView):
+class TeamListView(CatchExceptionMixin, generic.ListView):
     """View for listing all teams"""
 
     template_name = "gameteams/teams/team_list.html"
-    queryset = Team.objects.only(
-        "name", "slug", "rating", "logo", "game", "country"
-    ).select_related("game")
+    queryset = Team.objects.only("name", "slug", "rating", "logo", "game", "country").select_related(
+        "game"
+    )
     context_object_name = "teams"
     current_game = None
 
@@ -46,25 +51,22 @@ class TeamListView(generic.ListView):
             query["game__slug"] = game
         return queryset.filter(**query)
 
-    def _get_teams_countries(self):
-        countries: Set = set()
+    def _get_teams_countries(self) -> set:
+        countries = set()
         for team in self.object_list:
             if team.country not in countries:
                 countries.add(team.country)
         return countries
 
-    def _get_teams_games(self):
-        return Game.objects.all()
-
-    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+    def get_context_data(self, **kwargs: dict) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
-        context["games"] = self._get_teams_games()
+        context["games"] = Game.objects.all()
         context["countries"] = self._get_teams_countries()
         context["current_game"] = self.current_game
         return context
 
 
-class TeamCreateView(LoginRequiredMixin, generic.CreateView):
+class TeamCreateView(CatchExceptionMixin, LoginRequiredMixin, generic.CreateView):
     """View for creating a new team"""
 
     template_name = "gameteams/teams/team_create.html"
@@ -78,7 +80,7 @@ class TeamCreateView(LoginRequiredMixin, generic.CreateView):
         return redirect(team.get_absolute_url())
 
 
-class TeamDetailView(generic.DetailView):
+class TeamDetailView(CatchExceptionMixin, generic.DetailView):
     """View for detailed information about a team"""
 
     template_name = "gameteams/teams/team_detail.html"
@@ -86,7 +88,7 @@ class TeamDetailView(generic.DetailView):
     context_object_name = "team"
 
 
-class TeamJoinView(LoginRequiredMixin, generic.View):
+class TeamJoinView(CatchExceptionMixin, LoginRequiredMixin, generic.View):
     def post(self, request, *args, **kwargs):
         team_slug = self.kwargs.get("slug")
         team = Team.objects.get(slug=team_slug)
@@ -94,7 +96,7 @@ class TeamJoinView(LoginRequiredMixin, generic.View):
         service = TeamService(team)
         if service.check_is_member(user.profile):
             return JsonResponse({"msg": "Вы уже состоите в команде"}, status=400)
-        obj, created = service.create_join_request(user)
+        _, created = service.create_join_request(user)
         msg = "Заявка на вступление отправлена"
         # if join req already existed - indicate that user already sent request
         if not created:
@@ -102,8 +104,9 @@ class TeamJoinView(LoginRequiredMixin, generic.View):
         return JsonResponse({"msg": msg}, status=200)
 
 
+@catch_exception
 @login_required
-def leave_team_view(request, slug):
+def leave_team_view(request, slug) -> JsonResponse:
     team = get_object_or_404(Team, slug=slug)
     leaving_member = request.user.profile
     if leaving_member in team.members.all():
@@ -111,20 +114,17 @@ def leave_team_view(request, slug):
         service.remove_member(leaving_member)
         return JsonResponse({"success": True}, status=200)
     else:
-        return JsonResponse(
-            {"success": False, "error_msg": "Вы не состоите в этой команде"}, status=404
-        )
+        return JsonResponse({"success": False, "error_msg": "Вы не состоите в этой команде"}, status=404)
 
 
+@catch_exception
 @login_required
-def remove_team_member_view(request, pk):
+def remove_team_member_view(request, pk) -> JsonResponse:
     member = get_object_or_404(Profile, pk=pk)
     team = request.user.profile.team
     print(team, request.user)
     if not team or not request.user == team.leader:
-        return JsonResponse(
-            {"success": False, "error_msg": "Недостаточно прав"}, status=403
-        )
+        return JsonResponse({"success": False, "error_msg": "Недостаточно прав"}, status=403)
     if member not in team.members.all():
         return JsonResponse(
             {"success": False, "error_msg": "Участник не состоит в вашей команде"},
@@ -136,21 +136,20 @@ def remove_team_member_view(request, pk):
 
 
 @login_required
-def make_team_leader_view(request, pk):
+def make_team_leader_view(request, pk) -> JsonResponse | HttpResponseRedirect:
     member = get_object_or_404(Profile, pk=pk)
     team = member.team
     if not request.user == team.leader:
         return JsonResponse({"success": False}, status=403)
     service = TeamService(team)
     service.make_leader(member.user)
-    messages.success(
-        request, f"Участник {member.user.username} стал лидером команды {team.name}"
-    )
+    messages.success(request, f"Участник {member.user.username} стал лидером команды {team.name}")
     return redirect(team.get_absolute_url())
 
 
+@catch_exception
 @login_required
-def team_handle_view(request, slug):
+def team_handle_view(request, slug) -> HttpResponse:
     team = get_object_or_404(Team, slug=slug)
     if not request.user == team.leader:
         return HttpResponse("Недостаточно прав", status=403)
@@ -161,7 +160,7 @@ def team_handle_view(request, slug):
     )
 
 
-class TeamJoinRequestsView(AccessMixin, generic.ListView):
+class TeamJoinRequestsView(CatchExceptionMixin, AccessMixin, generic.ListView):
     """View for listing all join requests to a team.
     Accept and decline join requests with POST request.
     """
@@ -184,7 +183,6 @@ class TeamJoinRequestsView(AccessMixin, generic.ListView):
         """Accepting/Declining incoming join requests"""
         data = request.POST
         from_user_profile = get_object_or_404(Profile, user_id=data.get("from_user_id"))
-        print(from_user_profile, from_user_profile.user_id)
         service = TeamService(self.team)
         accepted = False
         if data.get("action") == "accept":
@@ -203,7 +201,7 @@ class TeamJoinRequestsView(AccessMixin, generic.ListView):
 # ------- ADS -------
 
 
-class AdListView(generic.ListView):
+class AdListView(CatchExceptionMixin, generic.ListView):
     """View for listing all ads.
     Filter ads by their type provided in query params.
     """
@@ -233,7 +231,7 @@ class AdListView(generic.ListView):
         return context
 
 
-class AdDetailView(ObjectViewsMixin, generic.DetailView):
+class AdDetailView(CatchExceptionMixin, ObjectViewsMixin, generic.DetailView):
     """View for detailed information about ad"""
 
     template_name = "gameteams/ads/ad_detail.html"
@@ -241,7 +239,7 @@ class AdDetailView(ObjectViewsMixin, generic.DetailView):
     redis_key_prefix = "ads"
 
 
-class AdCreateView(LoginRequiredMixin, generic.CreateView):
+class AdCreateView(CatchExceptionMixin, LoginRequiredMixin, generic.CreateView):
     template_name = "gameteams/ads/ad_create.html"
     form_class = forms.AdCreateForm
 
@@ -264,6 +262,7 @@ class AdCreateView(LoginRequiredMixin, generic.CreateView):
         return redirect(ad.get_absolute_url())
 
 
+@catch_exception
 def ad_bookmark_view(request, pk):
     """set/unset ad bookmark"""
     ad = Ad.objects.get(pk=pk)
@@ -274,4 +273,6 @@ def ad_bookmark_view(request, pk):
     else:
         ad.favorites.add(user)
         is_added = True
+    return JsonResponse({"is_added": is_added}, status=200)
+    return JsonResponse({"is_added": is_added}, status=200)
     return JsonResponse({"is_added": is_added}, status=200)

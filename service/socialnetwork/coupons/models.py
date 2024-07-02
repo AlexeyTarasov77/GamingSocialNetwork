@@ -11,11 +11,7 @@ class Coupon(models.Model):
         """Manager for managing active coupons."""
 
         def get_queryset(self):
-            return (
-                super()
-                .get_queryset()
-                .filter(valid_from__lte=timezone.now(), valid_to__gte=timezone.now())
-            )
+            return super().get_queryset().filter(valid_to__gt=timezone.now())
 
     code = models.CharField(
         verbose_name=_("Coupon code"),
@@ -48,8 +44,7 @@ class Coupon(models.Model):
         ]
         constraints = [
             models.CheckConstraint(
-                check=models.Q(valid_from__lte=timezone.now())
-                & models.Q(valid_from__lt=models.F("valid_to")),
+                check=models.Q(valid_from__lt=models.F("valid_to")),
                 name="%(app_label)s_%(class)s_valid_from_check",
             ),
             models.CheckConstraint(

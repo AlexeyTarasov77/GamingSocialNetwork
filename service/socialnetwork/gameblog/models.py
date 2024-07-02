@@ -1,8 +1,6 @@
 from django.db import models
 from django.utils.translation import gettext as _
 
-# Create your models here.
-
 
 class Ad(models.Model):
     """
@@ -16,7 +14,7 @@ class Ad(models.Model):
     """
 
     title = models.CharField(max_length=50, verbose_name=_("title"))
-    description = models.TextField(blank=True, null=True, verbose_name=_("description"))
+    description = models.TextField(blank=True, default="", verbose_name=_("description"))
     attached_file = models.FileField(
         upload_to="files/gameblog",
         blank=True,

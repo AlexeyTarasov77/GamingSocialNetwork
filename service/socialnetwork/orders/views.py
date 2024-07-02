@@ -1,3 +1,5 @@
+from nis import cat
+from venv import logger
 import weasyprint
 from cart.cart import Cart
 from django.db import transaction
@@ -5,6 +7,7 @@ from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render
 from django.template.loader import render_to_string
 from django.urls import reverse_lazy
+from core.views import catch_exception
 from users.decorators import owner_required
 
 from . import forms
@@ -14,6 +17,7 @@ from .tasks import confirm_order
 # Create your views here.
 
 
+@catch_exception
 def order_create_view(request):
     """View for creating an order"""
     if not request.user.is_authenticated:
@@ -40,6 +44,7 @@ def order_create_view(request):
                     for item in cart
                 ]
                 OrderItem.objects.bulk_create(order_items)
+                logger.info("User %s created new order: %r", request.user, order)
                 cart.clear()
                 confirm_order.delay(
                     order.id, f"{cd["first_name"]} {cd['last_name']}", cd["email"]
@@ -54,6 +59,7 @@ def order_create_view(request):
     return render(request, "orders/order_create.html", {"form": form})
 
 
+@catch_exception
 @owner_required("orders")
 def order_detail_view(request, order_id):
     """View details of an order"""
@@ -61,6 +67,7 @@ def order_detail_view(request, order_id):
     return render(request, "orders/order_detail.html", {"order": order})
 
 
+@catch_exception
 @owner_required("orders")
 def order_to_pdf(request, order_id):
     """View PDF of an order"""

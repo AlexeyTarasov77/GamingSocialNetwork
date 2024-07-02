@@ -16,12 +16,12 @@ services:
       - postgres_data:/var/lib/postgresql/data
 
   socialnetwork:
-    build: ./socialnetwork
+    build: .
     ports:
       - 8001:8001
     volumes:
       - ./socialnetwork:/service
-    env_file: ./socialnetwork/socialnetwork/.env
+    env_file: ./socialnetwork/.env
     depends_on:
       - redis
       - db
@@ -55,11 +55,11 @@ services:
       start_period: 2s
 
   celery:
-    build: ./socialnetwork
+    build: .
     container_name: sc-celery
     volumes:
       - ./socialnetwork:/service
-    env_file: ./socialnetwork/socialnetwork/.env
+    env_file: ./socialnetwork/.env
     depends_on:
       rabbitmq:
         condition: service_healthy

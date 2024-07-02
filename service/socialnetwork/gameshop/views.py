@@ -1,14 +1,18 @@
+import logging
 from typing import Any
 
+from core.views import CatchExceptionMixin, set_logger
 from django.shortcuts import get_object_or_404
 from django.views import generic
 
 from .models import Category, ProductProxy
 from .recommender import Recommender
 
+logger = logging.getLogger(__name__)
+set_logger(logger)
 
-# Create your views here.
-class ProductListView(generic.ListView):
+
+class ProductListView(CatchExceptionMixin, generic.ListView):
     """View for listing all products"""
 
     template_name = "gameshop/products_list.html"
@@ -32,7 +36,7 @@ class ProductListView(generic.ListView):
         return context
 
 
-class ProductDetailView(generic.DetailView):
+class ProductDetailView(CatchExceptionMixin, generic.DetailView):
     """View for product detail page"""
 
     queryset = ProductProxy.objects.select_related("category")

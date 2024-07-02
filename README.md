@@ -72,13 +72,18 @@
     git clone https://github.com/AlexeyTarasov77/GamingSocialNetwork.git
     cd service
     ```
-2. Сборка проекта (Может занять несколько минут):
+2. Создайте .env файл в корне django проекта (BASE_DIR) и заполните его соответствующими данными. (Образец файла можно найти в service/socialnetwork/.env.example):
+
+    ```bash
+    cp .env.example .env
+    ```
+3. Сборка проекта (Может занять несколько минут):
 
     ```bash
     docker compose build
     ```
 
-3. Запуск проекта:
+4. Запуск проекта:
 
     ```bash
     docker compose up

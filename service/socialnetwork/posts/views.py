@@ -1,9 +1,9 @@
 import logging
 from typing import Any
 
-from core import views
 from core.handle_cache import HandleCacheService
 from core.mixins import ObjectViewsMixin
+from core.views import CatchExceptionMixin, catch_exception, set_logger
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
@@ -27,16 +27,16 @@ logger = logging.getLogger(__name__)
 
 User = get_user_model()
 
-views.set_logger(logger)
+set_logger(logger)
 
 
-class ListPosts(views.BaseView, ListPostsQuerySetMixin, generic.ListView):
+class ListPosts(CatchExceptionMixin, ListPostsQuerySetMixin, generic.ListView):
     template_name = "posts/list.html"
     context_object_name = "posts_list"
     paginate_by = 10
 
 
-class DetailPost(ObjectViewsMixin, generic.DetailView):
+class DetailPost(CatchExceptionMixin, ObjectViewsMixin, generic.DetailView):
     template_name = "posts/detail.html"
     context_object_name = "post"
     redis_key_prefix = "posts"
@@ -46,9 +46,7 @@ class DetailPost(ObjectViewsMixin, generic.DetailView):
         cache_key = CACHE_KEYS["POSTS_DETAIL"].format(
             post_id=post_id, version=cache.get(CACHE_KEYS["POSTS_DETAIL_VERSION"], 0)
         )
-        cached_fetch_post = HandleCacheService.use_cache(cache_key, 60 * 15)(
-            PostsService.fetch_post
-        )
+        cached_fetch_post = HandleCacheService.use_cache(cache_key, 60 * 15)(PostsService.fetch_post)
         post = cached_fetch_post(id=post_id)
         return post
 
@@ -66,7 +64,7 @@ class DetailPost(ObjectViewsMixin, generic.DetailView):
         return context
 
 
-class DeletePost(generic.DeleteView):
+class DeletePost(CatchExceptionMixin, generic.DeleteView):
     template_name = "posts/delete.html"
     model = Post
     success_url = reverse_lazy("posts:list-posts")
@@ -77,7 +75,7 @@ class DeletePost(generic.DeleteView):
         return super().form_valid(form)
 
 
-class UpdatePost(generic.UpdateView):
+class UpdatePost(CatchExceptionMixin, generic.UpdateView):
     template_name = "posts/update.html"
     model = Post
     form_class = forms.UpdatePostForm
@@ -88,7 +86,7 @@ class UpdatePost(generic.UpdateView):
         return super().form_valid(form)
 
 
-class CreatePost(LoginRequiredMixin, generic.CreateView):
+class CreatePost(CatchExceptionMixin, LoginRequiredMixin, generic.CreateView):
     template_name = "posts/create.html"
     form_class = forms.CreatePostForm
     queryset = Post.objects.select_related("author")
@@ -110,9 +108,10 @@ class CreatePost(LoginRequiredMixin, generic.CreateView):
         return redirect(post.get_absolute_url())
 
 
-# Share post by email address
+@catch_exception
 @login_required
 def share_post(request, post_id) -> HttpResponse:
+    """Share post by email address"""
     post = get_object_or_404(Post, id=post_id, status=Post.Status.PUBLISHED)
     form = forms.ShareForm()
     if request.method == "POST":

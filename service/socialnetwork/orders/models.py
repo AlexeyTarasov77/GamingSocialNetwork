@@ -47,6 +47,9 @@ class Order(models.Model):
     def __str__(self):
         return f"Order {self.id}"
 
+    def get_absolute_url(self):
+        return reverse("orders:order_detail", args=[self.pk])
+
     @property
     def total_cost_before_discount(self):
         return sum(item.get_cost() for item in self.items.all())
@@ -75,9 +78,6 @@ class Order(models.Model):
         else:
             path = "/"
         return f"https://dashboard.stripe.com{path}payments/{self.stripe_id}"
-
-    def get_absolute_url(self):
-        return reverse("orders:order_detail", args=[self.pk])
 
 
 class OrderItem(models.Model):

@@ -1,8 +1,12 @@
-from decouple import config
+import os
+
+from dotenv import load_dotenv
 from rest_framework import status, views
 from rest_framework.response import Response
 
 from . import client
+
+load_dotenv()
 
 
 class SearchAPIView(views.APIView):
@@ -20,13 +24,6 @@ class SearchAPIView(views.APIView):
 
 class SearchAPICredetials(views.APIView):
     def get(self, request, *args, **kwargs):
-        app_id = config("APPLICATION_ID")
-        search_api_key = config("SEARCH_ONLY_API_KEY")
-        return Response(
-            {"app_id": app_id, "api_key": search_api_key}, status=status.HTTP_200_OK
-        )
-
-
-# class SearchAPIIndices(views.APIView):
-#     def get(self, request, *args, **kwargs):
-#         return Response({"indices": client.get_list_indices()}, status=status.HTTP_200_OK)
+        app_id = os.getenv("ALGOLIA_APPLICATION_ID")
+        search_api_key = os.getenv("ALGOLIA_SEARCH_ONLY_API_KEY")
+        return Response({"app_id": app_id, "api_key": search_api_key}, status=status.HTTP_200_OK)

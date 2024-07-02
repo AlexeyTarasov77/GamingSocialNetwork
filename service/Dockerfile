@@ -15,7 +15,7 @@ COPY package.json .
 RUN npm install && \
     pip install -r requirements.txt --no-cache-dir --no-warn-script-location
 
-COPY . .
+COPY socialnetwork .
 
 EXPOSE 8001
 

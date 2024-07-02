@@ -1,11 +1,12 @@
+from collections.abc import Callable
 from functools import wraps
 from logging import Logger
+from typing import TypeVar
 
 from django.conf import settings
 from django.db import transaction
 from django.http import HttpRequest, JsonResponse
 from django.http.response import HttpResponse as HttpResponse
-from django.views.generic import View
 
 
 def set_logger(logger: Logger):
@@ -13,20 +14,23 @@ def set_logger(logger: Logger):
     _logger = logger
 
 
-def error_response(exc, status):
-    return JsonResponse({"errorMsg": str(exc)}, status=status)
+def error_response(exc: Exception, status: int) -> JsonResponse:
+    return JsonResponse(
+        {"errorMsg": "Unexpected error occured, please try again later: " + str(exc)}, status=status
+    )
 
 
-def handle_exception(exc):
+def handle_exception(exc: Exception):
+    assert _logger
     _logger.exception(exc)
     if settings.DEBUG:
         raise exc
     return error_response(exc, 500)
 
 
-class BaseView(View):
+class CatchExceptionMixin:
+    """Base class which wraps dispatch into transaction and handles occured exceptions."""
     def dispatch(self, request: HttpRequest, *args, **kwargs) -> HttpResponse:
-        print("Dispatching")
         try:
             with transaction.atomic():
                 return super().dispatch(request, *args, **kwargs)
@@ -34,7 +38,12 @@ class BaseView(View):
             handle_exception(e)
 
 
-def base_view(func):
+V = TypeVar("V", bound=Callable[..., HttpResponse])
+
+
+def catch_exception(
+    func: V,
+) -> V:
     @wraps(func)
     def wrapper(request, *args, **kwargs):
         try:

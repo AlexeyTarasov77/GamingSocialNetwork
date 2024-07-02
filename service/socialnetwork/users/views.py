@@ -1,6 +1,9 @@
+import logging
+from nis import cat
 from typing import Any
 
 from core.redis_connection import r
+from core.views import CatchExceptionMixin, catch_exception, set_logger
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
@@ -15,9 +18,11 @@ from .decorators import owner_required
 from .forms import ProfileUpdateForm
 from .models import FriendRequest, Profile
 
+logger = logging.getLogger(__name__)
+set_logger(logger)
 
-# Create your views here.
-class ProfileView(LoginRequiredMixin, generic.DetailView):
+
+class ProfileView(CatchExceptionMixin, LoginRequiredMixin, generic.DetailView):
     """View for user's profile page"""
 
     template_name = "users/profile.html"
@@ -48,15 +53,14 @@ class ProfileView(LoginRequiredMixin, generic.DetailView):
         context["is_owner"] = True if profile.user == self.request.user else False
         # отправлял ли текущий пользователь запрос в друзья
         context["request_exist"] = (
-            True
-            if profile.requests.filter(from_user=self.request.user).exists()
-            else False
+            True if profile.requests.filter(from_user=self.request.user).exists() else False
         )
         context["is_online"] = int(r.get(f"user:{profile.user.id}:status") or 0) > 0
 
         return context
 
 
+@catch_exception
 @owner_required("users")
 def my_posts_view(request, username):
     """View posts of current user"""
@@ -74,6 +78,7 @@ def my_posts_view(request, username):
     return render(request, "users/my_posts.html", context)
 
 
+@catch_exception
 @owner_required("users")
 def my_orders_view(request, username):
     """View orders of current user"""
@@ -85,6 +90,7 @@ def my_orders_view(request, username):
     return render(request, "users/my_orders.html", context)
 
 
+@catch_exception
 def profile_middleware(request):
     if request.user.is_authenticated:
         return redirect(request.user.profile.get_absolute_url())
@@ -92,7 +98,7 @@ def profile_middleware(request):
         return redirect("account_login")
 
 
-class ProfileUpdateView(generic.UpdateView):
+class ProfileUpdateView(CatchExceptionMixin, generic.UpdateView):
     """View for updating profile."""
 
     slug_url_kwarg = "username"
@@ -106,17 +112,16 @@ class ProfileUpdateView(generic.UpdateView):
         return super().form_valid(form)
 
 
+@catch_exception
 def friend_requests_view(request, username):
     """View all incoming friend requests to current user."""
     user = get_object_or_404(User, profile_user__user_slug=username)
     friend_requests = FriendRequest.objects.filter(to_user=user)
     print(friend_requests)
-    return render(
-        request, "users/friend_requests.html", {"friend_requests": friend_requests}
-    )
+    return render(request, "users/friend_requests.html", {"friend_requests": friend_requests})
 
 
-class SubscribeAPIView(generics.GenericAPIView):
+class SubscribeAPIView(CatchExceptionMixin, generics.GenericAPIView):
     """Api view for subscribe/unsubscribe to user"""
 
     queryset = Profile.objects.all()
@@ -130,9 +135,7 @@ class SubscribeAPIView(generics.GenericAPIView):
         acting_user = (
             request.user
         )  # получение текущего пользователя который хочеть подписаться/отписаться
-        if (
-            acting_user in target_user_profile.followers.all()
-        ):  # если пользователь уже подписан
+        if acting_user in target_user_profile.followers.all():  # если пользователь уже подписан
             target_user_profile.followers.remove(acting_user)  # отписаться
             acting_user.profile.following.remove(
                 target_user_profile.user
@@ -146,12 +149,13 @@ class SubscribeAPIView(generics.GenericAPIView):
             return Response({"is_subscribed": True})
 
 
+@catch_exception
 def friend_request_remove(from_user: User, to_user: User) -> None:
     """Удаление заявки в друзья"""
     FriendRequest.objects.get(from_user=from_user, to_user=to_user).delete()
 
 
-class FriendRequestAPIView(generics.GenericAPIView):
+class FriendRequestAPIView(CatchExceptionMixin, generics.GenericAPIView):
     """View for managing friend requests based on request method."""
 
     queryset = Profile.objects.all()
@@ -172,9 +176,7 @@ class FriendRequestAPIView(generics.GenericAPIView):
 
     def delete(self, request, username):
         """Удаление из друзей или отмена заявки"""
-        user_profile1 = (
-            self.get_object()
-        )  # получение профиля пользователя которому отправляли заявку
+        user_profile1 = self.get_object()  # получение профиля пользователя которому отправляли заявку
         user1 = self.get_object().user  # получение юзера из профиля пользователя
         user_profile2 = get_object_or_404(
             Profile, user=request.user
@@ -193,12 +195,10 @@ class FriendRequestAPIView(generics.GenericAPIView):
             # если пользователь хочет отменить заявку просто удаляем ее у соответствующего пользователя
             friend_request_remove(user2, user1)
             msg = "Заявка в друзья отменена"
-        return Response(
-            {"removed": True, "msg": msg}, status=status.HTTP_204_NO_CONTENT
-        )
+        return Response({"removed": True, "msg": msg}, status=status.HTTP_204_NO_CONTENT)
 
 
-class FriendRequestHandlerAPIView(generics.GenericAPIView):
+class FriendRequestHandlerAPIView(CatchExceptionMixin, generics.GenericAPIView):
     """View for declining/accepting friend request"""
 
     queryset = Profile.objects.all()
@@ -207,9 +207,7 @@ class FriendRequestHandlerAPIView(generics.GenericAPIView):
 
     def post(self, request, username):
         """Принятие заявки в друзья"""
-        user_profile1 = (
-            self.get_object()
-        )  # получение профиля пользователя который принимает заявку
+        user_profile1 = self.get_object()  # получение профиля пользователя который принимает заявку
         user_profile2 = get_object_or_404(
             Profile, user__pk=request.data["user_pk"]
         )  # получение профиля пользователя которому принадлежит заявка
