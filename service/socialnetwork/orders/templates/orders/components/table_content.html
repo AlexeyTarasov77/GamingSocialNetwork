@@ -20,5 +20,14 @@
         <span class="badge text-bg-warning">{{order.get_paid_display}}</span>
     </td>
     {% endif %}
-    <td class="num">${{order.total_cost}}</td>
+    <td class="num d-flex gap-4 items-center">
+        ${{order.total_cost}}
+        {% if not order.paid %}
+        <form action="{% url "payment:process" %}" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="order_id" value="{{order.id}}">
+            <button class="badge text-bg-success">Оплатить</button>
+        </form>
+        {% endif %}
+    </td>
 </tr>

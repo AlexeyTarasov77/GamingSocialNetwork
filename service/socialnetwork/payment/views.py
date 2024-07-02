@@ -19,7 +19,7 @@ logger = logging.getLogger(__name__)
 @catch_exception
 def payment_process(request):
     """Create a stripe session and redirect it to the Stripe payment page."""
-    order_id = request.session.get("order_id", None)
+    order_id = request.session.get("order_id", None) or request.POST.get("order_id", None)
     order = get_object_or_404(Order, id=order_id)
     if request.method == "POST":
         logger.debug("Started processing payment for order %r", order)

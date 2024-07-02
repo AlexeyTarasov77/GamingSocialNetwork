@@ -1,6 +1,7 @@
-from chats.models import ChatRoom
-from django.db.models import Q
 from django.contrib.auth.models import AbstractBaseUser
+from django.db.models import Q, QuerySet
+
+from chats.models import ChatRoom
 
 
 class ChatsService:
@@ -37,7 +38,11 @@ class ChatsService:
         return "&".join([member.username for member in members])  # joe&alex
 
     @staticmethod
-    def is_unique_by_name(name: str) -> bool:
-        return not ChatRoom.objects.filter(
-            Q(name=name) | Q(name="&".join(list(reversed(name.split("&")))))  # joe&alex or alex&joe
-        ).exists()
+    def get_chat_by_name(name: str) -> QuerySet[ChatRoom] | None:
+        return ChatRoom.objects.filter(
+            Q(name=name) | Q(name="&".join(reversed(name.split("&"))))  # joe&alex or alex&joe
+        )
+
+    @classmethod
+    def is_unique_by_name(cls, name: str) -> bool:
+        return not cls.get_chat_by_name(name).exists()

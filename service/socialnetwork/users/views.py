@@ -1,6 +1,7 @@
 import logging
 from typing import Any
 
+from chats.forms import PersonalChatRoomCreateForm
 from core.redis_connection import r
 from core.views import CatchExceptionMixin, catch_exception, set_logger
 from django.contrib import messages
@@ -49,11 +50,13 @@ class ProfileView(CatchExceptionMixin, LoginRequiredMixin, generic.DetailView):
         """
         context = super().get_context_data(**kwargs)
         profile = self.object
-        context["is_owner"] = True if profile.user == self.request.user else False
+        user = self.request.user
+        context["is_owner"] = profile.user == user
+        if not context["is_owner"]:
+            context["chat_form"] = PersonalChatRoomCreateForm(initial={"members": [profile.user, user]})
+        print(context.get("chat_form"))
         # отправлял ли текущий пользователь запрос в друзья
-        context["request_exist"] = (
-            True if profile.requests.filter(from_user=self.request.user).exists() else False
-        )
+        context["request_exist"] = profile.requests.filter(from_user=user).exists()
         context["is_online"] = int(r.get(f"user:{profile.user.id}:status") or 0) > 0
 
         return context

@@ -4745,3 +4745,160 @@ ERROR|2024-07-02 11:10:43,280|urls:134|weasyprint>> Relative URI reference witho
 ERROR|2024-07-02 11:10:43,280|urls:134|weasyprint>> Relative URI reference without a base URI: <img src="/media/photos/gameshop/products/fortnite.jpeg">
 ERROR|2024-07-02 11:10:43,281|urls:134|weasyprint>> Relative URI reference without a base URI: <img src="/media/photos/gameshop/products/rev.jpeg">
 WARNING|2024-07-02 11:10:43,309|utils:128|weasyprint>> Ignored `text-align: ` at 5:5747, no value.
+WARNING|2024-07-02 11:51:40,295|log:241|django.security.csrf>> Forbidden (CSRF token missing.): /en/payment/process/
+WARNING|2024-07-02 11:51:40,364|runserver:178|django.channels.server>> HTTP POST /en/payment/process/ 403 [0.11, 192.168.65.1:51093]
+WARNING|2024-07-02 11:52:03,399|log:241|django.security.csrf>> Forbidden (CSRF token missing.): /en/payment/process/
+WARNING|2024-07-02 11:52:03,516|runserver:178|django.channels.server>> HTTP POST /en/payment/process/ 403 [0.14, 192.168.65.1:51203]
+WARNING|2024-07-02 11:52:06,350|log:241|django.request>> Not Found: /favicon.ico
+WARNING|2024-07-02 11:52:06,352|runserver:176|django.channels.server>> HTTP GET /favicon.ico 404 [0.09, 192.168.65.1:51209]
+WARNING|2024-07-02 11:53:17,853|log:241|django.request>> Not Found: /favicon.ico
+WARNING|2024-07-02 11:53:17,856|runserver:176|django.channels.server>> HTTP GET /favicon.ico 404 [0.10, 192.168.65.1:51587]
+WARNING|2024-07-02 11:53:47,258|log:241|django.request>> Not Found: /favicon.ico
+WARNING|2024-07-02 11:53:47,263|runserver:176|django.channels.server>> HTTP GET /favicon.ico 404 [0.12, 192.168.65.1:51757]
+WARNING|2024-07-02 12:03:11,860|log:241|django.request>> Not Found: /favicon.ico
+WARNING|2024-07-02 12:03:11,866|runserver:176|django.channels.server>> HTTP GET /favicon.ico 404 [0.16, 192.168.65.1:54660]
+ERROR|2024-07-02 12:03:25,576|signal:280|celery.utils.dispatch.signal>> Signal handler <function setup_periodic_tasks at 0xffff9d544720> raised: Task of kind 'posts.tasks.recommend_posts_by_mail' never registered, please make sure it's imported.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/celery/utils/dispatch/signal.py", line 276, in send
+    response = receiver(signal=self, sender=sender, **named)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/service/socialnetwork/celery.py", line 24, in setup_periodic_tasks
+    sender.add_periodic_task(crontab(minute=0, hour=0), recommend_posts_by_mail.s())
+                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/celery/local.py", line 143, in __getattr__
+    return getattr(self._get_current_object(), name)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/celery/local.py", line 105, in _get_current_object
+    return loc(*self.__args, **self.__kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/celery/app/__init__.py", line 68, in task_by_cons
+    return app.tasks[
+           ^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/celery/app/registry.py", line 18, in __missing__
+    raise self.NotRegistered(key)
+celery.exceptions.NotRegistered: 'posts.tasks.recommend_posts_by_mail'
+WARNING|2024-07-02 12:05:09,023|log:241|django.request>> Not Found: /favicon.ico
+WARNING|2024-07-02 12:05:09,026|runserver:176|django.channels.server>> HTTP GET /favicon.ico 404 [0.11, 192.168.65.1:55280]
+WARNING|2024-07-02 12:09:57,382|log:241|django.request>> Not Found: /en/chats/96fbf4f5-a8e5-49d2-b39c-d2607901e596/
+WARNING|2024-07-02 12:09:57,383|runserver:176|django.channels.server>> HTTP GET /en/chats/96fbf4f5-a8e5-49d2-b39c-d2607901e596/ 404 [0.07, 192.168.65.1:56797]
+WARNING|2024-07-02 12:10:37,111|log:241|django.request>> Not Found: /en/chats/96fbf4f5-a8e5-49d2-b39c-d2607901e596/
+WARNING|2024-07-02 12:10:37,113|runserver:176|django.channels.server>> HTTP GET /en/chats/96fbf4f5-a8e5-49d2-b39c-d2607901e596/ 404 [0.15, 192.168.65.1:57008]
+WARNING|2024-07-02 12:10:37,816|log:241|django.request>> Not Found: /en/chats/96fbf4f5-a8e5-49d2-b39c-d2607901e596/
+WARNING|2024-07-02 12:10:37,818|runserver:176|django.channels.server>> HTTP GET /en/chats/96fbf4f5-a8e5-49d2-b39c-d2607901e596/ 404 [0.08, 192.168.65.1:57008]
+WARNING|2024-07-02 12:10:38,357|log:241|django.request>> Not Found: /en/chats/96fbf4f5-a8e5-49d2-b39c-d2607901e596/
+WARNING|2024-07-02 12:10:38,358|runserver:176|django.channels.server>> HTTP GET /en/chats/96fbf4f5-a8e5-49d2-b39c-d2607901e596/ 404 [0.09, 192.168.65.1:57008]
+WARNING|2024-07-02 12:10:38,786|log:241|django.request>> Not Found: /en/chats/96fbf4f5-a8e5-49d2-b39c-d2607901e596/
+WARNING|2024-07-02 12:10:38,787|runserver:176|django.channels.server>> HTTP GET /en/chats/96fbf4f5-a8e5-49d2-b39c-d2607901e596/ 404 [0.10, 192.168.65.1:57010]
+WARNING|2024-07-02 12:10:39,161|log:241|django.request>> Not Found: /en/chats/96fbf4f5-a8e5-49d2-b39c-d2607901e596/
+WARNING|2024-07-02 12:10:39,162|runserver:176|django.channels.server>> HTTP GET /en/chats/96fbf4f5-a8e5-49d2-b39c-d2607901e596/ 404 [0.07, 192.168.65.1:57010]
+WARNING|2024-07-02 12:10:39,672|log:241|django.request>> Not Found: /en/chats/96fbf4f5-a8e5-49d2-b39c-d2607901e596/
+WARNING|2024-07-02 12:10:39,673|runserver:176|django.channels.server>> HTTP GET /en/chats/96fbf4f5-a8e5-49d2-b39c-d2607901e596/ 404 [0.05, 192.168.65.1:57010]
+WARNING|2024-07-02 12:19:03,430|log:241|django.request>> Not Found: /en/chats/a79bbc1c-baf7-4db0-bb7e-0a8fdd8d838a/
+WARNING|2024-07-02 12:19:03,431|runserver:176|django.channels.server>> HTTP GET /en/chats/a79bbc1c-baf7-4db0-bb7e-0a8fdd8d838a/ 404 [0.07, 192.168.65.1:59643]
+WARNING|2024-07-02 12:20:18,722|log:241|django.request>> Not Found: /en/chats/a7ea4c44-11a0-4d3c-a5c9-3542307341fe/
+WARNING|2024-07-02 12:20:18,723|runserver:176|django.channels.server>> HTTP GET /en/chats/a7ea4c44-11a0-4d3c-a5c9-3542307341fe/ 404 [0.07, 192.168.65.1:60006]
+WARNING|2024-07-02 14:31:13,140|log:241|django.request>> Not Found: /favicon.ico
+WARNING|2024-07-02 14:31:13,144|runserver:176|django.channels.server>> HTTP GET /favicon.ico 404 [0.15, 192.168.65.1:20792]
+ERROR|2024-07-02 14:31:37,807|log:241|django.request>> Internal Server Error: /en/chats/create-personal/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/exception.py", line 42, in inner
+    response = await get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/contrib/auth/mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/generic/base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/generic/edit.py", line 151, in post
+    return self.form_valid(form)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/service/chats/views.py", line 200, in form_valid
+    if ChatsService.is_unique_by_name(chat.name):
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/service/chats/services/chats_service.py", line 47, in is_unique_by_name
+    return not cls.get_chat_by_name(name).exists()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'ChatRoom' object has no attribute 'exists'
+ERROR|2024-07-02 14:31:37,930|runserver:181|django.channels.server>> HTTP POST /en/chats/create-personal/ 500 [0.23, 192.168.65.1:20908]
+WARNING|2024-07-02 14:33:54,978|log:241|django.request>> Forbidden (Permission denied): /en/chats/25894ee3-04a5-421f-9c74-003206db5f1b/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/exception.py", line 42, in inner
+    response = await get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/service/chats/views.py", line 52, in dispatch
+    return self.handle_no_permission()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/contrib/auth/mixins.py", line 48, in handle_no_permission
+    raise PermissionDenied(self.get_permission_denied_message())
+django.core.exceptions.PermissionDenied: You do not have permission to access this chat room.
+WARNING|2024-07-02 14:33:55,025|runserver:178|django.channels.server>> HTTP GET /en/chats/25894ee3-04a5-421f-9c74-003206db5f1b/ 403 [0.12, 192.168.65.1:21529]
+WARNING|2024-07-02 14:37:07,874|log:241|django.request>> Forbidden (Permission denied): /en/chats/25894ee3-04a5-421f-9c74-003206db5f1b/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/exception.py", line 42, in inner
+    response = await get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/asgiref/sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/service/chats/views.py", line 51, in dispatch
+    return self.handle_no_permission()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/contrib/auth/mixins.py", line 48, in handle_no_permission
+    raise PermissionDenied(self.get_permission_denied_message())
+django.core.exceptions.PermissionDenied: You do not have permission to access this chat room.
+WARNING|2024-07-02 14:37:07,987|runserver:178|django.channels.server>> HTTP GET /en/chats/25894ee3-04a5-421f-9c74-003206db5f1b/ 403 [0.34, 192.168.65.1:22502]

@@ -43,4 +43,5 @@ export function modalHandler() {
         modal.hide();
       }
     })
-  }
+    return modal;
+}

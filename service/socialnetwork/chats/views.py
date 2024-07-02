@@ -1,19 +1,22 @@
+import logging
+from functools import partial
 from typing import Any
+
+from core.utils import is_ajax
+from django.contrib import messages
+from django.contrib.auth.base_user import AbstractBaseUser
+from django.contrib.auth.mixins import AccessMixin, LoginRequiredMixin
 from django.db.models import Prefetch
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import redirect
 from django.views import generic
-from django.views.generic.edit import FormMixin, BaseFormView
-from django.contrib.auth.mixins import AccessMixin, LoginRequiredMixin
-from django.contrib import messages
+from django.views.generic.edit import BaseFormView, FormMixin
 from users.services.users_service import UsersService
-from .services.chats_service import ChatsService
-from chats import forms
-from .models import ChatRoom, Message
-from core.utils import is_ajax
-from functools import partial
-import logging
 
+from chats import forms
+
+from .models import ChatRoom, Message
+from .services.chats_service import ChatsService
 
 logger = logging.getLogger(__name__)
 
@@ -23,10 +26,10 @@ class ChatsMixin:
     Mixin for views that interact with chat rooms.
     """
 
-    def get_chat_image(self, chat):
+    def get_chat_image(self, chat) -> str:
         return ChatsService.get_chat_image(chat)
 
-    def get_other_user(self, chat):
+    def get_other_user(self, chat) -> AbstractBaseUser | None:
         return ChatsService.get_other_user(chat, self.request.user.id)
 
 
@@ -37,27 +40,29 @@ class ChatAccessMixin(AccessMixin):
 
     permission_denied_message = "You do not have permission to access this chat room."
 
-    def test_user_func(self):
+    def test_user_func(self) -> bool:
         raise NotImplementedError
 
     def dispatch(self, request, *args, **kwargs):
         """Checks if the user has access to the chat room."""
-        print('calling dispatch')
+        print("calling dispatch")
         if not self.request.user.is_authenticated or not self.test_user_func():
-            print("FORBIDDEEEEN")
+            logger.debug("User %r forbidden to access chat room", self.request.user)
             return self.handle_no_permission()
         return super().dispatch(request, *args, **kwargs)
 
 
 class MemberRequiredMixin(ChatAccessMixin):
     """Check if current user is a member of accessing chat room."""
-    def test_user_func(self):
+
+    def test_user_func(self) -> bool:
         return ChatsService.is_chat_member(self.request.user.id, self.get_object())
 
 
 class AdminRequiredMixin(ChatAccessMixin):
     """Check if current user is an admin of accessing chat room."""
-    def test_user_func(self):
+
+    def test_user_func(self) -> bool:
         return ChatsService.is_chat_admin(self.request.user.id, self.get_object())
 
 
@@ -101,9 +106,7 @@ class ChatRoomView(ChatsMixin, MemberRequiredMixin, generic.DetailView, FormMixi
     context_object_name = "chat"
     queryset = ChatRoom.objects.all().prefetch_related(
         Prefetch("members"),
-        Prefetch(
-            "messages", queryset=Message.objects.select_related("author__profile")
-        ),
+        Prefetch("messages", queryset=Message.objects.select_related("author__profile")),
     )
     pk_url_kwarg = "chat_id"
     form_class = forms.MessageCreateForm
@@ -185,8 +188,7 @@ class PersonalChatRoomCreateView(LoginRequiredMixin, BaseFormView):
 
     def form_invalid(self, form):
         logger.warning(
-            "User with id %s tried to create personal chat with invalid data",
-            self.request.user.id
+            "User with id %s tried to create personal chat with invalid data", self.request.user.id
         )
         return HttpResponse(form.errors, status=400)
 
@@ -195,28 +197,27 @@ class PersonalChatRoomCreateView(LoginRequiredMixin, BaseFormView):
         chat_members = form.cleaned_data["members"]
         chat.name = ChatsService.generate_chat_name_by_members(chat_members)
         if ChatsService.is_unique_by_name(chat.name):
+            logger.debug("Creating new chat %r", chat)
             chat.admin = self.request.user
             chat.type = ChatRoom.TYPE_CHOICES[1][0]  # personal
             chat.save()
-            form.save_m2m()
-        return redirect(chat.get_absolute_url())
+            form.save_m2m()  # TODO: FIX BUG, REDIRECT TO EXISTENT
+            return redirect(chat.get_absolute_url())
+        return redirect(ChatsService.get_chat_by_name(chat.name).first())
 
 
-class ChatRoomMemberRemoveView(
-    generic.detail.SingleObjectMixin,
-    generic.View,
-    MemberRequiredMixin
-):
+class ChatRoomMemberRemoveView(generic.detail.SingleObjectMixin, generic.View, MemberRequiredMixin):
     """
     View for removing member from chat room.
     Member can leave chat his self or chat's admin can remove him.
     """
+
     pk_url_kwarg = "chat_id"
     model = ChatRoom
 
     def get_success_msg(self, target_user_id, curr_user_id) -> str:
         """Determines the success message for removing member from chat room."""
-        msg = ''
+        msg = ""
         if target_user_id == curr_user_id:
             msg = "Вы покинули чат"
         else:
@@ -231,10 +232,7 @@ class ChatRoomMemberRemoveView(
         #  alias for func
         is_admin = partial(ChatsService.is_chat_admin, chat=chat)
         if not target_user_id or not ChatsService.is_chat_member(target_user_id, chat):
-            logger.warning(
-                "Got invalid user id %s for removing from chat",
-                target_user_id
-            )
+            logger.warning("Got invalid user id %s for removing from chat", target_user_id)
             return HttpResponse(status=400)
         #  user leaves team
         if target_user_id == curr_user_id:
@@ -244,7 +242,7 @@ class ChatRoomMemberRemoveView(
             # if user want to remove another user and isn't chat's admin - forbidden
             if not is_admin(curr_user_id):
                 logger.warning(
-                    f"User with id {curr_user_id} tried to remove user with id {target_user_id} from chat"
+                    f"User with id {curr_user_id} tried to remove user {target_user_id} from chat"
                 )
                 return HttpResponse(status=403)
             #  admin kick another user
