@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% load crispy_forms_tags %} {% load static %}
+
+{% block links %}
+<link rel="stylesheet" href="{% static "chats/css/sidebar.css" %}">
+<script src="https://unpkg.com/htmx.org@2.0.0"></script>
+<script src="https://unpkg.com/htmx.org/dist/ext/ws.js"></script>
+{% endblock links %}
+
+{% block content %}
+<style>
+    body {
+        background: rgb(23, 37, 84)
+    }
+    #header {
+        display: none;
+    }
+</style>
+<div class="chatroom bg-blue-950 w-full h-screen flex flex-col">
+    <div id="chat_list" hx-get="{% url "chats:list" %}" hx-target="this" hx-trigger="load"></div>
+    <!-- Chat Header -->
+    <div id="chatroom-content" style="all: unset; display: contents;">
+        {% include "chats/partials/chatroom_p.html" %}
+    </div>
+</div>
+{% endblock content %}
+
+{% block js %}
+<script>
+    function scrollToBottom() {
+        const container = document.getElementById('chat_container');
+        container.scrollTop = container.scrollHeight;
+    }
+    document.addEventListener("DOMContentLoaded", () => {
+        scrollToBottom();
+    });
+</script>
+<script src="{% static "chats/js/sidebar.js" %}"></script>
+{% endblock js %}

@@ -2,10 +2,9 @@ import factory
 from django.contrib.auth import get_user_model
 from factory import fuzzy
 from faker import Faker
+from gameteams.models import Game, Team
 from pytils.translit import slugify
 from users.tests.factories import UserFactory
-
-from gameteams.models import Game, Team
 
 faker = Faker()
 

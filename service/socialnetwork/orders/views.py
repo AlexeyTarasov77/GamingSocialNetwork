@@ -1,20 +1,21 @@
-from nis import cat
-from venv import logger
+import logging
+
 import weasyprint
 from cart.cart import Cart
+from core.views import catch_exception, set_logger
 from django.db import transaction
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render
 from django.template.loader import render_to_string
 from django.urls import reverse_lazy
-from core.views import catch_exception
 from users.decorators import owner_required
 
 from . import forms
 from .models import Order, OrderItem
 from .tasks import confirm_order
 
-# Create your views here.
+logger = logging.getLogger(__name__)
+set_logger(logger)
 
 
 @catch_exception

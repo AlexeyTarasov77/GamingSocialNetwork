@@ -12,19 +12,8 @@ from .models import Post
 
 @shared_task
 def share_post_by_mail(
-    user_id: int, post_id: int, cd: dict, post_url: str, new_post: bool = False
-) -> None:
-    """
-    Share a post by email.
-
-    Args:
-        user_id (int): The ID of the user.
-        post_id (int): The ID of the post.
-        cd (dict): The comment data.
-        post_url (str): The URL of the post.
-        new_post (bool, optional): Whether it is a new post. Defaults to False.
-    """
-    # Get the user and post objects
+    user_id: int, post_id: int, cd: dict | None, post_url, new_post: bool = False
+):
     user = get_object_or_404(get_user_model(), id=user_id)
     post = get_object_or_404(Post.published.select_related("author"), id=post_id)
 
@@ -35,8 +24,14 @@ def share_post_by_mail(
             f"опубликовал новый пост: {post.title}"
         )
         message = f"Вы можете посмотреть его по ссылке: {post_url}\n\n"
-        recipients = user.profile.followers.all().values_list("email", flat=True)
+        recipients = set(
+            list(user.profile.followers.all().values_list("email", flat=True))
+            + list(user.profile.friends.all().values_list("email", flat=True))
+        )
+        if not recipients:
+            return
     else:
+        assert cd, "If not new post, cd must be provided"
         recipients = [cd["to"]]
         subject = (
             f"Пользователь: {user} поделился с вами постом: "

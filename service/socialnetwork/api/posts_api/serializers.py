@@ -4,8 +4,13 @@ from posts.models import Comment, Post
 from rest_framework import serializers
 
 from api.users_api.serializers import UserPublicSerializer
+from core.redis_connection import r
+from django.contrib.auth import get_user_model
+from posts.models import Comment, Post
+from rest_framework import serializers
 
 User = get_user_model()
+
 
 
 class LikeSerializer(serializers.Serializer):
@@ -13,9 +18,12 @@ class LikeSerializer(serializers.Serializer):
     is_liked = serializers.BooleanField()
 
 
+
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
+        fields = ("id", "content", "parent", "time_create", "time_update")
+
         fields = ("id", "content", "parent", "time_create", "time_update")
 
 
@@ -25,11 +33,28 @@ class PostSerializer(serializers.ModelSerializer):
     # saved = serializers.StringRelatedField(many=True)
     count_views = serializers.SerializerMethodField()
 
+
     def get_count_views(self, obj):
         return r.get("post:%s:views" % obj.id)
 
+
     class Meta:
         model = Post
+        fields = (
+            "id",
+            "title",
+            "content",
+            "time_create",
+            "time_update",
+            "author",
+            "saved",
+            "liked",
+            "tag_list",
+            "status",
+            "photo",
+            "count_views",
+            "comments",
+        )
         fields = (
             "id",
             "title",

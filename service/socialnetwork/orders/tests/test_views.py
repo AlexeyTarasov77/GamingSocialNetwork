@@ -1,17 +1,16 @@
-import json
-
 from django.contrib.sessions.middleware import SessionMiddleware
 from django.test import Client, RequestFactory, TestCase
 from django.urls import reverse
+from django.utils.translation import activate
 from gameshop.tests.factories import ProductProxyFactory
 from users.tests.factories import UserFactory
 
 from orders.models import Order
 
 
-# Create your tests here.
 class OrderCreateTestCase(TestCase):
     def setUp(self):
+        activate("en")
         self.client = Client()
         self.user = UserFactory.create()
         self.client.login(username=self.user.username, password="password123")
@@ -25,23 +24,20 @@ class OrderCreateTestCase(TestCase):
         self.factory.session.save()
 
     def test_order_create(self):
-        data = (
-            {
-                "first_name": "TestName",
-                "last_name": "TestSurname",
-                "email": "b3yUH@example.com",
-                "address": "Test Adress",
-                "postal_code": "Test PostalCode",
-                "city": "Test City",
-            },
-        )
+        data = {
+            "first_name": "TestName",
+            "last_name": "TestSurname",
+            "email": "b3yUH@example.com",
+            "address": "Test Adress",
+            "postal_code": "Test PostalCode",
+            "city": "Test City",
+        }
         response = self.client.post(
             reverse("orders:order_create"),
-            json.dumps(data),
-            content_type="application/json",
+            data,
         )
         self.assertEqual(response.status_code, 200)
-        self.assertTrue(Order.objects.filter(first_name="TestName", id=1).exists())
+        self.assertTrue(Order.objects.filter(**data).exists())
 
     def test_order_view(self):
         response = self.client.get(reverse("orders:order_create"))

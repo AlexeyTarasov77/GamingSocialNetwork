@@ -1,0 +1,28 @@
+
+{% comment %} <div class="chats p-2.5 border border-r border-gray-400 flex flex-col gap-2.5">
+    {% for chat, image in zipped_chats %}
+    {% include "chats/includes/chat_item.html" with content=chat.messages.last|default_if_none:"Нет сообщений"|truncatewords:"10" %}
+    {% endfor %}
+</div> {% endcomment %}
+
+<div class="l-navbar mt-10" id="nav-bar">
+    <nav class="nav overflow-y-scroll">
+        <div>
+            <button href="#" class="nav_logo header_toggle">
+                <i class='bx bx-menu' id="header-toggle"></i> 
+            </button>
+            <div class="nav_list">
+                {% for chat, image in zipped_chats %}
+                {% comment %} <a href="{{chat.get_absolute_url}}" class="nav_link">
+                    <img src="{{image}}" alt="" width="20" height="20" class="nav_icon">
+                    <span class="nav_name">{{chat.name}}</span>
+                </a> {% endcomment %}
+                <button hx-get="{{chat.get_absolute_url}}" class="nav_link" hx-target="#chatroom-content">
+                    <img src="{{image}}" alt="" width="20" height="20" class="nav_icon">
+                    <span class="nav_name">{{chat.name}}</span>
+                </button>
+                {% endfor %}
+            </div>
+        </div>
+    </nav>
+</div>

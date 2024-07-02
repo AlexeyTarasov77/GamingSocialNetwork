@@ -23,6 +23,7 @@ set_logger(logger)
 
 count_users = get_user_model().objects.count()
 # constants specifying the number of likes | comments required to get to recommends
+# constants specifying the number of likes | comments required to get to recommends
 TOTAL_LIKES_REQUIRED: Final[int] = count_users // 3
 TOTAL_COMMENTS_REQUIRED: Final[int] = count_users // 4
 
@@ -55,6 +56,7 @@ class MainView(CatchExceptionMixin, generic.ListView):
             return []
 
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        """Adds to context last actions and recommended posts."""
         """Adds to context last actions and recommended posts."""
         context = super().get_context_data(**kwargs)
         context["last_actions"] = self._get_last_actions()

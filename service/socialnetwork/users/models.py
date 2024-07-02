@@ -51,7 +51,7 @@ class Profile(SaveSlugMixin, models.Model):
         blank=True,
         verbose_name=_("Друзья"),
     )
-    bio = models.TextField(blank=True, null=True, verbose_name=_("Биография"))
+    bio = models.TextField(blank=True, default="", verbose_name=_("Биография"))
     date_of_birth = models.DateTimeField(
         null=True, blank=True, verbose_name=_("Дата рождения")
     )
@@ -69,6 +69,14 @@ class Profile(SaveSlugMixin, models.Model):
     def __str__(self) -> str:
         return f"Профиль пользователя - {self.user}."
 
+    def save(self, *args, **kwargs):
+        return super().save(
+            *args, slug_field="user_slug", slugify_value=self.user.username, **kwargs
+        )
+
+    def get_absolute_url(self):
+        return reverse("users:profile", kwargs={"username": self.user_slug})
+
     @property
     def is_team_leader(self):
         if self.team:
@@ -80,12 +88,7 @@ class Profile(SaveSlugMixin, models.Model):
         if self.date_of_birth:
             return (timezone.now() - self.date_of_birth).days // 365
 
-    def save(self, *args, **kwargs):
-        return super().save(
-            *args, slug_field="user_slug", slugify_value=self.user.username, **kwargs
-        )
-
-    def get_profile_image(self):
+    def get_image(self):
         return self.image.url if self.image else "/static/users/images/profile.jpeg"
 
     def get_background_image(self):
@@ -94,9 +97,6 @@ class Profile(SaveSlugMixin, models.Model):
             if self.bg_image
             else "/static/users/images/background.jpeg"
         )
-
-    def get_absolute_url(self):
-        return reverse("users:profile", kwargs={"username": self.user_slug})
 
 
 class ProfileTeamsHistory(models.Model):
@@ -127,3 +127,6 @@ class FriendRequest(models.Model):
         get_user_model(), related_name="request_to", on_delete=models.CASCADE
     )
     created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Заявка в друзья от {self.from_user}"

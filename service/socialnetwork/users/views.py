@@ -1,5 +1,4 @@
 import logging
-from nis import cat
 from typing import Any
 
 from core.redis_connection import r

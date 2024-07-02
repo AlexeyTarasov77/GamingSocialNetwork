@@ -1,0 +1,43 @@
+{% load i18n %}
+{% load crispy_forms_tags %}
+
+{% block modal_content %}
+<div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title">
+        {% trans "Создать группу" %}
+      </h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <div class="modal-body">
+
+        <div class="d-flex flex-column justify-content-center align-items-center">
+            <form action="{% url "chats:create-group" %}" method="post" 
+                class="d-flex flex-column g-3 needs-validation justify-content-between"
+                hx-post="{% url "chats:create-group" %}"
+                hx-target="#dialog"
+                id="chat-create-form"
+            >
+                {% csrf_token %}
+                {{form|crispy}}
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{% trans "Закрыть" %}</button>
+                    <button type="submit" class="btn btn-primary" id="submit">{% trans "Создать" %}</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock modal_content %}
+
+{% block js %}
+<script type="module">
+    import { handleHtmxRequest } from "/static/gameblog/js/htmx_events.js"
+    handleHtmxRequest((e) => {
+        console.log(e.detail)
+        console.log("RESPONSE IS", e.detail.xhr.responseText)
+        console.log("D-EL ID IS", e.detail.elt.id)
+        if (e.detail.elt.id === 'chat-create-form') window.location.href = e.detail.xhr.responseText
+    }); 
+</script>
+{% endblock js %}

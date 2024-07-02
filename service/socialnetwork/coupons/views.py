@@ -19,6 +19,7 @@ def coupon_apply(request):
     form = CouponApplyForm(request.POST)
     if form.is_valid():
         code = form.cleaned_data["code"]
+        code = form.cleaned_data["code"]
         try:
             coupon = Coupon.active_objects.get(code=code)
             request.session["coupon_id"] = coupon.id

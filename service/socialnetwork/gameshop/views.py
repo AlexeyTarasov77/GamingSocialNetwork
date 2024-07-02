@@ -28,6 +28,7 @@ class ProductListView(CatchExceptionMixin, generic.ListView):
 
     def get_context_data(self, **kwargs):
         """Add current category to context"""
+        """Add current category to context"""
         context = super().get_context_data(**kwargs)
         cat_slug = self.kwargs.get("cat_slug")
         if cat_slug:
@@ -44,6 +45,7 @@ class ProductDetailView(CatchExceptionMixin, generic.DetailView):
     context_object_name = "product"
 
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        """Add suggested products to context"""
         """Add suggested products to context"""
         context = super().get_context_data(**kwargs)
         rec = Recommender()

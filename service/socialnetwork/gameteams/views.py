@@ -2,6 +2,7 @@ import logging
 from typing import Any
 
 from core.mixins import ObjectViewsMixin
+from core.utils import is_ajax
 from core.views import CatchExceptionMixin, catch_exception, set_logger
 from django.contrib import messages
 from django.contrib.auth import get_user_model
@@ -11,9 +12,9 @@ from django.db.models.query import QuerySet
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views import generic
-from users.models import Profile
-
+from gameteams.services.ad_service import AdService
 from gameteams.services.team_service import TeamService
+from users.models import Profile
 
 from . import forms
 from .models import Ad, Game, Team
@@ -122,10 +123,11 @@ def leave_team_view(request, slug) -> JsonResponse:
 def remove_team_member_view(request, pk) -> JsonResponse:
     member = get_object_or_404(Profile, pk=pk)
     team = request.user.profile.team
-    print(team, request.user)
     if not team or not request.user == team.leader:
+        logger.info("User %r is not leader of team %r", request.user, team)
         return JsonResponse({"success": False, "error_msg": "Недостаточно прав"}, status=403)
     if member not in team.members.all():
+        logger.info("Member %r not found in team %r", member, team)
         return JsonResponse(
             {"success": False, "error_msg": "Участник не состоит в вашей команде"},
             status=404,
@@ -140,6 +142,7 @@ def make_team_leader_view(request, pk) -> JsonResponse | HttpResponseRedirect:
     member = get_object_or_404(Profile, pk=pk)
     team = member.team
     if not request.user == team.leader:
+        logger.info("User %r is not leader of team %r", request.user, team)
         return JsonResponse({"success": False}, status=403)
     service = TeamService(team)
     service.make_leader(member.user)
@@ -179,7 +182,7 @@ class TeamJoinRequestsView(CatchExceptionMixin, AccessMixin, generic.ListView):
         self.team = user.profile.team
         return super().dispatch(request, *args, **kwargs)
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs) -> JsonResponse:
         """Accepting/Declining incoming join requests"""
         data = request.POST
         from_user_profile = get_object_or_404(Profile, user_id=data.get("from_user_id"))
@@ -212,7 +215,7 @@ class AdListView(CatchExceptionMixin, generic.ListView):
     queryset = Ad.objects.only("title", "content", "game", "type", "user")
 
     def get_template_names(self) -> list[str]:
-        if self.request.headers.get("HX-Request") == "true":
+        if is_ajax(self.request):
             return ["gameteams/ads/ad_list_hx.html"]
         return super().get_template_names()
 
@@ -263,16 +266,9 @@ class AdCreateView(CatchExceptionMixin, LoginRequiredMixin, generic.CreateView):
 
 
 @catch_exception
-def ad_bookmark_view(request, pk):
+def ad_bookmark_view(request, pk) -> JsonResponse:
     """set/unset ad bookmark"""
     ad = Ad.objects.get(pk=pk)
     user = request.user
-    is_added = False
-    if ad.favorites.filter(pk=user.pk).exists():
-        ad.favorites.remove(user)
-    else:
-        ad.favorites.add(user)
-        is_added = True
-    return JsonResponse({"is_added": is_added}, status=200)
-    return JsonResponse({"is_added": is_added}, status=200)
+    is_added = AdService.bookmark_ad(ad, user)
     return JsonResponse({"is_added": is_added}, status=200)

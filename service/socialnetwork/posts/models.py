@@ -45,25 +45,18 @@ class Post(models.Model):
         ARTICLE = "AR", _("Article")
         POST = "PS", _("Post")
 
-    title: str = models.CharField(
-        verbose_name=_("Post title"), max_length=100, db_index=True
-    )
+    title: str = models.CharField(verbose_name=_("Post title"), max_length=100, db_index=True)
     content: str = models.TextField(verbose_name=_("Post content"))
-    time_create = models.DateTimeField(
-        verbose_name=_("Post creation date"), auto_now_add=True
-    )
-    time_update = models.DateTimeField(
-        verbose_name=_("Post update date"), auto_now=True
-    )
-    time_publish = models.DateTimeField(
-        verbose_name=_("Post publication date"), default=timezone.now
-    )
+    time_create = models.DateTimeField(verbose_name=_("Post creation date"), auto_now_add=True)
+    time_update = models.DateTimeField(verbose_name=_("Post update date"), auto_now=True)
+    time_publish = models.DateTimeField(verbose_name=_("Post publication date"), default=timezone.now)
     status: Status = models.CharField(
         verbose_name=_("Post status"),
         choices=Status.choices,
         default=Status.PUBLISHED,
         max_length=2,
         db_index=True,
+        blank=True,
     )
     photo = models.ImageField(
         verbose_name=_("Post photo"),
@@ -110,6 +103,12 @@ class Post(models.Model):
         """
         return self.title
 
+    def get_absolute_url(self) -> str:
+        """
+        Return the absolute URL of the post.
+        """
+        return reverse("posts:detail-post", kwargs={"post_id": self.pk})
+
     @property
     def tag_list(self) -> list[str]:
         """
@@ -137,12 +136,6 @@ class Post(models.Model):
         Return the number of comments the post has.
         """
         return self.comments.count()
-
-    def get_absolute_url(self) -> str:
-        """
-        Return the absolute URL of the post.
-        """
-        return reverse("posts:detail-post", kwargs={"post_id": self.pk})
 
     @property
     def url(self) -> str:
@@ -173,13 +166,9 @@ class Comment(MPTTModel):
     post = models.ForeignKey(
         Post, on_delete=models.CASCADE, verbose_name=_("Post"), related_name="comments"
     )
-    author = models.ForeignKey(
-        get_user_model(), verbose_name=_("Author"), on_delete=models.CASCADE
-    )
+    author = models.ForeignKey(get_user_model(), verbose_name=_("Author"), on_delete=models.CASCADE)
     content = models.TextField()
-    time_create = models.DateTimeField(
-        auto_now_add=True, verbose_name=_("Creation date")
-    )
+    time_create = models.DateTimeField(auto_now_add=True, verbose_name=_("Creation date"))
     time_update = models.DateTimeField(auto_now=True, verbose_name=_("Update date"))
     is_active = models.BooleanField(default=True, verbose_name=_("Active"))
     liked = models.ManyToManyField(

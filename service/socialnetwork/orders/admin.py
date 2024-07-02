@@ -9,7 +9,6 @@ from django.utils.safestring import mark_safe
 from .models import Order, OrderItem
 
 
-# Register your models here.
 class OrderItemInline(admin.TabularInline):
     model = OrderItem
     raw_id_fields = ["product"]
@@ -57,7 +56,7 @@ class OrderAdmin(admin.ModelAdmin):
         )
 
     @admin.action(description="Export selected orders to CSV")
-    def export_to_csv(modeladmin, request, queryset):
+    def export_to_csv(modeladmin, request, queryset) -> HttpResponse:  # noqa: N805
         opts = (
             modeladmin.model._meta
         )  # получить метаданные модели с которой связан modeladmin

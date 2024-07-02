@@ -1,4 +1,5 @@
 from decimal import Decimal
+from typing import Generator
 
 from coupons.models import Coupon
 from django.conf import settings
@@ -33,9 +34,10 @@ class Cart:
 
     def __len__(self):
         """Method for getting the total quantity of items in the cart"""
-        return sum([item["qty"] for item in self.cart.values()])
+        return sum(item["qty"] for item in self.cart.values())
 
-    def __iter__(self):
+    def __iter__(self) -> Generator:
+        """Iterate over the cart. Adds total computed fields to each item"""
         """Iterate over the cart. Adds total computed fields to each item"""
         product_ids = self.cart.keys()  # ['1', '2', '3', ...]
         products = ProductProxy.objects.filter(id__in=product_ids)
@@ -44,14 +46,12 @@ class Cart:
         for product in products:
             cart[str(product.id)]["product"] = product
 
-        for item in (
-            cart.values()
-        ):  # {'product': product, 'qty': 2, 'price': 1000, 'total': 2000}
+        for item in cart.values():  # {'product': product, 'qty': 2, 'price': 1000, 'total': 2000}
             item["price"] = Decimal(item["price"])
             item["total"] = item["price"] * item["qty"]
             yield item
 
-    def __contains__(self, product_id):
+    def __contains__(self, product_id) -> bool:
         """Check whether a product is in the cart."""
         return str(product_id) in self.cart
 
@@ -97,4 +97,5 @@ class Cart:
         return self.get_total_price() - self.get_discount()
 
     def get_total_price(self) -> Decimal:
+        """Get total cart price."""
         return sum(Decimal(item["price"]) * item["qty"] for item in self.cart.values())

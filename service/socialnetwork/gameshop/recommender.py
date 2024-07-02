@@ -5,7 +5,6 @@ from gameshop.models import ProductProxy
 
 class Recommender:
     """Recommender system based on product purchase history."""
-
     def get_product_key(self, id):
         return f"product:{id}:purchased_with"
 
@@ -21,7 +20,7 @@ class Recommender:
                 if product_id != with_id:
                     r.zincrby(self.get_product_key(product_id), 1, with_id)
 
-    def suggest_products_for(self, products, max_result=6):
+    def suggest_products_for(self, products, max_result=6) -> list[ProductProxy]:
         """Suggest top N products that were most often bought together with the given products."""
         assert products, "No products specified"
         product_ids = [p.id for p in products]

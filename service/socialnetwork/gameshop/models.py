@@ -26,7 +26,7 @@ class Product(SaveSlugMixin, models.Model):
     )
     title = models.CharField("Название", max_length=250)
     brand = models.CharField("Бренд", max_length=250)
-    description = models.TextField("Описание", blank=True, null=True)
+    description = models.TextField("Описание", blank=True, default="")
     slug = models.SlugField("URL", max_length=250, blank=True)
     price = models.DecimalField("Цена", max_digits=7, decimal_places=2, default=0)
     image = models.ImageField(
@@ -39,14 +39,21 @@ class Product(SaveSlugMixin, models.Model):
     )
     created_at = models.DateTimeField("Дата создания", auto_now_add=True, db_index=True)
     updated_at = models.DateTimeField("Дата изменения", auto_now=True)
-    discount = models.PositiveIntegerField(
-        validators=[MaxValueValidator(100)], default=0
-    )
+    discount = models.PositiveIntegerField(validators=[MaxValueValidator(100)], default=0)
 
     class Meta:
         verbose_name = "Товар"
         verbose_name_plural = "Товары"
         ordering = ("-created_at",)
+
+    def __str__(self) -> str:
+        """
+        Returns a string representation of this product.
+
+        Returns:
+            str: The string representation of this product.
+        """
+        return self.title
 
     def save(self, *args, **kwargs):
         """
@@ -72,15 +79,6 @@ class Product(SaveSlugMixin, models.Model):
             str: The URL for this product.
         """
         return self.get_absolute_url()
-
-    def __str__(self) -> str:
-        """
-        Returns a string representation of this product.
-
-        Returns:
-            str: The string representation of this product.
-        """
-        return self.title
 
     @property
     def final_price(self) -> Decimal:
@@ -184,12 +182,6 @@ class Category(SaveSlugMixin, models.Model):
         verbose_name = "Категория"
         verbose_name_plural = "Категории"
 
-    def save(self, *args, **kwargs):
-        """
-        Overrides the save method of the parent class to save the slug field.
-        """
-        super().save(*args, slug_field="slug", slugify_value="name", **kwargs)
-
     def __str__(self) -> str:
         """
         Returns the string representation of this category.
@@ -202,9 +194,13 @@ class Category(SaveSlugMixin, models.Model):
         while k is not None:  # пока у категории есть родитель формируем путь
             full_path.append(k.name)
             k = k.parent
-        return " -> ".join(
-            full_path[::-1]
-        )  # возвращаем конечную иерархию категорий в обратном порядке
+        return " -> ".join(full_path[::-1])  # возвращаем конечную иерархию категорий в обратном порядке
+
+    def save(self, *args, **kwargs):
+        """
+        Overrides the save method of the parent class to save the slug field.
+        """
+        super().save(*args, slug_field="slug", slugify_value="name", **kwargs)
 
     def get_absolute_url(self) -> str:
         """

@@ -13,8 +13,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 import os
 from pathlib import Path
 
-from dotenv import load_dotenv
 from django.utils.translation import gettext_lazy as _
+from dotenv import load_dotenv
 
 load_dotenv()
 
@@ -81,7 +81,7 @@ THIRD_PARTY_APPS = [
 
 LOCAL_APPS = [
     "users.apps.UsersConfig",
-    # "chats.apps.ChatsConfig",
+    "chats.apps.ChatsConfig",
     "events.apps.EventsConfig",
     "gameblog.apps.GameblogConfig",
     "posts.apps.PostsConfig",

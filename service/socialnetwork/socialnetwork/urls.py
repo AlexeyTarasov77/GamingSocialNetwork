@@ -2,9 +2,8 @@ from django.conf.urls.i18n import i18n_patterns
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
+from django.conf import settings
 from payment import webhooks
-
-from . import settings
 
 # url patterns with language prefix
 urlpatterns = i18n_patterns(
@@ -18,8 +17,7 @@ urlpatterns = i18n_patterns(
     path("payment/", include("payment.urls", namespace="payment")),
     path("coupons/", include("coupons.urls", namespace="coupons")),
     path("shop/", include("gameshop.urls", namespace="shop")),
-    # path('articles/', include('articles.urls', namespace='articles')),
-    # path('chats/', include('chats.urls', namespace='chats')),
+    path("chats/", include("chats.urls", namespace="chats")),
     # path('events/', include('events.urls', namespace='events')),
     path("posts/", include("posts.urls", namespace="posts")),
     path("teams/", include("gameteams.urls", namespace="teams")),

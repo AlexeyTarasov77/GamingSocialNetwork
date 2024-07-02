@@ -1,0 +1,111 @@
+{% load crispy_forms_tags %}
+
+<style>
+    .offcanvas.offcanvas-end.show {
+        left: unset !important;
+        right: 0 !important;
+    }
+</style>
+
+<header class="bg-blue-700 text-white py-4 px-6 flex justify-between items-center shadow-md">
+    <div class="flex items-center">
+        <div class="mr-10 text-xl flex items-center gap-2 transition-colors hover:text-purple-500">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-arrow-left " viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"/>
+            </svg>
+            <a href="{% url "chats:list" %}" class="text-white">Все чаты</a>
+        </div>
+        <img src="{{chat_image}}" alt="Logo" class="w-8 h-8 mr-2">
+        <h1 class="text-2xl font-bold">{{chat.name}}</h1>
+    </div>
+    <div class="flex">
+        <div>
+            <button 
+                class="bg-blue-600 hover:bg-blue-500 text-white font-semibold py-2 px-4 rounded"
+                type="button" data-bs-toggle="offcanvas" 
+                data-bs-target="#offcanvasScrolling" aria-controls="offcanvasScrolling"
+            >
+                Информация
+            </button>
+            <div class="offcanvas offcanvas-end" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
+                <div class="offcanvas-header">
+                  <h5 class="offcanvas-title" id="offcanvasScrollingLabel">Информация о чате</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body">
+                  <div>
+                    <h3>Участники</h3>
+                    <div class="chat-members flex flex-col gap-3">
+                        {% for member in chat.members.all %}
+                        <div class="member flex items-center gap-3">
+                            <div class=""><img src="{{member.profile.get_image}}" alt="" class="img-fluid rounded-full" width='50' height='50'></div>
+                            <div class="text-xl">
+                                {{member.username}} 
+                                {% if member == chat.admin %}<span class="text-primary text-lg">Админ</span>{% endif %} 
+                                {% if member == user %}(Вы){% endif %}</div>
+                            {% if user == chat.admin and member != user %}
+                            <div id="kick-{{member.id}}" class="kick-member">
+                                {% include "chats/includes/remove_member_form.html" with target_user_id=member.id btn_text="Выгнать" %}
+                            </div>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+                    </div>
+                  </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            {% include "chats/includes/remove_member_form.html" with target_user_id=user.id btn_text="Покинуть" %}
+        </div>
+    </div>
+</header>
+<div class="body flex flex-col h-full">
+    <div id='chat_container' class="overflow-y-auto grow">
+        <ul id="chat_messages" class="flex flex-col justify-end gap-2 p-4">
+            {% for message in chat.messages.all reversed %}
+            {% include 'chats/includes/chat_message.html' %}
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="sticky bottom-0 z-10 p-2 bg-gray-800">
+        <div class="flex flex-col gap-4 items-center rounded-xl px-2 py-2">
+            <form id="chat_message_form" class="w-full"
+                hx-ext="ws"
+                ws-connect="/ws/chats/{{ chat.id }}/"
+                ws-send
+                _="on htmx:wsAfterSend reset() me">
+                {% csrf_token %}
+                {{ form|crispy }}
+            </form>
+        </div>
+    </div>
+</div>
+
+{% block js %}
+<script type="module">
+    import showToast from '/static/notifications.js'
+    document.addEventListener("DOMContentLoaded", () => {
+        const kickForms = document.querySelectorAll('.kick-member form')
+        console.log(kickForms)
+        kickForms.forEach(form => {
+            form.addEventListener('submit', (e) => {
+                e.preventDefault()
+                fetch(e.target.action, {
+                    method: 'POST',
+                    body: new FormData(e.target)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        e.target.closest(".member").remove()
+                    }
+                })
+                .catch(error => {
+                    showToast('Упс. Что то пошло не так попробуйте еще раз', 'error');
+                });
+            })
+        })
+    })
+</script>
+{% endblock js %}

@@ -30,6 +30,7 @@ def cart_view(request) -> HttpResponse:
 def cart_add_or_update(request, product_id: int) -> HttpResponse:
     cart = Cart(request)
     product = get_object_or_404(ProductProxy, id=product_id)
+    product = get_object_or_404(ProductProxy, id=product_id)
     quantity = int(request.POST.get("qty", 1))
     logger.info(f"Adding {quantity} of {product} to cart")
     cart.add_or_update(product, quantity)

@@ -46,8 +46,6 @@ class HandleCacheService:
             int: The new cache version.
         """
         new_version = cache.get(cache_version_key, 0) + 1
-        print("CACHE INVALIDATION")
-        print(cache_version_key, new_version)
         cache.set(cache_version_key, new_version)
         return new_version
 

@@ -1,3 +1,5 @@
+from abc import abstractmethod
+
 from django.shortcuts import get_object_or_404
 from posts.mixins import ListPostsQuerySetMixin
 from posts.models import Comment, Post
@@ -25,15 +27,14 @@ class LikeAPIView(views.APIView):
     ]  # Вернуть данные только если пользователь аутентифицирован
 
     def post(self, request, *args, **kwargs):
-        obj = self.get_object(
-            request.POST.get("object_id")
-        )  # получить id текущего поста из запроса
+        obj = self.get_object(request.POST.get("object_id"))  # получить id текущего поста из запроса
         is_liked = PostsService.like_post(obj, request.user)
         data = {"is_liked": is_liked, "likes_count": obj.liked.count()}
         serializer = s.LikeSerializer(data)  # сериализовать данные в json формат
         return Response(serializer.data)  # вернуть на клиент сериализованные данные
 
-    def get_object(obj_id):
+    @abstractmethod
+    def get_object(self, obj_id):
         """Base method which will be redefined in subclasses"""
         pass
 
@@ -41,14 +42,14 @@ class LikeAPIView(views.APIView):
 class LikePostAPIView(LikeAPIView):
     """View for liking and unliking posts"""
 
-    def get_object(self, obj_id):
+    def get_object(self, obj_id) -> Post:
         return get_object_or_404(Post, id=obj_id)
 
 
 class LikeCommentAPIView(LikeAPIView):
     """View for liking and unliking comments"""
 
-    def get_object(self, obj_id):
+    def get_object(self, obj_id) -> Comment:
         return get_object_or_404(Comment, id=obj_id)
 
 
@@ -56,7 +57,7 @@ class SavePostAPIView(generics.GenericAPIView):
     queryset = Post.published.all()
     lookup_url_kwarg = "post_id"
 
-    def patch(self, request, post_id):
+    def patch(self, request, post_id) -> Response:
         post = self.get_object()
         is_saved = PostsService.save_post(post, request.user)
         data = {"is_saved": is_saved}
@@ -85,5 +86,6 @@ class CreateCommentAPIView(generics.CreateAPIView):
         comment_data["by_author"] = (
             obj.is_root_node() or obj.get_root().author.username == obj.author.username
         )
-        comment_data["author_image"] = obj.author.profile.get_profile_image()
+        comment_data["author_image"] = obj.author.profile.get_image()
+        return Response(comment_data, status=status.HTTP_201_CREATED)
         return Response(comment_data, status=status.HTTP_201_CREATED)

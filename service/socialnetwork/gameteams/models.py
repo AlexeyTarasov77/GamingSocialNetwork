@@ -39,15 +39,16 @@ class Ad(models.Model):
         on_delete=models.CASCADE,
         verbose_name=_("Игра"),
     )
+    favorites = models.ManyToManyField(
+        User, related_name="favorite_ads", blank=True, verbose_name=_("Избранное")
+    )
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
         verbose_name=_("Автор"),
         related_name="search_ads",
     )
-    team = models.ForeignKey(
-        "Team", verbose_name=_("Команда"), on_delete=models.CASCADE, null=True
-    )
+    team = models.ForeignKey("Team", verbose_name=_("Команда"), on_delete=models.CASCADE, null=True)
     type = models.CharField(
         _("Тип обьявления"),
         choices=TYPE_CHOICES,
@@ -56,9 +57,7 @@ class Ad(models.Model):
     )
     time_create = models.DateTimeField(_("Дата создания"), auto_now_add=True)
     time_update = models.DateTimeField(_("Дата обновления"), auto_now=True)
-    photo = models.ImageField(
-        _("Фото"), upload_to="photos/searchteam/", blank=True, null=True
-    )
+    photo = models.ImageField(_("Фото"), upload_to="photos/searchteam/", blank=True, null=True)
 
     class Meta:
         ordering = ["-time_create"]
@@ -91,13 +90,9 @@ class Team(SaveSlugMixin, models.Model):
     """
 
     name = models.CharField(_("Имя"), max_length=200, db_index=True)
-    logo = models.ImageField(
-        _("Логотип"), upload_to="photos/gameteams/", blank=True, null=True
-    )
-    slug = models.SlugField(
-        _("URL"), max_length=200, db_index=True, unique=True, blank=True
-    )
-    description = models.TextField(_("Про команду"), blank=True, null=True)
+    logo = models.ImageField(_("Логотип"), upload_to="photos/gameteams/", blank=True, null=True)
+    slug = models.SlugField(_("URL"), max_length=200, db_index=True, unique=True, blank=True)
+    description = models.TextField(_("Про команду"), blank=True, default="")
     country = CountryField(_("Страна"), blank=True, null=True)
     rating = models.PositiveIntegerField(
         _("Рейтинг"), default=0, blank=True, validators=[MaxValueValidator(10)]
@@ -130,25 +125,22 @@ class Team(SaveSlugMixin, models.Model):
     def __str__(self):
         return self.name
 
+    def save(self, *args, **kwargs):
+        super().save(*args, slug_field="slug", slugify_value=self.name, **kwargs)
+
+    def get_absolute_url(self):
+        return reverse("teams:team_detail", kwargs={"slug": self.slug})
+
     def get_logo(self):
         if not self.logo:
             return settings.DEFAULT_IMAGE_URL
         return self.logo.url
 
-    def get_absolute_url(self):
-        return reverse("teams:team_detail", kwargs={"slug": self.slug})
-
-    def save(self, *args, **kwargs):
-        super().save(*args, slug_field="slug", slugify_value=self.name, **kwargs)
-
 
 class TeamJoinRequest(models.Model):
-    to_team = models.ForeignKey(
-        "Team", verbose_name=_("Команда"), on_delete=models.CASCADE
-    )
-    from_user = models.ForeignKey(
-        User, verbose_name=_("Пользователь"), on_delete=models.CASCADE
-    )
+    to_team = models.ForeignKey("Team", verbose_name=_("Команда"), on_delete=models.CASCADE)
+    to_team = models.ForeignKey("Team", verbose_name=_("Команда"), on_delete=models.CASCADE)
+    from_user = models.ForeignKey(User, verbose_name=_("Пользователь"), on_delete=models.CASCADE)
     time_create = models.DateTimeField(_("Дата создания"), auto_now_add=True)
     time_update = models.DateTimeField(_("Дата обновления"), auto_now=True)
 
@@ -158,17 +150,15 @@ class TeamJoinRequest(models.Model):
 
 class Game(SaveSlugMixin, models.Model):
     name = models.CharField(_("Игра"), max_length=200, db_index=True)
-    slug = models.SlugField(
-        _("URL"), max_length=200, db_index=True, unique=True, blank=True
-    )
+    slug = models.SlugField(_("URL"), max_length=200, db_index=True, unique=True, blank=True)
     logo = models.ImageField(_("Логотип"), upload_to="photos/gameteams/games/")
 
-    @property
-    def popularity(self):
-        return self.bounded_teams.count()
+    def __str__(self):
+        return self.name
 
     def save(self, *args, **kwargs):
         super().save(*args, slug_field="slug", slugify_value=self.name, **kwargs)
 
-    def __str__(self):
-        return self.name
+    @property
+    def popularity(self):
+        return self.bounded_teams.count()
