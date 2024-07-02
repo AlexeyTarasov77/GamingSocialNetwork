@@ -47,6 +47,297 @@
 - **posts**: Публикации (посты, новости, статьи).
 - **users**: Профиль пользователя, авторизация, регистрация, 
     взаимодействия пользователей (подписки, друзья ...).
+- **core**: Не является как таковым приложением, содержит сущности переиспользуемые другими приложениями
+
+#### Дерево структуры 
+```bash
+├── Dockerfile
+├── docker-compose.yml
+├── package-lock.json
+├── package.json
+├── requirements.txt
+└── socialnetwork
+    ├── actions
+    │   ├── __init__.py
+    │   ├── apps.py
+    │   ├── models.py
+    │   ├── templates
+    │   │   └── actions
+    │   │       └── ...
+    │   └── utils.py
+    ├── api
+    │   ├── __init__.py
+    │   ├── apps.py
+    │   ├── posts_api
+    │   │   ├── __init__.py
+    │   │   ├── serializers.py
+    │   │   ├── urls.py
+    │   │   └── views.py
+    │   ├── search_api
+    │   │   ├── __init__.py
+    │   │   ├── client.py
+    │   │   ├── urls.py
+    │   │   └── views.py
+    │   ├── urls.py
+    │   └── users_api
+    │       ├── __init__.py
+    │       ├── serializers.py
+    │       ├── urls.py
+    │       └── views.py
+    ├── cart
+    │   ├── __init__.py
+    │   ├── admin.py
+    │   ├── apps.py
+    │   ├── cart.py
+    │   ├── context_processors.py
+    │   ├── models.py
+    │   ├── templates
+    │   │   └── cart
+    │   │       └── ...
+    │   ├── tests
+    │   │   ├── __init__.py
+    │   │   ├── factories.py
+    │   │   └── test_views.py
+    │   ├── urls.py
+    │   └── views.py
+    ├── chats
+    │   ├── __init__.py
+    │   ├── admin.py
+    │   ├── apps.py
+    │   ├── consumers.py
+    │   ├── forms.py
+    │   ├── models.py
+    │   ├── routing.py
+    │   ├── services
+    │   │   ├── __init__.py
+    │   │   └── chats_service.py
+    │   ├── static
+    │   │   └── chats
+    │   │       └── ...
+    │   ├── templates
+    │   │   └── chats
+    │   │       └── ...
+    │   ├── tests
+    │   │   ├── __init__.py
+    │   │   ├── factories.py
+    │   │   └── test_views.py
+    │   ├── urls.py
+    │   └── views.py
+    ├── core
+    │   ├── handle_cache.py
+    │   ├── mixins.py
+    │   ├── models.py
+    │   ├── redis_connection.py
+    │   ├── utils.py
+    │   └── views.py
+    ├── coupons
+    │   ├── __init__.py
+    │   ├── admin.py
+    │   ├── apps.py
+    │   ├── forms.py
+    │   ├── models.py
+    │   ├── tests
+    │   │   ├── __init__.py
+    │   │   ├── factories.py
+    │   │   └── test_views.py
+    │   ├── urls.py
+    │   └── views.py
+    ├── events
+    │   ├── __init__.py
+    │   ├── admin.py
+    │   ├── apps.py
+    │   ├── models.py
+    │   ├── tests.py
+    │   ├── urls.py
+    │   └── views.py
+    ├── gameblog
+    │   ├── __init__.py
+    │   ├── admin.py
+    │   ├── apps.py
+    │   ├── consumers.py
+    │   ├── context_processors.py
+    │   ├── mixins.py
+    │   ├── models.py
+    │   ├── routing.py
+    │   ├── static
+    │   │   └── gameblog
+    │   │       └── ...
+    │   ├── templates
+    │   │   └── gameblog
+    │   │       └── ...
+    │   ├── templatetags
+    │   │   ├── __init__.py
+    │   │   └── gameblog_tags.py
+    │   ├── tests.py
+    │   ├── urls.py
+    │   ├── utils.py
+    │   └── views.py
+    ├── gameshop
+    │   ├── __init__.py
+    │   ├── admin.py
+    │   ├── apps.py
+    │   ├── index.py
+    │   ├── models.py
+    │   ├── recommender.py
+    │   ├── static
+    │   │   └── gameshop
+    │   │       └── ...
+    │   ├── templates
+    │   │   └── gameshop
+    │   │       └── ...
+    │   ├── templatetags
+    │   │   ├── __init__.py
+    │   │   └── shop_tags.py
+    │   ├── tests
+    │   │   ├── factories.py
+    │   │   └── test_views.py
+    │   ├── urls.py
+    │   └── views.py
+    ├── gameteams
+    │   ├── __init__.py
+    │   ├── admin.py
+    │   ├── apps.py
+    │   ├── forms.py
+    │   ├── models.py
+    │   ├── services
+    │   │   ├── __init__.py
+    │   │   ├── ad_service.py
+    │   │   └── team_service.py
+    │   ├── signals.py
+    │   ├── static
+    │   │   └── gameteams
+    │   │       └── ...
+    │   ├── templates
+    │   │   └── gameteams
+    │   │       └── ...
+    │   ├── tests
+    │   │   ├── __init__.py
+    │   │   ├── factories.py
+    │   │   └── test_views.py
+    │   ├── urls.py
+    │   └── views.py
+    ├── general_log.log
+    ├── locale
+    │   ├── en
+    │   │   └── LC_MESSAGES
+    │   │       ├── django.mo
+    │   │       └── django.po
+    │   ├── ru
+    │   │   └── LC_MESSAGES
+    │   │       ├── django.mo
+    │   │       └── django.po
+    │   └── ukr
+    │       └── LC_MESSAGES
+    │           ├── django.mo
+    │           └── django.po
+    ├── manage.py
+    ├── orders
+    │   ├── __init__.py
+    │   ├── admin.py
+    │   ├── apps.py
+    │   ├── forms.py
+    │   ├── models.py
+    │   ├── tasks.py
+    │   ├── templates
+    │   │   └── orders
+    │   │       └── ...
+    │   ├── templatetags
+    │   │   ├── __init__.py
+    │   │   └── orders_tags.py
+    │   ├── tests
+    │   │   ├── __init__.py
+    │   │   ├── factories.py
+    │   │   └── test_views.py
+    │   ├── urls.py
+    │   └── views.py
+    ├── payment
+    │   ├── __init__.py
+    │   ├── admin.py
+    │   ├── apps.py
+    │   ├── models.py
+    │   ├── static
+    │   │   └── payment
+    │   │       └── ...
+    │   ├── tasks.py
+    │   ├── templates
+    │   │   └── payment
+    │   │       └── ...
+    │   ├── tests.py
+    │   ├── urls.py
+    │   ├── views.py
+    │   └── webhooks.py
+    ├── posts
+    │   ├── __init__.py
+    │   ├── admin.py
+    │   ├── apps.py
+    │   ├── forms.py
+    │   ├── index.py
+    │   ├── mixins.py
+    │   ├── models.py
+    │   ├── services
+    │   │   ├── __init__.py
+    │   │   ├── constants.py
+    │   │   ├── m2m_toggle.py
+    │   │   └── posts_service.py
+    │   ├── static
+    │   │   └── posts ...    
+    │   ├── tasks.py
+    │   ├── templates
+    │   │   └── posts
+    │   │       ├── ...
+    │   ├── tests
+    │   │   ├── __init__.py
+    │   │   ├── factories.py
+    │   │   └── test_views.py
+    │   ├── urls.py
+    │   ├── utils.py
+    │   └── views.py
+    ├── socialnetwork
+    │   ├── __init__.py
+    │   ├── asgi.py
+    │   ├── celery.py
+    │   ├── routing.py
+    │   ├── settings.py
+    │   ├── urls.py
+    │   └── wsgi.py
+    ├── static
+    │   ├── base.css
+    │   ├── base.js
+    │   ├── notifications.js
+    │   ├── search.js
+    │   └── tw
+    │       ├── tailwind-input.css
+    │       └── tailwind-output.css
+    ├── tailwind.config.js
+    ├── templates
+    │   ├── base.html
+    │   ├── includes
+    │   │   └── pagination.html
+    │   └── notifications.html
+    └── users
+        ├── __init__.py
+        ├── admin.py
+        ├── apps.py
+        ├── decorators.py
+        ├── forms.py
+        ├── models.py
+        ├── serializers.py
+        ├── services
+        │   ├── __init__.py
+        │   └── users_service.py
+        ├── signals.py
+        ├── static
+        │   └── users
+        │       ├── ...
+        ├── templates
+        │   └── users
+        │       ├── ...
+        ├── tests
+        │   ├── __init__.py
+        │   └── factories.py
+        ├── urls.py
+        └── views.py
+```
 
 ### Стек технологий
 
