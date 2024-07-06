@@ -42,7 +42,7 @@ function subscribe() {
 
     $.ajax({
       type: 'PATCH',
-      url: `/accounts/profile/subscribe/${subscribeBtn.data('user-slug')}/`,
+      url: subscribeBtn.data('url'),
       beforeSend: (xhr, settings) => xhr.setRequestHeader('X-CSRFToken', csrftoken),
     })
     .done(function (data) {
@@ -73,7 +73,7 @@ function friendRequest(){
   reqBtn.click(function () {
     $.ajax({
       type: reqBtn.data("type"),
-      url: `/accounts/profile/api/friend_requests/${reqBtn.data("user-slug")}/`,
+      url: reqBtn.data("url"),
       data: {"action": reqBtn.data("action")},
       beforeSend: (xhr, settings) => xhr.setRequestHeader('X-CSRFToken', csrftoken),
     })
@@ -83,7 +83,7 @@ function friendRequest(){
         reqBtn.addClass('btn-danger');
         reqBtn.text('Отменить заявку');
         showToast("Заявка отправлена!")
-      } else if (data.removed) {
+      } else if (data?.removed) {
         reqBtn.removeClass('btn-danger');
         reqBtn.addClass('btn-dark');
         reqBtn.text('Отправить заявку в друзья');

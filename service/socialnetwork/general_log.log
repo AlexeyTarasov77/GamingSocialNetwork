@@ -4902,3 +4902,11 @@ Traceback (most recent call last):
     raise PermissionDenied(self.get_permission_denied_message())
 django.core.exceptions.PermissionDenied: You do not have permission to access this chat room.
 WARNING|2024-07-02 14:37:07,987|runserver:178|django.channels.server>> HTTP GET /en/chats/25894ee3-04a5-421f-9c74-003206db5f1b/ 403 [0.34, 192.168.65.1:22502]
+WARNING|2024-07-06 21:20:49,563|log:241|django.request>> Not Found: /favicon.ico
+WARNING|2024-07-06 21:20:49,564|runserver:176|django.channels.server>> HTTP GET /favicon.ico 404 [0.05, 192.168.65.1:34835]
+WARNING|2024-07-06 21:26:10,449|log:241|django.request>> Not Found: /favicon.ico
+WARNING|2024-07-06 21:26:10,450|runserver:176|django.channels.server>> HTTP GET /favicon.ico 404 [0.20, 192.168.65.1:36580]
+WARNING|2024-07-06 21:27:22,806|log:241|django.request>> Not Found: /accounts/profile/api/friend_requests/handler/r2/
+WARNING|2024-07-06 21:27:22,807|runserver:176|django.channels.server>> HTTP POST /accounts/profile/api/friend_requests/handler/r2/ 404 [0.08, 192.168.65.1:36972]
+WARNING|2024-07-06 21:33:44,960|log:241|django.request>> Not Found: /favicon.ico
+WARNING|2024-07-06 21:33:44,960|runserver:176|django.channels.server>> HTTP GET /favicon.ico 404 [0.09, 192.168.65.1:39011]

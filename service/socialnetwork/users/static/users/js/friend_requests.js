@@ -7,16 +7,15 @@ $(document).ready(function () {
 
 function requestHandler() {
   $('.handling-btn').click(function () {
-    const userSlug = $(this).data('user-slug')
     $.ajax({
       type: $(this).data('type'),
-      url: `/accounts/profile/api/friend_requests/handler/${userSlug}/`,
+      url: $(this).data('url'),
       data: {"user_pk": $(this).data('user-pk')},
       beforeSend: (xhr, settings) => xhr.setRequestHeader('X-CSRFToken', csrftoken),
     })
     .done((resp)=>{
         if (resp.accepted) {
-          showToast(`Пользователь ${userSlug} добавлен в друзья`)
+          showToast("Пользователь добавлен в друзья")
         } else {
             showToast("Заявка отклонена")
         }

@@ -5,9 +5,9 @@ from chats.forms import PersonalChatRoomCreateForm
 from core.redis_connection import r
 from core.views import CatchExceptionMixin, catch_exception, set_logger
 from django.contrib import messages
+from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.models import User
-from django.http import JsonResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views import generic
 from posts.models import Post
@@ -20,6 +20,7 @@ from .models import FriendRequest, Profile
 
 logger = logging.getLogger(__name__)
 set_logger(logger)
+User = get_user_model()
 
 
 class ProfileView(CatchExceptionMixin, LoginRequiredMixin, generic.DetailView):
@@ -35,9 +36,11 @@ class ProfileView(CatchExceptionMixin, LoginRequiredMixin, generic.DetailView):
 
     def post(self, request, *args, **kwargs):
         """Updating profile image."""
-        if request.FILES["image"]:
+        if request.user != self.object.user:
+            return HttpResponse("Недостаточно прав", status=403)
+        if image := request.FILES.get("image"):
             instance = self.object
-            instance.image = request.FILES["image"]
+            instance.image = image
             instance.save()
             return JsonResponse({"path": instance.image.url})
 
@@ -117,44 +120,30 @@ class ProfileUpdateView(CatchExceptionMixin, generic.UpdateView):
 @catch_exception
 def friend_requests_view(request, username):
     """View all incoming friend requests to current user."""
-    user = get_object_or_404(User, profile_user__user_slug=username)
+    user = get_object_or_404(User, profile__user_slug=username)
     friend_requests = FriendRequest.objects.filter(to_user=user)
-    print(friend_requests)
     return render(request, "users/friend_requests.html", {"friend_requests": friend_requests})
 
 
 class SubscribeAPIView(CatchExceptionMixin, generics.GenericAPIView):
     """Api view for subscribe/unsubscribe to user"""
 
-    queryset = Profile.objects.all()
+    queryset = Profile.objects.all().select_related("user")
     lookup_field = "user_slug"
     lookup_url_kwarg = "username"
 
     def patch(self, request, username):
-        target_user_profile = (
-            self.get_object()
-        )  # получение профиля пользователя на которого подписываются
+        target_user = self.get_object().user  # получение профиля пользователя на которого подписываются
         acting_user = (
             request.user
         )  # получение текущего пользователя который хочеть подписаться/отписаться
-        if acting_user in target_user_profile.followers.all():  # если пользователь уже подписан
-            target_user_profile.followers.remove(acting_user)  # отписаться
-            acting_user.profile.following.remove(
-                target_user_profile.user
-            )  # удалить из подписок пользователя от которого отписываемся
+        if acting_user in target_user.profile.followers.all():  # если пользователь уже подписан
+            acting_user.profile.unfollow_user(target_user)
             return Response({"is_subscribed": False})
         else:  # если пользователь еще не подписан
-            target_user_profile.followers.add(request.user)  # подписаться
-            acting_user.profile.following.add(
-                target_user_profile.user
-            )  # добавить в подписки пользователя на которого подписываемся
-            return Response({"is_subscribed": True})
-
-
-@catch_exception
-def friend_request_remove(from_user: User, to_user: User) -> None:
-    """Удаление заявки в друзья"""
-    FriendRequest.objects.get(from_user=from_user, to_user=to_user).delete()
+            acting_user.profile.follow_user(target_user)
+        is_subscribed = target_user in acting_user.profile.following.all()
+        return Response({"is_subscribed": is_subscribed})
 
 
 class FriendRequestAPIView(CatchExceptionMixin, generics.GenericAPIView):
@@ -178,25 +167,26 @@ class FriendRequestAPIView(CatchExceptionMixin, generics.GenericAPIView):
 
     def delete(self, request, username):
         """Удаление из друзей или отмена заявки"""
-        user_profile1 = self.get_object()  # получение профиля пользователя которому отправляли заявку
-        user1 = self.get_object().user  # получение юзера из профиля пользователя
-        user_profile2 = get_object_or_404(
-            Profile, user=request.user
+        target_user = self.get_object().user  # получение профиля пользователя которому отправляли заявку
+        acting_user = (
+            request.user
         )  # получение профиля пользователя который отправил заявку (или хочеть удалить из друзей)
-        user2 = request.user  # соответствующий юзер
-        action = request.data[
-            "action"
-        ]  # действие которое надо выполнить (либо удаление заявки либо отмена отправки)
+        action = request.data.get("action")  # действие которое надо выполнить (delete/cancel)
         msg = ""  # инициализация сообщения для возврата на клиент в зависимости от выполненного действия
         if action == "delete":
             # если действие - удалить из друзей, взаимоудаляем
-            user_profile1.friends.remove(user2)
-            user_profile2.friends.remove(user1)
+            print("into delete action")
+            acting_user.profile.remove_friend(target_user)
             msg = "Удален из друзей"
         elif action == "cancel":
             # если пользователь хочет отменить заявку просто удаляем ее у соответствующего пользователя
-            friend_request_remove(user2, user1)
+            FriendRequest.objects.filter(from_user=target_user.user, to_user=acting_user.user).delete()
             msg = "Заявка в друзья отменена"
+        else:
+            return Response(
+                {"removed": False, "msg": "Неверное действие"}, status=status.HTTP_400_BAD_REQUEST
+            )
+        print("returning response")
         return Response({"removed": True, "msg": msg}, status=status.HTTP_204_NO_CONTENT)
 
 
@@ -209,24 +199,22 @@ class FriendRequestHandlerAPIView(CatchExceptionMixin, generics.GenericAPIView):
 
     def post(self, request, username):
         """Принятие заявки в друзья"""
-        user_profile1 = self.get_object()  # получение профиля пользователя который принимает заявку
-        user_profile2 = get_object_or_404(
-            Profile, user__pk=request.data["user_pk"]
-        )  # получение профиля пользователя которому принадлежит заявка
+        acting_user = self.get_object().user  # получение пользователя который принимает заявку
+        target_user = get_object_or_404(
+            User, pk=request.data["user_pk"]
+        )  # получение пользователя которому принадлежит заявка
         # взаимодобавление в друзья к друг другу
-        user_profile1.friends.add(user_profile2.user)
-        user_profile2.friends.add(user_profile1.user)
+        acting_user.profile.add_friend(target_user)
         # удаление заявки
-        friend_request_remove(user_profile2.user, user_profile1.user)
+        FriendRequest.objects.filter(from_user=target_user, to_user=acting_user).delete()
         return Response({"accepted": True}, status=status.HTTP_201_CREATED)
 
     def delete(self, request, username):
         """Отклонение заявки в друзья"""
-        user1 = (
-            self.get_object().user
+        acting_user_id = (
+            self.get_object().user_id
         )  # получение юзера из профиля пользователя который отклоняет заявку
-        user2 = get_object_or_404(
-            User, pk=request.data["user_pk"]
-        )  # юзер который отправил заявку (чья заявка отклоняеться)
-        friend_request_remove(user2, user1)  # удаление заявки
+        FriendRequest.objects.filter(
+            from_user_id=request.data["user_pk"], to_user_id=acting_user_id
+        ).delete()  # удаление заявки
         return Response({"accepted": False}, status=status.HTTP_204_NO_CONTENT)
